@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessibility Panel</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+ 
+  <!-- Toggle Button (visible when panel is closed) -->
+  <!-- DT-158 User can click in to the Accessibility tools -->
+  <button id="a11y-toggle" aria-label="Open accessibility settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+    </svg>
+    Accessibility Tools
+  </button>
+
+  <!-- DT-159 User can click out of the Accessibility tools -->
+  <div id="a11y-overlay" aria-hidden="true"></div>
+ 
+  <div id="a11y-panel" role="dialog" aria-label="Accessibility settings">
+ 
+    <div class="panel-header">
+      <h2>Accessibility</h2>
+      <!-- DT-159 User can click out of the Accessibility tools -->
+      <button class="close-btn" id="close-btn" aria-label="Close accessibility panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+ 
+    <!-- DT-157 User can change text size of website -->
+    <div class="section">
+      <div class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+        </svg>
+        Text Size
+      </div>
+      <div class="btn-group" id="text-size-group">
+        <button class="opt-btn active" data-val="default">Default</button>
+        <button class="opt-btn" data-val="large" style="font-size: 16px;">Large</button>
+        <button class="opt-btn" data-val="extra-large" style="font-size: 18px;">Extra Large</button>
+      </div>
+    </div>
+ 
+    <!-- DT-155 User can change to light mode -->
+    <!-- DT-154 User can change to dark mode -->
+    <div class="section">
+      <div class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        Theme
+      </div>
+      <div class="btn-group row" id="theme-group">
+        <!-- DT-155 User can change to light mode -->
+        <button class="opt-btn active" data-val="light">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          Light
+        </button>
+        <!-- DT-154 User can change to dark mode -->
+        <button class="opt-btn active" data-val="dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          Dark
+        </button>
+      </div>
+    </div>
+ 
+    <!-- DT-161 User can toggle high contrast -->
+    <div class="section">
+      <div class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a10 10 0 0 1 0 20V2z" fill="currentColor"/>
+        </svg>
+        High Contrast
+      </div>
+      <button class="opt-btn full-width" id="contrast-btn">Disabled</button>
+    </div>
+ 
+    <!-- DT-156 User can change language of their preference -->
+    <div class="section">
+      <div class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        Language
+      </div>
+      <select aria-label="Select language">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+      </select>
+    </div>
+ 
+    <div class="notice">
+      This site is optimized for screen readers. Press Tab to navigate
+      through interactive elements.
+    </div>
+ 
+    <button class="ai-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      AI Help Assistant
+    </button>
+ 
+  </div>
+ 
+  <script>
+    const toggle   = document.getElementById('a11y-toggle');
+    const panel    = document.getElementById('a11y-panel');
+    const overlay  = document.getElementById('a11y-overlay');
+    const closeBtn = document.getElementById('close-btn');
+ 
+    // DT-158 User can click in to the Accessibility tools
+    function openPanel() {
+      panel.classList.add('open');
+      overlay.style.display = 'block';
+      toggle.style.display  = 'none';
+    }
+ 
+    // DT-159 User can click out of the Accessibility tools
+    function closePanel() {
+      panel.classList.remove('open');
+      overlay.style.display = 'none';
+      toggle.style.display  = 'flex';
+    }
+ 
+    toggle.addEventListener('click', openPanel);
+    closeBtn.addEventListener('click', closePanel);
+    overlay.addEventListener('click', closePanel);
+ 
+    // DT-157 User can change text size of website
+    // DT-155 User can change to light mode
+    // DT-154 User can change to dark mode
+    function initGroup(groupId) {
+      const group = document.getElementById(groupId);
+      group.querySelectorAll('.opt-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    }
+ 
+    initGroup('text-size-group');
+    initGroup('theme-group');
+ 
+    // DT-161 User can toggle high contrast
+    const contrastBtn = document.getElementById('contrast-btn');
+    let contrastOn = false;
+ 
+    contrastBtn.addEventListener('click', () => {
+      contrastOn = !contrastOn;
+      contrastBtn.textContent = contrastOn ? 'Enabled' : 'Disabled';
+      contrastBtn.classList.toggle('active', contrastOn);
+    });
+  </script>
+ 
+</body>
+</html>
