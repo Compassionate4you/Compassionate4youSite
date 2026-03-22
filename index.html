@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compassionate Home Health &amp; Hospice</title>
+  <link rel="stylesheet" href="resetfooter.css" />
+  <link rel="stylesheet" href="map.css" />
+  <link rel="stylesheet" href="footer.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body style="background:#0f172a; min-height:100vh;">
+
+  <section class="map-section">
+    <div class="map-section__inner">
+      <h2 class="map-section__title">Our Location</h2>
+
+      <!-- DT-163: User can see their distance from one of the companies locations -->
+      <div class="distance-card" id="distance-card">
+        <svg class="distance-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <div>
+          <div class="distance-card__label">Your distance to our office</div>
+          <div class="distance-card__value" id="distance-value">Calculating…</div>
+          <!-- DT-160: User can view the location of the company -->
+          <div class="distance-card__address">1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596</div>
+        </div>
+      </div>
+
+      <div class="map-embed">
+        <iframe
+          title="Compassionate Home Health &amp; Hospice location"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3148.6!2d-122.0651!3d37.9101!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808561234567890%3A0xabcdef!2s1501+N+Broadway+Ste+350%2C+Walnut+Creek%2C+CA+94596!5e0!3m2!1sen!2sus!4v1700000000000"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          onerror="this.style.display='none'; document.getElementById('map-fallback').style.display='flex';"
+        ></iframe>
+        <div class="map-embed__fallback" id="map-fallback" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <p>1501 N Broadway, Ste 350A/B</p>
+          <small>Walnut Creek, CA 94596</small>
+        </div>
+      </div>
+
+      <a
+        class="map-section__directions"
+        href="https://www.google.com/maps/dir/?api=1&destination=1501+N+Broadway+Ste+350,+Walnut+Creek,+CA+94596"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+        </svg>
+        Get Directions
+      </a>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__grid">
+
+        <div>
+          <h3 class="footer__heading">Compassionate Home Health &amp; Hospice</h3>
+          <p class="footer__about-text">Providing compassionate care in the comfort of your home since 2010.</p>
+        </div>
+
+        <div>
+          <h4 class="footer__subheading">Quick Links</h4>
+          <ul class="footer__links">
+            <li><a href="/" class="footer__link">Home</a></li>
+            <li><a href="/home-health" class="footer__link">Home Health</a></li>
+            <li><a href="/hospice" class="footer__link">Hospice</a></li>
+            <li><a href="/schedule" class="footer__link">Schedule</a></li>
+          </ul>
+        </div>
+
+        <!-- DT-160: User can view the location of the company in the footer -->
+        <div>
+          <h4 class="footer__subheading">Contact Us</h4>
+          <ul class="footer__contact-list">
+            <li class="footer__contact-item">
+              <svg class="footer__contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span class="footer__contact-text">(925) 425-7104</span>
+            </li>
+            <li class="footer__contact-item">
+              <svg class="footer__contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span class="footer__contact-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4e2d21233e2f3d3d2721202f3a2b28213c2f22220e29232f2722602d2123">[email&#160;protected]</a></span>
+            </li>
+            <li class="footer__contact-item">
+              <svg class="footer__contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              <address class="footer__location-address" style="font-style:normal;">
+                1501 N Broadway, Ste 350A/B<br />
+                Walnut Creek, CA 94596
+              </address>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer__subheading">Office Hours</h4>
+          <ul class="footer__hours-list">
+            <li class="footer__hours-item">
+              <svg class="footer__hours-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span class="footer__hours-text">Monday – Friday<br />8:00 AM – 6:00 PM</span>
+            </li>
+            <li class="footer__hours-indent">
+              <span class="footer__hours-text">Saturday<br />9:00 AM – 2:00 PM</span>
+            </li>
+            <li class="footer__hours-indent">
+              <span class="footer__hours-text">Sunday<br />Closed</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <p>&copy; <span id="year"></span> Compassionate Home Health &amp; Hospice. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
