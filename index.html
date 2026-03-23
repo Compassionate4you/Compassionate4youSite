@@ -2,6 +2,178 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Customer Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ 
+  <!-- DT-59: User Dashboard / Welcome page -->
+  <div id="page-dashboard" 
+  class="page active">
+ 
+    <div class="navbar">
+      <div class="navbar-left">
+        <div class="avatar">CH</div>
+        <div>
+          <div class="navbar-title">Customer Portal</div>
+          <div class="navbar-subtitle">Welcome, John Doe</div>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <button onclick="goTo('dashboard')">Home</button>
+        
+        <!-- DT-64: Logout button takes user to Login page -->
+        <button onclick="goTo('login')">Logout</button>
+      </div>
+    </div>
+ 
+    <div class="content">
+ 
+      <div class="welcome-banner">
+        <h1>Welcome back, John Doe!</h1>
+        <p>Manage your appointments and health care information</p>
+      </div>
+ 
+      <div class="cards-row">
+ 
+        <!-- DT-61: Takes user to Schedule an Appointment page -->
+        <div class="card" onclick="goTo('schedule')">
+          <h3>Schedule Appointment</h3>
+          <p>Book a new home health or hospice appointment</p>
+        </div>
+ 
+        <!-- DT-60: Upcoming Visits counter -->
+        <div class="card">
+          <h3>Upcoming Visits</h3>
+          <div class="visit-number" id="visit-count">1</div>
+          <p>Confirmed appointments</p>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+ 
+ 
+  <!-- DT-61: Schedule an Appointment page -->
+  <div id="page-schedule" class="page">
+ 
+    <div class="navbar">
+      <div class="navbar-left">
+        <div class="avatar">CH</div>
+        <div>
+          <div class="navbar-title">Customer Portal</div>
+          <div class="navbar-subtitle">Welcome, John Doe</div>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <button onclick="goTo('dashboard')">Home</button>
+        <button onclick="goTo('login')">Logout</button>
+      </div>
+    </div>
+ 
+    <div class="content">
+ 
+      <button class="back-btn" onclick="goTo('dashboard')">&larr; Back to Dashboard</button>
+ 
+      <div class="section-box">
+        <h2>Schedule an Appointment</h2>
+        <p class="desc">Please provide your details and preferred appointment time.</p>
+ 
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" placeholder="John Doe" />
+        </div>
+ 
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="text" placeholder="(555) 123-4567" />
+        </div>
+ 
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+ 
+        <div class="field">
+          <label>Service Type</label>
+          <select>
+            <option>Select a service</option>
+            <option>Home Health</option>
+            <option>Hospice Care</option>
+            <option>General Consultation</option>
+          </select>
+        </div>
+ 
+        <div class="field">
+          <label>Preferred Date</label>
+          <input type="date" />
+        </div>
+ 
+        <div class="field">
+          <label>Additional Notes</label>
+          <textarea placeholder="Any symptoms, concerns, or requests..."></textarea>
+        </div>
+ 
+        <button class="btn-primary" onclick="submitAppointment()">Confirm Appointment</button>
+        <button class="btn-secondary" onclick="goTo('dashboard')">Cancel</button>
+ 
+        <div class="success-msg" id="success-msg">
+          Appointment request submitted! We will confirm your visit shortly.
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+ 
+  <!-- DT-64: Login / Sign in page -->
+  <div id="page-login" class="page">
+ 
+    <div class="navbar">
+      <div class="navbar-title">Customer Portal</div>
+    </div>
+ 
+    <div class="content">
+      <div class="section-box">
+        <h2>Sign In</h2>
+        <p class="desc">Enter your credentials to continue.</p>
+ 
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+ 
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" />
+        </div>
+ 
+        <button class="btn-primary" onclick="goTo('dashboard')">Sign In</button>
+      </div>
+    </div>
+  </div>
+ 
+ 
+  <script>
+    function goTo(pageId) {
+      var pages = document.querySelectorAll('.page');
+      for (var i = 0; i < pages.length; i++) {
+        pages[i].classList.remove('active');
+      }
+      document.getElementById('page-' + pageId).classList.add('active');
+ 
+      if (pageId !== 'schedule') {
+        document.getElementById('success-msg').style.display = 'none';
+      }
+    }
+ 
+    function submitAppointment() {
+      document.getElementById('success-msg').style.display = 'block';
+      var counter = document.getElementById('visit-count');
+      counter.textContent = parseInt(counter.textContent) + 1;
+    }
+  </script>
+</body>
+</html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compassionate Home Health &amp; Hospice</title>
   <link rel="stylesheet" href="resetfooter.css" />
