@@ -1,6 +1,6 @@
 import { useState } from 'react';
-//import ChatWindow from '../components/ChatWindow';
-import './ChatbotWidget.css';
+import ChatWindow from '../components/ChatWindow';
+import './styles/ChatbotWidget.css';
 
 export default function ChatbotWidget() {
     const [isOpen, setIsOpen] = useState(false);
@@ -8,20 +8,22 @@ export default function ChatbotWidget() {
     return (
         <div className="chatbot-widget">
             { /* This is the Floating Button */ }
-            <button
-                className="chatbot-toggle-btn"
-                onClick={() => setIsOpen(!isOpen)}
-                title="Open chat"
-            >
-                💬   
-            </button>            
+            {!isOpen && (
+                <button
+                    className="chatbot-toggle-btn"
+                    onClick={() => setIsOpen(!isOpen)}
+                    title="Open chat"
+                >
+                    💬
+                </button>
+            )}         
 
-            { /* This is the Expanded Chat Window, which only shows when isOpen is true */}
-            {/*isOpen && (
+            { /* This is the Expanded Chat Window, which only shows when isOpen is true */ }
+            {isOpen && (
                 <>
                     <ChatWindow onClose= {() => setIsOpen(false)} />
                 </>
-            )*/}
+            )}
         </div>
     );
 }
