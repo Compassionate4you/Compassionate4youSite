@@ -1,61 +1,61 @@
-import React from "react";
+import { useTranslation } from 'react-i18next';
 
 function HomeHealthPage() {
+    const { t } = useTranslation();
+
     return (
         <main>
 
             {/* HERO SECTION */}
             <section>
-                <h1>Home Health</h1>
-                <p>
-                    Professional healthcare services delivered in the comfort and safety of your home, promoting independence and quality of life.
-                </p>
+                <h1>{t('homeHealth.title')}</h1>
+                <p>{t('homeHealth.subtitle')}</p>
             </section>
 
             {/* SERVICES SECTION */}
             <section>
-                <h2>Our Home Health Services</h2>
+                <h2>{t('homeHealth.servicesHeading')}</h2>
 
                 <div className="services-container">
 
                     <div className="service-card">
-                        <h3>Medical Doctors</h3>
-                        <p>Our MDs develop and review care plans, manage symptoms, and act as a medical resource.</p>
+                        <h3>{t('homeHealth.services.doctors')}</h3>
+                        <p>{t('homeHealth.services.doctorsDesc')}</p>
                     </div>
 
                     <div className="service-card">
-                        <h3>Physical Therapists (PT & PTA)</h3>
-                        <p>Help patients maintain mobility, manage pain, and improve quality of life.</p>
+                        <h3>{t('homeHealth.services.pt')}</h3>
+                        <p>{t('homeHealth.services.ptDesc')}</p>
                     </div>
 
                     <div className="service-card">
-                        <h3>Occupational Therapists (OT)</h3>
-                        <p>Assist patients in maintaining independence in daily activities.</p>
+                        <h3>{t('homeHealth.services.ot')}</h3>
+                        <p>{t('homeHealth.services.otDesc')}</p>
                     </div>
 
                     <div className="service-card">
-                        <h3>Skilled Nurses (RN, LVN)</h3>
-                        <p>Collaborate with physicians and provide medical care at home.</p>
+                        <h3>{t('homeHealth.services.nurses')}</h3>
+                        <p>{t('homeHealth.services.nursesDesc')}</p>
                     </div>
 
                     <div className="service-card">
-                        <h3>Speech Therapists (ST)</h3>
-                        <p>Help patients improve communication, swallowing, and cognitive function.</p>
+                        <h3>{t('homeHealth.services.st')}</h3>
+                        <p>{t('homeHealth.services.stDesc')}</p>
                     </div>
 
                     <div className="service-card">
-                        <h3>Certified Home Health Aide (CHHA)</h3>
-                        <p>Assist with daily activities like bathing, dressing, and meal prep.</p>
+                        <h3>{t('homeHealth.services.chha')}</h3>
+                        <p>{t('homeHealth.services.chhaDesc')}</p>
                     </div>
 
                     <div className="service-card">
-                        <h3>Medical Social Workers (MSW)</h3>
-                        <p>Provide emotional support and connect patients with community resources.</p>
+                        <h3>{t('homeHealth.services.msw')}</h3>
+                        <p>{t('homeHealth.services.mswDesc')}</p>
                     </div>
 
                     <div className="service-card">
-                        <h3>Multi-Lingual</h3>
-                        <p>Services available in multiple languages to support diverse patient needs.</p>
+                        <h3>{t('homeHealth.services.multilingual')}</h3>
+                        <p>{t('homeHealth.services.multilingualDesc')}</p>
                     </div>
 
                 </div>
