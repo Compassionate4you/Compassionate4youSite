@@ -1,0 +1,153 @@
+{
+    "nav": {
+        "home": "Home",
+        "homeHealth": "Home Health",
+        "hospice": "Hospice",
+        "locations": "Locations",
+        "schedule": "Schedule",
+        "login": "Login",
+        "portal": "Portal",
+        "admin": "Admin",
+        "logout": "Logout"
+    },
+    "landing": {
+        "title": "Compassionate Home Health & Hospice",
+        "subtitle": "Temporary landing page for navigation testing."
+    },
+    "homeHealth": {
+        "title": "Home Health",
+        "subtitle": "Professional healthcare services delivered in the comfort and safety of your home, promoting independence and quality of life.",
+        "servicesHeading": "Our Home Health Services",
+        "services": {
+            "doctors": "Medical Doctors",
+            "doctorsDesc": "Our MDs develop and review care plans, manage symptoms, and act as a medical resource.",
+            "pt": "Physical Therapists (PT & PTA)",
+            "ptDesc": "Help patients maintain mobility, manage pain, and improve quality of life.",
+            "ot": "Occupational Therapists (OT)",
+            "otDesc": "Assist patients in maintaining independence in daily activities.",
+            "nurses": "Skilled Nurses (RN, LVN)",
+            "nursesDesc": "Collaborate with physicians and provide medical care at home.",
+            "st": "Speech Therapists (ST)",
+            "stDesc": "Help patients improve communication, swallowing, and cognitive function.",
+            "chha": "Certified Home Health Aide (CHHA)",
+            "chhaDesc": "Assist with daily activities like bathing, dressing, and meal prep.",
+            "msw": "Medical Social Workers (MSW)",
+            "mswDesc": "Provide emotional support and connect patients with community resources.",
+            "multilingual": "Multi-Lingual",
+            "multilingualDesc": "Services available in multiple languages to support diverse patient needs."
+        }
+    },
+    "locations": {
+        "title": "Our Location",
+        "distanceLabel": "Your distance to our office",
+        "calculating": "Calculating…",
+        "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+        "address2": "1501 N Broadway, Ste 350A/B",
+        "address3": "Walnut Creek, CA 94596",
+        "mapTitle": "Compassionate Home Health & Hospice location",
+        "getDirections": "Get Directions"
+    },
+    "portal": {
+        "title": "Customer Portal",
+        "welcome": "Welcome, John Doe",
+        "welcomeBanner": "Welcome back, John Doe!",
+        "welcomeSubtitle": "Manage your appointments and health care information",
+        "scheduleCard": "Schedule Appointment",
+        "scheduleCardDesc": "Book a new home health or hospice appointment",
+        "upcomingVisits": "Upcoming Visits",
+        "confirmedAppointments": "Confirmed appointments"
+    },
+    "schedule": {
+        "backToDashboard": "← Back to Dashboard",
+        "title": "Schedule an Appointment",
+        "subtitle": "Please provide your details and preferred appointment time.",
+        "fullName": "Full Name",
+        "fullNamePlaceholder": "John Doe",
+        "phone": "Phone Number",
+        "phonePlaceholder": "(555) 123-4567",
+        "email": "Email Address",
+        "emailPlaceholder": "you@example.com",
+        "serviceType": "Service Type",
+        "selectService": "Select a service",
+        "homeHealth": "Home Health",
+        "hospiceCare": "Hospice Care",
+        "generalConsultation": "General Consultation",
+        "preferredDate": "Preferred Date",
+        "notes": "Additional Notes",
+        "notesPlaceholder": "Any symptoms, concerns, or requests...",
+        "confirm": "Confirm Appointment",
+        "cancel": "Cancel",
+        "successMsg": "Appointment request submitted! We will confirm your visit shortly."
+    },
+    "login": {
+        "title": "Sign In",
+        "subtitle": "Enter your credentials to continue.",
+        "email": "Email Address",
+        "emailPlaceholder": "you@example.com",
+        "password": "Password",
+        "passwordPlaceholder": "••••••••",
+        "signIn": "Sign In"
+    },
+    "admin": {
+        "title": "Admin Dashboard",
+        "welcome": "Welcome, Admin User",
+        "tabs": {
+            "appointments": "Appointments",
+            "content": "Content",
+            "locations": "Locations",
+            "accounts": "Accounts"
+        },
+        "table": {
+            "patient": "Patient",
+            "service": "Service",
+            "date": "Date",
+            "status": "Status"
+        },
+        "comingSoon": {
+            "content": "Content Page (coming soon)",
+            "locations": "Locations Page (coming soon)",
+            "accounts": "Accounts Page (coming soon)"
+        }
+    },
+    "footer": {
+        "tagline": "Providing compassionate care in the comfort of your home since 2010.",
+        "quickLinks": "Quick Links",
+        "contactUs": "Contact Us",
+        "phone": "(925) 425-7104",
+        "email": "info@compassionate4you.com",
+        "address1": "1501 N Broadway, Ste 350A/B",
+        "address2": "Walnut Creek, CA 94596",
+        "officeHours": "Office Hours",
+        "weekdays": "Monday – Friday",
+        "weekdayHours": "8:00 AM – 6:00 PM",
+        "saturday": "Saturday",
+        "saturdayHours": "9:00 AM – 2:00 PM",
+        "sunday": "Sunday",
+        "sundayClosed": "Closed",
+        "copyright": "Compassionate Home Health & Hospice. All rights reserved."
+    },
+    "accessibility": {
+        "openPanel": "Open accessibility settings",
+        "closePanel": "Close accessibility panel",
+        "title": "Accessibility",
+        "tools": "Accessibility Tools",
+        "textSize": "Text Size",
+        "default": "Default",
+        "large": "Large",
+        "extraLarge": "Extra Large",
+        "theme": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "highContrast": "High Contrast",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "language": "Language",
+        "selectLanguage": "Select language",
+        "screenReaderNotice": "This site is optimized for screen readers. Press Tab to navigate through interactive elements.",
+        "aiAssistant": "AI Help Assistant"
+    },
+    "chatbot": {
+        "title": "Compassionate4you Chat",
+        "placeholder": "Type your question here..."
+    }
+}
