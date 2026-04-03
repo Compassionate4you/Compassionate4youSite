@@ -1,24 +1,47 @@
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import Navbar from "../components/layout/Navbar";
+import "./landing.css";
 
 function LandingPage() {
-    const navigate = useNavigate();
-    const { t } = useTranslation();
+  return (
+    <div>
+      <Navbar />
 
-    return (
-        <div style={{ minHeight: '80vh', padding: '40px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <h1>{t('landing.title')}</h1>
-            <p>{t('landing.subtitle')}</p>
-
-            <button onClick={() => navigate('/home-health')}>{t('nav.homeHealth')}</button>
-            <button onClick={() => navigate('/hospice')}>{t('nav.hospice')}</button>
-            <button onClick={() => navigate('/locations')}>{t('nav.locations')}</button>
-            <button onClick={() => navigate('/schedule')}>{t('nav.schedule')}</button>
-            <button onClick={() => navigate('/login')}>{t('nav.login')}</button>
-            <button onClick={() => navigate('/portal')}>{t('nav.portal')}</button>
-            <button onClick={() => navigate('/admin')}>{t('nav.admin')}</button>
+      {/* HERO SECTION */}
+      <section className="hero">
+        <div className="hero-left">
+          <h1>Compassionate Care for Your Loved Ones</h1>
+          <p>
+            Professional home health and hospice services dedicated to providing
+            quality care with dignity and respect.
+          </p>
         </div>
-    );
+
+        <div className="hero-right">
+          <img
+            src="https://via.placeholder.com/500"
+            alt="care"
+          />
+        </div>
+      </section>
+
+      {/* PHILOSOPHY SECTION */}
+      <section className="philosophy">
+        <h2>Our Philosophy</h2>
+        <p>
+          We believe in treating our patients with dignity, respect, and empathy.
+          We strive to make their end-of-life journey as comfortable and meaningful
+          as possible.
+        </p>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <p>Caring Since 2021</p>
+        <p>About</p>
+        <p>Contact</p>
+      </footer>
+    </div>
+  );
 }
 
 export default LandingPage;
