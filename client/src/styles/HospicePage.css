@@ -1,0 +1,104 @@
+.hospice-page {
+    min-height: 100vh;
+    background-color: #f7f7f2;
+    color: #1f1f1f;
+    font-family: Arial, sans-serif;
+  }
+  
+  .hospice-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    padding: 70px 60px;
+    background-color: #4f7d6a;
+    color: white;
+    flex-wrap: wrap;
+  }
+  
+  .hospice-hero-left {
+    flex: 1;
+    min-width: 280px;
+  }
+  
+  .hospice-hero-left h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .hospice-hero-left p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    max-width: 600px;
+  }
+  
+  .hospice-hero-right {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .hospice-hero-right img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  
+  .hospice-services {
+    padding: 60px;
+    background-color: #ffffff;
+  }
+  
+  .hospice-services h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #2f5d50;
+  }
+  
+  .hospice-services ul {
+    padding-left: 20px;
+    margin: 0;
+  }
+  
+  .hospice-services li {
+    margin-bottom: 14px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  
+  .hospice-philosophy {
+    padding: 60px;
+    background-color: #edf3ef;
+  }
+  
+  .hospice-philosophy h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #2f5d50;
+  }
+  
+  .hospice-philosophy p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 800px;
+  }
+  
+  @media (max-width: 768px) {
+    .hospice-hero {
+      flex-direction: column;
+      text-align: center;
+      padding: 50px 25px;
+    }
+  
+    .hospice-services,
+    .hospice-philosophy {
+      padding: 40px 25px;
+    }
+  
+    .hospice-hero-left h1 {
+      font-size: 2.2rem;
+    }
+  }
