@@ -1,0 +1,33 @@
+:root {
+    --chatbot-btn-size: 60px;
+    --chatbot-btn-font-size: 24px;
+    --chatbot-btn-color: #27ae60;
+    --chatbot-btn-hover-color: #229954;
+    --chatbot-btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.chatbot-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+.chatbot-toggle-btn {
+    width: var(--chatbot-btn-size);
+    height: var(--chatbot-btn-size);
+    border-radius: 50%;
+    background: var(--chatbot-btn-color);
+    border: none;
+    color: white;
+    font-size: var(--chatbot-btn-font-size);
+    cursor: pointer;
+    box-shadow: var(--chatbot-btn-shadow);
+    transition: all 0.3s ease;
+}
+
+.chatbot-toggle-btn:hover {
+    background: var(--chatbot-btn-hover-color);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
