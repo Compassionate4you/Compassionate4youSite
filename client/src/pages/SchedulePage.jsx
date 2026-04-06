@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './styles/portal.css';
 
 function SchedulePage() {
+    const { t } = useTranslation();
     const [showSuccess, setShowSuccess] = useState(false);
 
     return (
@@ -11,59 +13,59 @@ function SchedulePage() {
                 <div className="navbar-left">
                     <div className="avatar">CH</div>
                     <div>
-                        <div className="navbar-title">Customer Portal</div>
-                        <div className="navbar-subtitle">Welcome, John Doe</div>
+                        <div className="navbar-title">{t('portal.title')}</div>
+                        <div className="navbar-subtitle">{t('portal.welcome')}</div>
                     </div>
                 </div>
                 <div className="navbar-right">
-                    <button>Home</button>
-                    <button>Logout</button>
+                    <button>{t('nav.home')}</button>
+                    <button>{t('nav.logout')}</button>
                 </div>
             </div>
 
             <div className="content">
-                <button className="back-btn">← Back to Dashboard</button>
+                <button className="back-btn">{t('schedule.backToDashboard')}</button>
 
                 <div className="section-box">
-                    <h2>Schedule an Appointment</h2>
-                    <p className="desc">Please provide your details and preferred appointment time.</p>
+                    <h2>{t('schedule.title')}</h2>
+                    <p className="desc">{t('schedule.subtitle')}</p>
 
                     <div className="field">
-                        <label>Full Name</label>
-                        <input type="text" placeholder="John Doe" />
+                        <label>{t('schedule.fullName')}</label>
+                        <input type="text" placeholder={t('schedule.fullNamePlaceholder')} />
                     </div>
                     <div className="field">
-                        <label>Phone Number</label>
-                        <input type="text" placeholder="(555) 123-4567" />
+                        <label>{t('schedule.phone')}</label>
+                        <input type="text" placeholder={t('schedule.phonePlaceholder')} />
                     </div>
                     <div className="field">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="you@example.com" />
+                        <label>{t('schedule.email')}</label>
+                        <input type="email" placeholder={t('schedule.emailPlaceholder')} />
                     </div>
                     <div className="field">
-                        <label>Service Type</label>
+                        <label>{t('schedule.serviceType')}</label>
                         <select>
-                            <option>Select a service</option>
-                            <option>Home Health</option>
-                            <option>Hospice Care</option>
-                            <option>General Consultation</option>
+                            <option>{t('schedule.selectService')}</option>
+                            <option>{t('schedule.homeHealth')}</option>
+                            <option>{t('schedule.hospiceCare')}</option>
+                            <option>{t('schedule.generalConsultation')}</option>
                         </select>
                     </div>
                     <div className="field">
-                        <label>Preferred Date</label>
+                        <label>{t('schedule.preferredDate')}</label>
                         <input type="date" />
                     </div>
                     <div className="field">
-                        <label>Additional Notes</label>
-                        <textarea placeholder="Any symptoms, concerns, or requests..."></textarea>
+                        <label>{t('schedule.notes')}</label>
+                        <textarea placeholder={t('schedule.notesPlaceholder')}></textarea>
                     </div>
 
-                    <button className="btn-primary" onClick={() => setShowSuccess(true)}>Confirm Appointment</button>
-                    <button className="btn-secondary">Cancel</button>
+                    <button className="btn-primary" onClick={() => setShowSuccess(true)}>{t('schedule.confirm')}</button>
+                    <button className="btn-secondary">{t('schedule.cancel')}</button>
 
                     {showSuccess && (
                         <div className="success-msg">
-                            Appointment request submitted! We will confirm your visit shortly.
+                            {t('schedule.successMsg')}
                         </div>
                     )}
                 </div>
