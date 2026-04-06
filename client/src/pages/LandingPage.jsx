@@ -1,11 +1,8 @@
-import Navbar from "../components/layout/Navbar";
 import "../styles/LandingPage.css";
 
 function LandingPage() {
   return (
     <div>
-      <Navbar />
-
       {/* HERO SECTION */}
       <section className="hero">
         <div className="hero-left">
