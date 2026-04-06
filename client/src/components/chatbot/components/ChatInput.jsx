@@ -1,11 +1,14 @@
+import { useTranslation } from 'react-i18next';
 import './styles/ChatInput.css';
 
 function ChatInput() {
+    const { t } = useTranslation();
+
     return (
         <div className="chat-input">
             <input
                 type="text"
-                placeholder="Type your question here..."
+                placeholder={t('chatbot.placeholder')}
             />
         </div>
     );
