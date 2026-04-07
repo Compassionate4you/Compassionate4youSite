@@ -1,18 +1,55 @@
 import React, { useState } from "react";
-// Remember to "Import CSS here."
+//import css - Chnage name later
+//import "./CSS-Compassionate-Appointments.css"; 
 
 const AdminDashboard = () => {
   const [tab, setTab] = useState("appointments");
+//placeholder, not funtion, after schedule
+  const [appointments, setAppointments] = useState([
+    {
+      id: 1,
+      name: "John Doe",
+      service: "Home Health",
+      date: "March 5, 2026",
+      time: "10:00 AM",
+      provider: "Nurse Johnson",
+      status: "Confirmed",
+    },
+    {
+      id: 2,
+      name: "Mary Smith",
+      service: "Hospice",
+      date: "March 5, 2026",
+      time: "2:00 PM",
+      provider: "TBD",
+      status: "Pending",
+    },
+    {
+      id: 3,
+      name: "Robert Williams",
+      service: "Home Health",
+      date: "March 6, 2026",
+      time: "9:00 AM",
+      provider: "Therapist Davis",
+      status: "Confirmed",
+    },
+  ]);
 
-  const appointments = [
-    { name: "John Doe", service: "Home Health", date: "March 5", status: "Confirmed" },
-    { name: "Mary Smith", service: "Hospice", date: "March 5", status: "Pending" },
-    { name: "Robert Williams", service: "Home Health", date: "March 6", status: "Confirmed" },
-  ];
+  const confirmAppointment = (id) => {
+    setAppointments((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, status: "Confirmed" } : a))
+    );
+  };
+
+  const rejectAppointment = (id) => {
+    setAppointments((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, status: "Rejected" } : a))
+    );
+  };
 
   return (
-    <div>
-      {/* Top bar */}
+    <div className="admin-dashboard">
+      {/* Header */}
       <header className="topbar">
         <div className="logo">CH</div>
         <div className="header-text">
@@ -25,7 +62,7 @@ const AdminDashboard = () => {
         </div>
       </header>
 
-      {/* Tabs Navigation */}
+      {/* Tabs */}
       <nav className="tabs">
         <button
           className={tab === "appointments" ? "active" : ""}
@@ -53,44 +90,121 @@ const AdminDashboard = () => {
         </button>
       </nav>
 
-      {/* Content */}
       <main className="content">
         {/* Appointments Tab */}
         {tab === "appointments" && (
-          <div>
-            <h2>Appointments</h2>
+          <>
+            {/* Appointment Management */}
+            <section className="appointments">
+              <div className="appointments-header">
+                <div>
+                  <h2>Appointment Management</h2>
+                  <p>View and manage all patient appointments</p>
+                </div>
+                <div className="controls">
+                  <input type="text" placeholder="Search patients..." />
+                  <select>
+                    <option>All Services</option>
+                    <option>Home Health</option>
+                    <option>Hospice</option>
+                  </select>
+                </div>
+              </div>
 
-            <table border="1" cellPadding="10">
-              <thead>
-                <tr>
-                  <th>Patient</th>
-                  <th>Service</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {appointments.map((a, i) => (
-                  <tr key={i}>
-                    <td>{a.name}</td>
-                    <td>{a.service}</td>
-                    <td>{a.date}</td>
-                    <td>{a.status}</td>
+              <table className="appointments-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Provider</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {appointments.map((a) => (
+                    <tr key={a.id}>
+                      <td>{a.name}</td>
+                      <td>{a.service}</td>
+                      <td>{a.date}</td>
+                      <td>{a.time}</td>
+                      <td>{a.provider}</td>
+                      <td>
+                        <span
+                          className={`status ${
+                            a.status.toLowerCase() === "confirmed"
+                              ? "confirmed"
+                              : a.status.toLowerCase() === "pending"
+                              ? "pending"
+                              : "rejected"
+                          }`}
+                        >
+                          {a.status}
+                        </span>
+                      </td>
+                      <td>
+                        <button className="reschedule">Reschedule</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+
+            {/* Appointment Reminder */}
+            <section className="appointments" style={{ marginTop: "20px" }}>
+              <h2>Appointment Reminder</h2>
+              <p>Upcoming appointments requiring confirmation</p>
+
+              <table className="appointments-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {appointments
+                    .filter((a) => a.status === "Pending")
+                    .map((a) => (
+                      <tr key={a.id}>
+                        <td>{a.name}</td>
+                        <td>{a.service}</td>
+                        <td>{a.date}</td>
+                        <td>
+                          <span className="status pending">{a.status}</span>
+                        </td>
+                        <td>
+                          <button
+                            className="confirm"
+                            onClick={() => confirmAppointment(a.id)}
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            className="reject"
+                            onClick={() => rejectAppointment(a.id)}
+                          >
+                            Reject
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </section>
+          </>
         )}
 
-        {/* Content Tab */}
-        {tab === "content" && <h2>Content Page (coming soon)</h2>}
-
-        {/* Locations Tab */}
-        {tab === "locations" && <h2>Locations Page (coming soon)</h2>}
-
-        {/* Accounts Tab */}
-        {tab === "accounts" && <h2>Accounts Page (coming soon)</h2>}
+        {/* Other Tabs */}
+        {tab === "content" && <h2>Content Page</h2>}
+        {tab === "locations" && <h2>Locations Page</h2>}
+        {tab === "accounts" && <h2>Accounts Page</h2>}
       </main>
     </div>
   );
