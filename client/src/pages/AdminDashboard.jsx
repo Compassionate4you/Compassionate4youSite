@@ -11,9 +11,14 @@ const AdminDashboard = () => {
         { name: "Robert Williams", service: "Home Health", date: "March 6", status: "Confirmed" },
     ];
 
+    const accounts = [
+        {id: 1, name: "John Doe" },
+        {id: 2, name: "Mary Smith", },
+        {id: 3, name: "Robert Williams" },
+    ];
+
     return (
         <div>
-            {/* Top bar */}
             <header className="topbar">
                 <div className="logo">CH</div>
                 <div className="header-text">
@@ -26,7 +31,6 @@ const AdminDashboard = () => {
                 </div>
             </header>
 
-            {/* Tabs Navigation */}
             <nav className="tabs">
                 <button className={tab === "appointments" ? "active" : ""} onClick={() => setTab("appointments")}>
                     {t('admin.tabs.appointments')}
@@ -42,9 +46,7 @@ const AdminDashboard = () => {
                 </button>
             </nav>
 
-            {/* Content */}
             <main className="content">
-                {/* Appointments Tab */}
                 {tab === "appointments" && (
                     <div>
                         <h2>{t('admin.tabs.appointments')}</h2>
@@ -70,10 +72,30 @@ const AdminDashboard = () => {
                         </table>
                     </div>
                 )}
+                
+                {tab === "accounts" && (
+                    <div>
+                        <h2>Accounts</h2>
+
+                    <table border="1" cellPadding="10">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {accounts.map((account) => (
+                               <tr key={account.id}>
+                                 <td>{account.name}</td>
+                             </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                </div>
+                )}
 
                 {tab === "content" && <h2>{t('admin.comingSoon.content')}</h2>}
                 {tab === "locations" && <h2>{t('admin.comingSoon.locations')}</h2>}
-                {tab === "accounts" && <h2>{t('admin.comingSoon.accounts')}</h2>}
             </main>
         </div>
     );
