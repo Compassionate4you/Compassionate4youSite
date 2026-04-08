@@ -12,9 +12,56 @@ const AdminDashboard = () => {
     ];
 
     const accounts = [
-        {id: 1, name: "John Doe" },
-        {id: 2, name: "Mary Smith", },
-        {id: 3, name: "Robert Williams" },
+        {
+            id: 1,
+            name: "\tJohn Doe",
+            birthdate: "\tApr 12, 88\t",
+            email: "\tjohn.doe@example.com\t",
+            role: "\tCustomer\t",
+            created: "\tJan 15, 26\t",
+            status: "\tActive\t",
+            lastLogin: "\tMar 08, 26\t",
+        },
+        {
+            id: 2,
+            name: "\tMary Smith\t",
+            birthdate: "\tOct 03, 75\t",
+            email: "\tmary.smith@example.com\t",
+            role: "\tCustomer\t",
+            created: "\tFeb 10, 26\t",
+            status: "\tActive\t",
+            lastLogin: "\tMar 07, 26\t",
+        },
+        {
+            id: 3,
+            name: "\tRobert Williams\t",
+            birthdate: "\tNov 21, 69\t",
+            email: "\trobert.will@example.com\t",
+            role: "\tCustomer\t",
+            created: "\tMay 22, 25\t",
+            status: "\tInactive\t",
+            lastLogin: "\tOct 28, 25\t",
+        },
+        {
+            id: 4,
+            name: "\tJames Cameron\t",
+            birthdate: "\tAug 18, 80\t",
+            email: "\tjames.cam@admin.com\t",
+            role: "\tAdmin\t",
+            created: "\tSep 01, 25\t",
+            status: "\tActive\t",
+            lastLogin: "\tApril 08, 26\t",
+        },
+        {
+            id: 5,
+            name: "\tMichael Brown\t",
+            birthdate: "\tSep 16, 75\t",
+            email: "\tmichael.brown@admin.com\t",
+            role: "\tAdmin\t",
+            created: "\tJan 26, 26\t",
+            status: "\tActive\t",
+            lastLogin: "\tApril 01, 26\t",
+        },
     ];
 
     return (
@@ -77,21 +124,33 @@ const AdminDashboard = () => {
                     <div>
                         <h2>Accounts</h2>
 
-                    <table border="1" cellPadding="10">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {accounts.map((account) => (
-                               <tr key={account.id}>
-                                 <td>{account.name}</td>
-                             </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                </div>
+                        <table border="1" cellPadding="10">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Birthdate</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Created</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {accounts.map((account) => (
+                                    <tr key={account.id}>
+                                        <td>{account.name}</td>
+                                        <td>{account.birthdate}</td>
+                                        <td>{account.email}</td>
+                                        <td>{account.role}</td>
+                                        <td>{account.created}</td>
+                                        <td>{account.status}</td>
+                                        <td>{account.lastLogin}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
 
                 {tab === "content" && <h2>{t('admin.comingSoon.content')}</h2>}
