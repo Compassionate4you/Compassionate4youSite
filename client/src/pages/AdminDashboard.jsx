@@ -14,53 +14,53 @@ const AdminDashboard = () => {
     const accounts = [
         {
             id: 1,
-            name: "\tJohn Doe",
-            birthdate: "\tApr 12, 88\t",
-            email: "\tjohn.doe@example.com\t",
-            role: "\tCustomer\t",
-            created: "\tJan 15, 26\t",
-            status: "\tActive\t",
-            lastLogin: "\tMar 08, 26\t",
+            name: "John Doe",
+            birthdate: "Apr 12, 88",
+            email: "john.doe@example.com",
+            role: "Customer",
+            created: "Jan 15, 26",
+            status: "Active",
+            lastLogin: "Mar 08, 26",
         },
         {
             id: 2,
-            name: "\tMary Smith\t",
-            birthdate: "\tOct 03, 75\t",
-            email: "\tmary.smith@example.com\t",
-            role: "\tCustomer\t",
-            created: "\tFeb 10, 26\t",
-            status: "\tActive\t",
-            lastLogin: "\tMar 07, 26\t",
+            name: "Mary Smith",
+            birthdate: "Oct 03, 75",
+            email: "mary.smith@example.com",
+            role: "Customer",
+            created: "Feb 10, 26",
+            status: "Active",
+            lastLogin: "Mar 07, 26",
         },
         {
             id: 3,
-            name: "\tRobert Williams\t",
-            birthdate: "\tNov 21, 69\t",
-            email: "\trobert.will@example.com\t",
-            role: "\tCustomer\t",
-            created: "\tMay 22, 25\t",
-            status: "\tInactive\t",
-            lastLogin: "\tOct 28, 25\t",
+            name: "Robert Williams",
+            birthdate: "Nov 21, 69",
+            email: "robert.will@example.com",
+            role: "Customer",
+            created: "May 22, 25",
+            status: "Inactive",
+            lastLogin: "Oct 28, 25",
         },
         {
             id: 4,
-            name: "\tJames Cameron\t",
-            birthdate: "\tAug 18, 80\t",
-            email: "\tjames.cam@admin.com\t",
-            role: "\tAdmin\t",
-            created: "\tSep 01, 25\t",
-            status: "\tActive\t",
-            lastLogin: "\tApril 08, 26\t",
+            name: "James Cameron",
+            birthdate: "Aug 18, 80",
+            email: "james.cam@admin.com",
+            role: "Admin",
+            created: "Sep 01, 25",
+            status: "Active",
+            lastLogin: "April 08, 26",
         },
         {
             id: 5,
-            name: "\tMichael Brown\t",
-            birthdate: "\tSep 16, 75\t",
-            email: "\tmichael.brown@admin.com\t",
-            role: "\tAdmin\t",
-            created: "\tJan 26, 26\t",
-            status: "\tActive\t",
-            lastLogin: "\tApril 01, 26\t",
+            name: "Michael Brown",
+            birthdate: "Sep 16, 75",
+            email: "michael.brown@admin.com",
+            role: "Admin",
+            created: "Jan 26, 26",
+            status: "Active",
+            lastLogin: "April 01, 26",
         },
     ];
 
@@ -122,7 +122,32 @@ const AdminDashboard = () => {
                 
                 {tab === "accounts" && (
                     <div>
-                        <h2>Accounts</h2>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: "20px",
+                            }}
+                        >
+                            <div>
+                                <h2>Account Management</h2>
+                                    <p>Manage user accounts</p>
+                            </div>
+
+                            <button
+                                style={{
+                                    backgroundColor: "#020617",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "10px",
+                                    padding: "10px 16px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Add Account
+                            </button>
+                        </div>
 
                         <table border="1" cellPadding="10">
                             <thead>
@@ -134,6 +159,7 @@ const AdminDashboard = () => {
                                     <th>Created</th>
                                     <th>Status</th>
                                     <th>Last Login</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,6 +172,14 @@ const AdminDashboard = () => {
                                         <td>{account.created}</td>
                                         <td>{account.status}</td>
                                         <td>{account.lastLogin}</td>
+                                        <td>
+                                            <button style={{ marginRight: "8px", cursor: "pointer" }}>
+                                                Edit
+                                            </button>
+                                            <button style={{ cursor: "pointer", color: "red" }}>
+                                                Delete
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
