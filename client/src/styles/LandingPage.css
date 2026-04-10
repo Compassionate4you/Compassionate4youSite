@@ -33,6 +33,7 @@ body {
   
   .hero-left h1 {
     font-size: 48px;
+    color: var(--color-black);
   }
   
   .hero-right {

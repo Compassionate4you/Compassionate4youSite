@@ -1,4 +1,5 @@
 import "../styles/LandingPage.css";
+import CareImage1 from "../assets/images/CareImage1.jpeg";
 
 function LandingPage() {
   return (
@@ -14,10 +15,7 @@ function LandingPage() {
         </div>
 
         <div className="hero-right">
-          <img
-            src="https://via.placeholder.com/500"
-            alt="care"
-          />
+          <img src={CareImage1} alt="CareImage1" className="hero-img"/>
         </div>
       </section>
 
