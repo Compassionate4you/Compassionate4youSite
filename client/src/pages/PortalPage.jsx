@@ -17,8 +17,13 @@ function PortalPage() {
  
   // DT-62: Cancel an appointment row
   function cancelAppointment(index) {
+    const appt = appointments[index];
     const updated = appointments.filter((_, i) => i !== index);
     setAppointments(updated);
+
+    if (appt.status === 'Confirmed'){
+        setVisitCount(visitCount - 1);
+    }
   }
 
     return (
@@ -33,9 +38,9 @@ function PortalPage() {
                     </div>
                 </div>
                 <div className="navbar-right">
-                    <button>{t('nav.home')}</button>
+                    <button onClick={() => navigate('/portal')}>{t('nav.home')}</button>
                     {/* DT-64: Logout button takes user to Login page */}
-                    <button>{t('nav.logout')}</button>
+                    <button onClick={() => navigate('/login')}>{t('nav.logout')}</button>
                 </div>
             </div>
 
