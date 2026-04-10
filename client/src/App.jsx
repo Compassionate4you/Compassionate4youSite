@@ -4,6 +4,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import ChatbotWidget from "./components/chatbot/app_imports/ChatbotWidget";
 import AccessibilityPanel from "./components/accessibility/AccessibilityPanel";
+import "./styles/global.css";
 
 function App() {
     return (
