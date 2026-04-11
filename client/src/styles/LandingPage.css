@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
   }
   
-  /* NAVBAR */
+  /* NavBar */
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -18,7 +18,7 @@ body {
     list-style: none;
   }
   
-  /* HERO */
+  /* Hero */
   .hero {
     display: flex;
     height: 80vh;
@@ -46,16 +46,134 @@ body {
     object-fit: cover;
   }
   
-  /* PHILOSOPHY */
+  /* Philosophy */
   .philosophy {
     padding: 60px;
     text-align: center;
   }
   
-  /* FOOTER */
+  /* Care */
   .footer {
     background: #f5f5f5;
     padding: 20px;
     display: flex;
     justify-content: space-around;
+  }
+
+  /* About */
+
+  /* Contact */
+  .contact-section {
+    background-color: var(--color-blue-gray);
+    padding: 80px 40px;
+  }
+  
+  .contact-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 50px;
+  }
+  
+  .contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  
+  .contact-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  
+  .contact-item h3 {
+    margin: 0 0 8px 0;
+    font-size: 2rem;
+  }
+  
+  .contact-item p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  
+  .contact-form-card {
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-form label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 14px;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .contact-form textarea {
+    resize: vertical;
+  }
+  
+  .contact-btn {
+    margin-top: 22px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--color-purple);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .contact-btn:hover {
+    opacity: 0.92;
+  }
+  
+  @media (max-width: 900px) {
+    .contact-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  
+    .contact-title {
+      font-size: 2.25rem;
+    }
   }
