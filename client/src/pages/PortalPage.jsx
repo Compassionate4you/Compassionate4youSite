@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import './styles/portal.css';
+import '../styles/portal.css';
 
 function PortalPage() {
     const { t } = useTranslation();
