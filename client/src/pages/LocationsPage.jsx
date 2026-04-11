@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import './styles/map.css';
+import '../styles/map.css';
 
 function LocationsPage() {
     const { t } = useTranslation();
