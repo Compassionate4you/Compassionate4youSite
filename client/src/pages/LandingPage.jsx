@@ -1,39 +1,39 @@
 import "../styles/LandingPage.css";
 import CareImage1 from "../assets/images/CareImage1.jpeg";
+import { useTranslation } from "react-i18next";
 
 function LandingPage() {
+  const { t } = useTranslation();
+
   return (
     <div>
       {/* HERO SECTION */}
       <section className="hero">
         <div className="hero-left">
-          <h1>Compassionate Care for Your Loved Ones</h1>
-          <p>
-            Professional home health and hospice services dedicated to providing
-            quality care with dignity and respect.
-          </p>
+          <h1>{t("landing.heroTitle")}</h1>
+          <p>{t("landing.heroSubtitle")}</p>
         </div>
 
         <div className="hero-right">
-          <img src={CareImage1} alt="CareImage1" className="hero-img"/>
+          <img
+            src={CareImage1}
+            alt={t("landing.heroImageAlt")}
+            className="hero-img"
+          />
         </div>
       </section>
 
       {/* PHILOSOPHY SECTION */}
       <section className="philosophy">
-        <h2>Our Philosophy</h2>
-        <p>
-          We believe in treating our patients with dignity, respect, and empathy.
-          We strive to make their end-of-life journey as comfortable and meaningful
-          as possible.
-        </p>
+        <h2>{t("landing.philosophyTitle")}</h2>
+        <p>{t("landing.philosophyText")}</p>
       </section>
 
       {/* FOOTER */}
       <footer className="footer">
-        <p>Caring Since 2021</p>
-        <p>About</p>
-        <p>Contact</p>
+        <p>{t("landing.footerSince")}</p>
+        <p>{t("landing.footerAbout")}</p>
+        <p>{t("landing.footerContact")}</p>
       </footer>
     </div>
   );

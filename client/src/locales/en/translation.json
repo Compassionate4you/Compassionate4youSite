@@ -11,8 +11,14 @@
         "logout": "Logout"
     },
     "landing": {
-        "title": "Compassionate Home Health & Hospice",
-        "subtitle": "Temporary landing page for navigation testing."
+        "heroTitle": "Compassionate Care for Your Loved Ones",
+        "heroSubtitle": "Professional home health and hospice services dedicated to providing quality care with dignity and respect.",
+        "heroImageAlt": "Compassionate care services",
+        "philosophyTitle": "Our Philosophy",
+        "philosophyText": "We believe in treating our patients with dignity, respect, and empathy. We strive to make their end-of-life journey as comfortable and meaningful as possible.",
+        "footerSince": "Caring Since 2021",
+        "footerAbout": "About",
+        "footerContact": "Contact"
     },
     "homeHealth": {
         "title": "Home Health",
