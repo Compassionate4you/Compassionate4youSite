@@ -25,27 +25,29 @@ function LandingPage() {
 
       {/* Philosophy */}
       <section className="philosophy">
-        <h2>{t("landing.philosophyTitle")}</h2>
+        <h2 className="section-title title-philosophy">{t("landing.philosophyTitle")}</h2>
         <p>{t("landing.philosophyText")}</p>
       </section>
 
       {/* Caring Since 2021 */}
       <section className="care">
-        <h2>{t("landing.caringSinceTitle")}</h2>
+        <h2 className="section-title title-care">{t("landing.caringSinceTitle")}</h2>
         <p>{t("landing.caringSinceText")}</p>
       </section>
 
       {/* About */}
       <section className="about">
-        <h2>{t("landing.aboutTitle")}</h2>
+        <h2 className="section-title title-about">{t("landing.aboutTitle")}</h2>
         <p>{t("landing.aboutText")}</p>
       </section>
 
       {/* Contact */}
       <section className="contact-section">
-        <h2 className="contact-title">{t("landing.contactTitle")}</h2>
+        <h2 className="section-title title-contact">{t("landing.contactTitle")}</h2>
 
         <div className="contact-container">
+
+          {/* Contact Information */}
           <div className="contact-info">
             <div className="contact-item">
               <div className="contact-icon">📞</div>
@@ -81,6 +83,7 @@ function LandingPage() {
             </div>
           </div>
 
+          {/* Contact Form */}
           <div className="contact-form-card">
             <form className="contact-form">
               <label htmlFor="name">{t("landing.contactFormName")}</label>
