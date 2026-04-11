@@ -36,10 +36,11 @@ textarea {
   font-size: 14px;
 }
 
+/* Primary buttons use green #366454 */
 button {
   width: 100%;
   padding: 10px;
-  background: #111827;
+  background: #366454;
   color: white;
   border: none;
   border-radius: 4px;
@@ -76,7 +77,7 @@ button:disabled {
 }
 
 .calendar-day.selected {
-  background: #111827;
+  background: #366454;
   color: white;
   font-weight: bold;
 }
