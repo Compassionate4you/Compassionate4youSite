@@ -1,18 +1,11 @@
+/* RESET */
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f2ee;
   margin: 0;
   padding: 0;
 }
- 
-/* PAGE VISIBILITY */
-.page {
-  display: none;
-}
-.page.active {
-  display: block;
-}
- 
+
 /* NAVBAR */
 .navbar {
   background-color: white;
@@ -22,11 +15,13 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
 .navbar-left {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
 .avatar {
   width: 44px;
   height: 44px;
@@ -39,14 +34,17 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .navbar-title {
   font-size: 15px;
   font-weight: bold;
 }
+
 .navbar-subtitle {
   font-size: 12px;
   color: gray;
 }
+
 .navbar-right button {
   background: none;
   border: none;
@@ -54,88 +52,42 @@ body {
   cursor: pointer;
   padding: 6px 12px;
 }
+
 .navbar-right button:hover {
   background-color: #f0f2ee;
 }
- 
+
 /* MAIN CONTENT */
 .content {
-  max-width: 960px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 28px 20px;
 }
- 
-/* WELCOME BANNER */
-.welcome-banner {
-  background-color: #93B48D;
-  color: white;
-  padding: 28px 32px;
-  border-radius: 10px;
-  margin-bottom: 24px;
-}
-.welcome-banner h1 {
-  font-size: 24px;
-  margin: 0 0 8px 0;
-}
-.welcome-banner p {
-  margin: 0;
-  font-size: 14px;
-}
- 
-/* CARDS */
-.cards-row {
-  display: flex;
-  gap: 16px;
-}
-.card {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 24px;
-  flex: 1;
-  cursor: pointer;
-}
-.card:hover {
-  border-color: #aaa;
-}
-.card h3 {
-  font-size: 15px;
-  margin: 0 0 8px 0;
-}
-.card p {
-  font-size: 13px;
-  color: gray;
-  margin: 0;
-}
-.visit-number {
-  font-size: 32px;
-  font-weight: bold;
-  color: #2d5a1b;
-  margin: 4px 0;
-}
- 
+
 /* SECTION BOX */
 .section-box {
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 24px 28px;
-  margin-bottom: 24px;
 }
+
 .section-box h2 {
   font-size: 18px;
   margin: 0 0 4px 0;
 }
+
 .section-box .desc {
   font-size: 13px;
   color: gray;
-  margin: 0 0 18px 0;
+  margin-bottom: 18px;
 }
- 
+
 /* FORM FIELDS */
 .field {
   margin-bottom: 16px;
 }
+
 .field label {
   display: block;
   font-size: 12px;
@@ -143,6 +95,7 @@ body {
   color: gray;
   margin-bottom: 6px;
 }
+
 .field input,
 .field select,
 .field textarea {
@@ -154,11 +107,21 @@ body {
   font-family: Arial, sans-serif;
   box-sizing: border-box;
 }
+
 .field textarea {
   resize: vertical;
   min-height: 80px;
 }
- 
+
+/* FOCUS STATE */
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #93B48D;
+  box-shadow: 0 0 0 2px rgba(147, 180, 141, 0.2);
+}
+
 /* BACK BUTTON */
 .back-btn {
   background: none;
@@ -169,10 +132,11 @@ body {
   margin-bottom: 18px;
   padding: 0;
 }
+
 .back-btn:hover {
   color: black;
 }
- 
+
 /* BUTTONS */
 .btn-primary {
   padding: 10px 22px;
@@ -184,10 +148,18 @@ body {
   font-weight: bold;
   cursor: pointer;
   margin-right: 10px;
+  margin-top: 10px;
 }
+
 .btn-primary:hover {
   background-color: #3a7a22;
 }
+
+.btn-primary:disabled {
+  background-color: #c5d6c1;
+  cursor: not-allowed;
+}
+
 .btn-secondary {
   padding: 10px 22px;
   background-color: white;
@@ -196,19 +168,67 @@ body {
   border-radius: 6px;
   font-size: 13px;
   cursor: pointer;
+  margin-top: 10px;
 }
+
 .btn-secondary:hover {
   background-color: #f0f2ee;
 }
- 
+
 /* SUCCESS MESSAGE */
 .success-msg {
-  display: none;
   background-color: #e6f9ee;
   border: 1px solid #9fe1cb;
   border-radius: 6px;
   padding: 12px 16px;
   font-size: 13px;
-  color: #93B48D;
+  color: #2d5a1b;
   margin-top: 16px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* CALENDAR (from schedule.css but themed) */
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.calendar-day {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #e5e7eb;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.calendar-day:hover {
+  background: #d6e4d2;
+}
+
+.calendar-day.selected {
+  background: #93B48D;
+  color: white;
+  font-weight: bold;
 }
