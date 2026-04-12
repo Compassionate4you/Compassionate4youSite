@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Calendar } from "../components/Calendar";
+import { Calendar } from "./Calendar";
+//import { Calendar } from "../components/Calendar"; //remember to move  calendar later
+
+//calendar is located in the same pages folder
+
 import "../styles/scheduling.css";
 
 function SchedulePage({ onSubmit }) {
