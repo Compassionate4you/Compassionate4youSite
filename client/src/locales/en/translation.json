@@ -37,6 +37,154 @@
             "multilingualDesc": "Services available in multiple languages to support diverse patient needs."
         }
     },
+    "hospice": {
+        "blurb": {
+            "title": "Hospice Care",
+            "description": "Providing comfort, dignity, and compassionate support during life's final journey. We're here for patients and their families every step of the way.",
+            "contactButton": "Contact Our Team"
+        },
+        "understanding": {
+            "title": "Understanding Hospice Care",
+            "cards": {
+                "card1": {
+                    "title": "What is Hospice",
+                    "description": "Hospice care focuses on providing comfort, quality of life, and support for people nearing the end of life, rather than curing the illness. It is provided by a team of professionals who manage pain and other symptoms, and address emotional, physical, spiritual, and social needs of both the patient and their family through passion. Hospice care can be provided in a person's home, a dedicated hospice facility, and the goal is to help the person live their remaining time with dignity and as peacefully as possible."
+                },
+                "card2": {
+                    "title": "Who is eligible",
+                    "description": "No matter your faith or beliefs, you and your family can receive spiritual and emotional support from our care team."
+                },
+                "card3": {
+                    "title": "How is hospice different?",
+                    "description": "Our team provides a compassionate environment for patients and families, so they can feel supported and understood during end-of-life care"
+                },
+                "card4": {
+                    "title": "Why might I choose?",
+                    "description": "Our hospice team provides emotional and spiritual support to families as they navigate end-of-life care."
+                },
+                "card5": {
+                    "title": "Who provides the care?",
+                    "description": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
+                }
+            }
+        },
+        "careAndBenefits": {
+            "title":"Hospice Care Team & Benefits",
+            "cards": {
+                "card1": {
+                    "title": "What does hospice provide?",
+                    "description": "Hospice offers care from a team of different types of practioners who work together to meet the medical, psychological and spiritual needs of you and your family."
+                },
+                "card2": {
+                    "title": "Hours avail when in hospice care...",
+                    "description": "Hospice provides you a phone number to call 24 hours a day, 7 days a week, to help answer any questions you may have."
+                },
+                "card3": {
+                    "title": "What other benefits do patients have when they are under hospicecare",
+                    "description": {
+                        "top": "Once you are admitted into the Hospice Program, you will be provided with:",
+                        "list1": " - medical appliances",
+                        "list2": " - medical supplies",
+                        "list3": " - medications for symptoms and pain relief"
+                    }
+                },
+                "card4": {
+                    "title": "Physician",
+                    "description": "Your personal physician continues to provide your care while you're in the Hospice Program. A hospice physician works closely with your personal physician and can consult with you."
+                },
+                "card5": {
+                    "title": "Nurse",
+                    "description": "A nurse visits during the week to instruct your caregiver and to coordinate your care. A nurse informs the hospice physician of your condition on a regular basis."
+                },
+                "card6": {
+                    "title": "Social worker",
+                    "description": {
+                        "top": " - A social worker helps you and your caregiver by:",
+                        "list1": " - offering emotional support",
+                        "list2": " - assisting with practical matters, such as finding additional help in the home"
+                    }
+                }
+            }
+        },
+        "comprehensiveServices": {
+            "title": "Comprehensive Support Services",
+            "cards":{
+                "card1": {
+                    "title": "Hospiceaide/homemaker services",
+                    "description": "A hospice aide visits during the week as needed to help you and your caregiver with personal care such as changing linens, giving you a bath and helping you get dressed."
+                },
+                "card2": {
+                    "title": "Chaplain",
+                    "description": "A chaplain is a minister or counselor dedicated to meeting the spiritual needs of you and your family, no matter your religion. You and your family can ask for the chaplain anytime."
+                },
+                "card3": {
+                    "title": "Volunteer",
+                    "description": "A volunteer is someone from the community who has been trained by our Hospice Program to help you and your family. Volunteers provide services under the direction of a hospice staff member."
+                },
+                "card4": {
+                    "title": "What about medical appointments?",
+                    "description": "Your personal physician is in charge of your care, even after you're admitted to our Hospice Program. A hospice physician will work with your personal physician to provide the care your need."
+                },
+                "card5": {
+                    "title": "What kind of help might I need?",
+                    "description": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
+                },
+                "card6": {
+                    "title": "What if a difficult situation arises?",
+                    "description": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
+                }
+            }
+        },
+        "aboveAndBeyond": {
+            "title": "Above and Beyond Care",
+            "description": "We understand that hospice care affects the entire family. Our approach goes beyond medical care to provide emotional, spiritual, and practical support for everyone involved. From the initial consultation through bereavement, we walk alongside you with understanding and care.",
+            "cards": {
+                "card1": "Pain and Symptom Control",
+                "card2": "Emotional and Spiritual Support",
+                "card3": "Caregiver Guidance",
+                "card4": "Volunteer & Companionship Services",
+                "card5": "Chaplain",
+                "card6": "Grief & Bereavement Support",
+                "card7": "Hospice Aide Services"
+            }
+        },
+        "hospiceProcess": {
+            "title": "Our Care Process",
+            "cards": {
+                "card1": {
+                    "number": "1",
+                    "title": "Referral",
+                    "description": "Doctor, Hospital, or family starts the process."
+                },
+                "card2": {
+                    "number": "2",
+                    "title": "Assessment",
+                    "description": "Nurse or therapist evaluates health, abilities, and family goals."
+                },
+                "card3": {
+                    "number": "3",
+                    "title": "Care Plan",
+                    "description": "Customized plan including nursing, therapy, and supporting services."
+                },
+                "card4": {
+                    "number": "4",
+                    "title": "Ongoing Support",
+                    "description": "Regular visits, telehealth check-ins, and caregiver guidance."
+                },
+                "card5": {
+                    "number": "5",
+                    "title": "Communication",
+                    "description": "Open dialogue between patient, family, and care team."
+                }
+            }
+        },
+        "hospiceContact": {
+            "title": "We're Here to Help",
+            "description": "Our compassionate hospice team is available 24/7 to answer your questions and provide support.",
+            "contactButton": "Contact Us Today",
+            "homeButton": "Back to Home"
+        }
+    },
     "locations": {
         "title": "Our Location",
         "distanceLabel": "Your distance to our office",

@@ -14,6 +14,154 @@
         "title": "Compassionate Home Health & Hospice",
         "subtitle": "Página de inicio temporal para pruebas de navegación."
     },
+    "hospice": {
+        "blurb": {
+            "title": "Hospicio",
+            "description": "Brindamos consuelo, dignidad y apoyo compasivo durante el viaje final de la vida. Estamos aquí para los pacientes y sus familias en cada paso del camino.",
+            "contactButton": "Contacte a nuestro equipo"
+        },
+        "understanding": {
+            "title": "Comprender los cuidados paliativos",
+            "cards": {
+                "card1": {
+                    "title": "¿Qué es el cuidado de hospicio?",
+                    "description": "Los cuidados paliativos se centran en brindar confort, calidad de vida y apoyo a las personas que se acercan al final de su vida, en lugar de curar la enfermedad. Son proporcionados por un equipo de profesionales que gestionan el dolor y otros síntomas, y abordan las necesidades emocionales, físicas, espirituales y sociales tanto del paciente como de su familia, actuando con pasión. Estos cuidados pueden recibirse en el propio hogar de la persona o en un centro especializado en cuidados paliativos; el objetivo es ayudar a la persona a vivir el tiempo que le resta con dignidad y con la mayor paz posible."
+                },
+                "card2": {
+                    "title": "¿Quién es elegible?",
+                    "description": "Independientemente de su fe o creencias, usted y su familia pueden recibir apoyo espiritual y emocional de nuestro equipo de atención."
+                },
+                "card3": {
+                    "title": "¿En qué se diferencia el cuidado de hospicio?",
+                    "description": "Nuestro equipo ofrece un entorno compasivo para los pacientes y sus familias, para que puedan sentirse apoyados y comprendidos durante la atención al final de la vida."
+                },
+                "card4": {
+                    "title": "¿Por qué podría elegir?",
+                    "description": "Nuestro equipo de cuidados paliativos brinda apoyo emocional y espiritual a las familias mientras transitan por los cuidados al final de la vida."
+                },
+                "card5": {
+                    "title": "¿Quién brinda la atención?",
+                    "description": "El pilar de nuestro servicio es un equipo de profesionales altamente cualificados y capacitados que brindan una atención compasiva y personalizada, adaptada a las necesidades únicas de cada individuo. Contamos con un equipo multidisciplinario compuesto por diversos profesionales —incluyendo médicos, enfermeros, trabajadores sociales, capellanes y auxiliares de cuidados paliativos—, cuyo objetivo es ofrecer atención y apoyo integral tanto a los pacientes como a sus familias. Asimismo, pueden intervenir otras disciplinas —tales como la fisioterapia, la terapia ocupacional y la logopedia—, así como voluntarios y especialistas en duelo, en función de las necesidades específicas e individualizadas del paciente y de las indicaciones del proveedor de cuidados paliativos."
+                }
+            }
+        },
+        "careAndBenefits": {
+            "title":"Equipo de cuidados paliativos y beneficios",
+            "cards": {
+                "card1": {
+                    "title": "¿Qué ofrece el cuidado de hospicio?",
+                    "description": "Los cuidados paliativos ofrecen atención por parte de un equipo de profesionales de diversas especialidades que trabajan juntos para satisfacer las necesidades médicas, psicológicas y espirituales de usted y de su familia."
+                },
+                "card2": {
+                    "title": "Horas disponibles durante la atención de cuidados paliativos...",
+                    "description": "El servicio de cuidados paliativos le proporciona un número de teléfono al que puede llamar las 24 horas del día, los 7 días de la semana, para ayudarle a resolver cualquier pregunta que pueda tener."
+                },
+                "card3": {
+                    "title": "¿Qué otros beneficios tienen los pacientes cuando reciben cuidados paliativos?",
+                    "description": {
+                        "top": " - Una vez que sea admitido en el Programa de Cuidados Paliativos, se le proporcionará lo siguiente:",
+                        "list1": " - Dispositivos médicos",
+                        "list2": " - Suministros médicos",
+                        "list3": " - Medicamentos para el alivio de los síntomas y el dolor"
+                    }
+                },
+                "card4": {
+                    "title": "Médico",
+                    "description": "Su médico personal continúa brindándole atención mientras usted se encuentra en el Programa de Cuidados Paliativos. Un médico de cuidados paliativos trabaja en estrecha colaboración con su médico personal y puede consultarle."
+                },
+                "card5": {
+                    "title": "Enfermero",
+                    "description": "Una enfermera realiza visitas durante la semana para instruir a su cuidador y coordinar su atención. Una enfermera informa periódicamente al médico de cuidados paliativos sobre su estado."
+                },
+                "card6": {
+                    "title": "Trabajador social",
+                    "description": {
+                        "top": " - Un trabajador social le ayuda a usted y a su cuidador:",
+                        "list1": " - Ofrecer apoyo emocional",
+                        "list2": " - asistir con asuntos prácticos, tales como encontrar ayuda adicional en el hogar"
+                    }
+                }
+            }
+        },
+        "comprehensiveServices": {
+            "title": "Servicios de apoyo integral",
+            "cards":{
+                "card1": {
+                    "title": "Servicios de asistente de cuidados paliativos y ayuda doméstica",
+                    "description": "Un auxiliar de cuidados paliativos realiza visitas durante la semana, según sea necesario, para ayudarle a usted y a su cuidador con el cuidado personal, tales como cambiar la ropa de cama, bañarle y ayudarle a vestirse."
+                },
+                "card2": {
+                    "title": "Capellán",
+                    "description": "Un capellán es un ministro o consejero dedicado a satisfacer las necesidades espirituales de usted y su familia, independientemente de su religión. Usted y su familia pueden solicitar la presencia del capellán en cualquier momento."
+                },
+                "card3": {
+                    "title": "Voluntario",
+                    "description": "Un voluntario es una persona de la comunidad que ha sido capacitada por nuestro Programa de Cuidados Paliativos para ayudarle a usted y a su familia. Los voluntarios prestan sus servicios bajo la dirección de un miembro del personal del programa."
+                },
+                "card4": {
+                    "title": "¿Qué hay de las citas médicas?",
+                    "description": "Su médico personal está a cargo de su atención, incluso después de que usted sea admitido en nuestro Programa de Cuidados Paliativos. Un médico de cuidados paliativos trabajará junto con su médico personal para brindarle la atención que usted necesita."
+                },
+                "card5": {
+                    "title": "¿Qué tipo de ayuda podría necesitar?",
+                    "description": "En algún momento, es posible que deba permanecer en cama y no pueda darse la vuelta ni comer sin ayuda. Es posible que su cuidador deba cambiarle los pañales y la ropa de cama, así como cuidar su piel para prevenir las úlceras por presión. Los enfermeros de cuidados paliativos enseñarán a los cuidadores cómo realizar estas tareas."
+                },
+                "card6": {
+                    "title": "¿Qué pasa si surge una situación difícil?",
+                    "description": "Comprendemos que los cuidadores pueden enfrentar situaciones difíciles. Una línea telefónica disponible las 24 horas pone al cuidador en contacto con un enfermero especializado en cuidados paliativos, quien puede ofrecer asesoramiento telefónico o realizar una visita domiciliaria si es necesario."
+                }
+            }
+        },
+        "aboveAndBeyond": {
+            "title": "Atención excepcional",
+            "description": "Comprendemos que los cuidados paliativos afectan a toda la familia. Nuestro enfoque va más allá de la atención médica para brindar apoyo emocional, espiritual y práctico a todos los involucrados. Desde la consulta inicial hasta el periodo de duelo, caminamos a su lado con comprensión y cuidado.",
+            "cards": {
+                "card1": "Control del dolor y los síntomas",
+                "card2": "Apoyo emocional y espiritual",
+                "card3": "Orientación para cuidadores",
+                "card4": "Servicios de voluntariado y compañía",
+                "card5": "Capellán",
+                "card6": "Apoyo en el duelo y la pérdida",
+                "card7": "Servicios de auxiliar de cuidados paliativos"
+            }
+        },
+        "hospiceProcess": {
+            "title": "Nuestro proceso de atención",
+            "cards": {
+                "card1": {
+                    "number": "1",
+                    "title": "Remisión",
+                    "description": "El médico, el hospital o la familia inician el proceso."
+                },
+                "card2": {
+                    "number": "2",
+                    "title": "Evaluación",
+                    "description": "Un enfermero o terapeuta evalúa la salud, las capacidades y los objetivos familiares."
+                },
+                "card3": {
+                    "number": "3",
+                    "title": "Plan de cuidados",
+                    "description": "Plan personalizado que incluye enfermería, terapia y servicios de apoyo."
+                },
+                "card4": {
+                    "number": "4",
+                    "title": "Apoyo continuo",
+                    "description": "Visitas regulares, seguimientos por telesalud y orientación para cuidadores."
+                },
+                "card5": {
+                    "number": "5",
+                    "title": "Comunicación",
+                    "description": "Diálogo abierto entre el paciente, la familia y el equipo de atención."
+                }
+            }
+        },
+        "hospiceContact": {
+            "title": "Estamos aquí para ayudar",
+            "description": "Nuestro compasivo equipo de cuidados paliativos está disponible las 24 horas del día, los 7 días de la semana, para responder a sus preguntas y brindarle apoyo.",
+            "contactButton": "Contacta con nosotros hoy",
+            "homeButton": "Volver al inicio"
+        }
+    },
     "homeHealth": {
         "title": "Salud en Casa",
         "subtitle": "Servicios de atención médica profesional en la comodidad y seguridad de su hogar, promoviendo la independencia y la calidad de vida.",

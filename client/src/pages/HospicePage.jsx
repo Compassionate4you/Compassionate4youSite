@@ -1,6 +1,9 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
+import "./styles/hospice.css"
 
 function HospicePage(){
+    const { t } = useTranslation();
+
     return(
         <main>
             <section class="HospiceBanner">
@@ -9,233 +12,268 @@ function HospicePage(){
                         <div class="HospiceTitle">
                             <div class="HospiceIcon">
                                 <svg class="HospiceHeart">
-
+                                    <path d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12c-3.9 0-7 3.1-7 7 0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1 0-3.9-3.1-7-7-7-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z"/>
                                 </svg>
                             </div>
-                            <h1 class="HospiceTitleText">Hospice</h1>
+                            <h1 class="HospiceTitleText">{t('hospice.blurb.title')}</h1>
                         </div>
-                        <p class="HospiceDescription">
-                            Providing comfort, dignity, and compassionate support during life's final journey. We're here for patients and their families every step of the way.
-                        </p>
-                        <a class="HospiceContactButton">
-                            Contact Our Team
-                        </a>
+                        <p class="HospiceDescription">{t('hospice.blurb.description')}</p>
+                        <a href="/schedule" class="HospiceContactButton">{t('hospice.blurb.contactButton')}</a>
                     </div>
                 </div>
             </section>
             <section class="UnderstandingHospiceSection">
-                <h2 class="UnderstandingHospiceTitle">Understanding Hospice Care</h2>
+                <h2 class="UnderstandingHospiceTitle">{t('hospice.understanding.title')}</h2>
                 <div class="HospiceInformationCards">
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">What is Hospice</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.understanding.cards.card1.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Hospice care focuses on providing comfort, quality of life, and support for people nearing the end of life, rather than curing the illness. It is provided by a team of professionals who manage pain and other symptoms, and address emotional, physical, spiritual, and social needs of both the patient and their family through passion. Hospice care can be provided in a person's home, a dedicated hospice facility, and the goal is to help the person live their remaining time with dignity and as peacefully as possible.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.understanding.cards.card1.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Who is eligible?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.understanding.cards.card2.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                No matter your faith or beliefs, you and your family can receive spiritual and emotional support from our care team.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.understanding.cards.card2.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">How is hospice different?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.understanding.cards.card3.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Our team provides a compassionate environment for patients and families, so they can feel supported and understood during end-of-life care
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.understanding.cards.card3.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Why might I choose?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.understanding.cards.card4.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Our hospice team provides emotional and spiritual support to families as they navigate end-of-life care.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.understanding.cards.card4.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Who provides the care?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.understanding.cards.card5.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.understanding.cards.card5.description')}</p>
                         </div>
                     </div>
                 </div>
 
             </section>
-            <section class="HospiceCare&Benefits">
-                <h2 class="HospiceCare&BenefitsTitle">Hospice Care Team & Benefits</h2>
+            <section class="HospiceCareAndBenefits">
+                <h2 class="HospiceCareAndBenefitsTitle">{t('hospice.careAndBenefits.title')}</h2>
                 <div class="HospiceInformationCards">
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">What does hospice provide?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.careAndBenefits.cards.card1.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Hospice offers care from a team of different types of practioners who work together to meet the medical, psychological and spiritual needs of you and your family.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.careAndBenefits.cards.card1.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Hours avail when in hospice care...</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.careAndBenefits.cards.card2.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Hospice provides you a phone number to call 24 hours a day, 7 days a week, to help answer any questions you may have.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.careAndBenefits.cards.card2.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">What other benefits do patients have when they are under hospicecare</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.careAndBenefits.cards.card3.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Once you are admitted into the Hospice Program, you will be provided with:
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.careAndBenefits.cards.card3.description.top')}</p>
                             <ul class="HospiceCardList">
-                                <li class="HospiceCardListItem">
-                                    medical appliances
-                                </li>
-                                <li class="HospiceCardListItem">
-                                    medical supplies
-                                </li>
-                                <li class="HospiceCardListItem">
-                                    medications for symptoms and pain relief
-                                </li>
+                                <li class="HospiceCardListItem">{t('hospice.careAndBenefits.cards.card3.description.list1')}</li>
+                                <li class="HospiceCardListItem">{t('hospice.careAndBenefits.cards.card3.description.list2')}</li>
+                                <li class="HospiceCardListItem">{t('hospice.careAndBenefits.cards.card3.description.list3')}</li>
                             </ul>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Physician</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.careAndBenefits.cards.card4.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Your personal physician continues to provide your care while you're in the Hospice Program. A hospice physician works closely with your personal physician and can consult with you.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.careAndBenefits.cards.card4.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Nurse</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.careAndBenefits.cards.card5.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                A nurse visits during the week to instruct your caregiver and to coordinate your care. A nurse informs the hospice physician of your condition on a regular basis.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.careAndBenefits.cards.card5.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Social worker</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.careAndBenefits.cards.card6.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                A social worker helps you and your caregiver by:
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.careAndBenefits.cards.card6.description.top')}</p>
                             <ul class="HospiceCardList">
-                                <li class="HospiceCardListItem">
-                                    offering emotional support
-                                </li>
-                                <li class="HospiceCardListItem">
-                                    assisting with practical matters, such as finding additional help in the home
-                                </li>
+                                <li class="HospiceCardListItem">{t('hospice.careAndBenefits.cards.card6.description.list1')}</li>
+                                <li class="HospiceCardListItem">{t('hospice.careAndBenefits.cards.card6.description.list2')}</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </section>
             <section class="HospiceComprehensiveServices">
-                <h2 class="HospiceComprehensiveServicesTitle">Comprehensive Support Services</h2>
+                <h2 class="HospiceComprehensiveServicesTitle">{t('hospice.comprehensiveServices.title')}</h2>
                 <div class="HospiceInformationCards">
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Hospiceaide/homemaker services</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.comprehensiveServices.cards.card1.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                A hospice aide visits during the week as needed to help you and your caregiver with personal care such as changing linens, giving you a bath and helping you get dressed.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.comprehensiveServices.cards.card1.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Chaplain</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.comprehensiveServices.cards.card2.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                A chaplain is a minister or counselor dedicated to meeting the spiritual needs of you and your family, no matter your religion. You and your family can ask for the chaplain anytime.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.comprehensiveServices.cards.card2.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">Volunteer</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.comprehensiveServices.cards.card3.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                A volunteer is someone from the community who has been trained by our Hospice Program to help you and your family. Volunteers provide services under the direction of a hospice staff member.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.comprehensiveServices.cards.card3.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">What about medical appointments?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.comprehensiveServices.cards.card4.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                Your personal physician is in charge of your care, even after you're admitted to our Hospice Program. A hospice physician will work with your personal physician to provide the care your need.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.comprehensiveServices.cards.card4.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">What kind of help might I need?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.comprehensiveServices.cards.card5.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.comprehensiveServices.cards.card5.description')}</p>
                         </div>
                     </div>
                     <div class="HospiceInformationCard">
                         <div class="HospiceInformationCardTop">
-                            <h3 class="HospiceInformationCardTitle">What if a difficult situation arises?</h3>
+                            <h3 class="HospiceInformationCardTitle">{t('hospice.comprehensiveServices.cards.card6.title')}</h3>
                         </div>
                         <div class="HospiceInformationCardBottom">
-                            <p class="HospiceInformationCardText">
-                                We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary.
-                            </p>
+                            <p class="HospiceInformationCardText">{t('hospice.comprehensiveServices.cards.card6.description')}</p>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="HospiceAbove&Beyond">
-
+            <section class="HospiceAboveAndBeyond">
+                <div class="HospiceAboveAndBeyondMiddle">
+                    <h2 class="HospiceAboveAndBeyondTitle">{t('hospice.aboveAndBeyond.title')}</h2>
+                    <p class="HospiceAboveAndBeyondText">{t('hospice.aboveAndBeyond.description')}</p>
+                    <div class="HospiceAboveAndBeyondCards">
+                        <div class="HospiceAboveAndBeyondCard">
+                            <svg class="HospiceCheckmark">
+                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                            </svg>
+                            <span class="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card1')}</span>
+                        </div>
+                        <div class="HospiceAboveAndBeyondCard">
+                            <svg class="HospiceCheckmark">
+                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                            </svg>
+                            <span class="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card2')}</span>
+                        </div>
+                        <div class="HospiceAboveAndBeyondCard">
+                            <svg class="HospiceCheckmark">
+                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                            </svg>
+                            <span class="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card3')}</span>
+                        </div>
+                        <div class="HospiceAboveAndBeyondCard">
+                            <svg class="HospiceCheckmark">
+                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                            </svg>
+                            <span class="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card4')}</span>
+                        </div>
+                        <div class="HospiceAboveAndBeyondCard">
+                            <svg class="HospiceCheckmark">
+                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                            </svg>
+                            <span class="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card5')}</span>
+                        </div>
+                        <div class="HospiceAboveAndBeyondCard">
+                            <svg class="HospiceCheckmark">
+                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                            </svg>
+                            <span class="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card6')}</span>
+                        </div>
+                        <div class="HospiceAboveAndBeyondCard">
+                            <svg class="HospiceCheckmark">
+                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                            </svg>
+                            <span class="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card7')}</span>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section class="HospiceProcess">
-
+                <div class="HospiceProcessMiddle">
+                    <h2 class="HospiceProcessTitle">{t('hospice.hospiceProcess.title')}</h2>
+                    <div class="HospiceProcessSteps">
+                        <div class="HospiceProcessStep">
+                            <div class="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card1.number')}</div>
+                            <h3 class="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card1.title')}</h3>
+                            <p class="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card1.description')}</p>
+                        </div>
+                        <div class="HospiceProcessStep">
+                            <div class="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card2.number')}</div>
+                            <h3 class="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card2.title')}</h3>
+                            <p class="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card2.description')}</p>
+                        </div>
+                        <div class="HospiceProcessStep">
+                            <div class="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card3.number')}</div>
+                            <h3 class="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card3.title')}</h3>
+                            <p class="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card3.description')}</p>
+                        </div>
+                        <div class="HospiceProcessStep">
+                            <div class="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card4.number')}</div>
+                            <h3 class="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card4.title')}</h3>
+                            <p class="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card4.description')}</p>
+                        </div>
+                        <div class="HospiceProcessStep">
+                            <div class="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card5.number')}</div>
+                            <h3 class="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card5.title')}</h3>
+                            <p class="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card5.description')}</p>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section class="HospiceContact">
-
+                <div class="HospiceContactMiddle">
+                    <h2 class="HospiceContactTitle">{t('hospice.hospiceContact.title')}</h2>
+                    <p class="HospiceContactText">{t('hospice.hospiceContact.description')}</p>
+                    <div class="HospiceContactButtons">
+                        <a href="/schedule" class="HospiceContactButton">{t('hospice.hospiceContact.contactButton')}</a>
+                        <a href="/" class="HospiceHomeButton">{t('hospice.hospiceContact.homeButton')}</a>
+                    </div>
+                </div>
             </section>
         </main>
     );
