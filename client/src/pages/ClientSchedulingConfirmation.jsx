@@ -12,6 +12,7 @@ export function ClientSchedulingConfirmation({ appointment, onReset }) {
         </p>
 
         <p><strong>Name:</strong> {appointment.fullName}</p>
+        <p><strong>Service:</strong> {appointment.serviceType}</p>
         <p><strong>Date:</strong> {appointment.date.toDateString()}</p>
         <p><strong>Time:</strong> {appointment.timeSlot}</p>
 
