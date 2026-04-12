@@ -11,9 +11,61 @@ const AdminDashboard = () => {
         { name: "Robert Williams", service: "Home Health", date: "March 6", status: "Confirmed" },
     ];
 
+    const accounts = [
+        {
+            id: 1,
+            name: "John Doe",
+            birthdate: "Apr 12, 88",
+            email: "john.doe@example.com",
+            role: "Customer",
+            created: "Jan 15, 26",
+            status: "Active",
+            lastLogin: "Mar 08, 26",
+        },
+        {
+            id: 2,
+            name: "Mary Smith",
+            birthdate: "Oct 03, 75",
+            email: "mary.smith@example.com",
+            role: "Customer",
+            created: "Feb 10, 26",
+            status: "Active",
+            lastLogin: "Mar 07, 26",
+        },
+        {
+            id: 3,
+            name: "Robert Williams",
+            birthdate: "Nov 21, 69",
+            email: "robert.will@example.com",
+            role: "Customer",
+            created: "May 22, 25",
+            status: "Inactive",
+            lastLogin: "Oct 28, 25",
+        },
+        {
+            id: 4,
+            name: "James Cameron",
+            birthdate: "Aug 18, 80",
+            email: "james.cam@admin.com",
+            role: "Admin",
+            created: "Sep 01, 25",
+            status: "Active",
+            lastLogin: "April 08, 26",
+        },
+        {
+            id: 5,
+            name: "Michael Brown",
+            birthdate: "Sep 16, 75",
+            email: "michael.brown@admin.com",
+            role: "Admin",
+            created: "Jan 26, 26",
+            status: "Active",
+            lastLogin: "April 01, 26",
+        },
+    ];
+
     return (
         <div>
-            {/* Top bar */}
             <header className="topbar">
                 <div className="logo">CH</div>
                 <div className="header-text">
@@ -26,7 +78,6 @@ const AdminDashboard = () => {
                 </div>
             </header>
 
-            {/* Tabs Navigation */}
             <nav className="tabs">
                 <button className={tab === "appointments" ? "active" : ""} onClick={() => setTab("appointments")}>
                     {t('admin.tabs.appointments')}
@@ -42,9 +93,7 @@ const AdminDashboard = () => {
                 </button>
             </nav>
 
-            {/* Content */}
             <main className="content">
-                {/* Appointments Tab */}
                 {tab === "appointments" && (
                     <div>
                         <h2>{t('admin.tabs.appointments')}</h2>
@@ -70,10 +119,76 @@ const AdminDashboard = () => {
                         </table>
                     </div>
                 )}
+                
+                {tab === "accounts" && (
+                    <div>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: "20px",
+                            }}
+                        >
+                            <div>
+                                <h2>Account Management</h2>
+                                    <p>Manage user accounts</p>
+                            </div>
+
+                            <button
+                                style={{
+                                    backgroundColor: "#020617",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "10px",
+                                    padding: "10px 16px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Add Account
+                            </button>
+                        </div>
+
+                        <table border="1" cellPadding="10">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Birthdate</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Created</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {accounts.map((account) => (
+                                    <tr key={account.id}>
+                                        <td>{account.name}</td>
+                                        <td>{account.birthdate}</td>
+                                        <td>{account.email}</td>
+                                        <td>{account.role}</td>
+                                        <td>{account.created}</td>
+                                        <td>{account.status}</td>
+                                        <td>{account.lastLogin}</td>
+                                        <td>
+                                            <button style={{ marginRight: "8px", cursor: "pointer" }}>
+                                                Edit
+                                            </button>
+                                            <button style={{ cursor: "pointer", color: "red" }}>
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
 
                 {tab === "content" && <h2>{t('admin.comingSoon.content')}</h2>}
                 {tab === "locations" && <h2>{t('admin.comingSoon.locations')}</h2>}
-                {tab === "accounts" && <h2>{t('admin.comingSoon.accounts')}</h2>}
             </main>
         </div>
     );

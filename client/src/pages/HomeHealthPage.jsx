@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import "../styles/homehealth.css";
 
 function HomeHealthPage() {
     const { t } = useTranslation();
@@ -7,13 +8,31 @@ function HomeHealthPage() {
         <main>
 
             {/* HERO SECTION */}
-            <section>
-                <h1>{t('homeHealth.title')}</h1>
-                <p>{t('homeHealth.subtitle')}</p>
+            <section className="hero-section">
+
+                <div className="hero-overlay"></div>
+
+                <div className="hero-content">
+
+                    <div className="hero-title-row">
+                        <div className="hero-icon">🏠</div>
+                        <h1>{t('homeHealth.title')}</h1>
+                    </div>
+
+                    <p className="hero-description">
+                        {t('homeHealth.subtitle')}
+                    </p>
+
+                    <button className="hero-button">
+                        Schedule a Consultation
+                    </button>
+
+                </div>
+
             </section>
 
             {/* SERVICES SECTION */}
-            <section>
+            <section className="services-section">
                 <h2>{t('homeHealth.servicesHeading')}</h2>
 
                 <div className="services-container">
