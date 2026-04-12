@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Calendar } from "../components/Calendar";
-import "../styles/portal.css";
+import "../styles/scheduling.css";
 
 function SchedulePage({ onSubmit }) {
   const [formData, setFormData] = useState({
