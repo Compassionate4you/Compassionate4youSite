@@ -1,104 +1,77 @@
-import React, { useState } from "react";
-import { Calendar } from "./Calendar";
-//import { Calendar } from "../components/Calendar"; //remember to move  calendar later
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../styles/portal.css';
 
-//calendar is located in the same pages folder
+function SchedulePage() {
+    const { t } = useTranslation();
+    const [showSuccess, setShowSuccess] = useState(false);
 
-import "../styles/scheduling.css";
-
-function SchedulePage({ onSubmit }) {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    phone: "",
-    email: "",
-    serviceType: "",
-    date: null,
-    timeSlot: "",
-    notes: "",
-  });
-
-  const timeSlots = [
-    "8:00 AM - 9:00 AM",
-    "9:00 AM - 10:00 AM",
-    "10:00 AM - 11:00 AM",
-    "11:00 AM - 12:00 PM",
-    "1:00 PM - 2:00 PM",
-    "2:00 PM - 3:00 PM",
-    "3:00 PM - 4:00 PM",
-    "4:00 PM - 5:00 PM",
-  ];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.date || !formData.timeSlot) return;
-    onSubmit(formData);
-  };
-
-  return (
-    <div>
-      <div className="navbar">
-        <div className="navbar-left">
-          <div className="avatar">CH</div>
-          <div>
-            <div className="navbar-title">Client Portal</div>
-            <div className="navbar-subtitle">Welcome back</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="content">
-        <div className="section-box">
-          <h2>Schedule Appointment</h2>
-
-          <form onSubmit={handleSubmit}>
-            <div className="field">
-              <label>Name</label>
-              <input
-                value={formData.fullName}
-                onChange={(e) =>
-                  setFormData({ ...formData, fullName: e.target.value })
-                }
-              />
+    return (
+        <div>
+            {/* DT-61: Schedule an Appointment page */}
+            <div className="navbar">
+                <div className="navbar-left">
+                    <div className="avatar">CH</div>
+                    <div>
+                        <div className="navbar-title">{t('portal.title')}</div>
+                        <div className="navbar-subtitle">{t('portal.welcome')}</div>
+                    </div>
+                </div>
+                <div className="navbar-right">
+                    <button>{t('nav.home')}</button>
+                    <button>{t('nav.logout')}</button>
+                </div>
             </div>
 
-            <div className="field">
-              <label>Date</label>
-              <Calendar
-                selected={formData.date}
-                onSelect={(date) =>
-                  setFormData({ ...formData, date })
-                }
-              />
+            <div className="content">
+                <button className="back-btn">{t('schedule.backToDashboard')}</button>
+
+                <div className="section-box">
+                    <h2>{t('schedule.title')}</h2>
+                    <p className="desc">{t('schedule.subtitle')}</p>
+
+                    <div className="field">
+                        <label>{t('schedule.fullName')}</label>
+                        <input type="text" placeholder={t('schedule.fullNamePlaceholder')} />
+                    </div>
+                    <div className="field">
+                        <label>{t('schedule.phone')}</label>
+                        <input type="text" placeholder={t('schedule.phonePlaceholder')} />
+                    </div>
+                    <div className="field">
+                        <label>{t('schedule.email')}</label>
+                        <input type="email" placeholder={t('schedule.emailPlaceholder')} />
+                    </div>
+                    <div className="field">
+                        <label>{t('schedule.serviceType')}</label>
+                        <select>
+                            <option>{t('schedule.selectService')}</option>
+                            <option>{t('schedule.homeHealth')}</option>
+                            <option>{t('schedule.hospiceCare')}</option>
+                            <option>{t('schedule.generalConsultation')}</option>
+                        </select>
+                    </div>
+                    <div className="field">
+                        <label>{t('schedule.preferredDate')}</label>
+                        <input type="date" />
+                    </div>
+                    <div className="field">
+                        <label>{t('schedule.notes')}</label>
+                        <textarea placeholder={t('schedule.notesPlaceholder')}></textarea>
+                    </div>
+
+                    <button className="btn-primary" onClick={() => setShowSuccess(true)}>{t('schedule.confirm')}</button>
+                    <button className="btn-secondary">{t('schedule.cancel')}</button>
+
+                    {showSuccess && (
+                        <div className="success-msg">
+                            {t('schedule.successMsg')}
+                        </div>
+                    )}
+                </div>
             </div>
-
-            {formData.date && (
-              <div className="field">
-                <label>Time</label>
-                <select
-                  value={formData.timeSlot}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      timeSlot: e.target.value,
-                    })
-                  }
-                >
-                  <option value="">Select time</option>
-                  {timeSlots.map((t) => (
-                    <option key={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            <button className="btn-primary" type="submit">
-              Schedule
-            </button>
-          </form>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default SchedulePage;
