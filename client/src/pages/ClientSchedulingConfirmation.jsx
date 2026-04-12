@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/portal.css";
+import "../styles/scheduling.css";
 
 export function ClientSchedulingConfirmation({ appointment, onReset }) {
   return (
