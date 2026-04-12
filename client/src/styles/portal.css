@@ -57,14 +57,14 @@ body {
   background-color: #f0f2ee;
 }
 
-/* MAIN CONTENT */
+/* CONTENT */
 .content {
   max-width: 800px;
   margin: 0 auto;
   padding: 28px 20px;
 }
 
-/* SECTION BOX */
+/* SECTION */
 .section-box {
   background-color: white;
   border: 1px solid #ddd;
@@ -73,26 +73,25 @@ body {
 }
 
 .section-box h2 {
-  font-size: 18px;
-  margin: 0 0 4px 0;
+  margin: 0 0 4px;
 }
 
-.section-box .desc {
-  font-size: 13px;
+.desc {
   color: gray;
+  font-size: 13px;
   margin-bottom: 18px;
 }
 
-/* FORM FIELDS */
+/* FORM */
 .field {
   margin-bottom: 16px;
 }
 
 .field label {
-  display: block;
   font-size: 12px;
   font-weight: bold;
   color: gray;
+  display: block;
   margin-bottom: 6px;
 }
 
@@ -100,115 +99,68 @@ body {
 .field select,
 .field textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 14px;
-  font-family: Arial, sans-serif;
-  box-sizing: border-box;
 }
 
-.field textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* FOCUS STATE */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
   outline: none;
   border-color: #93B48D;
-  box-shadow: 0 0 0 2px rgba(147, 180, 141, 0.2);
+}
+
+/* BUTTONS */
+.btn-primary {
+  background-color: #93B48D;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-primary:disabled {
+  background-color: #c5d6c1;
+}
+
+.btn-secondary {
+  margin-left: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 /* BACK BUTTON */
 .back-btn {
   background: none;
   border: none;
-  font-size: 13px;
+  margin-bottom: 16px;
   color: gray;
   cursor: pointer;
-  margin-bottom: 18px;
-  padding: 0;
 }
 
-.back-btn:hover {
-  color: black;
-}
-
-/* BUTTONS */
-.btn-primary {
-  padding: 10px 22px;
-  background-color: #93B48D;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-right: 10px;
-  margin-top: 10px;
-}
-
-.btn-primary:hover {
-  background-color: #3a7a22;
-}
-
-.btn-primary:disabled {
-  background-color: #c5d6c1;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  padding: 10px 22px;
-  background-color: white;
-  color: black;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 13px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.btn-secondary:hover {
-  background-color: #f0f2ee;
-}
-
-/* SUCCESS MESSAGE */
+/* SUCCESS */
 .success-msg {
-  background-color: #e6f9ee;
+  background: #e6f9ee;
   border: 1px solid #9fe1cb;
+  padding: 10px;
+  margin-top: 15px;
   border-radius: 6px;
-  padding: 12px 16px;
-  font-size: 13px;
-  color: #2d5a1b;
-  margin-top: 16px;
-  animation: fadeIn 0.3s ease-in-out;
 }
 
-/* ANIMATION */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* CALENDAR (from schedule.css but themed) */
+/* CALENDAR */
 .calendar {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 8px;
-  border: 1px solid #ddd;
   padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 6px;
-  background: #ffffff;
 }
 
 .calendar-day {
@@ -217,18 +169,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
   background: #e5e7eb;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
-}
-
-.calendar-day:hover {
-  background: #d6e4d2;
 }
 
 .calendar-day.selected {
   background: #93B48D;
   color: white;
-  font-weight: bold;
 }
