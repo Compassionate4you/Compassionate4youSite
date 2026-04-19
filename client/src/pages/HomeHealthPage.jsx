@@ -3,6 +3,16 @@ import "../styles/homehealth.css";
 
 function HomeHealthPage() {
     const { t } = useTranslation();
+    const advantages = [
+                        "We manage all employer obligations in payroll, taxes and compensation",
+                        "More cost efficient than hospitalization",
+                        "Faster rate of client recovery",
+                        "Clients have the right to participate in their plan of care",
+                        "Services are rendered in the clients place of residence",
+                        "Avoidance of hospital acquired infections",
+                        "Care transition, fall prevention and medical equipment training"
+
+                    ];
 
     return (
         <main>
@@ -89,7 +99,20 @@ function HomeHealthPage() {
                 </div>
 
             </section>
+            {/* ADVANGATES SECTION */}
+            <section className= "advantages-section">
+                <h2 className="advantages-title">Home Health Advantages</h2>
 
+                <div className="advantages-grid">
+                    {advantages.map((text,index) => (
+                        <div key={index} className="adv-card">
+                            <div className="adv-number">{index +1}</div>
+                            <p className="adv-text">{text}</p>
+                        </div>
+                    ))}
+                ))
+                </div>
+            </section>
         </main>
     );
 }
