@@ -113,6 +113,63 @@ function HomeHealthPage() {
                 ))
                 </div>
             </section>
+
+            {/*SPECUALTY SECTION*/}
+            <section className="specialty-section">
+                <h2 className="specialty-title">Speciatly Services</h2>
+
+                <div className="specialty-grid">
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">CHF</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">COPD</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">Orthopedic Post-Surgical Therapy (Joint Replacement</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">Wound Care</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">I.V. Infusion</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">Physical, Occupational, Speech Therapy</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">Medication Management</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">Catheter Care</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">Diet, Excercise, Nutrition Education</p>
+                    </div>
+
+                    <div className="specialty-card">
+                        <div className="specialty-icon">💚</div>
+                        <p className="specialty-text">Labs (PT/INR, Blood Draw)</p>
+                    </div>
+                </div>
+            </section>
         </main>
     );
 }

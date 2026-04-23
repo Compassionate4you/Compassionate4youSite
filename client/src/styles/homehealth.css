@@ -190,3 +190,56 @@
 .adv-card:hover {
     transform: translateY(-5px);
 }
+
+/*secialty section for jira #230 */
+.specialty-section{
+    padding: 60px 40px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.specialty-title{
+    font-size: 64;
+    font-weight:600;
+    margin-bottom: 40px;
+    color: black;
+}
+
+.specialty-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:20px;
+}
+
+.specialty-card{
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap:12px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.specialty-card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.specialty-icon{
+    width: 40px;
+    height: 40px;
+    background-color: #dfe7c9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.specialty-text{
+    font-size: 14px;
+    color: #333;
+}
