@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
     const [tab, setTab] = useState("appointments");
+    const navigate = useNavigate();
 
     const appointments = [
         { name: "John Doe", service: "Home Health", date: "March 5", status: "Confirmed" },
@@ -13,54 +15,81 @@ const AdminDashboard = () => {
 
     const accounts = [
         {
-            id: 1,
-            name: "John Doe",
-            birthdate: "Apr 12, 88",
-            email: "john.doe@example.com",
-            role: "Customer",
-            created: "Jan 15, 26",
-            status: "Active",
-            lastLogin: "Mar 08, 26",
+        id: 1,
+        name: "John Doe",
+        birthdate: "Apr 12, 88",
+        email: "john.doe@example.com",
+        role: "Customer",
+        created: "Jan 15, 26",
+        status: "Active",
+        lastLogin: "Mar 08, 26",
         },
         {
-            id: 2,
-            name: "Mary Smith",
-            birthdate: "Oct 03, 75",
-            email: "mary.smith@example.com",
-            role: "Customer",
-            created: "Feb 10, 26",
-            status: "Active",
-            lastLogin: "Mar 07, 26",
+        id: 2,
+        name: "Mary Smith",
+        birthdate: "Oct 03, 75",
+        email: "mary.smith@example.com",
+        role: "Customer",
+        created: "Feb 10, 26",
+        status: "Active",
+        lastLogin: "Mar 07, 26",
         },
         {
-            id: 3,
-            name: "Robert Williams",
-            birthdate: "Nov 21, 69",
-            email: "robert.will@example.com",
-            role: "Customer",
-            created: "May 22, 25",
-            status: "Inactive",
-            lastLogin: "Oct 28, 25",
+        id: 3,
+        name: "Robert Williams",
+        birthdate: "Nov 21, 69",
+        email: "robert.will@example.com",
+        role: "Customer",
+        created: "May 22, 25",
+        status: "Inactive",
+        lastLogin: "Oct 28, 25",
         },
         {
-            id: 4,
-            name: "James Cameron",
-            birthdate: "Aug 18, 80",
-            email: "james.cam@admin.com",
-            role: "Admin",
-            created: "Sep 01, 25",
-            status: "Active",
-            lastLogin: "April 08, 26",
+        id: 4,
+        name: "James Cameron",
+        birthdate: "Aug 18, 80",
+        email: "james.cam@admin.com",
+        role: "Admin",
+        created: "Sep 01, 25",
+        status: "Active",
+        lastLogin: "April 08, 26",
         },
         {
-            id: 5,
-            name: "Michael Brown",
-            birthdate: "Sep 16, 75",
-            email: "michael.brown@admin.com",
-            role: "Admin",
-            created: "Jan 26, 26",
-            status: "Active",
-            lastLogin: "April 01, 26",
+        id: 5,
+        name: "Michael Brown",
+        birthdate: "Sep 16, 75",
+        email: "michael.brown@admin.com",
+        role: "Admin",
+        created: "Jan 26, 26",
+        status: "Active",
+        lastLogin: "April 01, 26",
+        },
+    ];
+
+    const contentItems = [
+        {
+        id: 1,
+        title: "Home Page",
+        section: "Philosophy",
+        updated: "Feb 20, 2026",
+        },
+        {
+        id: 2,
+        title: "Home Page",
+        section: "2021",
+        updated: "Feb 18, 2026",
+        },
+        {
+        id: 3,
+        title: "Home Page",
+        section: "Specialty Services",
+        updated: "Feb 15, 2026",
+        },
+        {
+        id: 4,
+        title: "Home Page",
+        section: "Contact",
+        updated: "Feb 12, 2026",
         },
     ];
 
@@ -187,7 +216,51 @@ const AdminDashboard = () => {
                     </div>
                 )}
 
-                {tab === "content" && <h2>{t('admin.comingSoon.content')}</h2>}
+                {tab === "content" && (
+                    <div>
+                        <h2>Content Management</h2>
+                        <p>Edit website content, testimonials, and service descriptions</p>
+
+                        <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
+                            {contentItems.map((item) => (
+                                <div
+                                    key={item.id}
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        border: "1px solid #ddd",
+                                        borderRadius: "12px",
+                                        padding: "20px",
+                                        background: "#fff",
+                                    }}
+                                >
+                                    <div>
+                                        <h3 style={{ margin: "0 0 6px" }}>{item.title}</h3>
+                                        <p style={{ margin: "0 0 6px", color: "#555" }}>{item.section}</p>
+                                        <span style={{ color: "#888", fontSize: "14px" }}>
+                                            Last updated: {item.updated}
+                                        </span>
+                                    </div>
+
+                                    <button
+                                        onClick={() => navigate("/admin/content-editor")}
+                                        style={{
+                                            backgroundColor: "#020617",
+                                            color: "white",
+                                            border: "none",
+                                            borderRadius: "10px",
+                                            padding: "10px 16px",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
                 {tab === "locations" && <h2>{t('admin.comingSoon.locations')}</h2>}
             </main>
         </div>
