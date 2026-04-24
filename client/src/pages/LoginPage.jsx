@@ -1,8 +1,12 @@
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
 import '../styles/portal.css';
 
 function LoginPage() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+
 
     return (
         <div>
@@ -25,7 +29,9 @@ function LoginPage() {
                         <input type="password" placeholder={t('login.passwordPlaceholder')} />
                     </div>
 
-                    <button className="btn-primary">{t('login.signIn')}</button>
+                    <button className="btn-primary" onClick={() => navigate('/portal')}>
+                        {t('login.signIn')}
+                    </button>
                 </div>
             </div>
         </div>
