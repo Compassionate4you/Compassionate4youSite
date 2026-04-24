@@ -8,6 +8,7 @@ import PortalPage from "../pages/PortalPage";
 import SchedulePage from "../pages/SchedulePage";
 import LoginPage from "../pages/LoginPage";
 import ContentEditor from "../pages/ContentEditor";
+import SchedulePage from "../pages/SchedulePage";
 
 function AppRoutes() {
     return (
@@ -21,6 +22,7 @@ function AppRoutes() {
             <Route path="/schedule" element={<SchedulePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin/content-editor" element={<ContentEditor />} />
+            <Route path="/confirmation" element={<ClientSchedulingConfirmation />} />
         </Routes>
     );
 }
