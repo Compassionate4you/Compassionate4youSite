@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles/accessibility.css';
 
@@ -8,6 +8,8 @@ function AccessibilityPanel() {
     const [textSize, setTextSize] = useState('default');
     const [theme, setTheme] = useState('light');
     const [contrastOn, setContrastOn] = useState(false);
+
+    useEffect(() => { document.documentElement.setAttribute('theme', theme); });
 
     function handleLanguageChange(e) {
         i18n.changeLanguage(e.target.value);
