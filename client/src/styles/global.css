@@ -1,3 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
+
+:root {
+    --color-teal: #3A5F5F;
+    --color-blue-gray: #4B6681;
+    --color-green: #366454;
+    --color-purple: #5959A6;
+    --color-lavender: #9984AE;
+    --color-linkHighlight: #00aec5;
+    --color-black: #000000;
+    --color-white: #FFFFFF;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Crimson Text', serif;
+  }
+
 .content-list {
   display: flex;
   flex-direction: column;
