@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import './styles/portal.css';
+import '../styles/portal.css';
 
 function SchedulePage() {
     const { t } = useTranslation();
     const [showSuccess, setShowSuccess] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -18,13 +20,16 @@ function SchedulePage() {
                     </div>
                 </div>
                 <div className="navbar-right">
-                    <button>{t('nav.home')}</button>
-                    <button>{t('nav.logout')}</button>
+{                   /* Home button goes back to portal */}
+                    <button onClick={() => navigate('/portal')}>{t('nav.home')}</button>                    
+{                      /* DT-64: Logout goes to login page */}
+                    <button onClick={() => navigate('/login')}>{t('nav.logout')}</button>                
                 </div>
             </div>
 
             <div className="content">
-                <button className="back-btn">{t('schedule.backToDashboard')}</button>
+                {/* Back button goes to dashboard */}
+                <button className="back-btn" onClick={() => navigate('/portal')}>{t('schedule.backToDashboard')}</button>
 
                 <div className="section-box">
                     <h2>{t('schedule.title')}</h2>
@@ -61,7 +66,8 @@ function SchedulePage() {
                     </div>
 
                     <button className="btn-primary" onClick={() => setShowSuccess(true)}>{t('schedule.confirm')}</button>
-                    <button className="btn-secondary">{t('schedule.cancel')}</button>
+
+                    <button className="btn-secondary" onClick={() => navigate('/portal')}>{t('schedule.cancel')}</button>
 
                     {showSuccess && (
                         <div className="success-msg">
