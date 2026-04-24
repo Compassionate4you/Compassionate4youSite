@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ContentEditor = () => {
   const [activeTab, setActiveTab] = useState("edit");
+  const navigate = useNavigate();
 
   return (
     <div style={{ padding: "40px", fontFamily: "Arial", background: "#f5f5f5", minHeight: "100vh" }}>
@@ -194,6 +195,45 @@ const ContentEditor = () => {
                   resize: "vertical",
                 }}
               />
+            </div>
+
+            <div
+                style={{
+                display: "flex",
+                gap: "20px",
+                marginTop: "30px",
+                }}
+            >
+                <button
+                    style={{
+                        flex: 1,
+                    padding: "16px",
+                    backgroundColor: "#020617",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "12px",
+                    fontSize: "18px",
+                    cursor: "pointer",
+                    }}
+                >
+                  Save Changes
+                </button>
+
+                <button
+                onClick={() => navigate("/admin")}
+                    style={{
+                        flex: 1,
+                        padding: "16px",
+                        backgroundColor: "#ffffff",
+                        color: "#020617",
+                        border: "1px solid #ddd",
+                        borderRadius: "12px",
+                        fontSize: "18px",
+                        cursor: "pointer",
+                    }}
+                >
+                  Cancel
+                </button>
             </div>
           </div>
         </div>
