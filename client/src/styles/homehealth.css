@@ -243,3 +243,60 @@
     font-size: 14px;
     color: #333;
 }
+
+
+/*CTA section for jira #234 */
+.cta-section{
+    background: #a3b18a;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.cta-title{
+    font-size: 32px;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 15px;
+}
+
+.cta-description{
+    font-size: 16px;
+    color: #1e293b;
+    max-width: 600px;
+    margin: 0 auto 30px;
+}
+
+.cta-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.cta-primary{
+    background: white;
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-primary:hover{
+    background: #f1f5f9;
+
+}
+
+.cta-secondary{
+    background: white;
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-secondary:hover{
+    background: #f1f5f9;
+}
