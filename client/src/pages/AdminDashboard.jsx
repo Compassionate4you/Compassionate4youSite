@@ -63,7 +63,15 @@ const AdminDashboard = () => {
             lastLogin: "April 01, 26",
         },
     ];
-
+    const [locations, setLocations] = useState([
+        {
+            id: 1,
+            name: "Main Office",
+            address: "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+            phone: "(925) 425-7104",
+            status: "Active",
+        },
+    ]);
     return (
         <div>
             <header className="topbar">
@@ -188,7 +196,51 @@ const AdminDashboard = () => {
                 )}
 
                 {tab === "content" && <h2>{t('admin.comingSoon.content')}</h2>}
-                {tab === "locations" && <h2>{t('admin.comingSoon.locations')}</h2>}
+                {tab === "locations" && (
+                    <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+                            <div>
+                                <h2>Location Management</h2>
+                                <p>Manage office locations and contact information</p>
+                            </div>
+                            <button style={{ backgroundColor: "#020617", color: "white", border: "none", borderRadius: "10px", padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                Add Location
+                            </button>
+                        </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                            {locations.map((location) => (
+                                <div key={location.id} style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px" }}>
+                                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+                                        <div>
+                                            <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>{location.name}</h3>
+                                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
+                                                    <circle cx="12" cy="10" r="3"/>
+                                                </svg>
+                                                {location.address}
+                                            </p>
+                                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "10px" }}>Phone: {location.phone}</p>
+                                            <span style={{ display: "inline-flex", padding: "4px 12px", borderRadius: "999px", fontSize: "12px", fontWeight: "500", background: "#dcfce7", color: "#15803d" }}>
+                                                {location.status}
+                                            </span>
+                                        </div>
+                                        <button style={{ width: "32px", height: "32px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
     );
