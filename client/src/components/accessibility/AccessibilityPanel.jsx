@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles/accessibility.css';
 
@@ -12,7 +12,16 @@ function AccessibilityPanel() {
     function handleLanguageChange(e) {
         i18n.changeLanguage(e.target.value);
     }
-
+    useEffect(() => {
+        const root = document.documentElement;
+        if (textSize === 'default') {
+            root.style.fontSize = '16px';
+        } else if (textSize === 'large') {
+            root.style.fontSize = '20px';
+        } else if (textSize === 'extra-large') {
+            root.style.fontSize = '24px';
+        }
+    }, [textSize]);
     return (
         <>
             {/* Toggle Button */}
