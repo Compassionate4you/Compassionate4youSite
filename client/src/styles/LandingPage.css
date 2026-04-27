@@ -48,7 +48,7 @@ body {
     color: var(--color-teal);
   }
   
-  /* Care */
+  /* Caring Since 2021 */
   .care {
     padding: 60px;
     text-align: center;
@@ -57,6 +57,67 @@ body {
   .title-care {
     color: var(--color-lavender);
   }
+
+    /* Card layout */
+    .info-card {
+      max-width: 1300px;
+      margin: 60px auto 0;
+      padding: 48px 56px;
+      background: #f3f3f3;
+      border: 3px solid #111;
+      border-radius: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 56px;
+    }
+
+    .info-card.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .info-card-image,
+    .info-card-content {
+      flex: 1;
+    }
+
+    .info-card-image {
+      display: flex;
+      justify-content: center;
+    }
+
+    .info-card-image img {
+      width: 100%;
+      max-width: 560px;
+      height: 310px;
+      object-fit: cover;
+      border-radius: 24px;
+      display: block;
+    }
+
+    .info-card-content {
+      text-align: center;
+    }
+
+    .info-card-content h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #111;
+    }
+
+    .info-card-content p {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: #222;
+      max-width: 520px;
+      margin: 0 auto 24px;
+    }
+
+    .info-card-content p:last-child {
+      margin-bottom: 0;
+    }
 
   /* About */
   .about {
@@ -194,3 +255,5 @@ body {
         font-size: 2.25rem;
       }
     }
+
+    
