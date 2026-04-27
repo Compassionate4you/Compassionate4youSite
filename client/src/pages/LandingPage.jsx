@@ -33,6 +33,48 @@ function LandingPage() {
       <section className="care">
         <h2 className="section-title title-care">{t("landing.caringSinceTitle")}</h2>
         <p>{t("landing.caringSinceText")}</p>
+
+        <div className="info-card">
+          <div className="info-card-image">
+            <img
+              src="/images/medicare-home-health.jpg"
+              alt="People working on a puzzle together"
+            />
+          </div>
+
+          <div className="info-card-content">
+            <h3>Medicare Home Health Criteria</h3>
+            <p>
+              To qualify for Medicare home health services, a patient must be
+              confined to the home and be under physician care who is a doctor of
+              medicine, a doctor of osteopathy, or a doctor of podiatric medicine,
+              and enrolled in the Medicare Program.
+            </p>
+          </div>
+        </div>
+
+        <div className="info-card reverse">
+          <div className="info-card-image">
+            <img
+              src="/images/specialty-services.jpg"
+              alt="Older couple smiling together"
+            />
+          </div>
+
+          <div className="info-card-content">
+            <h3>Specialty Services</h3>
+            <p>
+              To provide comprehensive, high quality home-care services to our
+              patients by creating strong partnerships with their families, case
+              managers, discharge planners and physicians.
+            </p>
+
+            <p>
+              We believe in creating a team of caring professionals whose goal is
+              the care and support of our patients.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* About */}
