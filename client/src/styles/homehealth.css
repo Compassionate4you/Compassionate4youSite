@@ -4,7 +4,7 @@
     height: 520px;
     display: flex;
     align-items: center;
-    background-image: url("https://www.thehealthy.com/wp-content/uploads/2024/08/Doctor-holding-hands-Asian-elderly-woman-patient-GettyImages-1446267459_KSedit.jpg");
+    background-image: url("https://img.freepik.com/free-photo/asian-young-caregiver-caring-her-elderly-patient-senior-daycare-handicap-patient-wheelchair-hospital-talking-friendly-nurse-looking-cheerful-nurse-wheeling-senior-patient_609648-3125.jpg");
     background-size: cover;
     background-position: center;
     padding-left: 40px;
@@ -94,6 +94,7 @@
     text-align: center;
     font-size: 64px;
     margin-bottom: 40px;
+    color: black;
 }
 
 .services-container{
@@ -141,4 +142,163 @@
     font-size: 14px;
     color: var(--color10);
     line-height: 1.5;
+}
+
+.advantages-section {
+    padding: 60px 40px;
+    background: #f3f4f6;
+    text-align: center;
+}
+
+.advantages-title {
+    font-size: 64px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: black;
+}
+
+.advantages-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.adv-card {
+    background: white;
+    transition: transform 0.2s ease;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(0,0,0,0,0.1);
+}
+
+.adv-number{
+    background: #dfe7c9;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.adv-text{
+    font-size: 14px;
+    color: #333
+}
+
+.adv-card:hover {
+    transform: translateY(-5px);
+}
+
+/*secialty section for jira #230 */
+.specialty-section{
+    padding: 60px 40px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.specialty-title{
+    font-size: 64;
+    font-weight:600;
+    margin-bottom: 40px;
+    color: black;
+}
+
+.specialty-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:20px;
+}
+
+.specialty-card{
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap:12px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.specialty-card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.specialty-icon{
+    width: 40px;
+    height: 40px;
+    background-color: #dfe7c9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.specialty-text{
+    font-size: 14px;
+    color: #333;
+}
+
+
+/*CTA section for jira #234 */
+.cta-section{
+    background: #a3b18a;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.cta-title{
+    font-size: 32px;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 15px;
+}
+
+.cta-description{
+    font-size: 16px;
+    color: #1e293b;
+    max-width: 600px;
+    margin: 0 auto 30px;
+}
+
+.cta-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.cta-primary{
+    background: white;
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-primary:hover{
+    background: #f1f5f9;
+
+}
+
+.cta-secondary{
+    background: white;
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-secondary:hover{
+    background: #f1f5f9;
 }

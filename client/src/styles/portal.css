@@ -134,6 +134,64 @@ body {
 
 .desc {
   color: var(--color10);
+/* Table */
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+th {
+  text-align:left;
+  font-size: 13px;
+  color: gray;
+  padding: 8px 10px 12px 10px;
+  border-bottom: 1px solid #ddd;
+}
+td {
+  padding: 12px 10px;
+  font-size: 13px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Status Badges */
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.badge-confirmed {
+  background-color: #e6f9ee;
+  color: #1a7a3c;
+}
+.badge-pending {
+  background-color: #fff8e1;
+  color: #b45309;
+}
+ 
+/* ACTION BUTTONS */
+.btn-reschedule {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+.btn-reschedule:hover {
+  background-color: #f0f2ee;
+}
+.btn-cancel-appt {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: red;
+}
+.btn-cancel-appt:hover {
+  border-color: red;
 }
  
 /* FORM FIELDS */
@@ -219,4 +277,159 @@ body {
   font-size: 13px;
   color: #93B48D;
   margin-top: 16px;
+}
+
+/* MODAL OVERLAY */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal{
+  background-color:white;
+  border-radius:10px;
+  width:100%;
+  max-width:600px;
+  max-height:90vh;
+  overflow-y:auto;
+  padding:28px;
+}
+/*Modal Header*/
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom: 20px;
+}
+.modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 4px 0;
+}
+.modal-subtitle {
+  font-size: 13px;
+  color: gray;
+  margin: 0;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: gray;
+  padding: 0;
+}
+.modal-close:hover {
+  color: black;
+}
+ 
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0;
+}
+.tab {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  color: gray;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tab:hover {
+  color: black;
+}
+.active-tab {
+  color: #2d5a1b;
+  font-weight: bold;
+  border-bottom: 2px solid #2d5a1b;
+}
+ 
+/* MODAL BODY */
+.modal-body {
+  margin-bottom: 24px;
+}
+.section-heading {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 20px 0 12px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #eee;
+}
+ 
+/* FORM ROWS INSIDE MODAL */
+.form-row-two {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.form-row-two .field {
+  flex: 1;
+}
+.form-row-three {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.form-row-three .field {
+  flex: 1;
+}
+ 
+/* CHECKBOX */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: normal;
+  color: black;
+  cursor: pointer;
+}
+.checkbox-label input {
+  width: auto;
+  margin: 0;
+}
+ 
+/* SESSION ITEMS */
+.session-desc {
+  font-size: 13px;
+  color: gray;
+  margin: 0 0 12px 0;
+}
+.session-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+.session-device {
+  font-size: 13px;
+  font-weight: bold;
+}
+.session-location {
+  font-size: 12px;
+  color: gray;
+  margin-top: 2px;
+}
+ 
+/* MODAL FOOTER */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
 }
