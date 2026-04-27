@@ -8,20 +8,6 @@ function LocationsPage() {
         <section className="map-section">
             <div className="map-section__inner">
                 <h2 className="map-section__title">{t('locations.title')}</h2>
-
-                {/* DT-163: User can see their distance from one of the companies locations */}
-                <div className="distance-card" id="distance-card">
-                    <svg className="distance-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    <div>
-                        <div className="distance-card__label">{t('locations.distanceLabel')}</div>
-                        {/* DT-160: User can view the location of the company */}
-                        <div className="distance-card__value" id="distance-value">{t('locations.calculating')}</div>
-                        <div className="distance-card__address">{t('locations.address1')}</div>
-                    </div>
-                </div>
-
                 <div className="map-embed">
                     <iframe
                         title={t('locations.mapTitle')}
