@@ -1,12 +1,12 @@
 :root {
-  --map-bg: #1a1a2e;
-  --map-card: #16213e;
+  --map-bg: #ffffff;
+  --map-card: #f1f5f9;
   --map-accent: #0f3460;
-  --map-green: #4ade80;
-  --map-text: #e2e8f0;
-  --map-muted: #94a3b8;
+  --map-green: #366454;
+  --map-text: #111827;
+  --map-muted: #4b5563;
   --map-radius: 1rem;
-  --map-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --map-shadow: 0 8px 32px rgba(0,0,0,0.1);
 }
 
 .map-section {
@@ -27,46 +27,6 @@
   color: var(--map-text);
   margin-bottom: 3rem;
   letter-spacing: -0.02em;
-}
-
-/* DT-163: Distance display card */
-.distance-card {
-  background: var(--map-card);
-  border: 1px solid var(--map-accent);
-  border-radius: var(--map-radius);
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: var(--map-shadow);
-  color: var(--map-text);
-}
-
-.distance-card__icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  color: var(--map-green);
-  flex-shrink: 0;
-}
-
-.distance-card__label {
-  font-size: 0.85rem;
-  color: var(--map-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.distance-card__value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--map-green);
-}
-
-.distance-card__address {
-  font-size: 0.9rem;
-  color: var(--map-muted);
-  margin-top: 0.2rem;
 }
 
 /* DT-160: Map embed area showing company location */
@@ -122,7 +82,7 @@
   margin-top: 1.25rem;
   padding: 0.65rem 1.4rem;
   background: var(--map-green);
-  color: #0a0a0a;
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.9rem;
   border-radius: 2rem;
@@ -130,6 +90,6 @@
   transition: opacity 0.2s;
 }
 
-.map-section__directions:hover { 
-  opacity: 0.85; 
+.map-section__directions:hover {
+  opacity: 0.85;
 }
