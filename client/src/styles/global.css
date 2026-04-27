@@ -14,3 +14,14 @@
   h1, h2, h3 {
     font-family: 'Crimson Text', serif;
   }
+
+  /* Accessibility consumer rules (DT-335). */
+  html {
+    font-size: calc(16px * var(--text-scale, 1));
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  :root.high-contrast {
+    filter: contrast(1.4);
+  }

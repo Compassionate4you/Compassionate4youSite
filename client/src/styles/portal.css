@@ -212,3 +212,84 @@ body {
   color: #93B48D;
   margin-top: 16px;
 }
+
+/* Form error + login layout (DT-336 / DT-341) */
+
+.field--error input,
+.field--error select,
+.field--error textarea {
+  border-color: #c0392b;
+  background-color: #fdecea;
+}
+
+.field--error label {
+  color: #c0392b;
+}
+
+.form-error {
+  background-color: #fdecea;
+  border: 1px solid #f0b3ad;
+  color: #a52a1f;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin: 0 0 16px 0;
+}
+
+.form-info {
+  background-color: #eaf4ff;
+  border: 1px solid #b8d4f1;
+  color: #1f4e8c;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 13px;
+  margin: 0 0 16px 0;
+}
+
+.form-success {
+  background-color: #e6f9ee;
+  border: 1px solid #9fe1cb;
+  color: #1f6d4d;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 13px;
+  margin: 0 0 16px 0;
+}
+
+.login-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.login-forgot-link {
+  font-size: 13px;
+  color: #4B6681;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.login-forgot-link:hover,
+.login-forgot-link:focus {
+  text-decoration: underline;
+  color: #3A5F5F;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 13px;
+  color: #4B6681;
+  text-decoration: none;
+  margin-top: 14px;
+}
+
+.back-link:hover,
+.back-link:focus {
+  text-decoration: underline;
+}
