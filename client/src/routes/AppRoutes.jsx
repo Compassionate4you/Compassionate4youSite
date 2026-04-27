@@ -8,7 +8,7 @@ import PortalPage from "../pages/PortalPage";
 import SchedulePage from "../pages/SchedulePage";
 import LoginPage from "../pages/LoginPage";
 import ContentEditor from "../pages/ContentEditor";
-
+import ClientSchedulingConfirmation from "../pages/ClientSchedulingConfirmation";
 function AppRoutes() {
     return (
         <Routes>
