@@ -8,6 +8,7 @@ import PortalPage from "../pages/PortalPage";
 import SchedulePage from "../pages/SchedulePage";
 import LoginPage from "../pages/LoginPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import Scheduling from "../pages/AcuityScheduling";
 
 function AppRoutes() {
     return (
@@ -21,6 +22,10 @@ function AppRoutes() {
             <Route path="/schedule" element={<SchedulePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route
+                path="/AcuityScheduling"
+                element={<Scheduling />}
+            />
         </Routes>
     );
 }
