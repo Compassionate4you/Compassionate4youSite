@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
+import "../styles/admindashboard.css";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
@@ -107,7 +108,7 @@ const AdminDashboard = () => {
                 </div>
             </header>
 
-            <nav className="tabs">
+            <nav className="admin-tabs" aria-label="Admin dashboard sections">
                 <button className={tab === "appointments" ? "active" : ""} onClick={() => setTab("appointments")}>
                     {t('admin.tabs.appointments')}
                 </button>
