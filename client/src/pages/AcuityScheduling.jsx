@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export default function Scheduling() {
-    useEffect(() => {
+    useEffect(() => { /* loads Acuity's JavaScript */
         const script = document.createElement("script");
         script.src = "https://embed.acuityscheduling.com/js/embed.js";
         script.async = true;
@@ -14,6 +14,7 @@ export default function Scheduling() {
     }, []);
 
     return (
+        /* displays the Acuity scheduling page */
         <iframe
             src="https://app.acuityscheduling.com/schedule.php?owner=40275032&ref=embedded_csp"
             title="Schedule Appointment"

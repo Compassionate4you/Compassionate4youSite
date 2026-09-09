@@ -37,7 +37,7 @@ function LandingPage() {
         <div className="info-card">
           <div className="info-card-image">
             <img
-              src="/images/medicare-home-health.jpg"
+              src="../assets/images/CareImage1.jpeg"
               alt="People working on a puzzle together"
             />
           </div>
