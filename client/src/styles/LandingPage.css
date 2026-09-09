@@ -14,6 +14,7 @@ body {
   .hero {
     display: flex;
     height: 80vh;
+    background-color: var(--color-light-green);
   }
   
   .hero-left {
@@ -29,6 +30,8 @@ body {
   
   .hero-right {
     flex: 1;
+    overflow: hidden;
+    border-radius: 35% 0 0 10%;
   }
   
   .hero-right img {
