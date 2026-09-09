@@ -1,5 +1,8 @@
 import "../styles/LandingPage.css";
 import CareImage1 from "../assets/images/CareImage1.jpeg";
+import Puzzle from "../assets/images/working_a_puzzle_together.jpeg";
+import Couple from "../assets/images/older_couple_smiling.jpeg";
+
 import { useTranslation } from "react-i18next";
 
 function LandingPage() {
@@ -37,7 +40,7 @@ function LandingPage() {
         <div className="info-card">
           <div className="info-card-image">
             <img
-              src="../assets/images/CareImage1.jpeg"
+              src={Puzzle}
               alt="People working on a puzzle together"
             />
           </div>
@@ -56,7 +59,7 @@ function LandingPage() {
         <div className="info-card reverse">
           <div className="info-card-image">
             <img
-              src="/images/specialty-services.jpg"
+              src={Couple}
               alt="Older couple smiling together"
             />
           </div>
