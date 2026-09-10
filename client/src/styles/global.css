@@ -47,35 +47,13 @@
     font-family: 'Crimson Text', serif;
   }
 
-.content-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.content-item-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 24px 28px;
-  background: #ffffff;
-}
-
-.content-item-card h3 {
-  margin: 0 0 8px;
-  font-size: 1.8rem;
-}
-
-.content-item-card p {
-  margin: 0 0 10px;
-  color: #475569;
-  font-size: 1.1rem;
-}
-
-.content-item-card span {
-  color: #64748b;
-  font-size: 1rem;
-}
+  /* Accessibility consumer rules (DT-335). */
+  html {
+    font-size: calc(16px * var(--text-scale, 1));
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  :root.high-contrast {
+    filter: contrast(1.4);
+  }

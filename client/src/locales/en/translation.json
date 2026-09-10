@@ -251,15 +251,6 @@
         "cancel": "Cancel",
         "successMsg": "Appointment request submitted! We will confirm your visit shortly."
     },
-    "login": {
-        "title": "Sign In",
-        "subtitle": "Enter your credentials to continue.",
-        "email": "Email Address",
-        "emailPlaceholder": "you@example.com",
-        "password": "Password",
-        "passwordPlaceholder": "••••••••",
-        "signIn": "Sign In"
-    },
     "admin": {
         "title": "Admin Dashboard",
         "welcome": "Welcome, Admin User",
@@ -320,6 +311,54 @@
     },
     "chatbot": {
         "title": "Compassionate4you Chat",
-        "placeholder": "Type your question here..."
+        "placeholder": "Type your question here...",
+        "send": "Send",
+        "close": "Close chat",
+        "emptyState": "Hi! Ask me anything. I can also help with accessibility settings (text size, dark mode, high contrast).",
+        "actions": {
+            "increaseTextSize": "Increase text size",
+            "decreaseTextSize": "Decrease text size",
+            "toggleDarkMode": "Switch to dark mode",
+            "toggleLightMode": "Switch to light mode",
+            "toggleHighContrast": "Toggle high contrast"
+        },
+        "responses": {
+            "increaseTextSize": "Click below to make the text larger. You can click multiple times.",
+            "decreaseTextSize": "Click below to make the text smaller.",
+            "toggleDarkMode": "Click below to switch to dark mode.",
+            "toggleLightMode": "Click below to switch back to light mode.",
+            "toggleHighContrast": "Click below to toggle high contrast.",
+            "error": "Couldn't reach the server. Try again in a moment."
+        }
+    },
+    "login": {
+        "title": "Sign In",
+        "subtitle": "Enter your credentials to continue.",
+        "email": "Email Address",
+        "emailPlaceholder": "you@example.com",
+        "password": "Password",
+        "passwordPlaceholder": "••••••••",
+        "signIn": "Sign In",
+        "signingIn": "Signing in…",
+        "forgotPassword": "Forgot password?",
+        "errors": {
+            "required": "Please enter both email and password.",
+            "invalidEmail": "That doesn't look like a valid email address.",
+            "invalidCredentials": "Email or password is incorrect. Please try again."
+        },
+        "reset": {
+            "title": "Reset your password",
+            "subtitle": "Enter the email address or phone number on your account and we'll send a reset link.",
+            "emailOrPhone": "Email address or phone number",
+            "emailOrPhonePlaceholder": "you@example.com or (555) 123-4567",
+            "submit": "Send reset link",
+            "sending": "Sending…",
+            "backToLogin": "← Back to sign in",
+            "confirmation": "If that account exists, we sent a reset link. Check your email or messages.",
+            "errors": {
+                "required": "Please enter your email or phone number.",
+                "invalid": "Please enter a valid email address or phone number."
+            }
+        }
     }
 }
