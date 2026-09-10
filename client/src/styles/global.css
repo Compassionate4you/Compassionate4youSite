@@ -9,6 +9,38 @@
     --color-linkHighlight: #00aec5;
     --color-black: #000000;
     --color-white: #FFFFFF;
+
+    /*these were the existing color variables ^, I left them in to prevent things breaking as we merged our changes,
+    but the ones below are what I was using to keep track of dark/light mode. Additionally we can all add a section
+    for additonal theme dependent colors on the other css files for more control. */
+
+    --color1: #3A5F5F;
+    --color2: #4B6681;
+    --color3: #366454;
+    --color4: #5959A6;
+    --color5: #9984AE;
+    --color6: #00aec5;
+    --color7: #000000;
+    --color8: #FFFFFF;
+    --color9: #eceaea;
+    --color10: #888888;
+  }
+
+  [theme='dark'] {
+    --color1: #759d9d;
+    --color2: #2e3e4e;
+    --color3: #172b24;
+    --color4: #6c6ca8;
+    --color5: #9984AE;
+    --color6: #00aec5;
+    --color7: #f0f0f0;
+    --color8: #181818;
+    --color9: #4d4d4d;
+    --color10: #bdbdbd;
+  }
+
+  .app {
+    background-color: var(--color8);
   }
 
   h1, h2, h3 {
