@@ -97,14 +97,18 @@ const AdminDashboard = () => {
     return (
         <div>
             <header className="topbar">
-                <div className="logo">CH</div>
-                <div className="header-text">
-                    <h1>{t('admin.title')}</h1>
-                    <p>{t('admin.welcome')}</p>
+                <div className="admin-identity">
+                    <div className="admin-avatar">AD</div>
+                    <div className="header-text">
+                        <h1>{t('admin.title')}</h1>
+                        <p>{t('admin.welcome')}</p>
+                    </div>
                 </div>
+                
                 <div className="top-actions">
-                    <button>{t('nav.home')}</button>
-                    <button>{t('nav.logout')}</button>
+                    <button type="button" className="logout-button">
+                        {t('nav.logout')}
+                    </button>
                 </div>
             </header>
 
