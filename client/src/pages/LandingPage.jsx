@@ -1,4 +1,5 @@
 import "../styles/LandingPage.css";
+{/* import '../styles/accessibility.css'; get accessibility.css from prestons branch or put "section-label" style in LandingPage.css */}
 import CareImage1 from "../assets/images/CareImage1.jpeg";
 import Puzzle from "../assets/images/working_a_puzzle_together.jpeg";
 import Couple from "../assets/images/older_couple_smiling.jpeg";
@@ -6,15 +7,41 @@ import Couple from "../assets/images/older_couple_smiling.jpeg";
 import { useTranslation } from "react-i18next";
 
 function LandingPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  function handleLanguageChange(e) {
+    i18n.changeLanguage(e.target.value);
+  }
 
   return (
     <div>
       {/* Hero */}
       <section className="hero">
         <div className="hero-left">
+          {/* Titles */}
           <h1>{t("landing.heroTitle")}</h1>
           <p>{t("landing.heroSubtitle")}</p>
+
+          <div className="language-selector">
+            {/* Label */}
+            <div className="section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              {t('accessibility.language')}
+            </div>
+
+            {/* Selector */}
+            <select
+                value={i18n.language}
+                onChange={handleLanguageChange}
+                aria-label={t('accessibility.selectLanguage')}
+            >
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+          </div>
         </div>
 
         <div className="hero-right">
@@ -24,6 +51,7 @@ function LandingPage() {
             className="hero-img"
           />
         </div>
+
       </section>
 
       {/* Philosophy */}

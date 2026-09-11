@@ -18,6 +18,8 @@ body {
   }
   
   .hero-left {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     background: var(--color-light-green);
     padding: 60px;
@@ -39,7 +41,19 @@ body {
     height: 100%;
     object-fit: cover;
   }
-  
+
+  /* Language Selector */
+  .language-selector {
+    margin-top: auto;
+    margin-bottom: 60px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+.language-selector select{
+  margin-top: 10px;
+}
+
   /* Philosophy */
   .philosophy {
     padding: 60px;
