@@ -8,7 +8,8 @@
         "login": "Login",
         "portal": "Portal",
         "admin": "Admin",
-        "logout": "Logout"
+        "logout": "Logout",
+        "dashboard": "User Dashboard"
     },
     "landing": {
         "heroTitle": "Compassionate Care for Your Loved Ones",

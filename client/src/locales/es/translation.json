@@ -8,7 +8,8 @@
       "login": "Iniciar Sesión",
       "portal": "Portal",
       "admin": "Administrador",
-      "logout": "Cerrar Sesión"
+      "logout": "Cerrar Sesión",
+      "dashboard": "Panel De Usuario"
     },
     "landing": {
       "heroTitle": "Cuidado compasivo para sus seres queridos",

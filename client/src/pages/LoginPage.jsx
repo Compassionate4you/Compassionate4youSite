@@ -29,7 +29,10 @@ function LoginPage() {
                         <input type="password" placeholder={t('login.passwordPlaceholder')} />
                     </div>
 
-                    <button className="btn-primary" onClick={() => navigate('/portal')}>
+                    {/* DT-37/ Dt-389: Set login flag on sign-in so Navbar can detect user log in*/}
+                    <button className="btn-primary" onClick={() => {localStorage.setItem('isLoggedIn', 'true');
+                    navigate('/portal'); }}>
+
                         {t('login.signIn')}
                     </button>
                 </div>
