@@ -61,3 +61,4 @@ export function ClientSchedulingConfirmation() {
     </div>
   );
 }
+export default ClientSchedulingConfirmation;
