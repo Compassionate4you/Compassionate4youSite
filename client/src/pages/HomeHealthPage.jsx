@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import "../styles/homehealth.css";
 
 const HeartIcon = () => (
@@ -29,6 +30,7 @@ const HomeIcon = () => (
 
 function HomeHealthPage() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const advantages = [
                         "We manage all employer obligations in payroll, taxes and compensation",
                         "More cost efficient than hospitalization",
@@ -59,8 +61,11 @@ function HomeHealthPage() {
                         {t('homeHealth.subtitle')}
                     </p>
 
-                    <button className="hero-button">
-                        Schedule a Consultation
+                    <button 
+                         className="hero-button"
+                         onClick={() => navigate("/schedule")}
+                    >
+                         Schedule a Consultation
                     </button>
 
                 </div>
@@ -205,8 +210,18 @@ function HomeHealthPage() {
                 <p className="cta-description">Let us help you or your loved one receive the quality care you deserve in the comfort of your home.</p>
 
                 <div className="cta-buttons">
-                    <button className="cta-primary">Schedule Appointment</button>
-                    <button className="cta-secondary">Back to Home</button>
+                    <button 
+                        className = "cta-primary"
+                        onClick= {() => navigate("/schedule")}
+                        >
+                            Schedule Appointment
+                        </button>
+                    <button 
+                        className="cta-secondary"
+                        onClick= {() => navigate("/")}
+                        >
+                            Back to Home
+                        </button>
                 </div>
             </section>
         </main>
