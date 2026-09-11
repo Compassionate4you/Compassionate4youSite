@@ -55,7 +55,7 @@ body {
   padding: 6px 12px;
 }
 .navbar-right button:hover {
-  background-color: #f0f2ee;
+  background-color: var(--color9);
 }
  
 /* MAIN CONTENT */
@@ -116,11 +116,12 @@ body {
  
 /* SECTION BOX */
 .section-box {
-  background-color: white;
+  background-color: var(--color9);
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 24px 28px;
   margin-bottom: 24px;
+  color: gray;
 }
 .section-box h2 {
   font-size: 18px;
@@ -128,10 +129,11 @@ body {
 }
 .section-box .desc {
   font-size: 13px;
-  color: gray;
   margin: 0 0 18px 0;
 }
 
+.desc {
+  color: var(--color10);
 /* Table */
 table {
   width:100%;
@@ -200,7 +202,7 @@ td {
   display: block;
   font-size: 12px;
   font-weight: bold;
-  color: gray;
+  color: var(--color10);
   margin-bottom: 6px;
 }
 .field input,
@@ -217,6 +219,10 @@ td {
 .field textarea {
   resize: vertical;
   min-height: 80px;
+}
+
+.field input, textarea{
+  background-color: white;
 }
  
 /* BACK BUTTON */
