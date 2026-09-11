@@ -1,5 +1,4 @@
 import "../styles/LandingPage.css";
-{/* import '../styles/accessibility.css'; get accessibility.css from prestons branch or put "section-label" style in LandingPage.css */}
 import CareImage1 from "../assets/images/CareImage1.jpeg";
 import Puzzle from "../assets/images/working_a_puzzle_together.jpeg";
 import Couple from "../assets/images/older_couple_smiling.jpeg";

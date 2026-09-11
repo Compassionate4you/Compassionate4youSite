@@ -9,12 +9,6 @@ function AccessibilityPanel() {
     const [theme, setTheme] = useState('light');
     const [contrastOn, setContrastOn] = useState(false);
 
-    {/*
-    function handleLanguageChange(e) {
-        i18n.changeLanguage(e.target.value);
-    }
-    */}
-
     return (
         <>
             {/* Toggle Button */}
@@ -97,23 +91,6 @@ function AccessibilityPanel() {
                         {contrastOn ? t('accessibility.enabled') : t('accessibility.disabled')}
                     </button>
                 </div>
-
-                {/*
-                <div className="section">
-                    <div className="section-label">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                        </svg>
-                        {t('accessibility.language')}
-                    </div>
-
-                    <select value={i18n.language} onChange={handleLanguageChange} aria-label={t('accessibility.selectLanguage')}>
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                    </select>
-                </div>
-                */}
 
                 <div className="notice">
                     {t('accessibility.screenReaderNotice')}

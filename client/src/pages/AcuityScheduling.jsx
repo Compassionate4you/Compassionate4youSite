@@ -4,17 +4,20 @@ export default function Scheduling() {
     useEffect(() => { /* loads Acuity's JavaScript */
         const script = document.createElement("script");
         script.src = "https://embed.acuityscheduling.com/js/embed.js";
-        script.async = true;
+        script.async = true; // Webpage can load without waiting for Acuity's JavaScript to download
 
-        document.body.appendChild(script);
+        document.body.appendChild(script); // Adds the script to the body of the webpage
 
-        return () => {
-            document.body.removeChild(script);
+        return () => { // After user leaves the Scheduling Page the acuity script is removed from the body
+            if (document.body.contains(script)) {
+                document.body.removeChild(script);
+            }
         };
     }, []);
 
     return (
-        /* displays the Acuity scheduling page */
+        // displays the Acuity scheduling page
+        // iframe allows you to display another webpage inside your webpage
         <iframe
             src="https://app.acuityscheduling.com/schedule.php?owner=40275032&ref=embedded_csp"
             title="Schedule Appointment"
