@@ -41,5 +41,8 @@ coverage/
 # Prisma
 .prisma/
 
+# Prisma generated client (custom output path)
+src/generated/
+
 # Node
 .npm
