@@ -24,7 +24,6 @@ function Footer() {
                             <li><a href="/schedule" className="footer__link">{t('nav.schedule')}</a></li>
                         </ul>
                     </div>
-
                     {/* DT-160: User can view the location of the company in the footer */}
                     <div>
                         <h4 className="footer__subheading">{t('footer.contactUs')}</h4>
