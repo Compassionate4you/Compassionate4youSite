@@ -141,7 +141,6 @@ function HomeHealthPage() {
                             <p className="adv-text">{text}</p>
                         </div>
                     ))}
-                ))
                 </div>
             </section>
 
