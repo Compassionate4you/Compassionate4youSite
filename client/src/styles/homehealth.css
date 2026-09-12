@@ -1,6 +1,7 @@
 .hero-section {
-    positon: relative;
+    position: relative;
     width: 100%;
+    box-sizing: border-box;
     height: 520px;
     display: flex;
     align-items: center;
@@ -199,7 +200,7 @@
 }
 
 .specialty-title{
-    font-size: 64;
+    font-size: 64px;
     font-weight:600;
     margin-bottom: 40px;
     color: black;
@@ -299,4 +300,120 @@
 
 .cta-secondary:hover{
     background: #f1f5f9;
+}
+
+
+/* Responsiveness for Jira #383*/
+
+/*home health page responsive for tablet size screens*/
+@media (max-width: 1024px) {
+    .hero-section {
+        height: auto;
+        min-height: 480px;
+        padding: 40px 30px;
+    }
+
+    .hero-content{
+        max-width: 600px;
+    }
+
+    .hero-title-row h1{
+        font-size: 56px;
+    }
+    
+    .hero-description{
+        font-size: 20px;
+    }
+
+    .services-title,
+    .advantages-title,
+    .specialty-title{
+        font-size: 48px;
+    }
+
+
+    .services-container{
+        grid-template-columns:repeat(2, 1fr);
+    }
+
+    .advantages-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .specialty-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* Home health page responsive for phone size screens*/
+
+@media (max-width: 600px){
+    .hero-section {
+        min-height: 420px;
+        padding: 30px 20px;
+    }
+
+    .hero-title-row{
+        gap: 10px;
+    }
+
+    .hero-icon{
+        width: 50px;
+        height: 50px;
+        flex-shrink: 0;
+    }
+
+    .hero-title-row h1{
+        font-size: 38px;
+    }
+
+    .hero-description{
+        font-size:16px;
+        line-height: 1.5;
+    }
+
+    .hero-button{
+        padding: 12px 20px;
+    }
+
+    .services-section,
+    .advantages-section,
+    .specialty-section{
+        padding: 40px 20px;
+    }
+
+    .services-title,
+    .advantages-title,
+    .specialty-title{
+        font-size: 36px;
+    }
+
+    .services-container,
+    .advantages-grid,
+    .specialty-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .cta-section{
+        padding: 40px 20px;
+
+    }
+
+
+    .cta-title{
+        font-size: 28px;
+    }
+
+    .cta-buttons{
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .cta-primary,
+    .cta-secondary{
+        width: 100%;
+        max-width: 300px;
+    }
 }
