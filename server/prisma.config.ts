@@ -9,6 +9,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Migrations run over the direct (unpooled) connection on port 5432.
+    // Falls back to DATABASE_URL so a local Postgres still works unchanged.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });
