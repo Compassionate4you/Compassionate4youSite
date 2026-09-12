@@ -9,6 +9,8 @@ function AccessibilityPanel() {
     const [theme, setTheme] = useState('light');
     const [contrastOn, setContrastOn] = useState(false);
 
+    useEffect(() => { document.documentElement.setAttribute('theme', theme); });
+
     function handleLanguageChange(e) {
         i18n.changeLanguage(e.target.value);
     }

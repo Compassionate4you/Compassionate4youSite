@@ -18,14 +18,14 @@ body {
   
   .hero-left {
     flex: 1;
-    background: var(--color-green);
+    background: var(--color3);
     color: white;
     padding: 60px;
   }
   
   .hero-left h1 {
     font-size: 48px;
-    color: var(--color-black);
+    color: var(--color7);
   }
   
   .hero-right {
@@ -42,41 +42,47 @@ body {
   .philosophy {
     padding: 60px;
     text-align: center;
+    background-color: var(--color9);
+    color: var(--color7);
   }
 
   .title-philosophy {
-    color: var(--color-teal);
+    color: var(--color1);
   }
   
   /* Care */
   .care {
     padding: 60px;
     text-align: center;
+    background-color: var(--color9);
+    color: var(--color7);
   }
 
   .title-care {
-    color: var(--color-lavender);
+    color: var(--color5);
   }
 
   /* About */
   .about {
     padding: 60px;
     text-align: center;
+    background-color: var(--color9);
+    color: var(--color7);
   }
 
   .title-about {
-    color: var(--color-purple);
+    color: var(--color4);
   }
 
   /* Contact */
   .contact-section {
-    background-color: var(--color-blue-gray);
+    background-color: var(--color2);
     padding: 80px 40px;
-    color: var(--color-white);
+    color: var(--color8);
   }
   
   .title-contact {
-    color: var(--color-white);
+    color: var(--color7);
   }
   
   .contact-container {
@@ -99,7 +105,7 @@ body {
       display: flex;
       align-items: flex-start;
       gap: 18px;
-      color: var(--color-white);
+      color: var(--color7);
     }
     
     .contact-icon {
@@ -127,11 +133,11 @@ body {
 
     /* Contact Form */
     .contact-form-card {
-      background: white;
+      background: var(--color8);
       border-radius: 18px;
       padding: 28px;
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-      color: var(--color-black);
+      color: var(--color7);
     }
     
     .contact-form {
@@ -154,13 +160,14 @@ body {
       font-size: 1rem;
       outline: none;
       box-sizing: border-box;
-      color: var(--color-black);
+      color: var(--color10);
+      background-color: var(--color9);
     }
 
     .contact-form input:focus,
     .contact-form textarea:focus {
       outline: none;
-      border: 2px solid var(--color-blue-gray); 
+      border: 2px solid var(--color2); 
       box-shadow: 0 0 0 3px rgba(75, 102, 129, 0.2); 
     }
     
@@ -173,7 +180,7 @@ body {
       padding: 14px 20px;
       border: none;
       border-radius: 12px;
-      background-color: var(--color-purple);
+      background-color: var(--color4);
       color: white;
       font-size: 1rem;
       font-weight: 600;

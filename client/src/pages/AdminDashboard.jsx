@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
+import "../styles/admindashboard.css";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
@@ -104,18 +105,22 @@ const AdminDashboard = () => {
     return (
         <div>
             <header className="topbar">
-                <div className="logo">CH</div>
-                <div className="header-text">
-                    <h1>{t('admin.title')}</h1>
-                    <p>{t('admin.welcome')}</p>
+                <div className="admin-identity">
+                    <div className="admin-avatar">AD</div>
+                    <div className="header-text">
+                        <h1>{t('admin.title')}</h1>
+                        <p>{t('admin.welcome')}</p>
+                    </div>
                 </div>
+                
                 <div className="top-actions">
-                    <button>{t('nav.home')}</button>
-                    <button>{t('nav.logout')}</button>
+                    <button type="button" className="logout-button">
+                        {t('nav.logout')}
+                    </button>
                 </div>
             </header>
 
-            <nav className="tabs">
+            <nav className="admin-tabs" aria-label="Admin dashboard sections">
                 <button className={tab === "appointments" ? "active" : ""} onClick={() => setTab("appointments")}>
                     {t('admin.tabs.appointments')}
                 </button>
@@ -132,9 +137,10 @@ const AdminDashboard = () => {
 
             <main className="content">
                 {tab === "appointments" && (
-                    <div>
+                    <div className="admin-table-card">
                         <h2>{t('admin.tabs.appointments')}</h2>
-                        <table border="1" cellPadding="10">
+                        <p className="admin-table-description">View and manage scheduled appointments</p>
+                        <table className="admin-table">
                             <thead>
                                 <tr>
                                     <th>{t('admin.table.patient')}</th>
@@ -149,7 +155,11 @@ const AdminDashboard = () => {
                                         <td>{a.name}</td>
                                         <td>{a.service}</td>
                                         <td>{a.date}</td>
-                                        <td>{a.status}</td>
+                                        <td>
+                                            <span className={`admin-status admin-status-${a.status.toLowerCase()}`}>
+                                                {a.status}
+                                            </span>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -158,7 +168,7 @@ const AdminDashboard = () => {
                 )}
                 
                 {tab === "accounts" && (
-                    <div>
+                    <div className="admin-table-card">
                         <div
                             style={{
                                 display: "flex",
@@ -186,7 +196,7 @@ const AdminDashboard = () => {
                             </button>
                         </div>
 
-                        <table border="1" cellPadding="10">
+                        <table className="admin-table admin-accounts-table">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -207,13 +217,17 @@ const AdminDashboard = () => {
                                         <td>{account.email}</td>
                                         <td>{account.role}</td>
                                         <td>{account.created}</td>
-                                        <td>{account.status}</td>
+                                        <td>
+                                            <span className={`admin-status admin-status-${account.status.toLowerCase()}`}>
+                                                {account.status}
+                                            </span>
+                                        </td>
                                         <td>{account.lastLogin}</td>
                                         <td>
-                                            <button style={{ marginRight: "8px", cursor: "pointer" }}>
+                                            <button className="admin-table-action">
                                                 Edit
                                             </button>
-                                            <button style={{ cursor: "pointer", color: "red" }}>
+                                            <button className="admin-table-action admin-table-delete">
                                                 Delete
                                             </button>
                                         </td>
