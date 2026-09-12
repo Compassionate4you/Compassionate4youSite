@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './styles/accessibility.css';
 
 function AccessibilityPanel() {
-    const { t, i18n } = useTranslation();
+    const { t} = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [textSize, setTextSize] = useState('default');
     const [theme, setTheme] = useState('light');
@@ -105,21 +105,6 @@ function AccessibilityPanel() {
                     <button className={`opt-btn full-width ${contrastOn ? 'active' : ''}`} onClick={() => setContrastOn(!contrastOn)}>
                         {contrastOn ? t('accessibility.enabled') : t('accessibility.disabled')}
                     </button>
-                </div>
-
-                {/* Language */}
-                <div className="section">
-                    <div className="section-label">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                        </svg>
-                        {t('accessibility.language')}
-                    </div>
-                    <select value={i18n.language} onChange={handleLanguageChange} aria-label={t('accessibility.selectLanguage')}>
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                    </select>
                 </div>
 
                 <div className="notice">
