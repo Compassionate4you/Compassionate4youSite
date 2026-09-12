@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 import '../styles/portal.css';
 
 function LoginPage() {
@@ -32,6 +34,8 @@ function LoginPage() {
             setErrorKey(result.errorKey);
         }
     };
+    const navigate = useNavigate();
+
 
     return (
         <div>
@@ -95,6 +99,9 @@ function LoginPage() {
                             </Link>
                         </div>
                     </form>
+                    <button className="btn-primary" onClick={() => navigate('/portal')}>
+                        {t('login.signIn')}
+                    </button>
                 </div>
             </div>
         </div>

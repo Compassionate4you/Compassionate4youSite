@@ -10,6 +10,8 @@ import LoginPage from "../pages/LoginPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import Scheduling from "../pages/AcuityScheduling";
 
+import ContentEditor from "../pages/ContentEditor";
+import ClientSchedulingConfirmation from "../pages/ClientSchedulingConfirmation";
 function AppRoutes() {
     return (
         <Routes>
@@ -26,6 +28,8 @@ function AppRoutes() {
                 path="/AcuityScheduling"
                 element={<Scheduling />}
             />
+            <Route path="/admin/content-editor" element={<ContentEditor />} />
+            <Route path="/confirmation" element={<ClientSchedulingConfirmation />} />
         </Routes>
     );
 }
