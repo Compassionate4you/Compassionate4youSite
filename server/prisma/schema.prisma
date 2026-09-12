@@ -10,31 +10,25 @@ datasource db {
   provider = "postgresql"
 }
 
-// Password-reset user model (DT-341), mirrored from the database so Prisma
-// does not treat the existing table as removable. The authoritative copy of
-// this model lives on the branch that created it.
 model User {
-  id       String @id
-  email    String @unique
-  password String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  resetToken       String?   @unique
-  resetTokenExpiry DateTime?
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  resetToken        String?   @unique
+  resetTokenExpiry  DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
-// DT-397: chatbot history only. The rest of the schema (appointments,
-// services) is owned by another ticket - userId here is a plain string so the
-// two can be reconciled without a forced relation.
+// DT-397: chatbot history. userId is a plain string rather than a relation so
+// it can be linked to User once accounts and chat sessions are tied together.
 model ChatSession {
   id String @id @default(uuid())
 
   // Browser-generated session id, sent by the client on every request.
   clientSessionId String @unique @map("client_session_id")
 
-  // Null for guests. Links to the users table once auth exists.
+  // Null for guests.
   userId String? @map("user_id")
 
   startedAt    DateTime @default(now()) @map("started_at")

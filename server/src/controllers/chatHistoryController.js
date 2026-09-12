@@ -1,5 +1,5 @@
 // DT-396 / DT-398: chat history storage.
-const { prisma } = require('../config/db');
+const prisma = require('../config/db');
 
 // How many messages we keep per session.
 const HISTORY_LIMIT = 50;

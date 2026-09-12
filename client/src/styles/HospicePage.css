@@ -1,104 +1,283 @@
-.hospice-page {
-    min-height: 100vh;
-    background-color: #f7f7f2;
-    color: #1f1f1f;
-    font-family: Arial, sans-serif;
-  }
-  
-  .hospice-hero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 40px;
-    padding: 70px 60px;
-    background-color: #4f7d6a;
+:root {
+    --color11: #eceaea;
+}
+
+[theme='dark'] {
+    --color11: #bdbdbd;
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--color8);
+  margin: 0;
+  padding: 0;
+}
+
+.HospiceBanner{
+    background-color: var(--color3);
+    background-image: url(https://img1.wsimg.com/isteam/stock/QzRRBY1/:/rs=w:1200,h:600,cg:true,m/cr=w:1200,h:600);
+    background-blend-mode: overlay;
+    background-size: cover;
+    background-position: center;
+    min-height: 600px;
+    max-height: 1000px;
     color: white;
-    flex-wrap: wrap;
-  }
-  
-  .hospice-hero-left {
-    flex: 1;
-    min-width: 280px;
-  }
-  
-  .hospice-hero-left h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    line-height: 1.2;
-  }
-  
-  .hospice-hero-left p {
-    font-size: 1.15rem;
-    line-height: 1.7;
-    max-width: 600px;
-  }
-  
-  .hospice-hero-right {
-    flex: 1;
-    min-width: 280px;
+}
+
+.HospiceBannerMiddle{
+    padding-left: 45%;
+    padding-right: 10%;
+    padding-top: 50px;
+}
+
+.HospiceBlurb{
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.HospiceTitle{
+    display: flex;
+    align-items: center;
+}
+
+.HospiceIcon{
+    width: 55px;
+    height: 55px;
+    background-color: var(--color5);
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-  }
-  
-  .hospice-hero-right img {
-    width: 100%;
-    max-width: 500px;
-    border-radius: 12px;
-    object-fit: cover;
-  }
-  
-  .hospice-services {
-    padding: 60px;
-    background-color: #ffffff;
-  }
-  
-  .hospice-services h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #2f5d50;
-  }
-  
-  .hospice-services ul {
-    padding-left: 20px;
-    margin: 0;
-  }
-  
-  .hospice-services li {
-    margin-bottom: 14px;
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-  
-  .hospice-philosophy {
-    padding: 60px;
-    background-color: #edf3ef;
-  }
-  
-  .hospice-philosophy h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #2f5d50;
-  }
-  
-  .hospice-philosophy p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    max-width: 800px;
-  }
-  
-  @media (max-width: 768px) {
-    .hospice-hero {
-      flex-direction: column;
-      text-align: center;
-      padding: 50px 25px;
-    }
-  
-    .hospice-services,
-    .hospice-philosophy {
-      padding: 40px 25px;
-    }
-  
-    .hospice-hero-left h1 {
-      font-size: 2.2rem;
-    }
-  }
+    font-size: 32px;
+}
+
+.HospiceTitleText{
+    font-size: 55px;
+    display: inline-flex;
+    padding-left: 10px;
+}
+
+.HospiceDescription{
+    width: 40%;
+}
+
+.HospiceContactButton{
+    background-color: var(--color8);
+    padding: 10px;
+    width: 5%;
+    min-width: 155px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: var(--color9);
+    transition-duration: 0.75s;
+    color: var(--color7);
+}
+
+.HospiceContactButton:hover {
+    background-color: lightblue;
+    border-color: blue;
+    transition-duration: 0.75s;
+    color: var(--color8);
+}
+
+.HospiceHomeButton{
+    background-color: var(--color9);
+    padding: 10px;
+    width: 5%;
+    min-width: 155px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: var(--color10);
+    transition-duration: 0.75s;
+}
+
+.HospiceHomeButton:hover {
+    background-color: lightblue;
+    border-color: blue;
+    transition-duration: 0.75s;
+}
+
+.HospiceInformationCards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.HospiceInformationCard{
+    background-color: var(--color3);
+    border-radius: 10px;
+    padding: 15px;
+    width: 30%;
+    transition-duration: 0.75s;
+}
+
+.HospiceInformationCard:hover{
+    background-color: var(--color4);
+    transition-duration: 0.75s;
+}
+
+.HospiceInformationCardTitle{
+    color: var(--color11);
+    font-size: 25px;
+    margin: 10px;
+}
+
+.HospiceInformationCardBottom{
+    color: rgb(213, 216, 221);
+    margin: 10px;
+}
+
+.UnderstandingHospiceSection {
+    background-color: var(--color8);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+h2{
+    text-align: center;
+    color: var(--color10);
+    font-size: 40px;
+    padding: 10px;
+}
+
+.HospiceCareAndBenefits{
+    background-color: var(--color9);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.HospiceCareAndBenefits h2 {
+    color: var(--color7);
+}
+
+.HospiceComprehensiveServices{
+    background-color: var(--color8);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.HospiceAboveAndBeyond{
+    background-color: var(--color9);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.HospiceAboveAndBeyondText{
+    color: var(--color7);
+    margin-left: 20%;
+    margin-right:20%;
+    padding-bottom: 10px;
+}
+
+.HospiceAboveAndBeyond h2 {
+    color: var(--color7);
+}
+
+.HospiceAboveAndBeyondCard{
+    background-color: var(--color3);
+    border-radius: 10px;
+    padding: 15px;
+    width: 50%;
+    transition-duration: 0.75s;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.HospiceAboveAndBeyondCard:hover{
+    background-color: var(--color4);
+    transition-duration: 0.75s;
+}
+
+.HospiceCheckmark{
+    display:inline-block;
+    width:36px;
+    height:36px;
+}
+
+.HospiceAboveAndBeyondCardText{
+    display:inline-block;
+    color: lightgrey;
+    font-size: 25px;
+    margin-left: 20px;
+}
+
+.HospiceProcess{
+    background-color: var(--color8);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.HospiceProcessSteps{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.HospiceProcessStep{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: var(--color7);
+}
+
+.HospiceProcessCircle{
+    background-color: green;
+    border-radius: 50%;
+    height: 120px;
+    width:120px;
+    text-align: center;
+    color: lightgrey;
+    font-size: 80px;
+}
+
+.HospiceProcessStepTitle{
+    text-align: center;
+}
+
+.HospiceProcessStepText{
+    text-align: center;
+    width: 300px;
+}
+
+.HospiceContact{
+    background-color: var(--color3);
+    min-height: 260px;
+}
+
+.HospiceContactMiddle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;;
+    gap: 20px;
+}
+
+.HospiceContactText{
+    max-width: 350px;
+    color: white;
+}
+
+.HospiceContact h2 {
+    color: white;
+}
+
+.HospiceContactButtons{
+    display:flex;
+    gap: 10px;
+}
