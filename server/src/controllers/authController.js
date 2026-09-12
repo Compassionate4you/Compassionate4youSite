@@ -85,5 +85,34 @@ async function forgotPassword(req, res) {
 
     return res.status(200).json(genericResponse);
 }
+async function resetPassword(req, res) {
+    const { token, newPassword } = req.body;
 
-module.exports = { signup, login, forgotPassword };
+    if (!token || typeof token !== 'string') {
+        return sendValidationError(res, 'A valid reset token is required.', 'token');
+    }
+
+    if (!isValidPassword(newPassword)) {
+        return sendValidationError(res, getPasswordRequirements(), 'newPassword');
+    }
+
+    const user = await prisma.user.findUnique({ where: { resetToken: token } });
+
+    if (!user || !user.resetTokenExpiry || user.resetTokenExpiry < new Date()) {
+        return sendValidationError(res, 'This reset link is invalid or has expired.', 'token');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+        where: { id: user.id },
+        data: {
+            password: hashedPassword,
+            resetToken: null,
+            resetTokenExpiry: null,
+        },
+    });
+
+    return res.status(200).json({ success: true, message: 'Your password has been updated successfully.' });
+}
+module.exports = { signup, login, forgotPassword, resetPassword };
