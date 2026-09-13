@@ -14,12 +14,14 @@ body {
   .hero {
     display: flex;
     height: 80vh;
+    background-color: var(--color-light-green);
   }
   
   .hero-left {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    background: var(--color3);
-    color: white;
+    background: var(--color-light-green);
     padding: 60px;
   }
   
@@ -30,6 +32,8 @@ body {
   
   .hero-right {
     flex: 1;
+    overflow: hidden;
+    border-radius: 35% 0 0 10%;
   }
   
   .hero-right img {
@@ -37,7 +41,19 @@ body {
     height: 100%;
     object-fit: cover;
   }
-  
+
+  /* Language Selector */
+  .language-selector {
+    margin-top: auto;
+    margin-bottom: 60px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+.language-selector select{
+  margin-top: 5px;
+}
+
   /* Philosophy */
   .philosophy {
     padding: 60px;
@@ -47,10 +63,10 @@ body {
   }
 
   .title-philosophy {
-    color: var(--color1);
+    color: var(--color-black);
   }
   
-  /* Care */
+  /* Caring Since 2021 */
   .care {
     padding: 60px;
     text-align: center;
@@ -59,8 +75,69 @@ body {
   }
 
   .title-care {
-    color: var(--color5);
+    color: var(--color-black);
   }
+
+    /* Card layout */
+    .info-card {
+      max-width: 1300px;
+      margin: 60px auto 0;
+      padding: 48px 56px;
+      background: #f3f3f3;
+      border: 3px solid #111;
+      border-radius: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 56px;
+    }
+
+    .info-card.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .info-card-image,
+    .info-card-content {
+      flex: 1;
+    }
+
+    .info-card-image {
+      display: flex;
+      justify-content: center;
+    }
+
+    .info-card-image img {
+      width: 100%;
+      max-width: 560px;
+      height: 310px;
+      object-fit: cover;
+      border-radius: 24px;
+      display: block;
+    }
+
+    .info-card-content {
+      text-align: center;
+    }
+
+    .info-card-content h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #111;
+    }
+
+    .info-card-content p {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: #222;
+      max-width: 520px;
+      margin: 0 auto 24px;
+    }
+
+    .info-card-content p:last-child {
+      margin-bottom: 0;
+    }
 
   /* About */
   .about {
@@ -71,12 +148,12 @@ body {
   }
 
   .title-about {
-    color: var(--color4);
+    color: var(--color-black);
   }
 
   /* Contact */
   .contact-section {
-    background-color: var(--color2);
+    background-color: var(--color-sage);
     padding: 80px 40px;
     color: var(--color8);
   }
@@ -180,7 +257,7 @@ body {
       padding: 14px 20px;
       border: none;
       border-radius: 12px;
-      background-color: var(--color4);
+      background-color: var(--color-blue-gray);
       color: white;
       font-size: 1rem;
       font-weight: 600;
@@ -201,3 +278,5 @@ body {
         font-size: 2.25rem;
       }
     }
+
+    

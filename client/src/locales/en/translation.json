@@ -1,325 +1,372 @@
 {
-    "nav": {
-        "home": "Home",
-        "homeHealth": "Home Health",
-        "hospice": "Hospice",
-        "locations": "Locations",
-        "schedule": "Schedule",
-        "login": "Login",
-        "portal": "Portal",
-        "admin": "Admin",
-        "logout": "Logout"
-    },
-    "landing": {
-        "heroTitle": "Compassionate Care for Your Loved Ones",
-        "heroSubtitle": "Professional home health and hospice services dedicated to providing quality care with dignity and respect.",
-        "heroImageAlt": "Compassionate care services",
-        "philosophyTitle": "Our Philosophy",
-        "philosophyText": "We believe in treating our patients with dignity, respect, and empathy. We strive to make their end-of-life journey as comfortable and meaningful as possible.",
-        "caringSinceTitle": "Caring Since 2021",
-        "caringSinceText": "Providing compassionate care in the comfort of your home since 2021.",
-        "aboutTitle": "About",
-        "aboutText": "Compassionate Home Health & Hospice is a family-owned and operated business founded by Jane Smith, RN. With over 15 years of experience in healthcare, Jane started this company to provide personalized, compassionate care to patients in their homes. Our team of dedicated professionals is committed to enhancing the quality of life for our patients and their families through comprehensive home health and hospice services.",
-        "contactTitle": "Contact",
-        "contactPhoneLabel": "Phone",
-        "contactPhone": "(925) 425-7104",
-        "contactEmailLabel": "Email",
-        "contactEmail": "compassionateforall@gmail.com",
-        "contactFaxLabel": "Fax",
-        "contactFax": "(844) 361-1170",
-        "contactAddressLabel": "Address",
-        "contactAddressLine1": "1501 N Broadway, Ste 350A/B",
-        "contactAddressLine2": "Walnut Creek, CA 94596",
-        "contactFormName": "Name",
-        "contactFormNamePlaceholder": "Your name",
-        "contactFormEmail": "Email",
-        "contactFormEmailPlaceholder": "your.email@example.com",
-        "contactFormMessage": "Message",
-        "contactFormMessagePlaceholder": "How can we help you?",
-        "contactFormButton": "Send Message"
-    },
-    "homeHealth": {
-        "title": "Home Health",
-        "subtitle": "Professional healthcare services delivered in the comfort and safety of your home, promoting independence and quality of life.",
-        "servicesHeading": "Our Home Health Services",
-        "services": {
-            "doctors": "Medical Doctors",
-            "doctorsDesc": "Our MDs develop and review care plans, manage symptoms, and act as a medical resource.",
-            "pt": "Physical Therapists (PT & PTA)",
-            "ptDesc": "Help patients maintain mobility, manage pain, and improve quality of life.",
-            "ot": "Occupational Therapists (OT)",
-            "otDesc": "Assist patients in maintaining independence in daily activities.",
-            "nurses": "Skilled Nurses (RN, LVN)",
-            "nursesDesc": "Collaborate with physicians and provide medical care at home.",
-            "st": "Speech Therapists (ST)",
-            "stDesc": "Help patients improve communication, swallowing, and cognitive function.",
-            "chha": "Certified Home Health Aide (CHHA)",
-            "chhaDesc": "Assist with daily activities like bathing, dressing, and meal prep.",
-            "msw": "Medical Social Workers (MSW)",
-            "mswDesc": "Provide emotional support and connect patients with community resources.",
-            "multilingual": "Multi-Lingual",
-            "multilingualDesc": "Services available in multiple languages to support diverse patient needs."
-        }
-    },
-    "hospice": {
-        "blurb": {
-            "title": "Hospice Care",
-            "description": "Providing comfort, dignity, and compassionate support during life's final journey. We're here for patients and their families every step of the way.",
-            "contactButton": "Contact Our Team"
-        },
-        "understanding": {
-            "title": "Understanding Hospice Care",
-            "cards": {
-                "card1": {
-                    "title": "What is Hospice",
-                    "description": "Hospice care focuses on providing comfort, quality of life, and support for people nearing the end of life, rather than curing the illness. It is provided by a team of professionals who manage pain and other symptoms, and address emotional, physical, spiritual, and social needs of both the patient and their family through passion. Hospice care can be provided in a person's home, a dedicated hospice facility, and the goal is to help the person live their remaining time with dignity and as peacefully as possible."
-                },
-                "card2": {
-                    "title": "Who is eligible",
-                    "description": "No matter your faith or beliefs, you and your family can receive spiritual and emotional support from our care team."
-                },
-                "card3": {
-                    "title": "How is hospice different?",
-                    "description": "Our team provides a compassionate environment for patients and families, so they can feel supported and understood during end-of-life care"
-                },
-                "card4": {
-                    "title": "Why might I choose?",
-                    "description": "Our hospice team provides emotional and spiritual support to families as they navigate end-of-life care."
-                },
-                "card5": {
-                    "title": "Who provides the care?",
-                    "description": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
-                }
-            }
-        },
-        "careAndBenefits": {
-            "title":"Hospice Care Team & Benefits",
-            "cards": {
-                "card1": {
-                    "title": "What does hospice provide?",
-                    "description": "Hospice offers care from a team of different types of practioners who work together to meet the medical, psychological and spiritual needs of you and your family."
-                },
-                "card2": {
-                    "title": "Hours avail when in hospice care...",
-                    "description": "Hospice provides you a phone number to call 24 hours a day, 7 days a week, to help answer any questions you may have."
-                },
-                "card3": {
-                    "title": "What other benefits do patients have when they are under hospicecare",
-                    "description": {
-                        "top": "Once you are admitted into the Hospice Program, you will be provided with:",
-                        "list1": " - medical appliances",
-                        "list2": " - medical supplies",
-                        "list3": " - medications for symptoms and pain relief"
-                    }
-                },
-                "card4": {
-                    "title": "Physician",
-                    "description": "Your personal physician continues to provide your care while you're in the Hospice Program. A hospice physician works closely with your personal physician and can consult with you."
-                },
-                "card5": {
-                    "title": "Nurse",
-                    "description": "A nurse visits during the week to instruct your caregiver and to coordinate your care. A nurse informs the hospice physician of your condition on a regular basis."
-                },
-                "card6": {
-                    "title": "Social worker",
-                    "description": {
-                        "top": " - A social worker helps you and your caregiver by:",
-                        "list1": " - offering emotional support",
-                        "list2": " - assisting with practical matters, such as finding additional help in the home"
-                    }
-                }
-            }
-        },
-        "comprehensiveServices": {
-            "title": "Comprehensive Support Services",
-            "cards":{
-                "card1": {
-                    "title": "Hospiceaide/homemaker services",
-                    "description": "A hospice aide visits during the week as needed to help you and your caregiver with personal care such as changing linens, giving you a bath and helping you get dressed."
-                },
-                "card2": {
-                    "title": "Chaplain",
-                    "description": "A chaplain is a minister or counselor dedicated to meeting the spiritual needs of you and your family, no matter your religion. You and your family can ask for the chaplain anytime."
-                },
-                "card3": {
-                    "title": "Volunteer",
-                    "description": "A volunteer is someone from the community who has been trained by our Hospice Program to help you and your family. Volunteers provide services under the direction of a hospice staff member."
-                },
-                "card4": {
-                    "title": "What about medical appointments?",
-                    "description": "Your personal physician is in charge of your care, even after you're admitted to our Hospice Program. A hospice physician will work with your personal physician to provide the care your need."
-                },
-                "card5": {
-                    "title": "What kind of help might I need?",
-                    "description": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
-                },
-                "card6": {
-                    "title": "What if a difficult situation arises?",
-                    "description": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
-                }
-            }
-        },
-        "aboveAndBeyond": {
-            "title": "Above and Beyond Care",
-            "description": "We understand that hospice care affects the entire family. Our approach goes beyond medical care to provide emotional, spiritual, and practical support for everyone involved. From the initial consultation through bereavement, we walk alongside you with understanding and care.",
-            "cards": {
-                "card1": "Pain and Symptom Control",
-                "card2": "Emotional and Spiritual Support",
-                "card3": "Caregiver Guidance",
-                "card4": "Volunteer & Companionship Services",
-                "card5": "Chaplain",
-                "card6": "Grief & Bereavement Support",
-                "card7": "Hospice Aide Services"
-            }
-        },
-        "hospiceProcess": {
-            "title": "Our Care Process",
-            "cards": {
-                "card1": {
-                    "number": "1",
-                    "title": "Referral",
-                    "description": "Doctor, Hospital, or family starts the process."
-                },
-                "card2": {
-                    "number": "2",
-                    "title": "Assessment",
-                    "description": "Nurse or therapist evaluates health, abilities, and family goals."
-                },
-                "card3": {
-                    "number": "3",
-                    "title": "Care Plan",
-                    "description": "Customized plan including nursing, therapy, and supporting services."
-                },
-                "card4": {
-                    "number": "4",
-                    "title": "Ongoing Support",
-                    "description": "Regular visits, telehealth check-ins, and caregiver guidance."
-                },
-                "card5": {
-                    "number": "5",
-                    "title": "Communication",
-                    "description": "Open dialogue between patient, family, and care team."
-                }
-            }
-        },
-        "hospiceContact": {
-            "title": "We're Here to Help",
-            "description": "Our compassionate hospice team is available 24/7 to answer your questions and provide support.",
-            "contactButton": "Contact Us Today",
-            "homeButton": "Back to Home"
-        }
-    },
-    "locations": {
-        "title": "Our Location",
-        "distanceLabel": "Your distance to our office",
-        "calculating": "Calculating…",
-        "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
-        "address2": "1501 N Broadway, Ste 350A/B",
-        "address3": "Walnut Creek, CA 94596",
-        "mapTitle": "Compassionate Home Health & Hospice location",
-        "getDirections": "Get Directions"
-    },
-    "portal": {
-        "title": "Customer Portal",
-        "welcome": "Welcome, John Doe",
-        "welcomeBanner": "Welcome back, John Doe!",
-        "welcomeSubtitle": "Manage your appointments and health care information",
-        "scheduleCard": "Schedule Appointment",
-        "scheduleCardDesc": "Book a new home health or hospice appointment",
-        "upcomingVisits": "Upcoming Visits",
-        "confirmedAppointments": "Confirmed appointments"
-    },
-    "schedule": {
-        "backToDashboard": "← Back to Dashboard",
-        "title": "Schedule an Appointment",
-        "subtitle": "Please provide your details and preferred appointment time.",
-        "fullName": "Full Name",
-        "fullNamePlaceholder": "John Doe",
-        "phone": "Phone Number",
-        "phonePlaceholder": "(555) 123-4567",
-        "email": "Email Address",
-        "emailPlaceholder": "you@example.com",
-        "serviceType": "Service Type",
-        "selectService": "Select a service",
-        "homeHealth": "Home Health",
-        "hospiceCare": "Hospice Care",
-        "generalConsultation": "General Consultation",
-        "preferredDate": "Preferred Date",
-        "notes": "Additional Notes",
-        "notesPlaceholder": "Any symptoms, concerns, or requests...",
-        "confirm": "Confirm Appointment",
-        "cancel": "Cancel",
-        "successMsg": "Appointment request submitted! We will confirm your visit shortly."
-    },
-    "login": {
-        "title": "Sign In",
-        "subtitle": "Enter your credentials to continue.",
-        "email": "Email Address",
-        "emailPlaceholder": "you@example.com",
-        "password": "Password",
-        "passwordPlaceholder": "••••••••",
-        "signIn": "Sign In"
-    },
-    "admin": {
-        "title": "Admin Dashboard",
-        "welcome": "Welcome, Admin User",
-        "tabs": {
-            "appointments": "Appointments",
-            "content": "Content",
-            "locations": "Locations",
-            "accounts": "Accounts"
-        },
-        "table": {
-            "patient": "Patient",
-            "service": "Service",
-            "date": "Date",
-            "status": "Status"
-        },
-        "comingSoon": {
-            "content": "Content Page (coming soon)",
-            "locations": "Locations Page (coming soon)",
-            "accounts": "Accounts Page (coming soon)"
-        }
-    },
-    "footer": {
-        "tagline": "Providing compassionate care in the comfort of your home since 2021.",
-        "quickLinks": "Quick Links",
-        "contactUs": "Contact Us",
-        "phone": "(925) 425-7104",
-        "email": "info@compassionate4you.com",
-        "address1": "1501 N Broadway, Ste 350A/B",
-        "address2": "Walnut Creek, CA 94596",
-        "officeHours": "Office Hours",
-        "weekdays": "Monday – Friday",
-        "weekdayHours": "8:00 AM – 6:00 PM",
-        "saturday": "Saturday",
-        "saturdayHours": "9:00 AM – 2:00 PM",
-        "sunday": "Sunday",
-        "sundayClosed": "Closed",
-        "copyright": "Compassionate Home Health & Hospice. All rights reserved."
-    },
-    "accessibility": {
-        "openPanel": "Open accessibility settings",
-        "closePanel": "Close accessibility panel",
-        "title": "Accessibility",
-        "tools": "Accessibility Tools",
-        "textSize": "Text Size",
-        "default": "Default",
-        "large": "Large",
-        "extraLarge": "Extra Large",
-        "theme": "Theme",
-        "light": "Light",
-        "dark": "Dark",
-        "highContrast": "High Contrast",
-        "enabled": "Enabled",
-        "disabled": "Disabled",
-        "language": "Language",
-        "selectLanguage": "Select language",
-        "screenReaderNotice": "This site is optimized for screen readers. Press Tab to navigate through interactive elements.",
-        "aiAssistant": "AI Help Assistant"
-    },
-    "chatbot": {
-        "title": "Compassionate4you Chat",
-        "placeholder": "Type your question here..."
+  "nav": {
+    "welcome": "Welcome",
+    "homeHealth": "Home Health",
+    "hospice": "Hospice",
+    "locations": "Locations",
+    "schedule": "Schedule",
+    "login": "Login",
+    "portal": "Portal",
+    "admin": "Admin",
+    "logout": "Logout"
+  },
+  "landing": {
+    "heroTitle": "Compassionate Care for Your Loved Ones",
+    "heroSubtitle": "Professional home health and hospice services dedicated to providing quality care with dignity and respect.",
+    "heroImageAlt": "Compassionate care services",
+    "philosophyTitle": "Our Philosophy",
+    "philosophyText": "We believe in treating our patients with dignity, respect, and empathy. We strive to make their end-of-life journey as comfortable and meaningful as possible.",
+    "caringSinceTitle": "Caring Since 2021",
+    "caringSinceText": "Providing compassionate care in the comfort of your home since 2021.",
+    "aboutTitle": "About",
+    "aboutText": "Compassionate Home Health & Hospice is a family-owned and operated business founded by Jane Smith, RN. With over 15 years of experience in healthcare, Jane started this company to provide personalized, compassionate care to patients in their homes. Our team of dedicated professionals is committed to enhancing the quality of life for our patients and their families through comprehensive home health and hospice services.",
+    "contactTitle": "Contact",
+    "contactPhoneLabel": "Phone",
+    "contactPhone": "(925) 425-7104",
+    "contactEmailLabel": "Email",
+    "contactEmail": "compassionateforall@gmail.com",
+    "contactFaxLabel": "Fax",
+    "contactFax": "(844) 361-1170",
+    "contactAddressLabel": "Address",
+    "contactAddressLine1": "1501 N Broadway, Ste 350A/B",
+    "contactAddressLine2": "Walnut Creek, CA 94596",
+    "contactFormName": "Name",
+    "contactFormNamePlaceholder": "Your name",
+    "contactFormEmail": "Email",
+    "contactFormEmailPlaceholder": "your.email@example.com",
+    "contactFormMessage": "Message",
+    "contactFormMessagePlaceholder": "How can we help you?",
+    "contactFormButton": "Send Message"
+  },
+  "homeHealth": {
+    "title": "Home Health",
+    "subtitle": "Professional healthcare services delivered in the comfort and safety of your home, promoting independence and quality of life.",
+    "servicesHeading": "Our Home Health Services",
+    "services": {
+      "doctors": "Medical Doctors",
+      "doctorsDesc": "Our MDs develop and review care plans, manage symptoms, and act as a medical resource.",
+      "pt": "Physical Therapists (PT & PTA)",
+      "ptDesc": "Help patients maintain mobility, manage pain, and improve quality of life.",
+      "ot": "Occupational Therapists (OT)",
+      "otDesc": "Assist patients in maintaining independence in daily activities.",
+      "nurses": "Skilled Nurses (RN, LVN)",
+      "nursesDesc": "Collaborate with physicians and provide medical care at home.",
+      "st": "Speech Therapists (ST)",
+      "stDesc": "Help patients improve communication, swallowing, and cognitive function.",
+      "chha": "Certified Home Health Aide (CHHA)",
+      "chhaDesc": "Assist with daily activities like bathing, dressing, and meal prep.",
+      "msw": "Medical Social Workers (MSW)",
+      "mswDesc": "Provide emotional support and connect patients with community resources.",
+      "multilingual": "Multi-Lingual",
+      "multilingualDesc": "Services available in multiple languages to support diverse patient needs."
     }
+  },
+  "hospice": {
+    "blurb": {
+      "title": "Hospice Care",
+      "description": "Providing comfort, dignity, and compassionate support during life's final journey. We're here for patients and their families every step of the way.",
+      "contactButton": "Contact Our Team"
+    },
+    "understanding": {
+      "title": "Understanding Hospice Care",
+      "cards": {
+        "card1": {
+          "title": "What is Hospice",
+          "description": "Hospice care focuses on providing comfort, quality of life, and support for people nearing the end of life, rather than curing the illness. It is provided by a team of professionals who manage pain and other symptoms, and address emotional, physical, spiritual, and social needs of both the patient and their family through passion. Hospice care can be provided in a person's home, a dedicated hospice facility, and the goal is to help the person live their remaining time with dignity and as peacefully as possible."
+        },
+        "card2": {
+          "title": "Who is eligible",
+          "description": "No matter your faith or beliefs, you and your family can receive spiritual and emotional support from our care team."
+        },
+        "card3": {
+          "title": "How is hospice different?",
+          "description": "Our team provides a compassionate environment for patients and families, so they can feel supported and understood during end-of-life care"
+        },
+        "card4": {
+          "title": "Why might I choose?",
+          "description": "Our hospice team provides emotional and spiritual support to families as they navigate end-of-life care."
+        },
+        "card5": {
+          "title": "Who provides the care?",
+          "description": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
+        }
+      }
+    },
+    "careAndBenefits": {
+      "title": "Hospice Care Team & Benefits",
+      "cards": {
+        "card1": {
+          "title": "What does hospice provide?",
+          "description": "Hospice offers care from a team of different types of practioners who work together to meet the medical, psychological and spiritual needs of you and your family."
+        },
+        "card2": {
+          "title": "Hours avail when in hospice care...",
+          "description": "Hospice provides you a phone number to call 24 hours a day, 7 days a week, to help answer any questions you may have."
+        },
+        "card3": {
+          "title": "What other benefits do patients have when they are under hospicecare",
+          "description": {
+            "top": "Once you are admitted into the Hospice Program, you will be provided with:",
+            "list1": " - medical appliances",
+            "list2": " - medical supplies",
+            "list3": " - medications for symptoms and pain relief"
+          }
+        },
+        "card4": {
+          "title": "Physician",
+          "description": "Your personal physician continues to provide your care while you're in the Hospice Program. A hospice physician works closely with your personal physician and can consult with you."
+        },
+        "card5": {
+          "title": "Nurse",
+          "description": "A nurse visits during the week to instruct your caregiver and to coordinate your care. A nurse informs the hospice physician of your condition on a regular basis."
+        },
+        "card6": {
+          "title": "Social worker",
+          "description": {
+            "top": " - A social worker helps you and your caregiver by:",
+            "list1": " - offering emotional support",
+            "list2": " - assisting with practical matters, such as finding additional help in the home"
+          }
+        }
+      }
+    },
+    "comprehensiveServices": {
+      "title": "Comprehensive Support Services",
+      "cards": {
+        "card1": {
+          "title": "Hospiceaide/homemaker services",
+          "description": "A hospice aide visits during the week as needed to help you and your caregiver with personal care such as changing linens, giving you a bath and helping you get dressed."
+        },
+        "card2": {
+          "title": "Chaplain",
+          "description": "A chaplain is a minister or counselor dedicated to meeting the spiritual needs of you and your family, no matter your religion. You and your family can ask for the chaplain anytime."
+        },
+        "card3": {
+          "title": "Volunteer",
+          "description": "A volunteer is someone from the community who has been trained by our Hospice Program to help you and your family. Volunteers provide services under the direction of a hospice staff member."
+        },
+        "card4": {
+          "title": "What about medical appointments?",
+          "description": "Your personal physician is in charge of your care, even after you're admitted to our Hospice Program. A hospice physician will work with your personal physician to provide the care your need."
+        },
+        "card5": {
+          "title": "What kind of help might I need?",
+          "description": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
+        },
+        "card6": {
+          "title": "What if a difficult situation arises?",
+          "description": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
+        }
+      }
+    },
+    "aboveAndBeyond": {
+      "title": "Above and Beyond Care",
+      "description": "We understand that hospice care affects the entire family. Our approach goes beyond medical care to provide emotional, spiritual, and practical support for everyone involved. From the initial consultation through bereavement, we walk alongside you with understanding and care.",
+      "cards": {
+        "card1": "Pain and Symptom Control",
+        "card2": "Emotional and Spiritual Support",
+        "card3": "Caregiver Guidance",
+        "card4": "Volunteer & Companionship Services",
+        "card5": "Chaplain",
+        "card6": "Grief & Bereavement Support",
+        "card7": "Hospice Aide Services"
+      }
+    },
+    "hospiceProcess": {
+      "title": "Our Care Process",
+      "cards": {
+        "card1": {
+          "number": "1",
+          "title": "Referral",
+          "description": "Doctor, Hospital, or family starts the process."
+        },
+        "card2": {
+          "number": "2",
+          "title": "Assessment",
+          "description": "Nurse or therapist evaluates health, abilities, and family goals."
+        },
+        "card3": {
+          "number": "3",
+          "title": "Care Plan",
+          "description": "Customized plan including nursing, therapy, and supporting services."
+        },
+        "card4": {
+          "number": "4",
+          "title": "Ongoing Support",
+          "description": "Regular visits, telehealth check-ins, and caregiver guidance."
+        },
+        "card5": {
+          "number": "5",
+          "title": "Communication",
+          "description": "Open dialogue between patient, family, and care team."
+        }
+      }
+    },
+    "hospiceContact": {
+      "title": "We're Here to Help",
+      "description": "Our compassionate hospice team is available 24/7 to answer your questions and provide support.",
+      "contactButton": "Contact Us Today",
+      "homeButton": "Back to Home"
+    }
+  },
+  "locations": {
+    "title": "Our Location",
+    "distanceLabel": "Your distance to our office",
+    "calculating": "Calculating…",
+    "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+    "address2": "1501 N Broadway, Ste 350A/B",
+    "address3": "Walnut Creek, CA 94596",
+    "mapTitle": "Compassionate Home Health & Hospice location",
+    "getDirections": "Get Directions"
+  },
+  "portal": {
+    "title": "Customer Portal",
+    "welcome": "Welcome, John Doe",
+    "welcomeBanner": "Welcome back, John Doe!",
+    "welcomeSubtitle": "Manage your appointments and health care information",
+    "scheduleCard": "Schedule Appointment",
+    "scheduleCardDesc": "Book a new home health or hospice appointment",
+    "upcomingVisits": "Upcoming Visits",
+    "confirmedAppointments": "Confirmed appointments"
+  },
+  "schedule": {
+    "backToDashboard": "← Back to Dashboard",
+    "title": "Schedule an Appointment",
+    "subtitle": "Please provide your details and preferred appointment time.",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "John Doe",
+    "phone": "Phone Number",
+    "phonePlaceholder": "(555) 123-4567",
+    "email": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "serviceType": "Service Type",
+    "selectService": "Select a service",
+    "homeHealth": "Home Health",
+    "hospiceCare": "Hospice Care",
+    "generalConsultation": "General Consultation",
+    "preferredDate": "Preferred Date",
+    "notes": "Additional Notes",
+    "notesPlaceholder": "Any symptoms, concerns, or requests...",
+    "confirm": "Confirm Appointment",
+    "cancel": "Cancel",
+    "successMsg": "Appointment request submitted! We will confirm your visit shortly."
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "welcome": "Welcome, Admin User",
+    "tabs": {
+      "appointments": "Appointments",
+      "content": "Content",
+      "locations": "Locations",
+      "accounts": "Accounts"
+    },
+    "table": {
+      "patient": "Patient",
+      "service": "Service",
+      "date": "Date",
+      "status": "Status"
+    },
+    "comingSoon": {
+      "content": "Content Page (coming soon)",
+      "locations": "Locations Page (coming soon)",
+      "accounts": "Accounts Page (coming soon)"
+    }
+  },
+  "footer": {
+    "tagline": "Providing compassionate care in the comfort of your home since 2021.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "phone": "(925) 425-7104",
+    "email": "info@compassionate4you.com",
+    "address1": "1501 N Broadway, Ste 350A/B",
+    "address2": "Walnut Creek, CA 94596",
+    "officeHours": "Office Hours",
+    "weekdays": "Monday – Friday",
+    "weekdayHours": "8:00 AM – 6:00 PM",
+    "saturday": "Saturday",
+    "saturdayHours": "9:00 AM – 2:00 PM",
+    "sunday": "Sunday",
+    "sundayClosed": "Closed",
+    "copyright": "Compassionate Home Health & Hospice. All rights reserved."
+  },
+  "accessibility": {
+    "openPanel": "Open accessibility settings",
+    "closePanel": "Close accessibility panel",
+    "title": "Accessibility",
+    "tools": "Accessibility Tools",
+    "textSize": "Text Size",
+    "default": "Default",
+    "large": "Large",
+    "extraLarge": "Extra Large",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "highContrast": "High Contrast",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "language": "Language",
+    "selectLanguage": "Select language",
+    "screenReaderNotice": "This site is optimized for screen readers. Press Tab to navigate through interactive elements.",
+    "aiAssistant": "AI Help Assistant"
+  },
+  "chatbot": {
+    "title": "Compassionate4you Chat",
+    "placeholder": "Type your question here...",
+    "send": "Send",
+    "close": "Close chat",
+    "emptyState": "Hi! Ask me anything. I can also help with accessibility settings (text size, dark mode, high contrast).",
+    "actions": {
+      "increaseTextSize": "Increase text size",
+      "decreaseTextSize": "Decrease text size",
+      "toggleDarkMode": "Switch to dark mode",
+      "toggleLightMode": "Switch to light mode",
+      "toggleHighContrast": "Toggle high contrast"
+    },
+    "responses": {
+      "increaseTextSize": "Click below to make the text larger. You can click multiple times.",
+      "decreaseTextSize": "Click below to make the text smaller.",
+      "toggleDarkMode": "Click below to switch to dark mode.",
+      "toggleLightMode": "Click below to switch back to light mode.",
+      "toggleHighContrast": "Click below to toggle high contrast.",
+      "error": "Couldn't reach the server. Try again in a moment."
+    },
+    "faqButton": "Common questions",
+    "faqIntro": "Here are some questions people often ask:",
+    "faqLinks": {
+      "homeHealth": "Go to Home Health",
+      "hospice": "Go to Hospice",
+      "locations": "Go to Locations",
+      "schedule": "Go to Scheduling"
+    }
+  },
+  "login": {
+    "title": "Sign In",
+    "subtitle": "Enter your credentials to continue.",
+    "email": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "Sign In",
+    "signingIn": "Signing in…",
+    "forgotPassword": "Forgot password?",
+    "errors": {
+      "required": "Please enter both email and password.",
+      "invalidEmail": "That doesn't look like a valid email address.",
+      "invalidCredentials": "Email or password is incorrect. Please try again."
+    },
+    "reset": {
+      "title": "Reset your password",
+      "subtitle": "Enter the email address or phone number on your account and we'll send a reset link.",
+      "emailOrPhone": "Email address or phone number",
+      "emailOrPhonePlaceholder": "you@example.com or (555) 123-4567",
+      "submit": "Send reset link",
+      "sending": "Sending…",
+      "backToLogin": "← Back to sign in",
+      "confirmation": "If that account exists, we sent a reset link. Check your email or messages.",
+      "errors": {
+        "required": "Please enter your email or phone number.",
+        "invalid": "Please enter a valid email address or phone number."
+      }
+    }
+  }
 }

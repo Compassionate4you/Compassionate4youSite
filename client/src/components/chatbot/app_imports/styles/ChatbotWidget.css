@@ -1,9 +1,11 @@
+/* Chatbot floating launcher button (DT-326). Uses brand palette. */
+
 :root {
     --chatbot-btn-size: 60px;
-    --chatbot-btn-font-size: 24px;
-    --chatbot-btn-color: #27ae60;
-    --chatbot-btn-hover-color: #229954;
-    --chatbot-btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --chatbot-btn-font-size: 26px;
+    --chatbot-btn-color: var(--color-green, #366454);
+    --chatbot-btn-hover-color: var(--color-teal, #3A5F5F);
+    --chatbot-btn-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
 
 .chatbot-widget {
@@ -23,11 +25,19 @@
     font-size: var(--chatbot-btn-font-size);
     cursor: pointer;
     box-shadow: var(--chatbot-btn-shadow);
-    transition: all 0.3s ease;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .chatbot-toggle-btn:hover {
     background: var(--chatbot-btn-hover-color);
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.06);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.chatbot-toggle-btn:focus-visible {
+    outline: 3px solid var(--color-linkHighlight, #00aec5);
+    outline-offset: 3px;
 }

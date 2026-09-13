@@ -15,7 +15,7 @@ function Navbar() {
       </div>
 
       <ul className="nav-links">
-        <li><Link to="/">{t('nav.home')}</Link></li>
+        <li><Link to="/">{t('nav.welcome')}</Link></li>
         <li><Link to="/home-health">{t('nav.homeHealth')}</Link></li>
         <li><Link to="/hospice">{t('nav.hospice')}</Link></li>
         <li><Link to="/schedule">{t('nav.schedule')}</Link></li>
