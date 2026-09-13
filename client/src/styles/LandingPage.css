@@ -14,20 +14,20 @@ body {
   .hero {
     display: flex;
     height: 80vh;
-    background-color: var(--color-light-green);
+    background-color: var(--color5);
   }
   
   .hero-left {
     display: flex;
     flex-direction: column;
     flex: 1;
-    background: var(--color-light-green);
+    background: var(--color5);
     padding: 60px;
   }
   
   .hero-left h1 {
     font-size: 48px;
-    color: var(--color7);
+    color: var(--color5-text);
   }
   
   .hero-right {
@@ -58,24 +58,24 @@ body {
   .philosophy {
     padding: 60px;
     text-align: center;
-    background-color: var(--color9);
-    color: var(--color7);
+    background-color: var(--color1);
+    color: var(--color1-text);
   }
 
   .title-philosophy {
-    color: var(--color-black);
+    color: var(--color1-text);
   }
   
   /* Caring Since 2021 */
   .care {
     padding: 60px;
     text-align: center;
-    background-color: var(--color9);
-    color: var(--color7);
+    background-color: var(--color2);
+    color: var(--color2-text);
   }
 
   .title-care {
-    color: var(--color-black);
+    color: var(--color2-text);
   }
 
     /* Card layout */
@@ -143,23 +143,23 @@ body {
   .about {
     padding: 60px;
     text-align: center;
-    background-color: var(--color9);
-    color: var(--color7);
+    background-color: var(--color1);
+    color: var(--color1-text);
   }
 
   .title-about {
-    color: var(--color-black);
+    color: var(--color1-text);
   }
 
   /* Contact */
   .contact-section {
-    background-color: var(--color-sage);
+    background-color: var(--color6);
     padding: 80px 40px;
-    color: var(--color8);
+    color: var(--color6-text);
   }
   
   .title-contact {
-    color: var(--color7);
+    color: var(--color6-text);
   }
   
   .contact-container {
@@ -210,11 +210,11 @@ body {
 
     /* Contact Form */
     .contact-form-card {
-      background: var(--color8);
+      background: var(--color6);
       border-radius: 18px;
       padding: 28px;
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-      color: var(--color7);
+      color: var(--color6-text);
     }
     
     .contact-form {
@@ -237,8 +237,8 @@ body {
       font-size: 1rem;
       outline: none;
       box-sizing: border-box;
-      color: var(--color10);
-      background-color: var(--color9);
+      background-color: var(--color6);
+      color: var(--color6-text);
     }
 
     .contact-form input:focus,
@@ -257,8 +257,8 @@ body {
       padding: 14px 20px;
       border: none;
       border-radius: 12px;
-      background-color: var(--color-blue-gray);
-      color: white;
+      background-color: var(--cooltone2);
+      color: var(--cooltone2-text);
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;

@@ -34,23 +34,23 @@ body {
   background-color: #93B48D;
   color: white;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 95%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .navbar-title {
-  font-size: 15px;
+  font-size: 95%;
   font-weight: bold;
 }
 .navbar-subtitle {
-  font-size: 12px;
+  font-size: 75%;
   color: gray;
 }
 .navbar-right button {
   background: none;
   border: none;
-  font-size: 13px;
+  font-size: 80%;
   cursor: pointer;
   padding: 6px 12px;
 }
@@ -74,12 +74,12 @@ body {
   margin-bottom: 24px;
 }
 .welcome-banner h1 {
-  font-size: 24px;
+  font-size: 150%;
   margin: 0 0 8px 0;
 }
 .welcome-banner p {
   margin: 0;
-  font-size: 14px;
+  font-size: 95%;
 }
  
 /* CARDS */
@@ -99,16 +99,16 @@ body {
   border-color: #aaa;
 }
 .card h3 {
-  font-size: 15px;
+  font-size: 95%;
   margin: 0 0 8px 0;
 }
 .card p {
-  font-size: 13px;
+  font-size: 90%;
   color: gray;
   margin: 0;
 }
 .visit-number {
-  font-size: 32px;
+  font-size: 200%;
   font-weight: bold;
   color: #2d5a1b;
   margin: 4px 0;
@@ -124,11 +124,11 @@ body {
   color: gray;
 }
 .section-box h2 {
-  font-size: 18px;
+  font-size: 120%;
   margin: 0 0 4px 0;
 }
 .section-box .desc {
-  font-size: 13px;
+  font-size: 90%;
   margin: 0 0 18px 0;
 }
 
@@ -143,14 +143,14 @@ table {
 }
 th {
   text-align:left;
-  font-size: 13px;
+  font-size: 90%;
   color: gray;
   padding: 8px 10px 12px 10px;
   border-bottom: 1px solid #ddd;
 }
 td {
   padding: 12px 10px;
-  font-size: 13px;
+  font-size: 90%;
   border-bottom: 1px solid #eee;
 }
 
@@ -158,7 +158,7 @@ td {
 .badge {
   padding: 4px 12px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 80%;
   font-weight: bold;
 }
 .badge-confirmed {
@@ -175,7 +175,7 @@ td {
   background: none;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 75%;
   padding: 4px 10px;
   cursor: pointer;
   margin-right: 6px;
@@ -187,7 +187,7 @@ td {
   background: none;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 75%;
   padding: 4px 10px;
   cursor: pointer;
   color: red;
@@ -214,7 +214,7 @@ td {
   padding: 10px 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 95%;
   font-family: Arial, sans-serif;
   box-sizing: border-box;
 }
@@ -231,7 +231,7 @@ td {
 .back-btn {
   background: none;
   border: none;
-  font-size: 13px;
+  font-size: 95%;
   color: gray;
   cursor: pointer;
   margin-bottom: 18px;
@@ -248,7 +248,7 @@ td {
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 95%;
   font-weight: bold;
   cursor: pointer;
   margin-right: 10px;
@@ -262,7 +262,7 @@ td {
   color: black;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 95%;
   cursor: pointer;
 }
 .btn-secondary:hover {
@@ -333,7 +333,7 @@ td {
 }
 
 .login-forgot-link {
-  font-size: 13px;
+  font-size: 80%;
   color: #4B6681;
   text-decoration: none;
   background: none;
@@ -489,6 +489,7 @@ td {
   font-size: 13px;
   color: gray;
   margin: 0 0 12px 0;
+
 }
 .session-item {
   display: flex;
@@ -515,6 +516,7 @@ td {
   padding-top: 16px;
   border-top: 1px solid #eee;
 }
+
 /* NOTIFICATION ICON */
 .notification-icon {
     position: relative;
@@ -555,3 +557,4 @@ td {
 .card-icon-blue { background-color: #dbeafe; color: #2563eb; }
 .card-icon-green { background-color: #dcfce7; color: #16a34a; }
 .card-icon-purple { background-color: #f3e8ff; color: #9333ea; }
+

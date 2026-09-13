@@ -17,11 +17,11 @@ function AccessibilityPanel() {
     useEffect(() => {
         const root = document.documentElement;
         if (textSize === 'default') {
-            root.style.fontSize = '16px';
+            root.style.fontSize = '100%';
         } else if (textSize === 'large') {
-            root.style.fontSize = '20px';
+            root.style.fontSize = '175%';
         } else if (textSize === 'extra-large') {
-            root.style.fontSize = '24px';
+            root.style.fontSize = '250%';
         }
     }, [textSize]);
     return (
