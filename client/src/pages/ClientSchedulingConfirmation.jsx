@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/scheduling.css";
 
-export function ClientSchedulingConfirmation() {
+export default function ClientSchedulingConfirmation() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -61,4 +61,3 @@ export function ClientSchedulingConfirmation() {
     </div>
   );
 }
-export default ClientSchedulingConfirmation;
