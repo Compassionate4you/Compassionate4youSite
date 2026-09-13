@@ -1,14 +1,15 @@
 /* RESET */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f2ee;
+  background-color: var(--color1);
   margin: 0;
   padding: 0;
 }
 
 /* NAVBAR */
-.navbar {
-  background-color: white;
+/* Update from Preston 9/13 - The navbar rules were not in use since it has its own css with a higher priority. */
+/* .navbar {
+  background-color: var(--color2);
   border-bottom: 1px solid #ddd;
   padding: 12px 30px;
   display: flex;
@@ -20,22 +21,22 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-}
+} */
 
 .avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #93B48D;
-  color: white;
+  background-color: var(--color6);
+  color: var(--color6-text);
   font-weight: bold;
-  font-size: 15px;
+  font-size: 95%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.navbar-title {
+/* .navbar-title {
   font-size: 15px;
   font-weight: bold;
 }
@@ -55,7 +56,7 @@ body {
 
 .navbar-right button:hover {
   background-color: #f0f2ee;
-}
+} */
 
 /* CONTENT */
 .content {
@@ -66,8 +67,8 @@ body {
 
 /* SECTION */
 .section-box {
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--color5);
+  border: 1px solid var(--color1);
   border-radius: 10px;
   padding: 24px 28px;
 }
@@ -77,8 +78,8 @@ body {
 }
 
 .desc {
-  color: gray;
-  font-size: 13px;
+  color: var(--color5-text);
+  font-size: 90%;
   margin-bottom: 18px;
 }
 
@@ -88,9 +89,9 @@ body {
 }
 
 .field label {
-  font-size: 12px;
+  font-size: 90%;
   font-weight: bold;
-  color: gray;
+  color: var(--color5-text);
   display: block;
   margin-bottom: 6px;
 }
@@ -100,7 +101,7 @@ body {
 .field textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-white);
   border-radius: 6px;
 }
 
@@ -108,13 +109,13 @@ body {
 .field select:focus,
 .field textarea:focus {
   outline: none;
-  border-color: #93B48D;
+  border-color: var(--color6);
 }
 
 /* BUTTONS */
 .btn-primary {
-  background-color: #93B48D;
-  color: white;
+  background-color: var(--color6);
+  color: var(--color-white);
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -123,13 +124,13 @@ body {
 }
 
 .btn-primary:disabled {
-  background-color: #c5d6c1;
+  background-color: var(--color3);
 }
 
 .btn-secondary {
   margin-left: 10px;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--color-white);
+  border: 1px solid var(--color-lightGrey);
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
@@ -140,14 +141,15 @@ body {
   background: none;
   border: none;
   margin-bottom: 16px;
-  color: gray;
+  color: var(--color3);
   cursor: pointer;
 }
 
 /* SUCCESS */
 .success-msg {
-  background: #e6f9ee;
-  border: 1px solid #9fe1cb;
+  background: var(--color1);
+  color: var(--color1-text);
+  border: 1px solid var(--color5);
   padding: 10px;
   margin-top: 15px;
   border-radius: 6px;
@@ -159,7 +161,7 @@ body {
   flex-wrap: wrap;
   gap: 6px;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-white);
   border-radius: 6px;
 }
 
@@ -169,12 +171,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e5e7eb;
+  background: var(--color1);
   border-radius: 6px;
   cursor: pointer;
 }
 
 .calendar-day.selected {
-  background: #93B48D;
-  color: white;
+  background: var(--color5);
+  color: var(--color5-text);
 }

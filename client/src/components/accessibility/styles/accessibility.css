@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 95%;
   font-weight: 500;
   transition: padding 0.2s, background 0.2s;
 }
@@ -61,7 +61,7 @@
   margin-bottom: 24px;
 }
 .panel-header h2 {
-  font-size: 22px;
+  font-size: 150%;
   font-weight: 700;
   color: #111111;
 }
@@ -92,7 +92,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 100%;
   font-weight: 600;
   color: #111111;
   margin-bottom: 12px;
@@ -152,7 +152,7 @@ select {
   border-radius: 8px;
   background: #ffffff;
   color: #111111;
-  font-size: 14px;
+  font-size: 95%;
   cursor: pointer;
   appearance: auto;
   -webkit-appearance: auto;
@@ -165,7 +165,7 @@ select:focus {
   background: #eff6ff;
   border-radius: 8px;
   padding: 14px;
-  font-size: 13px;
+  font-size: 80%;
   color: #374151;
   line-height: 1.6;
   margin-bottom: 20px;
@@ -176,7 +176,7 @@ select:focus {
   color: #ffffff;
   border-radius: 8px;
   padding: 14px;
-  font-size: 15px;
+  font-size: 95%;
   font-weight: 600;
   cursor: pointer;
   display: flex;
