@@ -1,12 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
+// prisma-client-js emits CommonJS into node_modules/.prisma/client, which the
+// server can require directly. The newer prisma-client generator emits
+// TypeScript and would need a build step.
 generator client {
   provider = "prisma-client-js"
 }
 
+// Connection URLs live in prisma.config.ts, not here (Prisma 7).
 datasource db {
   provider = "postgresql"
 }
@@ -19,4 +18,40 @@ model User {
   resetTokenExpiry  DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+}
+
+// DT-397: chatbot history. userId is a plain string rather than a relation so
+// it can be linked to User once accounts and chat sessions are tied together.
+model ChatSession {
+  id String @id @default(uuid())
+
+  // Browser-generated session id, sent by the client on every request.
+  clientSessionId String @unique @map("client_session_id")
+
+  // Null for guests.
+  userId String? @map("user_id")
+
+  startedAt    DateTime @default(now()) @map("started_at")
+  lastActiveAt DateTime @updatedAt @map("last_active_at")
+
+  messages ChatMessage[]
+
+  @@index([userId])
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id String @id @default(uuid())
+
+  sessionId String      @map("session_id")
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  // 'user' or 'bot'
+  sender String
+  body   String
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([sessionId, createdAt])
+  @@map("chat_messages")
 }
