@@ -196,3 +196,36 @@ select:focus {
   width: 18px;
   height: 18px;
 }
+
+
+/* Theme support for the accessibility panel itself. Font sizes above are intentionally unchanged. */
+html[theme='dark'] .a11y-panel {
+  background: #222829;
+  color: #f3f4f6;
+}
+
+html[theme='dark'] .panel-header h2,
+html[theme='dark'] .section-label {
+  color: #f3f4f6;
+}
+
+html[theme='dark'] .close-btn,
+html[theme='dark'] .opt-btn,
+html[theme='dark'] select {
+  color: #f3f4f6;
+}
+
+html[theme='dark'] .opt-btn,
+html[theme='dark'] select {
+  background: #15191a;
+  border-color: #596467;
+}
+
+html[theme='dark'] .opt-btn:hover {
+  background: #2b3335;
+}
+
+html[theme='dark'] .notice {
+  background: #26343d;
+  color: #e5e7eb;
+}

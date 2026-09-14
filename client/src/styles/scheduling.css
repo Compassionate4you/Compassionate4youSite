@@ -180,3 +180,66 @@ body {
   background: var(--color5);
   color: var(--color5-text);
 }
+
+
+/* Appointment details and confirmation flow */
+.form-error {
+  background: #fff1f2;
+  border: 1px solid #fda4af;
+  color: #9f1239;
+  padding: 10px;
+  margin: 0 0 12px;
+  border-radius: 6px;
+}
+
+.appointment-page {
+  min-height: 50vh;
+}
+
+.appointment-details {
+  margin: 18px 0;
+  padding: 14px 18px;
+  background: #f8faf8;
+  border: 1px solid #e0e5df;
+  border-radius: 8px;
+}
+
+.appointment-details p {
+  margin: 8px 0;
+}
+
+.confirmation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* The confirmation/details pages respond to the existing accessibility theme
+   without changing the site's existing text-size rules. */
+html[theme='dark'] .appointment-page .section-box {
+  background: #222829;
+  color: #f3f4f6;
+  border-color: #465052;
+}
+
+html[theme='dark'] .appointment-page .desc,
+html[theme='dark'] .appointment-page .appointment-details {
+  color: #f3f4f6;
+}
+
+html[theme='dark'] .appointment-page .appointment-details {
+  background: #1b2021;
+  border-color: #465052;
+}
+
+html[theme='dark'] .appointment-page .btn-secondary {
+  background: #15191a;
+  color: #f3f4f6;
+  border-color: #596467;
+}
+
+html.high-contrast .appointment-page .section-box,
+html.high-contrast .appointment-page .appointment-details,
+html.high-contrast .appointment-page .btn-secondary {
+  border-width: 2px;
+}
