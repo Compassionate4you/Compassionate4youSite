@@ -1,49 +1,52 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import '../styles/portal.css';
+import '../styles/scheduling.css';
 
 function SchedulePage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
-
-    const [appointment, setAppointment] = useState({
+    const [form, setForm] = useState({
         fullName: '',
         phone: '',
         email: '',
         serviceType: '',
         date: '',
-        timeSlot: '9:00 AM - 10:00 AM' // placeholder
+        timeSlot: '',
+        notes: '',
     });
+    const [error, setError] = useState('');
 
-    // 🔹 change this later based on your auth system
-    const isLoggedIn = true;
-
-    const handleChange = (field, value) => {
-        setAppointment(prev => ({
-            ...prev,
-            [field]: value
-        }));
+    const updateField = (event) => {
+        const { name, value } = event.target;
+        setForm((current) => ({ ...current, [name]: value }));
+        setError('');
     };
 
-    const handleSubmit = () => {
-        // basic validation
-        if (!appointment.fullName || !appointment.serviceType || !appointment.date) {
-            alert("Please fill required fields");
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        if (!form.fullName.trim() || !form.phone.trim() || !form.email.trim() || !form.serviceType || !form.date || !form.timeSlot) {
+            setError('Please complete all required appointment fields.');
             return;
         }
 
-        navigate('/confirmation', {
-            state: {
-                appointment,
-                isLoggedIn
-            }
-        });
+        // The appointment object is only created/passed after validation succeeds.
+        const appointment = {
+            ...form,
+            fullName: form.fullName.trim(),
+            phone: form.phone.trim(),
+            email: form.email.trim(),
+            notes: form.notes.trim(),
+            date: form.date,
+        };
+
+        navigate('/schedule/confirmation', { state: { appointment } });
     };
 
     return (
         <div>
-            {/* NAVBAR */}
             <div className="navbar">
                 <div className="navbar-left">
                     <div className="avatar">CH</div>
@@ -52,23 +55,14 @@ function SchedulePage() {
                         <div className="navbar-subtitle">{t('portal.welcome')}</div>
                     </div>
                 </div>
-
                 <div className="navbar-right">
-                    <button onClick={() => navigate('/portal')}>
-                        {t('nav.home')}
-                    </button>
-                    <button onClick={() => navigate('/login')}>
-                        {t('nav.logout')}
-                    </button>
+                    <button type="button" onClick={() => navigate('/')}>{t('nav.home')}</button>
+                    <button type="button" onClick={() => navigate('/login')}>{t('nav.logout')}</button>
                 </div>
             </div>
 
-            {/* CONTENT */}
             <div className="content">
-                <button
-                    className="back-btn"
-                    onClick={() => navigate('/portal')}
-                >
+                <button type="button" className="back-btn" onClick={() => navigate('/portal')}>
                     {t('schedule.backToDashboard')}
                 </button>
 
@@ -76,83 +70,54 @@ function SchedulePage() {
                     <h2>{t('schedule.title')}</h2>
                     <p className="desc">{t('schedule.subtitle')}</p>
 
-                    {/* FULL NAME */}
-                    <div className="field">
-                        <label>{t('schedule.fullName')}</label>
-                        <input
-                            type="text"
-                            value={appointment.fullName}
-                            onChange={(e) => handleChange('fullName', e.target.value)}
-                            placeholder={t('schedule.fullNamePlaceholder')}
-                        />
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="field">
+                            <label htmlFor="fullName">{t('schedule.fullName')}</label>
+                            <input id="fullName" name="fullName" value={form.fullName} onChange={updateField} type="text" placeholder={t('schedule.fullNamePlaceholder')} required />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="phone">{t('schedule.phone')}</label>
+                            <input id="phone" name="phone" value={form.phone} onChange={updateField} type="tel" placeholder={t('schedule.phonePlaceholder')} required />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="email">{t('schedule.email')}</label>
+                            <input id="email" name="email" value={form.email} onChange={updateField} type="email" placeholder={t('schedule.emailPlaceholder')} required />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="serviceType">{t('schedule.serviceType')}</label>
+                            <select id="serviceType" name="serviceType" value={form.serviceType} onChange={updateField} required>
+                                <option value="">{t('schedule.selectService')}</option>
+                                <option value={t('schedule.homeHealth')}>{t('schedule.homeHealth')}</option>
+                                <option value={t('schedule.hospiceCare')}>{t('schedule.hospiceCare')}</option>
+                                <option value={t('schedule.generalConsultation')}>{t('schedule.generalConsultation')}</option>
+                            </select>
+                        </div>
+                        <div className="field">
+                            <label htmlFor="date">{t('schedule.preferredDate')}</label>
+                            <input id="date" name="date" value={form.date} onChange={updateField} type="date" required />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="timeSlot">Appointment Time</label>
+                            <select id="timeSlot" name="timeSlot" value={form.timeSlot} onChange={updateField} required>
+                                <option value="">Select a time</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                            </select>
+                        </div>
+                        <div className="field">
+                            <label htmlFor="notes">{t('schedule.notes')}</label>
+                            <textarea id="notes" name="notes" value={form.notes} onChange={updateField} placeholder={t('schedule.notesPlaceholder')} />
+                        </div>
 
-                    {/* PHONE */}
-                    <div className="field">
-                        <label>{t('schedule.phone')}</label>
-                        <input
-                            type="text"
-                            value={appointment.phone}
-                            onChange={(e) => handleChange('phone', e.target.value)}
-                            placeholder={t('schedule.phonePlaceholder')}
-                        />
-                    </div>
+                        {error && <div className="form-error" role="alert">{error}</div>}
 
-                    {/* EMAIL */}
-                    <div className="field">
-                        <label>{t('schedule.email')}</label>
-                        <input
-                            type="email"
-                            value={appointment.email}
-                            onChange={(e) => handleChange('email', e.target.value)}
-                            placeholder={t('schedule.emailPlaceholder')}
-                        />
-                    </div>
-
-                    {/* SERVICE */}
-                    <div className="field">
-                        <label>{t('schedule.serviceType')}</label>
-                        <select
-                            value={appointment.serviceType}
-                            onChange={(e) => handleChange('serviceType', e.target.value)}
-                        >
-                            <option value="">{t('schedule.selectService')}</option>
-                            <option value="Home Health">{t('schedule.homeHealth')}</option>
-                            <option value="Hospice Care">{t('schedule.hospiceCare')}</option>
-                            <option value="Consultation">{t('schedule.generalConsultation')}</option>
-                        </select>
-                    </div>
-
-                    {/* DATE */}
-                    <div className="field">
-                        <label>{t('schedule.preferredDate')}</label>
-                        <input
-                            type="date"
-                            value={appointment.date}
-                            onChange={(e) => handleChange('date', e.target.value)}
-                        />
-                    </div>
-
-                    {/* NOTES */}
-                    <div className="field">
-                        <label>{t('schedule.notes')}</label>
-                        <textarea
-                            onChange={(e) => handleChange('notes', e.target.value)}
-                            placeholder={t('schedule.notesPlaceholder')}
-                        />
-                    </div>
-
-                    {/* BUTTONS */}
-                    <button className="btn-primary" onClick={handleSubmit}>
-                        {t('schedule.confirm')}
-                    </button>
-
-                    <button
-                        className="btn-secondary"
-                        onClick={() => navigate('/portal')}
-                    >
-                        {t('schedule.cancel')}
-                    </button>
+                        <button type="submit" className="btn-primary">{t('schedule.confirm')}</button>
+                        <button type="button" className="btn-secondary" onClick={() => navigate('/portal')}>{t('schedule.cancel')}</button>
+                    </form>
                 </div>
             </div>
         </div>
