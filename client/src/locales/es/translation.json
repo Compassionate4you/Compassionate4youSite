@@ -1,364 +1,418 @@
 {
-    "nav": {
-      "home": "Inicio",
-      "homeHealth": "Salud en Casa",
-      "hospice": "Hospicio",
-      "locations": "Ubicaciones",
-      "schedule": "Citas",
-      "login": "Iniciar Sesión",
-      "portal": "Portal",
-      "admin": "Administrador",
-      "logout": "Cerrar Sesión"
+  "nav": {
+    "welcome": "Bienvenido",
+    "homeHealth": "Salud en Casa",
+    "hospice": "Hospicio",
+    "locations": "Ubicaciones",
+    "schedule": "Citas",
+    "login": "Iniciar Sesión",
+    "portal": "Portal",
+    "admin": "Administrador",
+    "logout": "Cerrar Sesión",
+    "dashboard": "Panel De Usuario",
+    "home": "Inicio"
+  },
+  "landing": {
+    "heroTitle": "Cuidado compasivo para sus seres queridos",
+    "heroSubtitle": "Servicios profesionales de salud en el hogar y hospicio dedicados a brindar atención de calidad con dignidad y respeto.",
+    "heroImageAlt": "Servicios de cuidado compasivo",
+    "philosophyTitle": "Nuestra filosofía",
+    "philosophyText": "Creemos en tratar a nuestros pacientes con dignidad, respeto y empatía. Nos esforzamos por hacer que su proceso al final de la vida sea lo más cómodo y significativo posible.",
+    "caringSinceTitle": "Brindando cuidado desde 2021",
+    "caringSinceText": "Brindando atención compasiva en la comodidad de su hogar desde 2021.",
+    "aboutTitle": "Acerca de",
+    "aboutText": "Compassionate Home Health & Hospice es una empresa familiar fundada y operada por Jane Smith, RN. Con más de 15 años de experiencia en el sector salud, Jane creó esta empresa para brindar atención personalizada y compasiva a los pacientes en sus hogares. Nuestro equipo de profesionales dedicados está comprometido con mejorar la calidad de vida de nuestros pacientes y sus familias a través de servicios integrales de salud en el hogar y hospicio.",
+    "contactTitle": "Contacto",
+    "contactPhoneLabel": "Teléfono",
+    "contactPhone": "(925) 425-7104",
+    "contactEmailLabel": "Correo electrónico",
+    "contactEmail": "compassionateforall@gmail.com",
+    "contactFaxLabel": "Fax",
+    "contactFax": "(844) 361-1170",
+    "contactAddressLabel": "Dirección",
+    "contactAddressLine1": "1501 N Broadway, Ste 350A/B",
+    "contactAddressLine2": "Walnut Creek, CA 94596",
+    "contactFormName": "Nombre",
+    "contactFormNamePlaceholder": "Tu nombre",
+    "contactFormEmail": "Correo electrónico",
+    "contactFormEmailPlaceholder": "tu.correo@ejemplo.com",
+    "contactFormMessage": "Mensaje",
+    "contactFormMessagePlaceholder": "¿Cómo podemos ayudarte?",
+    "contactFormButton": "Enviar mensaje"
+  },
+  "hospice": {
+    "blurb": {
+      "title": "Hospicio",
+      "description": "Brindamos consuelo, dignidad y apoyo compasivo durante el viaje final de la vida. Estamos aquí para los pacientes y sus familias en cada paso del camino.",
+      "contactButton": "Contacte a nuestro equipo"
     },
-    "landing": {
-      "heroTitle": "Cuidado compasivo para sus seres queridos",
-      "heroSubtitle": "Servicios profesionales de salud en el hogar y hospicio dedicados a brindar atención de calidad con dignidad y respeto.",
-      "heroImageAlt": "Servicios de cuidado compasivo",
-      "philosophyTitle": "Nuestra filosofía",
-      "philosophyText": "Creemos en tratar a nuestros pacientes con dignidad, respeto y empatía. Nos esforzamos por hacer que su proceso al final de la vida sea lo más cómodo y significativo posible.",
-      "caringSinceTitle": "Brindando cuidado desde 2021",
-      "caringSinceText": "Brindando atención compasiva en la comodidad de su hogar desde 2021.",
-      "aboutTitle": "Acerca de",
-      "aboutText": "Compassionate Home Health & Hospice es una empresa familiar fundada y operada por Jane Smith, RN. Con más de 15 años de experiencia en el sector salud, Jane creó esta empresa para brindar atención personalizada y compasiva a los pacientes en sus hogares. Nuestro equipo de profesionales dedicados está comprometido con mejorar la calidad de vida de nuestros pacientes y sus familias a través de servicios integrales de salud en el hogar y hospicio.",
-      "contactTitle": "Contacto",
-      "contactPhoneLabel": "Teléfono",
-      "contactPhone": "(925) 425-7104",
-      "contactEmailLabel": "Correo electrónico",
-      "contactEmail": "compassionateforall@gmail.com",
-      "contactFaxLabel": "Fax",
-      "contactFax": "(844) 361-1170",
-      "contactAddressLabel": "Dirección",
-      "contactAddressLine1": "1501 N Broadway, Ste 350A/B",
-      "contactAddressLine2": "Walnut Creek, CA 94596",
-      "contactFormName": "Nombre",
-      "contactFormNamePlaceholder": "Tu nombre",
-      "contactFormEmail": "Correo electrónico",
-      "contactFormEmailPlaceholder": "tu.correo@ejemplo.com",
-      "contactFormMessage": "Mensaje",
-      "contactFormMessagePlaceholder": "¿Cómo podemos ayudarte?",
-      "contactFormButton": "Enviar mensaje"
-    },
-    "hospice": {
-        "blurb": {
-            "title": "Hospicio",
-            "description": "Brindamos consuelo, dignidad y apoyo compasivo durante el viaje final de la vida. Estamos aquí para los pacientes y sus familias en cada paso del camino.",
-            "contactButton": "Contacte a nuestro equipo"
+    "understanding": {
+      "title": "Comprender los cuidados paliativos",
+      "cards": {
+        "card1": {
+          "title": "¿Qué es el cuidado de hospicio?",
+          "description": "Los cuidados paliativos se centran en brindar confort, calidad de vida y apoyo a las personas que se acercan al final de su vida, en lugar de curar la enfermedad. Son proporcionados por un equipo de profesionales que gestionan el dolor y otros síntomas, y abordan las necesidades emocionales, físicas, espirituales y sociales tanto del paciente como de su familia, actuando con pasión. Estos cuidados pueden recibirse en el propio hogar de la persona o en un centro especializado en cuidados paliativos; el objetivo es ayudar a la persona a vivir el tiempo que le resta con dignidad y con la mayor paz posible."
         },
-        "understanding": {
-            "title": "Comprender los cuidados paliativos",
-            "cards": {
-                "card1": {
-                    "title": "¿Qué es el cuidado de hospicio?",
-                    "description": "Los cuidados paliativos se centran en brindar confort, calidad de vida y apoyo a las personas que se acercan al final de su vida, en lugar de curar la enfermedad. Son proporcionados por un equipo de profesionales que gestionan el dolor y otros síntomas, y abordan las necesidades emocionales, físicas, espirituales y sociales tanto del paciente como de su familia, actuando con pasión. Estos cuidados pueden recibirse en el propio hogar de la persona o en un centro especializado en cuidados paliativos; el objetivo es ayudar a la persona a vivir el tiempo que le resta con dignidad y con la mayor paz posible."
-                },
-                "card2": {
-                    "title": "¿Quién es elegible?",
-                    "description": "Independientemente de su fe o creencias, usted y su familia pueden recibir apoyo espiritual y emocional de nuestro equipo de atención."
-                },
-                "card3": {
-                    "title": "¿En qué se diferencia el cuidado de hospicio?",
-                    "description": "Nuestro equipo ofrece un entorno compasivo para los pacientes y sus familias, para que puedan sentirse apoyados y comprendidos durante la atención al final de la vida."
-                },
-                "card4": {
-                    "title": "¿Por qué podría elegir?",
-                    "description": "Nuestro equipo de cuidados paliativos brinda apoyo emocional y espiritual a las familias mientras transitan por los cuidados al final de la vida."
-                },
-                "card5": {
-                    "title": "¿Quién brinda la atención?",
-                    "description": "El pilar de nuestro servicio es un equipo de profesionales altamente cualificados y capacitados que brindan una atención compasiva y personalizada, adaptada a las necesidades únicas de cada individuo. Contamos con un equipo multidisciplinario compuesto por diversos profesionales —incluyendo médicos, enfermeros, trabajadores sociales, capellanes y auxiliares de cuidados paliativos—, cuyo objetivo es ofrecer atención y apoyo integral tanto a los pacientes como a sus familias. Asimismo, pueden intervenir otras disciplinas —tales como la fisioterapia, la terapia ocupacional y la logopedia—, así como voluntarios y especialistas en duelo, en función de las necesidades específicas e individualizadas del paciente y de las indicaciones del proveedor de cuidados paliativos."
-                }
-            }
+        "card2": {
+          "title": "¿Quién es elegible?",
+          "description": "Independientemente de su fe o creencias, usted y su familia pueden recibir apoyo espiritual y emocional de nuestro equipo de atención."
         },
-        "careAndBenefits": {
-            "title":"Equipo de cuidados paliativos y beneficios",
-            "cards": {
-                "card1": {
-                    "title": "¿Qué ofrece el cuidado de hospicio?",
-                    "description": "Los cuidados paliativos ofrecen atención por parte de un equipo de profesionales de diversas especialidades que trabajan juntos para satisfacer las necesidades médicas, psicológicas y espirituales de usted y de su familia."
-                },
-                "card2": {
-                    "title": "Horas disponibles durante la atención de cuidados paliativos...",
-                    "description": "El servicio de cuidados paliativos le proporciona un número de teléfono al que puede llamar las 24 horas del día, los 7 días de la semana, para ayudarle a resolver cualquier pregunta que pueda tener."
-                },
-                "card3": {
-                    "title": "¿Qué otros beneficios tienen los pacientes cuando reciben cuidados paliativos?",
-                    "description": {
-                        "top": " - Una vez que sea admitido en el Programa de Cuidados Paliativos, se le proporcionará lo siguiente:",
-                        "list1": " - Dispositivos médicos",
-                        "list2": " - Suministros médicos",
-                        "list3": " - Medicamentos para el alivio de los síntomas y el dolor"
-                    }
-                },
-                "card4": {
-                    "title": "Médico",
-                    "description": "Su médico personal continúa brindándole atención mientras usted se encuentra en el Programa de Cuidados Paliativos. Un médico de cuidados paliativos trabaja en estrecha colaboración con su médico personal y puede consultarle."
-                },
-                "card5": {
-                    "title": "Enfermero",
-                    "description": "Una enfermera realiza visitas durante la semana para instruir a su cuidador y coordinar su atención. Una enfermera informa periódicamente al médico de cuidados paliativos sobre su estado."
-                },
-                "card6": {
-                    "title": "Trabajador social",
-                    "description": {
-                        "top": " - Un trabajador social le ayuda a usted y a su cuidador:",
-                        "list1": " - Ofrecer apoyo emocional",
-                        "list2": " - asistir con asuntos prácticos, tales como encontrar ayuda adicional en el hogar"
-                    }
-                }
-            }
+        "card3": {
+          "title": "¿En qué se diferencia el cuidado de hospicio?",
+          "description": "Nuestro equipo ofrece un entorno compasivo para los pacientes y sus familias, para que puedan sentirse apoyados y comprendidos durante la atención al final de la vida."
         },
-        "comprehensiveServices": {
-            "title": "Servicios de apoyo integral",
-            "cards":{
-                "card1": {
-                    "title": "Servicios de asistente de cuidados paliativos y ayuda doméstica",
-                    "description": "Un auxiliar de cuidados paliativos realiza visitas durante la semana, según sea necesario, para ayudarle a usted y a su cuidador con el cuidado personal, tales como cambiar la ropa de cama, bañarle y ayudarle a vestirse."
-                },
-                "card2": {
-                    "title": "Capellán",
-                    "description": "Un capellán es un ministro o consejero dedicado a satisfacer las necesidades espirituales de usted y su familia, independientemente de su religión. Usted y su familia pueden solicitar la presencia del capellán en cualquier momento."
-                },
-                "card3": {
-                    "title": "Voluntario",
-                    "description": "Un voluntario es una persona de la comunidad que ha sido capacitada por nuestro Programa de Cuidados Paliativos para ayudarle a usted y a su familia. Los voluntarios prestan sus servicios bajo la dirección de un miembro del personal del programa."
-                },
-                "card4": {
-                    "title": "¿Qué hay de las citas médicas?",
-                    "description": "Su médico personal está a cargo de su atención, incluso después de que usted sea admitido en nuestro Programa de Cuidados Paliativos. Un médico de cuidados paliativos trabajará junto con su médico personal para brindarle la atención que usted necesita."
-                },
-                "card5": {
-                    "title": "¿Qué tipo de ayuda podría necesitar?",
-                    "description": "En algún momento, es posible que deba permanecer en cama y no pueda darse la vuelta ni comer sin ayuda. Es posible que su cuidador deba cambiarle los pañales y la ropa de cama, así como cuidar su piel para prevenir las úlceras por presión. Los enfermeros de cuidados paliativos enseñarán a los cuidadores cómo realizar estas tareas."
-                },
-                "card6": {
-                    "title": "¿Qué pasa si surge una situación difícil?",
-                    "description": "Comprendemos que los cuidadores pueden enfrentar situaciones difíciles. Una línea telefónica disponible las 24 horas pone al cuidador en contacto con un enfermero especializado en cuidados paliativos, quien puede ofrecer asesoramiento telefónico o realizar una visita domiciliaria si es necesario."
-                }
-            }
+        "card4": {
+          "title": "¿Por qué podría elegir?",
+          "description": "Nuestro equipo de cuidados paliativos brinda apoyo emocional y espiritual a las familias mientras transitan por los cuidados al final de la vida."
         },
-        "aboveAndBeyond": {
-            "title": "Atención excepcional",
-            "description": "Comprendemos que los cuidados paliativos afectan a toda la familia. Nuestro enfoque va más allá de la atención médica para brindar apoyo emocional, espiritual y práctico a todos los involucrados. Desde la consulta inicial hasta el periodo de duelo, caminamos a su lado con comprensión y cuidado.",
-            "cards": {
-                "card1": "Control del dolor y los síntomas",
-                "card2": "Apoyo emocional y espiritual",
-                "card3": "Orientación para cuidadores",
-                "card4": "Servicios de voluntariado y compañía",
-                "card5": "Capellán",
-                "card6": "Apoyo en el duelo y la pérdida",
-                "card7": "Servicios de auxiliar de cuidados paliativos"
-            }
-        },
-        "hospiceProcess": {
-            "title": "Nuestro proceso de atención",
-            "cards": {
-                "card1": {
-                    "number": "1",
-                    "title": "Remisión",
-                    "description": "El médico, el hospital o la familia inician el proceso."
-                },
-                "card2": {
-                    "number": "2",
-                    "title": "Evaluación",
-                    "description": "Un enfermero o terapeuta evalúa la salud, las capacidades y los objetivos familiares."
-                },
-                "card3": {
-                    "number": "3",
-                    "title": "Plan de cuidados",
-                    "description": "Plan personalizado que incluye enfermería, terapia y servicios de apoyo."
-                },
-                "card4": {
-                    "number": "4",
-                    "title": "Apoyo continuo",
-                    "description": "Visitas regulares, seguimientos por telesalud y orientación para cuidadores."
-                },
-                "card5": {
-                    "number": "5",
-                    "title": "Comunicación",
-                    "description": "Diálogo abierto entre el paciente, la familia y el equipo de atención."
-                }
-            }
-        },
-        "hospiceContact": {
-            "title": "Estamos aquí para ayudar",
-            "description": "Nuestro compasivo equipo de cuidados paliativos está disponible las 24 horas del día, los 7 días de la semana, para responder a sus preguntas y brindarle apoyo.",
-            "contactButton": "Contacta con nosotros hoy",
-            "homeButton": "Volver al inicio"
+        "card5": {
+          "title": "¿Quién brinda la atención?",
+          "description": "El pilar de nuestro servicio es un equipo de profesionales altamente cualificados y capacitados que brindan una atención compasiva y personalizada, adaptada a las necesidades únicas de cada individuo. Contamos con un equipo multidisciplinario compuesto por diversos profesionales —incluyendo médicos, enfermeros, trabajadores sociales, capellanes y auxiliares de cuidados paliativos—, cuyo objetivo es ofrecer atención y apoyo integral tanto a los pacientes como a sus familias. Asimismo, pueden intervenir otras disciplinas —tales como la fisioterapia, la terapia ocupacional y la logopedia—, así como voluntarios y especialistas en duelo, en función de las necesidades específicas e individualizadas del paciente y de las indicaciones del proveedor de cuidados paliativos."
         }
-    },
-    "homeHealth": {
-      "title": "Salud en Casa",
-      "subtitle": "Servicios de atención médica profesional en la comodidad y seguridad de su hogar, promoviendo la independencia y la calidad de vida.",
-      "servicesHeading": "Nuestros Servicios de Salud en Casa",
-      "services": {
-        "doctors": "Médicos",
-        "doctorsDesc": "Nuestros médicos desarrollan y revisan planes de atención, controlan síntomas y actúan como recurso médico.",
-        "pt": "Fisioterapeutas (PT y PTA)",
-        "ptDesc": "Ayudan a los pacientes a mantener la movilidad, controlar el dolor y mejorar la calidad de vida.",
-        "ot": "Terapeutas Ocupacionales (TO)",
-        "otDesc": "Asisten a los pacientes para mantener su independencia en las actividades diarias.",
-        "nurses": "Enfermeras Especializadas (RN, LVN)",
-        "nursesDesc": "Colaboran con los médicos y brindan atención médica en el hogar.",
-        "st": "Terapeutas del Habla (ST)",
-        "stDesc": "Ayudan a los pacientes a mejorar la comunicación, la deglución y la función cognitiva.",
-        "chha": "Asistente Certificado de Salud en Casa (CHHA)",
-        "chhaDesc": "Asisten con actividades diarias como bañarse, vestirse y preparar comidas.",
-        "msw": "Trabajadores Sociales Médicos (MSW)",
-        "mswDesc": "Brindan apoyo emocional y conectan a los pacientes con recursos comunitarios.",
-        "multilingual": "Multilingüe",
-        "multilingualDesc": "Servicios disponibles en varios idiomas para apoyar las necesidades de pacientes diversos."
       }
     },
-    "locations": {
-      "title": "Nuestra Ubicación",
-      "distanceLabel": "Su distancia a nuestra oficina",
-      "calculating": "Calculando…",
-      "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
-      "address2": "1501 N Broadway, Ste 350A/B",
-      "address3": "Walnut Creek, CA 94596",
-      "mapTitle": "Ubicación de Compassionate Home Health & Hospice",
-      "getDirections": "Cómo Llegar"
+    "careAndBenefits": {
+      "title": "Equipo de cuidados paliativos y beneficios",
+      "cards": {
+        "card1": {
+          "title": "¿Qué ofrece el cuidado de hospicio?",
+          "description": "Los cuidados paliativos ofrecen atención por parte de un equipo de profesionales de diversas especialidades que trabajan juntos para satisfacer las necesidades médicas, psicológicas y espirituales de usted y de su familia."
+        },
+        "card2": {
+          "title": "Horas disponibles durante la atención de cuidados paliativos...",
+          "description": "El servicio de cuidados paliativos le proporciona un número de teléfono al que puede llamar las 24 horas del día, los 7 días de la semana, para ayudarle a resolver cualquier pregunta que pueda tener."
+        },
+        "card3": {
+          "title": "¿Qué otros beneficios tienen los pacientes cuando reciben cuidados paliativos?",
+          "description": {
+            "top": " - Una vez que sea admitido en el Programa de Cuidados Paliativos, se le proporcionará lo siguiente:",
+            "list1": " - Dispositivos médicos",
+            "list2": " - Suministros médicos",
+            "list3": " - Medicamentos para el alivio de los síntomas y el dolor"
+          }
+        },
+        "card4": {
+          "title": "Médico",
+          "description": "Su médico personal continúa brindándole atención mientras usted se encuentra en el Programa de Cuidados Paliativos. Un médico de cuidados paliativos trabaja en estrecha colaboración con su médico personal y puede consultarle."
+        },
+        "card5": {
+          "title": "Enfermero",
+          "description": "Una enfermera realiza visitas durante la semana para instruir a su cuidador y coordinar su atención. Una enfermera informa periódicamente al médico de cuidados paliativos sobre su estado."
+        },
+        "card6": {
+          "title": "Trabajador social",
+          "description": {
+            "top": " - Un trabajador social le ayuda a usted y a su cuidador:",
+            "list1": " - Ofrecer apoyo emocional",
+            "list2": " - asistir con asuntos prácticos, tales como encontrar ayuda adicional en el hogar"
+          }
+        }
+      }
     },
-    "portal": {
-      "title": "Portal del Cliente",
-      "welcome": "Bienvenido, John Doe",
-      "welcomeBanner": "¡Bienvenido de nuevo, John Doe!",
-      "welcomeSubtitle": "Administre sus citas e información de atención médica",
-      "scheduleCard": "Programar Cita",
-      "scheduleCardDesc": "Reserve una nueva cita de salud en casa o de hospicio",
-      "upcomingVisits": "Próximas Visitas",
-      "confirmedAppointments": "Citas confirmadas"
+    "comprehensiveServices": {
+      "title": "Servicios de apoyo integral",
+      "cards": {
+        "card1": {
+          "title": "Servicios de asistente de cuidados paliativos y ayuda doméstica",
+          "description": "Un auxiliar de cuidados paliativos realiza visitas durante la semana, según sea necesario, para ayudarle a usted y a su cuidador con el cuidado personal, tales como cambiar la ropa de cama, bañarle y ayudarle a vestirse."
+        },
+        "card2": {
+          "title": "Capellán",
+          "description": "Un capellán es un ministro o consejero dedicado a satisfacer las necesidades espirituales de usted y su familia, independientemente de su religión. Usted y su familia pueden solicitar la presencia del capellán en cualquier momento."
+        },
+        "card3": {
+          "title": "Voluntario",
+          "description": "Un voluntario es una persona de la comunidad que ha sido capacitada por nuestro Programa de Cuidados Paliativos para ayudarle a usted y a su familia. Los voluntarios prestan sus servicios bajo la dirección de un miembro del personal del programa."
+        },
+        "card4": {
+          "title": "¿Qué hay de las citas médicas?",
+          "description": "Su médico personal está a cargo de su atención, incluso después de que usted sea admitido en nuestro Programa de Cuidados Paliativos. Un médico de cuidados paliativos trabajará junto con su médico personal para brindarle la atención que usted necesita."
+        },
+        "card5": {
+          "title": "¿Qué tipo de ayuda podría necesitar?",
+          "description": "En algún momento, es posible que deba permanecer en cama y no pueda darse la vuelta ni comer sin ayuda. Es posible que su cuidador deba cambiarle los pañales y la ropa de cama, así como cuidar su piel para prevenir las úlceras por presión. Los enfermeros de cuidados paliativos enseñarán a los cuidadores cómo realizar estas tareas."
+        },
+        "card6": {
+          "title": "¿Qué pasa si surge una situación difícil?",
+          "description": "Comprendemos que los cuidadores pueden enfrentar situaciones difíciles. Una línea telefónica disponible las 24 horas pone al cuidador en contacto con un enfermero especializado en cuidados paliativos, quien puede ofrecer asesoramiento telefónico o realizar una visita domiciliaria si es necesario."
+        }
+      }
     },
-    "schedule": {
-      "backToDashboard": "← Volver al Panel",
-      "title": "Programar una Cita",
-      "subtitle": "Por favor proporcione sus datos y la hora de cita preferida.",
-      "fullName": "Nombre Completo",
-      "fullNamePlaceholder": "Juan Pérez",
-      "phone": "Número de Teléfono",
-      "phonePlaceholder": "(555) 123-4567",
-      "email": "Correo Electrónico",
-      "emailPlaceholder": "usted@ejemplo.com",
-      "serviceType": "Tipo de Servicio",
-      "selectService": "Seleccione un servicio",
-      "homeHealth": "Salud en Casa",
-      "hospiceCare": "Cuidado de Hospicio",
-      "generalConsultation": "Consulta General",
-      "preferredDate": "Fecha Preferida",
-      "notes": "Notas Adicionales",
-      "notesPlaceholder": "Cualquier síntoma, inquietud o solicitud...",
-      "confirm": "Confirmar Cita",
-      "cancel": "Cancelar",
-      "successMsg": "¡Solicitud de cita enviada! Confirmaremos su visita en breve."
+    "aboveAndBeyond": {
+      "title": "Atención excepcional",
+      "description": "Comprendemos que los cuidados paliativos afectan a toda la familia. Nuestro enfoque va más allá de la atención médica para brindar apoyo emocional, espiritual y práctico a todos los involucrados. Desde la consulta inicial hasta el periodo de duelo, caminamos a su lado con comprensión y cuidado.",
+      "cards": {
+        "card1": "Control del dolor y los síntomas",
+        "card2": "Apoyo emocional y espiritual",
+        "card3": "Orientación para cuidadores",
+        "card4": "Servicios de voluntariado y compañía",
+        "card5": "Capellán",
+        "card6": "Apoyo en el duelo y la pérdida",
+        "card7": "Servicios de auxiliar de cuidados paliativos"
+      }
     },
-    "login": {
-      "title": "Iniciar Sesión",
-      "subtitle": "Ingrese sus credenciales para continuar.",
-      "email": "Correo Electrónico",
-      "emailPlaceholder": "usted@ejemplo.com",
-      "password": "Contraseña",
-      "passwordPlaceholder": "••••••••",
-      "signIn": "Iniciar Sesión",
-      "signingIn": "Iniciando sesión…",
-      "forgotPassword": "¿Olvidó su contraseña?",
+    "hospiceProcess": {
+      "title": "Nuestro proceso de atención",
+      "cards": {
+        "card1": {
+          "number": "1",
+          "title": "Remisión",
+          "description": "El médico, el hospital o la familia inician el proceso."
+        },
+        "card2": {
+          "number": "2",
+          "title": "Evaluación",
+          "description": "Un enfermero o terapeuta evalúa la salud, las capacidades y los objetivos familiares."
+        },
+        "card3": {
+          "number": "3",
+          "title": "Plan de cuidados",
+          "description": "Plan personalizado que incluye enfermería, terapia y servicios de apoyo."
+        },
+        "card4": {
+          "number": "4",
+          "title": "Apoyo continuo",
+          "description": "Visitas regulares, seguimientos por telesalud y orientación para cuidadores."
+        },
+        "card5": {
+          "number": "5",
+          "title": "Comunicación",
+          "description": "Diálogo abierto entre el paciente, la familia y el equipo de atención."
+        }
+      }
+    },
+    "hospiceContact": {
+      "title": "Estamos aquí para ayudar",
+      "description": "Nuestro compasivo equipo de cuidados paliativos está disponible las 24 horas del día, los 7 días de la semana, para responder a sus preguntas y brindarle apoyo.",
+      "contactButton": "Contacta con nosotros hoy",
+      "homeButton": "Volver al inicio"
+    }
+  },
+  "homeHealth": {
+    "title": "Salud en Casa",
+    "subtitle": "Servicios de atención médica profesional en la comodidad y seguridad de su hogar, promoviendo la independencia y la calidad de vida.",
+    "servicesHeading": "Nuestros Servicios de Salud en Casa",
+    "services": {
+      "doctors": "Médicos",
+      "doctorsDesc": "Nuestros médicos desarrollan y revisan planes de atención, controlan síntomas y actúan como recurso médico.",
+      "pt": "Fisioterapeutas (PT y PTA)",
+      "ptDesc": "Ayudan a los pacientes a mantener la movilidad, controlar el dolor y mejorar la calidad de vida.",
+      "ot": "Terapeutas Ocupacionales (TO)",
+      "otDesc": "Asisten a los pacientes para mantener su independencia en las actividades diarias.",
+      "nurses": "Enfermeras Especializadas (RN, LVN)",
+      "nursesDesc": "Colaboran con los médicos y brindan atención médica en el hogar.",
+      "st": "Terapeutas del Habla (ST)",
+      "stDesc": "Ayudan a los pacientes a mejorar la comunicación, la deglución y la función cognitiva.",
+      "chha": "Asistente Certificado de Salud en Casa (CHHA)",
+      "chhaDesc": "Asisten con actividades diarias como bañarse, vestirse y preparar comidas.",
+      "msw": "Trabajadores Sociales Médicos (MSW)",
+      "mswDesc": "Brindan apoyo emocional y conectan a los pacientes con recursos comunitarios.",
+      "multilingual": "Multilingüe",
+      "multilingualDesc": "Servicios disponibles en varios idiomas para apoyar las necesidades de pacientes diversos."
+    }
+  },
+  "locations": {
+    "title": "Nuestra Ubicación",
+    "distanceLabel": "Su distancia a nuestra oficina",
+    "calculating": "Calculando…",
+    "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+    "address2": "1501 N Broadway, Ste 350A/B",
+    "address3": "Walnut Creek, CA 94596",
+    "mapTitle": "Ubicación de Compassionate Home Health & Hospice",
+    "getDirections": "Cómo Llegar"
+  },
+  "portal": {
+    "title": "Portal del Cliente",
+    "welcome": "Bienvenido, John Doe",
+    "welcomeBanner": "¡Bienvenido de nuevo, John Doe!",
+    "welcomeSubtitle": "Administre sus citas e información de atención médica",
+    "scheduleCard": "Programar Cita",
+    "scheduleCardDesc": "Reserve una nueva cita de salud en casa o de hospicio",
+    "upcomingVisits": "Próximas Visitas",
+    "confirmedAppointments": "Citas confirmadas"
+  },
+  "schedule": {
+    "backToDashboard": "← Volver al Panel",
+    "title": "Programar una Cita",
+    "subtitle": "Por favor proporcione sus datos y la hora de cita preferida.",
+    "fullName": "Nombre Completo",
+    "fullNamePlaceholder": "Juan Pérez",
+    "phone": "Número de Teléfono",
+    "phonePlaceholder": "(555) 123-4567",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "usted@ejemplo.com",
+    "serviceType": "Tipo de Servicio",
+    "selectService": "Seleccione un servicio",
+    "homeHealth": "Salud en Casa",
+    "hospiceCare": "Cuidado de Hospicio",
+    "generalConsultation": "Consulta General",
+    "preferredDate": "Fecha Preferida",
+    "notes": "Notas Adicionales",
+    "notesPlaceholder": "Cualquier síntoma, inquietud o solicitud...",
+    "confirm": "Confirmar Cita",
+    "cancel": "Cancelar",
+    "successMsg": "¡Solicitud de cita enviada! Confirmaremos su visita en breve.",
+    "time": "Hora de la Cita",
+    "selectTime": "Seleccione una hora",
+    "times": {
+      "9": "9:00 a. m.",
+      "10": "10:00 a. m.",
+      "11": "11:00 a. m.",
+      "1": "1:00 p. m.",
+      "2": "2:00 p. m.",
+      "3": "3:00 p. m."
+    },
+    "requiredError": "Complete todos los campos obligatorios de la cita."
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "subtitle": "Ingrese sus credenciales para continuar.",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "usted@ejemplo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "Iniciar Sesión",
+    "signingIn": "Iniciando sesión…",
+    "forgotPassword": "¿Olvidó su contraseña?",
+    "errors": {
+      "required": "Por favor ingrese correo electrónico y contraseña.",
+      "invalidEmail": "Eso no parece un correo electrónico válido.",
+      "invalidCredentials": "Correo electrónico o contraseña incorrectos. Inténtelo de nuevo."
+    },
+    "reset": {
+      "title": "Restablecer su contraseña",
+      "subtitle": "Ingrese el correo electrónico o número de teléfono de su cuenta y le enviaremos un enlace para restablecer la contraseña.",
+      "emailOrPhone": "Correo electrónico o número de teléfono",
+      "emailOrPhonePlaceholder": "usted@ejemplo.com o (555) 123-4567",
+      "submit": "Enviar enlace de restablecimiento",
+      "sending": "Enviando…",
+      "backToLogin": "← Volver a iniciar sesión",
+      "confirmation": "Si esa cuenta existe, le hemos enviado un enlace para restablecer la contraseña. Revise su correo electrónico o mensajes.",
       "errors": {
-        "required": "Por favor ingrese correo electrónico y contraseña.",
-        "invalidEmail": "Eso no parece un correo electrónico válido.",
-        "invalidCredentials": "Correo electrónico o contraseña incorrectos. Inténtelo de nuevo."
-      },
-      "reset": {
-        "title": "Restablecer su contraseña",
-        "subtitle": "Ingrese el correo electrónico o número de teléfono de su cuenta y le enviaremos un enlace para restablecer la contraseña.",
-        "emailOrPhone": "Correo electrónico o número de teléfono",
-        "emailOrPhonePlaceholder": "usted@ejemplo.com o (555) 123-4567",
-        "submit": "Enviar enlace de restablecimiento",
-        "sending": "Enviando…",
-        "backToLogin": "← Volver a iniciar sesión",
-        "confirmation": "Si esa cuenta existe, le hemos enviado un enlace para restablecer la contraseña. Revise su correo electrónico o mensajes.",
-        "errors": {
-          "required": "Por favor ingrese su correo electrónico o número de teléfono.",
-          "invalid": "Por favor ingrese un correo electrónico o número de teléfono válido."
-        }
-      }
-    },
-    "admin": {
-      "title": "Panel de Administración",
-      "welcome": "Bienvenido, Usuario Administrador",
-      "tabs": {
-        "appointments": "Citas",
-        "content": "Contenido",
-        "locations": "Ubicaciones",
-        "accounts": "Cuentas"
-      },
-      "table": {
-        "patient": "Paciente",
-        "service": "Servicio",
-        "date": "Fecha",
-        "status": "Estado"
-      },
-      "comingSoon": {
-        "content": "Página de Contenido (próximamente)",
-        "locations": "Página de Ubicaciones (próximamente)",
-        "accounts": "Página de Cuentas (próximamente)"
-      }
-    },
-    "footer": {
-      "tagline": "Brindando atención compasiva en la comodidad de su hogar desde 2021.",
-      "quickLinks": "Enlaces Rápidos",
-      "contactUs": "Contáctenos",
-      "phone": "(925) 425-7104",
-      "email": "info@compassionate4you.com",
-      "address1": "1501 N Broadway, Ste 350A/B",
-      "address2": "Walnut Creek, CA 94596",
-      "officeHours": "Horario de Oficina",
-      "weekdays": "Lunes – Viernes",
-      "weekdayHours": "8:00 AM – 6:00 PM",
-      "saturday": "Sábado",
-      "saturdayHours": "9:00 AM – 2:00 PM",
-      "sunday": "Domingo",
-      "sundayClosed": "Cerrado",
-      "copyright": "Compassionate Home Health & Hospice. Todos los derechos reservados."
-    },
-    "accessibility": {
-      "openPanel": "Abrir configuración de accesibilidad",
-      "closePanel": "Cerrar panel de accesibilidad",
-      "title": "Accesibilidad",
-      "tools": "Herramientas de Accesibilidad",
-      "textSize": "Tamaño de Texto",
-      "default": "Predeterminado",
-      "large": "Grande",
-      "extraLarge": "Extra Grande",
-      "theme": "Tema",
-      "light": "Claro",
-      "dark": "Oscuro",
-      "highContrast": "Alto Contraste",
-      "enabled": "Activado",
-      "disabled": "Desactivado",
-      "language": "Idioma",
-      "selectLanguage": "Seleccionar idioma",
-      "screenReaderNotice": "Este sitio está optimizado para lectores de pantalla. Presione Tab para navegar por los elementos interactivos.",
-      "aiAssistant": "Asistente de IA"
-    },
-    "chatbot": {
-      "title": "Chat de Compassionate4you",
-      "placeholder": "Escriba su pregunta aquí...",
-      "send": "Enviar",
-      "close": "Cerrar chat",
-      "emptyState": "¡Hola! Pregúnteme lo que quiera. También puedo ayudarle con la configuración de accesibilidad (tamaño de texto, modo oscuro, alto contraste).",
-      "actions": {
-        "increaseTextSize": "Aumentar tamaño del texto",
-        "decreaseTextSize": "Reducir tamaño del texto",
-        "toggleDarkMode": "Cambiar a modo oscuro",
-        "toggleLightMode": "Cambiar a modo claro",
-        "toggleHighContrast": "Alternar alto contraste"
-      },
-      "responses": {
-        "increaseTextSize": "Haga clic abajo para agrandar el texto. Puede hacer clic varias veces.",
-        "decreaseTextSize": "Haga clic abajo para reducir el texto.",
-        "toggleDarkMode": "Haga clic abajo para cambiar al modo oscuro.",
-        "toggleLightMode": "Haga clic abajo para volver al modo claro.",
-        "toggleHighContrast": "Haga clic abajo para alternar el alto contraste.",
-        "error": "No se pudo conectar con el servidor. Inténtelo de nuevo en un momento."
+        "required": "Por favor ingrese su correo electrónico o número de teléfono.",
+        "invalid": "Por favor ingrese un correo electrónico o número de teléfono válido."
       }
     }
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "welcome": "Bienvenido, Usuario Administrador",
+    "tabs": {
+      "appointments": "Citas",
+      "content": "Contenido",
+      "locations": "Ubicaciones",
+      "accounts": "Cuentas"
+    },
+    "table": {
+      "patient": "Paciente",
+      "service": "Servicio",
+      "date": "Fecha",
+      "status": "Estado"
+    },
+    "comingSoon": {
+      "content": "Página de Contenido (próximamente)",
+      "locations": "Página de Ubicaciones (próximamente)",
+      "accounts": "Página de Cuentas (próximamente)"
+    }
+  },
+  "footer": {
+    "tagline": "Brindando atención compasiva en la comodidad de su hogar desde 2021.",
+    "quickLinks": "Enlaces Rápidos",
+    "contactUs": "Contáctenos",
+    "phone": "(925) 425-7104",
+    "email": "info@compassionate4you.com",
+    "address1": "1501 N Broadway, Ste 350A/B",
+    "address2": "Walnut Creek, CA 94596",
+    "officeHours": "Horario de Oficina",
+    "weekdays": "Lunes – Viernes",
+    "weekdayHours": "8:00 AM – 6:00 PM",
+    "saturday": "Sábado",
+    "saturdayHours": "9:00 AM – 2:00 PM",
+    "sunday": "Domingo",
+    "sundayClosed": "Cerrado",
+    "copyright": "Compassionate Home Health & Hospice. Todos los derechos reservados."
+  },
+  "accessibility": {
+    "openPanel": "Abrir configuración de accesibilidad",
+    "closePanel": "Cerrar panel de accesibilidad",
+    "title": "Accesibilidad",
+    "tools": "Herramientas de Accesibilidad",
+    "textSize": "Tamaño de Texto",
+    "default": "Predeterminado",
+    "large": "Grande",
+    "extraLarge": "Extra Grande",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "highContrast": "Alto Contraste",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "language": "Idioma",
+    "selectLanguage": "Seleccionar idioma",
+    "screenReaderNotice": "Este sitio está optimizado para lectores de pantalla. Presione Tab para navegar por los elementos interactivos.",
+    "aiAssistant": "Asistente de IA"
+  },
+  "chatbot": {
+    "title": "Chat de Compassionate4you",
+    "placeholder": "Escriba su pregunta aquí...",
+    "send": "Enviar",
+    "close": "Cerrar chat",
+    "emptyState": "¡Hola! Pregúnteme lo que quiera. También puedo ayudarle con la configuración de accesibilidad (tamaño de texto, modo oscuro, alto contraste).",
+    "actions": {
+      "increaseTextSize": "Aumentar tamaño del texto",
+      "decreaseTextSize": "Reducir tamaño del texto",
+      "toggleDarkMode": "Cambiar a modo oscuro",
+      "toggleLightMode": "Cambiar a modo claro",
+      "toggleHighContrast": "Alternar alto contraste"
+    },
+    "responses": {
+      "increaseTextSize": "Haga clic abajo para agrandar el texto. Puede hacer clic varias veces.",
+      "decreaseTextSize": "Haga clic abajo para reducir el texto.",
+      "toggleDarkMode": "Haga clic abajo para cambiar al modo oscuro.",
+      "toggleLightMode": "Haga clic abajo para volver al modo claro.",
+      "toggleHighContrast": "Haga clic abajo para alternar el alto contraste.",
+      "error": "No se pudo conectar con el servidor. Inténtelo de nuevo en un momento."
+    },
+    "faqButton": "Preguntas frecuentes",
+    "faqIntro": "Estas son algunas preguntas que nos hacen con frecuencia:",
+    "faqLinks": {
+      "homeHealth": "Ir a Salud en el Hogar",
+      "hospice": "Ir a Cuidados Paliativos",
+      "locations": "Ir a Ubicaciones",
+      "schedule": "Ir a Programar Cita"
+    }
+  },
+  "confirmation": {
+    "title": "¡Cita programada!",
+    "message": "Hemos recibido su solicitud de cita. Nos comunicaremos con usted para confirmarla.",
+    "detailsLabel": "Detalles de la nueva cita",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "service": "Servicio",
+    "date": "Fecha",
+    "time": "Hora",
+    "notes": "Notas",
+    "viewDetails": "Ver detalles de la cita",
+    "returnHome": "Volver al inicio",
+    "notFoundTitle": "Cita no encontrada",
+    "notFoundMessage": "No hay una cita programada correctamente disponible para ver. Primero programe una cita.",
+    "scheduleAgain": "Programar una cita"
+  },
+  "details": {
+    "title": "Detalles de la cita",
+    "subtitle": "Estos son los detalles de la cita que acaba de programar.",
+    "detailsLabel": "Detalles de la cita",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "service": "Servicio",
+    "date": "Fecha",
+    "time": "Hora",
+    "notes": "Notas",
+    "returnDashboard": "Volver al panel",
+    "notFoundTitle": "Cita no encontrada",
+    "notFoundMessage": "No hay una cita programada correctamente disponible para ver. Primero programe una cita.",
+    "scheduleAppointment": "Programar una cita"
   }
+}

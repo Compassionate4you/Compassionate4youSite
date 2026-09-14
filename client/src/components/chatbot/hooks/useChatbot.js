@@ -1,9 +1,11 @@
 // Chatbot state hook (DT-332). Owns messages array and sendMessage flow.
 // Tries client-side matcher first, falls back to backend.
-import { useCallback, useRef, useState } from 'react';
+// DT-398: messages are mirrored to the backend so history survives a reload.
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { matchIntent } from '../engine/matcher';
 import { buildResponse } from '../engine/responseBuilder';
 import { sendChatMessage } from '../../../services/api';
+import { useChatHistory } from './useChatHistory';
 
 let nextId = 1;
 function makeId() {
@@ -16,9 +18,23 @@ export function useChatbot() {
     const [isSending, setIsSending] = useState(false);
     const inFlightRef = useRef(false);
 
-    const appendMessage = useCallback((msg) => {
-        setMessages((prev) => [...prev, { id: makeId(), ...msg }]);
-    }, []);
+    const { restored, isRestoring, persist } = useChatHistory();
+
+    // Drop restored history in front of anything sent during this visit.
+    useEffect(() => {
+        if (isRestoring || restored.length === 0) return;
+        setMessages((prev) => [...restored, ...prev]);
+    }, [isRestoring, restored]);
+
+    const appendMessage = useCallback(
+        (msg) => {
+            const full = { id: makeId(), ...msg };
+            setMessages((prev) => [...prev, full]);
+            persist(full);
+            return full;
+        },
+        [persist]
+    );
 
     const sendMessage = useCallback(
         async (rawText) => {
@@ -32,6 +48,7 @@ export function useChatbot() {
             if (localReply) {
                 appendMessage({
                     sender: 'bot',
+                    text: localReply.text,
                     textKey: localReply.textKey,
                     actionButtons: localReply.actionButtons,
                 });
