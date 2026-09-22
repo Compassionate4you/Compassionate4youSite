@@ -7,66 +7,27 @@ const AdminDashboard = () => {
     const { t } = useTranslation();
     const [tab, setTab] = useState("appointments");
     const navigate = useNavigate();
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-    const appointments = [
+    const appointments = [  //hard coded appointments
         { name: "John Doe", service: "Home Health", date: "March 5", status: "Confirmed" },
         { name: "Mary Smith", service: "Hospice", date: "March 5", status: "Pending" },
         { name: "Robert Williams", service: "Home Health", date: "March 6", status: "Confirmed" },
     ];
 
-    const accounts = [
-        {
-        id: 1,
-        name: "John Doe",
-        birthdate: "Apr 12, 88",
-        email: "john.doe@example.com",
-        role: "Customer",
-        created: "Jan 15, 26",
-        status: "Active",
-        lastLogin: "Mar 08, 26",
-        },
-        {
-        id: 2,
-        name: "Mary Smith",
-        birthdate: "Oct 03, 75",
-        email: "mary.smith@example.com",
-        role: "Customer",
-        created: "Feb 10, 26",
-        status: "Active",
-        lastLogin: "Mar 07, 26",
-        },
-        {
-        id: 3,
-        name: "Robert Williams",
-        birthdate: "Nov 21, 69",
-        email: "robert.will@example.com",
-        role: "Customer",
-        created: "May 22, 25",
-        status: "Inactive",
-        lastLogin: "Oct 28, 25",
-        },
-        {
-        id: 4,
-        name: "James Cameron",
-        birthdate: "Aug 18, 80",
-        email: "james.cam@admin.com",
-        role: "Admin",
-        created: "Sep 01, 25",
-        status: "Active",
-        lastLogin: "April 08, 26",
-        },
-        {
-        id: 5,
-        name: "Michael Brown",
-        birthdate: "Sep 16, 75",
-        email: "michael.brown@admin.com",
-        role: "Admin",
-        created: "Jan 26, 26",
-        status: "Active",
-        lastLogin: "April 01, 26",
-        },
+    const accounts = [      //hard coded accounts
+        { id: 1, name: "John Doe", birthdate: "Apr 12, 88", email: "john.doe@example.com", 
+            role: "Customer", created: "Jan 15, 26", status: "Active", lastLogin: "Mar 08, 26", },
+        { id: 2, name: "Mary Smith", birthdate: "Oct 03, 75", email: "mary.smith@example.com",
+            role: "Customer", created: "Feb 10, 26", status: "Active", lastLogin: "Mar 07, 26", },
+        { id: 3, name: "Robert Williams", birthdate: "Nov 21, 69", email: "robert.will@example.com",
+            role: "Customer", created: "May 22, 25", status: "Inactive", lastLogin: "Oct 28, 25", },
+        { id: 4, name: "James Cameron", birthdate: "Aug 18, 80", email: "james.cam@admin.com",
+            role: "Admin", created: "Sep 01, 25", status: "Active", lastLogin: "April 08, 26", },
+        { id: 5, name: "Michael Brown", birthdate: "Sep 16, 75", email: "michael.brown@admin.com",
+            role: "Admin", created: "Jan 26, 26", status: "Active", lastLogin: "April 01, 26", },
     ];
-    const [locations, setLocations] = useState([
+    const [locations, setLocations] = useState([    //Current office location
         {
             id: 1,
             name: "Main Office",
@@ -75,36 +36,16 @@ const AdminDashboard = () => {
             status: "Active",
         },
     ]);
-    const contentItems = [
-        {
-        id: 1,
-        title: "Home Page",
-        section: "Philosophy",
-        updated: "Feb 20, 2026",
-        },
-        {
-        id: 2,
-        title: "Home Page",
-        section: "2021",
-        updated: "Feb 18, 2026",
-        },
-        {
-        id: 3,
-        title: "Home Page",
-        section: "Specialty Services",
-        updated: "Feb 15, 2026",
-        },
-        {
-        id: 4,
-        title: "Home Page",
-        section: "Contact",
-        updated: "Feb 12, 2026",
-        },
+    const contentItems = [  //Content tab example editable pages
+        { id: 1, title: "Home Page", section: "Philosophy", updated: "Feb 20, 2026", },
+        { id: 2, title: "Home Page", section: "2021", updated: "Feb 18, 2026", },
+        { id: 3, title: "Home Page", section: "Specialty Services", updated: "Feb 15, 2026", },
+        { id: 4, title: "Home Page", section: "Contact", updated: "Feb 12, 2026", },
     ];
 
     return (
         <div>
-            <header className="topbar">
+            <header className="topbar">    {/* Welcome Admin User display */}
                 <div className="admin-identity">
                     <div className="admin-avatar">AD</div>
                     <div className="header-text">
@@ -114,13 +55,17 @@ const AdminDashboard = () => {
                 </div>
                 
                 <div className="top-actions">
-                    <button type="button" className="logout-button">
+                    <button 
+                        type="button" 
+                        className="logout-button" 
+                        onClick={() => setShowLogoutConfirm(true)}
+                    >
                         {t('nav.logout')}
                     </button>
                 </div>
             </header>
 
-            <nav className="admin-tabs" aria-label="Admin dashboard sections">
+            <nav className="admin-tabs" aria-label="Admin dashboard sections">  {/* Admin Dash tab buttons */}
                 <button className={tab === "appointments" ? "active" : ""} onClick={() => setTab("appointments")}>
                     {t('admin.tabs.appointments')}
                 </button>
@@ -135,7 +80,7 @@ const AdminDashboard = () => {
                 </button>
             </nav>
 
-            <main className="content">
+            <main className="content">      {/* All tab information below */}
                 {tab === "appointments" && (
                     <div className="admin-table-card">
                         <h2>{t('admin.tabs.appointments')}</h2>
@@ -329,6 +274,41 @@ const AdminDashboard = () => {
     </div>
 )}
             </main>
+        {/* Logout Button confirmation*/}
+        {showLogoutConfirm && (
+            <div                                    
+                className="logout-modal-overlay"
+                onClick={() => setShowLogoutConfirm(false)}
+            >
+            <div
+                className="logout-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="logout-modal-title"
+                onClick={(event) => event.stopPropagation()}
+            >
+                <h2 id="logout-modal-title">Confirm Logout</h2>
+                <p>Are you sure you want to log out?</p>
+                <div className="logout-modal-actions">
+                    <button
+                        type="button"
+                        className="logout-no-button"
+                        onClick={() => setShowLogoutConfirm(false)}
+                    >
+                        No
+                    </button>
+
+                    <button
+                        type="button"
+                        className="logout-yes-button"
+                        onClick={() => navigate("/")}
+                    >
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    )}
         </div>
     );
 };

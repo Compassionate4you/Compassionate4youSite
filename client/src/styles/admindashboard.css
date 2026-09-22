@@ -195,3 +195,68 @@
   font-size: 13px;
   font-weight: 700;
 }
+
+.logout-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.logout-modal {
+  width: 100%;
+  max-width: 400px;
+  padding: 28px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.logout-modal h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.logout-modal p {
+  margin: 0 0 24px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.logout-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.logout-modal-actions button {
+  min-width: 90px;
+  padding: 9px 18px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.logout-no-button {
+  background-color: #fff;
+  color: #000;
+}
+
+.logout-no-button:hover {
+  background-color: #f2f5f2;
+}
+
+.logout-yes-button {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+.logout-yes-button:hover {
+  background-color: #b91c1c;
+}
