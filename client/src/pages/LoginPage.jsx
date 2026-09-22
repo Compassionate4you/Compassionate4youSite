@@ -33,6 +33,7 @@ function LoginPage() {
         }
     };
 
+
     return (
         <div>
             {/* DT-64: Login page  |  DT-336: form, error UI, reset link */}
@@ -95,7 +96,10 @@ function LoginPage() {
                             </Link>
                         </div>
                     </form>
-                    <button className="btn-primary" onClick={() => navigate('/portal')}>
+                    {/* DT-37/ Dt-389: Set login flag on sign-in so Navbar can detect user log in*/}
+                    <button className="btn-primary" onClick={() => {localStorage.setItem('isLoggedIn', 'true');
+                    navigate('/portal'); }}>
+
                         {t('login.signIn')}
                     </button>
                 </div>

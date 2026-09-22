@@ -15,6 +15,24 @@ export function buildResponse(intent) {
         };
     }
 
+    // DT-423: FAQ answers come straight from the question bank, plus an
+    // optional link to the relevant page.
+    if (intent.kind === 'faq') {
+        const { entry } = intent;
+        return {
+            text: entry.answer,
+            actionButtons: entry.link
+                ? [
+                      {
+                          labelKey: entry.link.labelKey,
+                          actionId: 'navigate',
+                          to: entry.link.to,
+                      },
+                  ]
+                : [],
+        };
+    }
+
     return null;
 }
 

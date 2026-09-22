@@ -188,43 +188,43 @@ function HospicePage(){
                     <div className="HospiceAboveAndBeyondCards">
                         <div className="HospiceAboveAndBeyondCard">
                             <svg className="HospiceCheckmark">
-                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
                             </svg>
                             <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card1')}</span>
                         </div>
                         <div className="HospiceAboveAndBeyondCard">
                             <svg className="HospiceCheckmark">
-                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
                             </svg>
                             <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card2')}</span>
                         </div>
                         <div className="HospiceAboveAndBeyondCard">
                             <svg className="HospiceCheckmark">
-                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
                             </svg>
                             <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card3')}</span>
                         </div>
                         <div className="HospiceAboveAndBeyondCard">
                             <svg className="HospiceCheckmark">
-                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
                             </svg>
                             <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card4')}</span>
                         </div>
                         <div className="HospiceAboveAndBeyondCard">
                             <svg className="HospiceCheckmark">
-                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
                             </svg>
                             <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card5')}</span>
                         </div>
                         <div className="HospiceAboveAndBeyondCard">
                             <svg className="HospiceCheckmark">
-                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
                             </svg>
                             <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card6')}</span>
                         </div>
                         <div className="HospiceAboveAndBeyondCard">
                             <svg className="HospiceCheckmark">
-                                <path fill="lightgrey" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
                             </svg>
                             <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card7')}</span>
                         </div>
