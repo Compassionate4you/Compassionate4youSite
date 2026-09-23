@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
-
 import '../styles/portal.css';
 
 function LoginPage() {
@@ -97,7 +96,10 @@ function LoginPage() {
                             </Link>
                         </div>
                     </form>
-                    <button className="btn-primary" onClick={() => navigate('/portal')}>
+                    {/* DT-37/ Dt-389: Set login flag on sign-in so Navbar can detect user log in*/}
+                    <button className="btn-primary" onClick={() => {localStorage.setItem('isLoggedIn', 'true');
+                    navigate('/portal'); }}>
+
                         {t('login.signIn')}
                     </button>
                 </div>

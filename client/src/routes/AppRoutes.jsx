@@ -12,6 +12,7 @@ import Scheduling from "../pages/AcuityScheduling";
 
 import ContentEditor from "../pages/ContentEditor";
 import ClientSchedulingConfirmation from "../pages/ClientSchedulingConfirmation";
+import ViewAppointmentDetailsPage from "../pages/ViewAppointmentDetailsPage";
 function AppRoutes() {
     return (
         <Routes>
@@ -29,7 +30,10 @@ function AppRoutes() {
                 element={<Scheduling />}
             />
             <Route path="/admin/content-editor" element={<ContentEditor />} />
+            <Route path="/schedule/confirmation" element={<ClientSchedulingConfirmation />} />
+            {/* Keep the existing confirmation URL working as well. */}
             <Route path="/confirmation" element={<ClientSchedulingConfirmation />} />
+            <Route path="/appointment-details" element={<ViewAppointmentDetailsPage />} />
         </Routes>
     );
 }
