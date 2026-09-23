@@ -15,87 +15,125 @@
     --color-purple: #5959A6;
     --color-lavender: #9984AE;
 
-    /* basic colors */
+    /* Basic Colors */
     --color-linkHighlight: #00aec5;
-    --color-black: #000000;
     --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-lightGrey: #d2d2d2;
+    --color-darkGrey: #808080;
+    --color-veryDarkGrey: #282727;
 
-    /*these were the existing color variables ^, I left them in to prevent things breaking as we merged our changes,
-    but the ones below are what I was using to keep track of dark/light mode. Additionally we can all add a section
-    for additonal theme dependent colors on the other css files for more control. */
+    /* Base Site Colors - These were the ones chosen by the client for the light mode site. */
+    --color1: #ffffff;
+    --color2: #d9d9d9;
+    --color3: #595959;
+    --color4: #262626;
+    --color5: #dbe4c3;
+    --color6: #9da191;
 
-    --color1: #3A5F5F;
-    --color2: #4B6681;
-    --color3: #366454;
-    --color4: #5959A6;
-    --color5: #9984AE;
-    --color6: #00aec5;
-    --color7: #000000;
-    --color8: #FFFFFF;
-    --color9: #eceaea;
-    --color10: #888888;
-  }
+    /* Cool Tone Colors - These are used primarily for accents on the site, like on buttons. */
+    --cooltone1: #3a5f5f;
+    --cooltone2: #4b6681;
+    --cooltone3: #366454;
+    --cooltone4: #5959a6;
+    --cooltone5: #9984ae;
 
-  [theme='dark'] {
-    --color1: #759d9d;
-    --color2: #2e3e4e;
-    --color3: #172b24;
-    --color4: #6c6ca8;
-    --color5: #9984AE;
-    --color6: #00aec5;
-    --color7: #f0f0f0;
-    --color8: #181818;
-    --color9: #4d4d4d;
-    --color10: #bdbdbd;
-  }
+    /* TODO: Decide on final text colors. */
+    /* Primary Text Colors - These are the text colors for text within the base colors. */
+    --color1-text: #000000;
+    --color2-text: #000000;
+    --color3-text: #000000;
+    --color4-text: #000000;
+    --color5-text: #000000;
 
-  .app {
-    background-color: var(--color8);
-  }
+    /* Cool Tone Colors - These are the text colors for text within the cool tones. */
+    --cooltone1-text: #000000;
+    --cooltone2-text: #000000;
+    --cooltone3-text: #000000;
+    --cooltone4-text: #000000;
+    --cooltone5-text: #000000;
+}
 
-  h1, h2, h3 {
+/* TODO: decide on dark mode colors. */
+[theme='dark'] {
+    /* Dark Mode Base Colors - Base colors in dark mode. */
+    --color1: #e6e6e6;
+    --color2: #d9d9d9;
+    --color3: #595959;
+    --color4: #262626;
+    --color5: #dbe4c3;
+    --color6: #9da191;
+
+    /* Dark Mode Cool Tones - Cool tones in dark mode. */
+    --cooltone1: #000000;
+    --cooltone2: #000000;
+    --cooltone3: #000000;
+    --cooltone4: #000000;
+    --cooltone5: #000000;
+
+    /* Dark Mode Primary Text Colors - Primary text colors in dark mode. */
+    --color1-text: #000000;
+    --color2-text: #000000;
+    --color3-text: #000000;
+    --color4-text: #000000;
+    --color5-text: #000000;
+
+    /* Dark Mode Cool Tone Text Colors - Cool tone text colors in dark mode. */
+    --cooltone1-text: #000000;
+    --cooltone2-text: #000000;
+    --cooltone3-text: #000000;
+    --cooltone4-text: #000000;
+    --cooltone5-text: #000000;
+}
+
+.app {
+    background-color: var(--color1);
+    color: var(--color1-text);
+}
+
+h1, h2, h3 {
     font-family: 'Crimson Text', serif;
-  }
+}
 
-  /* Accessibility consumer rules (DT-335). */
-  html {
+/* Accessibility consumer rules (DT-335). */
+html {
     font-size: calc(16px * var(--text-scale, 1));
-  }
-  :root[data-theme="dark"] {
+}
+:root[data-theme="dark"] {
     color-scheme: dark;
-  }
-  :root.high-contrast {
+}
+:root.high-contrast {
     filter: contrast(1.4);
-  }
+}
 .content-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .content-item-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 24px 28px;
-  background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 24px 28px;
+    background: #ffffff;
 }
 
 .content-item-card h3 {
-  margin: 0 0 8px;
-  font-size: 1.8rem;
+    margin: 0 0 8px;
+    font-size: 1.8rem;
 }
 
 .content-item-card p {
-  margin: 0 0 10px;
-  color: #475569;
-  font-size: 1.1rem;
+    margin: 0 0 10px;
+    color: #475569;
+    font-size: 1.1rem;
 }
 
 .content-item-card span {
-  color: #64748b;
-  font-size: 1rem;
+    color: #64748b;
+    font-size: 1rem;
 }
