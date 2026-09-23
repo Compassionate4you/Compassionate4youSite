@@ -1,5 +1,5 @@
 :root {
-  --map-bg: #ffffff;
+  --map-bg: #b10e0e;
   --map-card: #f1f5f9;
   --map-accent: #0f3460;
   --map-green: #366454;
@@ -10,7 +10,7 @@
 }
 
 .map-section {
-  background: var(--map-bg);
+  background: var(--color-white);
   padding: 5rem 1rem;
   font-family: 'Lora', Georgia, serif;
 }

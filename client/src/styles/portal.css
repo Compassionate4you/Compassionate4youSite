@@ -13,20 +13,20 @@ body {
   display: block;
 }
  
-/* NAVBAR */
-.navbar {
-  background-color: white;
-  border-bottom: 1px solid #ddd;
-  padding: 12px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+/*!* NAVBAR *!*/
+/*.navbar {*/
+/*  background-color: white;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*  padding: 12px 30px;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: space-between;*/
+/*}*/
+/*.navbar-left {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  gap: 12px;*/
+/*}*/
 .avatar {
   width: 44px;
   height: 44px;
