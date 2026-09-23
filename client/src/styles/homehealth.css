@@ -70,7 +70,7 @@
 
 .hero-button{
     background-color: var(--color-white);
-    color: #0f1f3d;
+    color: var(--color-white-text);
     border: none;
     padding: 16px 36px;
     font-size: 100%;
@@ -106,6 +106,7 @@
 
 .service-card {
     background-color: var(--color-light-gray);
+    color: var(--color-white-text);
     border: 1px solid var(--color-gray);
     border-radius: 12px;
     padding: 20px;
@@ -133,14 +134,12 @@
 
 
 .service-card h3 {
-    color: var(--color-light-gray-text);
     font-size: 100%;
     margin-bottom: 10px;
 }
 
 .service-card p {
     font-size: 100%;
-    color: var(--color-light-gray-text);
     line-height: 1.5;
 }
 
@@ -154,7 +153,6 @@
     font-size: 400%;
     font-weight: 600;
     margin-bottom: 40px;
-    color: var(--color-light-gray-text);
 }
 
 .advantages-grid{
@@ -244,7 +242,6 @@
 
 .specialty-text{
     font-size: 95%;
-    color: var(--color-light-gray-text);
 }
 
 
