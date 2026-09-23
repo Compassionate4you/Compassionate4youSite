@@ -1,10 +1,10 @@
 .navbar {
-    color: var(--color7);
+    color: var(--color1-text);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background: var(--color8);
+    background: var(--color1);
     position: relative;
     z-index: 1000;
   }
@@ -15,27 +15,27 @@
     list-style: none;
     margin: 0;
     padding: 0px;
-    font-size: 18px;
+    font-size: 125%;
   }
   
   .nav-links a,
   .logo a {
     text-decoration: none;
-    color: var(--color7);
+    color: var(--color1-text);
     padding: 8px 8px;
     border-radius: 4px;
   }
 
   .logo-img {
-    background-color: white;
+    background-color: var(--color-white);
     border-radius: 10px;
-    border: 10px solid white;
+    border: 10px solid var(--color-white);
     min-height: 60px;
   }
 
   .nav-links a:hover {
     color: var(--color-linkHighlight); 
-    background-color: rgba(124, 124, 124, 0.089);
+    background-color: var(--color2);
   }
 
 .logo-img {

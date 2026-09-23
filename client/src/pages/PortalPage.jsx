@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../styles/portal.css';
+import { Plus, Calendar, Settings, Pencil, Trash2 } from 'lucide-react';
 
 function PortalPage() {
     const { t } = useTranslation();
@@ -31,22 +32,28 @@ function PortalPage() {
     const[currentPassword,setCurrentPassword]=useState('');
     const[newPassword,setNewPassword]=useState('');
     const[twoFactor,setTwoFactor]=useState(saved.twoFactor ?? false);
+    //DT-66: track which appointment tab is active (upcoming or past)
+    const[apptTab, setApptTab]=useState('upcoming');
 
-    // DT-62: My Appointments list
+
+    // DT-144: mock appointments with a date near today so upcoming notification logic can trigger
   const [appointments, setAppointments] = useState([
-    { service: 'Home Health', date: 'March 5, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-    { service: 'Home Health', date: 'March 12, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Pending' },
+    { service: 'Home Health', date: 'September 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
+    { service: 'Home Health', date: 'September 20, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Pending' },
+    // DT-66: mock past appointments for testing the Past tab
+    { service: 'Home Health', date: 'August 15, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
+    { service: 'Hospice', date: 'July 22, 2026', time: '2:00 PM - 3:00 PM', provider: 'Nurse Patel', status: 'Confirmed' },
+    { service: 'Home Health', date: 'June 30, 2026', time: '9:00 AM - 10:00 AM', provider: 'Nurse Johnson', status: 'Pending' },
   ]);
  
   const navigate = useNavigate();
  
   // DT-62: Cancel an appointment row
-  function cancelAppointment(index) {
-    const appt = appointments[index];
-    const updated = appointments.filter((_, i) => i !== index);
+  function cancelAppointment(apptToCancel) {
+    const updated = appointments.map((a) => a === apptToCancel ? { ...a, status: 'Cancelled' } : a);
     setAppointments(updated);
 
-    if (appt.status === 'Confirmed'){
+    if (apptToCancel.status === 'Confirmed'){
         setVisitCount(visitCount - 1);
     }
 }
@@ -61,6 +68,33 @@ function PortalPage() {
         setShowProfile(false);
 }
 
+
+    // DT-144 (361): determine which appointments fall within the next 48 hours
+    function getUpcomingAppointments() {
+        const now = new Date();
+        return appointments.find((appt) => {
+            if(appt.status !== 'Confirmed') return false;
+            // appt.time looks like "10:00 AM - 11:00 AM"; we only need the start time
+            const startTime = appt.time.split(' - ')[0]; //
+            const apptDateTime = new Date(`${appt.date} ${startTime}`); // Combine date and time into a single Date object
+
+            const hoursUntil=(apptDateTime-now)/(1000*60*60);
+            return hoursUntil>0&&hoursUntil<=48;
+        });
+    }
+
+    // DT-66(346): Split appointments into past vs upcoming based on date
+    function isPastAppt(appt){
+        if(appt.status==='Cancelled') return true; // Cancelled appointments are considered past
+
+        const apptDate=new Date(appt.date);
+        const today=new Date();
+        today.setHours(0,0,0,0); // Set to midnight for accurate comparison
+        return apptDate<today;
+    }
+
+    const upcomingAppt=getUpcomingAppointments();
+
     return (
         <div>
             {/* DT-59: User Dashboard / Welcome page */}
@@ -69,13 +103,18 @@ function PortalPage() {
                     <div className="avatar">CH</div>
                     <div>
                         <div className="navbar-title">{t('portal.title')}</div>
-                        <div className="navbar-subtitle">Welcome, {fullName}</div>
+                        <div className="navbar-subtitle">Welcome, {fullName}
+                        {/* DT-144: show upcoming appointment notification*/}
+                        {upcomingAppt && (
+                            <span className="notification-icon"
+                                title={`Upcoming: ${upcomingAppt.service} — ${upcomingAppt.date} at ${upcomingAppt.time.split(' - ')[0]}`}
+                            >
+                                🔔
+                                <span className="notification-badge">!</span>
+                        </span>
+                    )}
+                        </div>
                     </div>
-                </div>
-                <div className="navbar-right">
-                    <button onClick={() => navigate('/portal')}>{t('nav.home')}</button>
-                    {/* DT-64: Logout button takes user to Login page */}
-                    <button onClick={() => navigate('/login')}>{t('nav.logout')}</button>
                 </div>
             </div>
 
@@ -87,13 +126,20 @@ function PortalPage() {
 
                 <div className="cards-row">
                     {/* DT-61: Takes user to Schedule an Appointment page */}
+                    {/* DT-149: icon badge for upcoming appointment */}
                     <div className="card" onClick={() => navigate('/schedule')}>
+                        <div className="card-icon card-icon-blue">
+                            <Plus size={20}/>
+                        </div>
                         <h3>{t('portal.scheduleCard')}</h3>
                         <p>{t('portal.scheduleCardDesc')}</p>
                     </div>
 
                     {/* DT-60: Upcoming Visits counter */}
                     <div className="card">
+                        <div className="card-icon card-icon-green">
+                            <Calendar size={20}/>
+                        </div>
                         <h3>{t('portal.upcomingVisits')}</h3>
                         <div className="visit-number">{visitCount}</div>
                         <p>{t('portal.confirmedAppointments')}</p>
@@ -101,6 +147,9 @@ function PortalPage() {
 
                 {/*Profile Settings Card - opens modal*/}
                 <div className="card" onClick={()=>setShowProfile(true)}>
+                    <div className="card-icon card-icon-purple">
+                        <Settings size={20}/>
+                    </div>
                     <h3>Profile Settings</h3>
                     <p>Update your contact information and preferences</p>
                 </div>
@@ -111,6 +160,12 @@ function PortalPage() {
             <div className="section-box">
                 <h2>My Appointments</h2>
                 <p className="desc">View and Manage Your Scheduled Appointments</p>
+
+                {/* DT-66 (347): tabs to switch between upcoming and past appointments */}
+                <div className="tabs">
+                    <button className={apptTab === 'upcoming' ? 'tab active-tab' : 'tab'} onClick={()=>setApptTab('upcoming')}>Upcoming</button>
+                    <button className={apptTab === 'past' ? 'tab active-tab' : 'tab'} onClick={()=>setApptTab('past')}>Past</button>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -123,7 +178,7 @@ function PortalPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {appointments.map((appt,index)=> (
+                        {appointments.filter((appt) => apptTab==='past' ? isPastAppt(appt) : !isPastAppt(appt)).map((appt,index)=> (
                             <tr key={index}>
                                 <td>{appt.service}</td>
                                 <td>{appt.date}</td>
@@ -135,8 +190,16 @@ function PortalPage() {
                                     </span>
                                 </td>
                                 <td>
-                                    <button className="btn-reschedule" onClick={() => navigate('/schedule')}>Reschedule</button>
-                                    <button className="btn-cancel-appt" onClick={() => cancelAppointment(index)}>Cancel</button>
+                                    {apptTab==='past' ? (
+                                        <span className={appt.status==='Cancelled' ? 'badge badge-confirmed': 'badge badge-pending'}>
+                                            {appt.status==='Cancelled' ? 'Cancelled' : 'Completed'}
+                                        </span>
+                                    ) : (
+                                        <>
+                                    <button className="btn-reschedule" onClick={() => navigate('/schedule')} title="Reschedule"> <Pencil size={16}/> </button>
+                                    <button className="btn-cancel-appt" onClick={() => cancelAppointment(appt)} title="Cancel"> <Trash2 size={16}/> </button>
+                                    </>
+                             )}
                                 </td>
                             </tr>
                         ))} 
