@@ -22,6 +22,7 @@ function LandingPage() {
           <h1>{t("landing.heroTitle")}</h1>
           <p>{t("landing.heroSubtitle")}</p>
 
+          {/* Language selector */}
           <div className="language-selector">
             {/* Label */}
             <div className="section-label">

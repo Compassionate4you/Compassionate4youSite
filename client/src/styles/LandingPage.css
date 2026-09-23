@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  color: var(--color-light-gray-text);
 }
 
 /* Global Styles */
@@ -15,6 +16,7 @@ body {
   display: flex;
   height: 80vh;
   background-color: var(--color-light-green);
+  color: var(--color-light-green-text);
 }
 
 .hero-left {
@@ -27,7 +29,7 @@ body {
 
 .hero-left h1 {
   font-size: 48px;
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 .hero-right {
@@ -59,11 +61,10 @@ body {
   padding: 60px;
   text-align: center;
   background-color: var(--color-light-gray);
-  color: var(--color-black);
 }
 
 .title-philosophy {
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 /* Caring Since 2021 */
@@ -71,11 +72,11 @@ body {
   padding: 60px;
   text-align: center;
   background-color: var(--color-light-gray);
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 .title-care {
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 /* Card layout */
@@ -124,13 +125,13 @@ body {
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 28px;
-  color: #111;
+  /*color: #111;*/
 }
 
 .info-card-content p {
   font-size: 1.15rem;
   line-height: 1.7;
-  color: #222;
+  /*color: #222;*/
   max-width: 520px;
   margin: 0 auto 24px;
 }
@@ -144,22 +145,22 @@ body {
   padding: 60px;
   text-align: center;
   background-color: var(--color-light-gray);
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 .title-about {
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 /* Contact */
 .contact-section {
   background-color: var(--color-sage);
   padding: 80px 40px;
-  color: var(--color-white);
+  /*color: var(--color-white);*/
 }
 
 .title-contact {
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 .contact-container {
@@ -182,7 +183,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 18px;
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 .contact-icon {
@@ -214,7 +215,7 @@ body {
   border-radius: 18px;
   padding: 28px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  color: var(--color-black);
+  /*color: var(--color-black);*/
 }
 
 .contact-form {
@@ -237,7 +238,7 @@ body {
   font-size: 1rem;
   outline: none;
   box-sizing: border-box;
-  color: var(--color-gray);
+  /*color: var(--color-gray);*/
   background-color: var(--color-light-gray);
 }
 
@@ -258,7 +259,7 @@ body {
   border: none;
   border-radius: 12px;
   background-color: var(--color-blue-gray);
-  color: white;
+  /*color: white;*/
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;

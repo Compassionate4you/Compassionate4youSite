@@ -205,9 +205,9 @@ html[theme='dark'] .a11y-panel {
 }
 
 html[theme='dark'] .panel-header h2,
-html[theme='dark'] .section-label {
-  color: #f3f4f6;
-}
+/*html[theme='dark'] .section-label {*/
+/*  color: #38ff00;*/
+/*}*/
 
 html[theme='dark'] .close-btn,
 html[theme='dark'] .opt-btn,
