@@ -1,7 +1,7 @@
 /* RESET */
 body {
   font-family: Arial, sans-serif;
-  background-color: var(--color1);
+  background-color: var(--color-white);
   margin: 0;
   padding: 0;
 }
@@ -9,7 +9,7 @@ body {
 /* NAVBAR */
 /* Update from Preston 9/13 - The navbar rules were not in use since it has its own css with a higher priority. */
 /* .navbar {
-  background-color: var(--color2);
+  background-color: var(--color-light-gray);
   border-bottom: 1px solid #ddd;
   padding: 12px 30px;
   display: flex;
@@ -27,8 +27,8 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: var(--color6);
-  color: var(--color6-text);
+  background-color: var(--color-sage);
+  color: var(--color-sage-text);
   font-weight: bold;
   font-size: 95%;
   display: flex;
@@ -67,8 +67,8 @@ body {
 
 /* SECTION */
 .section-box {
-  background-color: var(--color5);
-  border: 1px solid var(--color1);
+  background-color: var(--color-light-green);
+  border: 1px solid var(--color-white);
   border-radius: 10px;
   padding: 24px 28px;
 }
@@ -78,7 +78,7 @@ body {
 }
 
 .desc {
-  color: var(--color5-text);
+  color: var(--color-light-green-text);
   font-size: 90%;
   margin-bottom: 18px;
 }
@@ -91,7 +91,7 @@ body {
 .field label {
   font-size: 90%;
   font-weight: bold;
-  color: var(--color5-text);
+  color: var(--color-light-green-text);
   display: block;
   margin-bottom: 6px;
 }
@@ -109,12 +109,12 @@ body {
 .field select:focus,
 .field textarea:focus {
   outline: none;
-  border-color: var(--color6);
+  border-color: var(--color-sage);
 }
 
 /* BUTTONS */
 .btn-primary {
-  background-color: var(--color6);
+  background-color: var(--color-sage);
   color: var(--color-white);
   border: none;
   padding: 10px 20px;
@@ -124,13 +124,13 @@ body {
 }
 
 .btn-primary:disabled {
-  background-color: var(--color3);
+  background-color: var(--color-gray);
 }
 
 .btn-secondary {
   margin-left: 10px;
   background: var(--color-white);
-  border: 1px solid var(--color-lightGrey);
+  border: 1px solid var(--color-border-gray);
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
@@ -141,15 +141,15 @@ body {
   background: none;
   border: none;
   margin-bottom: 16px;
-  color: var(--color3);
+  color: var(--color-gray);
   cursor: pointer;
 }
 
 /* SUCCESS */
 .success-msg {
-  background: var(--color1);
-  color: var(--color1-text);
-  border: 1px solid var(--color5);
+  background: var(--color-white);
+  color: var(--color-white-text);
+  border: 1px solid var(--color-light-green);
   padding: 10px;
   margin-top: 15px;
   border-radius: 6px;
@@ -171,14 +171,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color1);
+  background: var(--color-white);
   border-radius: 6px;
   cursor: pointer;
 }
 
 .calendar-day.selected {
-  background: var(--color5);
-  color: var(--color5-text);
+  background: var(--color-light-green);
+  color: var(--color-light-green-text);
 }
 
 

@@ -55,7 +55,7 @@ body {
   padding: 6px 12px;
 }
 .navbar-right button:hover {
-  background-color: var(--color9);
+  background-color: var(--color-page-background);
 }
  
 /* MAIN CONTENT */
@@ -116,7 +116,7 @@ body {
  
 /* SECTION BOX */
 .section-box {
-  background-color: var(--color9);
+  background-color: var(--color-page-background);
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 24px 28px;
@@ -133,7 +133,7 @@ body {
 }
 
 .desc {
-  color: var(--color10);
+  color: var(--color-gray);
 }
 
 /* Table */
@@ -204,7 +204,7 @@ td {
   display: block;
   font-size: 12px;
   font-weight: bold;
-  color: var(--color10);
+  color: var(--color-gray);
   margin-bottom: 6px;
 }
 .field input,
@@ -557,4 +557,3 @@ td {
 .card-icon-blue { background-color: #dbeafe; color: #2563eb; }
 .card-icon-green { background-color: #dcfce7; color: #16a34a; }
 .card-icon-purple { background-color: #f3e8ff; color: #9333ea; }
-

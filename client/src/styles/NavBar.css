@@ -1,10 +1,10 @@
 .navbar {
-    color: var(--color1-text);
+    color: var(--color-white-text);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background: var(--color1);
+    background: var(--color-white);
     position: relative;
     z-index: 1000;
   }
@@ -21,7 +21,7 @@
   .nav-links a,
   .logo a {
     text-decoration: none;
-    color: var(--color1-text);
+    color: var(--color-white-text);
     padding: 8px 8px;
     border-radius: 4px;
   }
@@ -34,8 +34,8 @@
   }
 
   .nav-links a:hover {
-    color: var(--color-linkHighlight); 
-    background-color: var(--color2);
+    color: var(--color-link-highlight); 
+    background-color: var(--color-light-gray);
   }
 
 .logo-img {

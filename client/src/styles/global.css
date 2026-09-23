@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
 
 :root {
-    /* Neutral */
-    --color-charcoal: #262626;
+    /* Base Site Colors */
+    --color-white: #FFFFFF;
+    --color-light-gray: #D9D9D9;
     --color-gray: #595959;
+    --color-charcoal: #262626;
     --color-light-green: #DBE4C3;
     --color-sage: #9DA191;
-    --color-light-gray: #D9D9D9;
+    --color-page-background: #f0f2ee;
 
     /* Cool Tones */
     --color-teal: #3A5F5F;
@@ -16,79 +18,65 @@
     --color-lavender: #9984AE;
 
     /* Basic Colors */
-    --color-linkHighlight: #00aec5;
-    --color-white: #FFFFFF;
+    --color-link-highlight: #00aec5;
     --color-black: #000000;
-    --color-lightGrey: #d2d2d2;
-    --color-darkGrey: #808080;
-    --color-veryDarkGrey: #282727;
-
-    /* Base Site Colors - These were the ones chosen by the client for the light mode site. */
-    --color1: #ffffff;
-    --color2: #d9d9d9;
-    --color3: #595959;
-    --color4: #262626;
-    --color5: #dbe4c3;
-    --color6: #9da191;
-
-    /* Cool Tone Colors - These are used primarily for accents on the site, like on buttons. */
-    --cooltone1: #3a5f5f;
-    --cooltone2: #4b6681;
-    --cooltone3: #366454;
-    --cooltone4: #5959a6;
-    --cooltone5: #9984ae;
+    --color-border-gray: #d2d2d2;
+    --color-dark-gray: #808080;
+    --color-very-dark-gray: #282727;
 
     /* TODO: Decide on final text colors. */
     /* Primary Text Colors - These are the text colors for text within the base colors. */
-    --color1-text: #000000;
-    --color2-text: #000000;
-    --color3-text: #000000;
-    --color4-text: #000000;
-    --color5-text: #000000;
+    --color-white-text: #000000;
+    --color-light-gray-text: #000000;
+    --color-gray-text: #000000;
+    --color-charcoal-text: #000000;
+    --color-light-green-text: #000000;
+    --color-sage-text: #000000;
 
     /* Cool Tone Colors - These are the text colors for text within the cool tones. */
-    --cooltone1-text: #000000;
-    --cooltone2-text: #000000;
-    --cooltone3-text: #000000;
-    --cooltone4-text: #000000;
-    --cooltone5-text: #000000;
+    --color-teal-text: #000000;
+    --color-blue-gray-text: #000000;
+    --color-green-text: #000000;
+    --color-purple-text: #000000;
+    --color-lavender-text: #000000;
 }
 
 /* TODO: decide on dark mode colors. */
 [theme='dark'] {
     /* Dark Mode Base Colors - Base colors in dark mode. */
-    --color1: #e6e6e6;
-    --color2: #d9d9d9;
-    --color3: #595959;
-    --color4: #262626;
-    --color5: #dbe4c3;
-    --color6: #9da191;
+    --color-white: #e6e6e6;
+    --color-light-gray: #d9d9d9;
+    --color-gray: #595959;
+    --color-charcoal: #262626;
+    --color-light-green: #dbe4c3;
+    --color-sage: #9da191;
 
     /* Dark Mode Cool Tones - Cool tones in dark mode. */
-    --cooltone1: #000000;
-    --cooltone2: #000000;
-    --cooltone3: #000000;
-    --cooltone4: #000000;
-    --cooltone5: #000000;
+    --color-teal: #000000;
+    --color-blue-gray: #000000;
+    --color-green: #000000;
+    --color-purple: #000000;
+    --color-lavender: #000000;
 
     /* Dark Mode Primary Text Colors - Primary text colors in dark mode. */
-    --color1-text: #000000;
-    --color2-text: #000000;
-    --color3-text: #000000;
-    --color4-text: #000000;
-    --color5-text: #000000;
+    --color-white-text: #000000;
+    --color-light-gray-text: #000000;
+    --color-gray-text: #000000;
+    --color-charcoal-text: #000000;
+    --color-light-green-text: #000000;
+    --color-sage-text: #000000;
 
     /* Dark Mode Cool Tone Text Colors - Cool tone text colors in dark mode. */
-    --cooltone1-text: #000000;
-    --cooltone2-text: #000000;
-    --cooltone3-text: #000000;
-    --cooltone4-text: #000000;
-    --cooltone5-text: #000000;
+    --color-teal-text: #000000;
+    --color-blue-gray-text: #000000;
+    --color-green-text: #000000;
+    --color-purple-text: #000000;
+    --color-lavender-text: #000000;
 }
 
 .app {
-    background-color: var(--color1);
-    color: var(--color1-text);
+    background-color: var(--color-white);
+    color: var(--color-white-text);
 }
 
 h1, h2, h3 {

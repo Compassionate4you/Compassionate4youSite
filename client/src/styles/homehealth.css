@@ -15,7 +15,7 @@
 .services-section {
     position: relative;
     z-index: 3;
-    background-color: var(--color1);
+    background-color: var(--color-white);
     padding: 40px;
 }
 
@@ -80,18 +80,18 @@
 }
 
 .hero-button:hover{
-    background-color: var(--color-lightGrey);
+    background-color: var(--color-border-gray);
 }
 
 
 /* Services Section, for jira story #204 */
 .services-section {
-    background-color: var(--color1);
+    background-color: var(--color-white);
     padding: 60px 40px;
 }
 
 .services-title{
-    color: var(--color1-text);
+    color: var(--color-white-text);
     text-align: center;
     font-size: 400%;
     margin-bottom: 40px;
@@ -105,8 +105,8 @@
 }
 
 .service-card {
-    background-color: var(--color2);
-    border: 1px solid var(--color3);
+    background-color: var(--color-light-gray);
+    border: 1px solid var(--color-gray);
     border-radius: 12px;
     padding: 20px;
     transition: transform 0.2s ease;
@@ -133,20 +133,20 @@
 
 
 .service-card h3 {
-    color: var(--color2-text);
+    color: var(--color-light-gray-text);
     font-size: 100%;
     margin-bottom: 10px;
 }
 
 .service-card p {
     font-size: 100%;
-    color: var(--color2-text);
+    color: var(--color-light-gray-text);
     line-height: 1.5;
 }
 
 .advantages-section {
     padding: 60px 40px;
-    background: var(--color2);
+    background: var(--color-light-gray);
     text-align: center;
 }
 
@@ -154,7 +154,7 @@
     font-size: 400%;
     font-weight: 600;
     margin-bottom: 40px;
-    color: var(--color2-text);
+    color: var(--color-light-gray-text);
 }
 
 .advantages-grid{
@@ -164,11 +164,11 @@
 }
 
 .adv-card {
-    background: var(--color1);
+    background: var(--color-white);
     transition: transform 0.2s ease;
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid var(--color3);
+    border: 1px solid var(--color-gray);
     text-align: left;
     box-shadow: 0 2px 6px rgba(0,0,0,0,0.1);
 }
@@ -187,7 +187,7 @@
 
 .adv-text{
     font-size: 95%;
-    color: var(--color1-text);
+    color: var(--color-white-text);
 }
 
 .adv-card:hover {
@@ -197,7 +197,7 @@
 /*secialty section for jira #230 */
 .specialty-section{
     padding: 60px 40px;
-    background: var(--color1);
+    background: var(--color-white);
     text-align: center;
 }
 
@@ -205,7 +205,7 @@
     font-size: 400%;
     font-weight:600;
     margin-bottom: 40px;
-    color: var(--color1-text);
+    color: var(--color-white-text);
 }
 
 .specialty-grid{
@@ -215,13 +215,13 @@
 }
 
 .specialty-card{
-    background: var(--color2);
+    background: var(--color-light-gray);
     padding: 18px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     gap:12px;
-    border: 1px solid var(--color3);
+    border: 1px solid var(--color-gray);
     transition: all 0.3s ease;
 }
 
@@ -244,13 +244,13 @@
 
 .specialty-text{
     font-size: 95%;
-    color: var(--color2-text);
+    color: var(--color-light-gray-text);
 }
 
 
 /*CTA section for jira #234 */
 .cta-section{
-    background: var(--color5);
+    background: var(--color-light-green);
     padding: 60px 20px;
     text-align: center;
 }
@@ -258,7 +258,7 @@
 .cta-title{
     font-size: 200%;
     font-weight: 700;
-    color: var(--color5-text);
+    color: var(--color-light-green-text);
     margin-bottom: 15px;
 }
 
@@ -276,8 +276,8 @@
 }
 
 .cta-primary{
-    background: var(--color1);
-    color: var(--color1-text);
+    background: var(--color-white);
+    color: var(--color-white-text);
     border: none;
     padding: 10px 20px;
     border-radius: 6px;
@@ -291,8 +291,8 @@
 }
 
 .cta-secondary{
-    background: var(--color1);
-    color: var(--color1-text);
+    background: var(--color-white);
+    color: var(--color-white-text);
     border: none;
     padding: 10px 20px;
     border-radius: 6px;
