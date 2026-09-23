@@ -26,19 +26,17 @@
     border-radius: 4px;
   }
 
-  .logo-img {
-    background-color: var(--color-white);
-    border-radius: 10px;
-    border: 10px solid var(--color-white);
-    min-height: 60px;
-  }
+.logo-img {
+    height: auto;
+    max-height: 70px;
+    width: auto;
+    padding: 8px 15px;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid white;
+}
 
   .nav-links a:hover {
     color: var(--color-link-highlight); 
     background-color: var(--color-light-gray);
   }
-
-.logo-img {
-  height: 40px; 
-  width: auto;  
-}
