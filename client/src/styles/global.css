@@ -44,7 +44,7 @@
 /* TODO: decide on dark mode colors. */
 [theme='dark'] {
     /* Dark Mode Base Colors - Base colors in dark mode. */
-    --color-white: #191919;
+    --color-white: #353535;
     --color-light-gray: #d9d9d9;
     --color-gray: #595959;
     --color-charcoal: #262626;
