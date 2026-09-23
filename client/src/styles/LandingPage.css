@@ -84,9 +84,10 @@ body {
   max-width: 1300px;
   margin: 60px auto 0;
   padding: 48px 56px;
-  background: #f3f3f3;
-  border: 3px solid #111;
+  background: var(--color-white);
+  border: 3px solid var(--color-white-text);
   border-radius: 42px;
+  color: var(--color-white-text);
 
   display: flex;
   align-items: center;
@@ -125,13 +126,11 @@ body {
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 28px;
-  /*color: #111;*/
 }
 
 .info-card-content p {
   font-size: 1.15rem;
   line-height: 1.7;
-  /*color: #222;*/
   max-width: 520px;
   margin: 0 auto 24px;
 }
