@@ -41,14 +41,14 @@
 
 .admin-table-card h2 {
   margin: 0 0 4px;
-  font-size: 18px;
+  font-size: 125%;
 }
 
 .admin-table-description,
 .admin-table-card > div p {
   margin: 0 0 18px;
   color: #6b7280;
-  font-size: 13px;
+  font-size: 80%;
 }
 
 .admin-table {
@@ -61,7 +61,7 @@
   border: 0;
   border-bottom: 1px solid #ddd;
   color: #6b7280;
-  font-size: 13px;
+  font-size: 80%;
   font-weight: 600;
   text-align: left;
   white-space: nowrap;
@@ -71,7 +71,7 @@
   padding: 12px 10px;
   border: 0;
   border-bottom: 1px solid #eee;
-  font-size: 13px;
+  font-size: 80%;
   white-space: nowrap;
 }
 
@@ -83,7 +83,7 @@
   display: inline-block;
   padding: 4px 12px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 75%;
   font-weight: 700;
 }
 
@@ -108,7 +108,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #fff;
-  font-size: 12px;
+  font-size: 75%;
 }
 
 .admin-table-action:hover {
@@ -174,7 +174,7 @@
   border-radius: 50%;
   background-color: #93b48d;
   color: #fff;
-  font-size: 14px;
+  font-size: 90%;
   font-weight: 700;
 }
 
@@ -185,13 +185,78 @@
 
 .header-text h1 {
   margin: 0;
-  font-size: 15px;
+  font-size: 95%;
   font-weight: 700;
 }
 
 .header-text p {
   margin: 2px 0 0;
   color: #6b7280;
-  font-size: 13px;
+  font-size: 90%;
   font-weight: 700;
+}
+
+.logout-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.logout-modal {
+  width: 100%;
+  max-width: 400px;
+  padding: 28px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.logout-modal h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.logout-modal p {
+  margin: 0 0 24px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.logout-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.logout-modal-actions button {
+  min-width: 90px;
+  padding: 9px 18px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.logout-no-button {
+  background-color: #fff;
+  color: #000;
+}
+
+.logout-no-button:hover {
+  background-color: #f2f5f2;
+}
+
+.logout-yes-button {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+.logout-yes-button:hover {
+  background-color: #b91c1c;
 }

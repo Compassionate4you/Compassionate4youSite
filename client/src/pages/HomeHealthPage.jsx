@@ -146,7 +146,7 @@ function HomeHealthPage() {
 
             {/*SPECUALTY SECTION*/}
             <section className="specialty-section">
-                <h2 className="specialty-title">Speciatly Services</h2>
+                <h2 className="specialty-title">Specialty Services</h2>
 
                 <div className="specialty-grid">
                     <div className="specialty-card">
