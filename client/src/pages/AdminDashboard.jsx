@@ -11,6 +11,9 @@ const AdminDashboard = () => {
     const [showAppointmentForm, setShowAppointmentForm] = useState(false);
     const [editingAppointmentId, setEditingAppointmentId] = useState(null);
     const [appointmentPendingDelete, setAppointmentPendingDelete] = useState(null);
+    const [showAccountForm, setShowAccountForm] = useState(false);
+    const [editingAccountId, setEditingAccountId] = useState(null);
+    const [accountPendingDelete, setAccountPendingDelete] = useState(null);
 
     const [appointments, setAppointments] = useState([  //Initial Appointments in React state
         { id: 1, name: "John Doe", service: "Home Health", date: "2026-03-05", status: "Confirmed" },
@@ -146,19 +149,181 @@ const AdminDashboard = () => {
         setShowAppointmentForm(false);
     };
 
-    const accounts = [      //hard coded accounts
-        { id: 1, name: "John Doe", birthdate: "Apr 12, 88", email: "john.doe@example.com", 
+    const [accounts, setAccounts] = useState([      //Accounts now in React State
+        { id: 1, name: "John Doe", birthdate: "1988-04-12", email: "john.doe@example.com", 
             role: "Customer", created: "Jan 15, 26", status: "Active", lastLogin: "Mar 08, 26", },
-        { id: 2, name: "Mary Smith", birthdate: "Oct 03, 75", email: "mary.smith@example.com",
+        { id: 2, name: "Mary Smith", birthdate: "1975-10-03", email: "mary.smith@example.com",
             role: "Customer", created: "Feb 10, 26", status: "Active", lastLogin: "Mar 07, 26", },
-        { id: 3, name: "Robert Williams", birthdate: "Nov 21, 69", email: "robert.will@example.com",
+        { id: 3, name: "Robert Williams", birthdate: "1969-11-21", email: "robert.will@example.com",
             role: "Customer", created: "May 22, 25", status: "Inactive", lastLogin: "Oct 28, 25", },
-        { id: 4, name: "James Cameron", birthdate: "Aug 18, 80", email: "james.cam@admin.com",
+        { id: 4, name: "James Cameron", birthdate: "1980-08-18", email: "james.cam@admin.com",
             role: "Admin", created: "Sep 01, 25", status: "Active", lastLogin: "April 08, 26", },
-        { id: 5, name: "Michael Brown", birthdate: "Sep 16, 75", email: "michael.brown@admin.com",
+        { id: 5, name: "Michael Brown", birthdate: "1975-09-16", email: "michael.brown@admin.com",
             role: "Admin", created: "Jan 26, 26", status: "Active", lastLogin: "April 01, 26", },
-    ];
-    const [locations, setLocations] = useState([    //Current office location
+    ]);
+
+    const [accountForm, setAccountForm] = useState({
+        name: "", birthdate: "", email: "", role: "", status: "",
+    });
+
+    // Opens a blank form for a new account.
+    const handleOpenAddAccount = () => {
+        setAccountForm({
+            name: "",
+            birthdate: "",
+            email: "",
+            role: "",
+            status: "",
+        });
+        
+        setEditingAccountId(null);
+        setShowAccountForm(true);
+    };
+
+    // Clears the Account form and returns to the table.
+    const handleCancelAccount = () => {
+        setAccountForm({
+            name: "",
+            birthdate: "",
+            email: "",
+            role: "",
+            status: "",
+        });
+
+        setEditingAccountId(null);
+        setShowAccountForm(false);
+    };
+
+    // Updates the matching Account form property when a field changes.
+    const handleAccountInputChange = (event) => {
+        const { name, value } = event.target;
+
+        setAccountForm((currentForm) => ({
+            ...currentForm,
+            [name]: value,
+        }));
+    };
+
+    // Formats YYYY-MM-DD for display in the Accounts table.
+    const formatAccountBirthdate = (birthdate) => {
+        return new Date(`${birthdate}T00:00:00`).toLocaleDateString(
+            "en-US",
+            {
+                month: "short",
+                day: "2-digit",
+                year: "2-digit",
+            }
+        );
+    };
+
+    // Adds a new account or saves changes to an existing account.
+    const handleAddAccount = (event) => {
+        event.preventDefault();
+
+        const accountName = accountForm.name.trim();
+        const accountEmail = accountForm.email.trim().toLowerCase();
+
+        if (
+            !accountName ||
+            !accountForm.birthdate ||
+            !accountEmail ||
+            !accountForm.role ||
+            !accountForm.status
+        ) {
+            return;
+        }
+
+        if (editingAccountId !== null) {
+            setAccounts((currentAccounts) =>
+                currentAccounts.map((account) =>
+                    account.id === editingAccountId
+                        ? {
+                              ...account,
+                            name: accountName,
+                            birthdate: accountForm.birthdate,
+                            email: accountEmail,
+                            role: accountForm.role,
+                            status: accountForm.status,
+                          }
+                        : account
+                )
+            );
+        } else {
+            const createdDate = new Date().toLocaleDateString(
+                "en-US",
+                {
+                    month: "short",
+                    day: "2-digit",
+                    year: "2-digit",
+                }
+            );
+
+            const newAccount = {
+                id: Date.now(),
+                name: accountName,
+                birthdate: accountForm.birthdate,
+                email: accountEmail,
+                role: accountForm.role,
+                created: createdDate,
+                status: accountForm.status,
+                lastLogin: "Never",
+            };
+
+            setAccounts((currentAccounts) => [
+                ...currentAccounts,
+                newAccount,
+            ]);
+        }
+
+        setAccountForm({
+            name: "",
+            birthdate: "",
+            email: "",
+            role: "",
+            status: "",
+        });
+
+        setEditingAccountId(null);
+        setShowAccountForm(false);
+    };
+
+    // Opens the form with an existing account's information.
+    const handleEditAccount = (account) => {
+        setAccountForm({
+            name: account.name,
+            birthdate: account.birthdate,
+            email: account.email,
+            role: account.role,
+            status: account.status,
+        });
+
+        setEditingAccountId(account.id);
+        setShowAccountForm(true);
+    };
+
+    // Opens the Account deletion confirmation.
+    const handleDeleteAccount = (account) => {
+        setAccountPendingDelete(account);
+    };
+
+    // Closes the prompt without deleting the account.
+    const handleCancelDeleteAccount = () => {
+        setAccountPendingDelete(null);
+    };
+
+    // Deletes the selected account from React state.
+    const handleConfirmDeleteAccount = () => {
+        setAccounts((currentAccounts) =>
+            currentAccounts.filter(
+                (account) =>
+                    account.id !== accountPendingDelete.id
+            )
+        );
+
+        setAccountPendingDelete(null);
+    };
+
+    const [locations, setLocations] = useState([    //Current office location, hardcoded
         {
             id: 1,
             name: "Main Office",
@@ -414,74 +579,219 @@ const AdminDashboard = () => {
                     </div>
                 )}
                 
+                {/* Accounts tab info */}
                 {tab === "accounts" && (
                     <div className="admin-table-card">
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                marginBottom: "20px",
-                            }}
-                        >
+                        <div className="account-section-header">
                             <div>
                                 <h2>Account Management</h2>
-                                    <p>Manage user accounts</p>
+                                <p>Manage user accounts</p>
                             </div>
 
-                            <button
-                                style={{
-                                    backgroundColor: "#020617",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: "10px",
-                                    padding: "10px 16px",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                Add Account
-                            </button>
+                            {!showAccountForm && (
+                                <button
+                                    type="button"
+                                    className="admin-add-button"
+                                    onClick={handleOpenAddAccount}
+                                >
+                                    Add Account
+                                </button>
+                            )}
                         </div>
 
-                        <table className="admin-table admin-accounts-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Birthdate</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Created</th>
-                                    <th>Status</th>
-                                    <th>Last Login</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {accounts.map((account) => (
-                                    <tr key={account.id}>
-                                        <td>{account.name}</td>
-                                        <td>{account.birthdate}</td>
-                                        <td>{account.email}</td>
-                                        <td>{account.role}</td>
-                                        <td>{account.created}</td>
-                                        <td>
-                                            <span className={`admin-status admin-status-${account.status.toLowerCase()}`}>
-                                                {account.status}
-                                            </span>
-                                        </td>
-                                        <td>{account.lastLogin}</td>
-                                        <td>
-                                            <button className="admin-table-action">
-                                                Edit
-                                            </button>
-                                            <button className="admin-table-action admin-table-delete">
-                                                Delete
-                                            </button>
-                                        </td>
+                        {showAccountForm ? (
+                            <form
+                                className="account-form"
+                                onSubmit={handleAddAccount}
+                            >
+                                <h2>
+                                    {editingAccountId === null
+                                        ? "Add Account"
+                                        : "Edit Account"}
+                                </h2>
+
+                                <p className="account-form-description">
+                                    Complete every field to create an account.
+                                </p>
+
+                                <div className="account-form-grid">
+                                    <div className="account-form-field">
+                                        <label htmlFor="account-name">
+                                            Name
+                                        </label>
+
+                                    <input
+                                        id="account-name"
+                                        name="name"
+                                        type="text"
+                                        value={accountForm.name}
+                                        onChange={handleAccountInputChange}
+                                        placeholder="Enter full name"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="account-form-field">
+                                    <label htmlFor="account-birthdate">
+                                        Birthdate
+                                    </label>
+
+                                    <input
+                                        id="account-birthdate"
+                                        name="birthdate"
+                                        type="date"
+                                        value={accountForm.birthdate}
+                                        onChange={handleAccountInputChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="account-form-field account-email-field">
+                                    <label htmlFor="account-email">
+                                        Email
+                                    </label>
+
+                                    <input
+                                        id="account-email"
+                                        name="email"
+                                        type="email"
+                                        value={accountForm.email}
+                                        onChange={handleAccountInputChange}
+                                        placeholder="name@example.com"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="account-form-field">
+                                    <label htmlFor="account-role">
+                                        Role
+                                    </label>
+
+                                    <select
+                                        id="account-role"
+                                        name="role"
+                                        value={accountForm.role}
+                                        onChange={handleAccountInputChange}
+                                        required
+                                    >
+                                        <option value="" disabled>
+                                            Select a role
+                                        </option>
+
+                                        <option value="Customer">
+                                            Customer
+                                        </option>
+
+                                        <option value="Admin">
+                                            Admin
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div className="account-form-field">
+                                    <label htmlFor="account-status">
+                                        Status
+                                    </label>
+
+                                    <select
+                                        id="account-status"
+                                        name="status"
+                                        value={accountForm.status}
+                                        onChange={handleAccountInputChange}
+                                        required
+                                    >
+                                        <option value="" disabled>
+                                            Select a status
+                                        </option>
+
+                                        <option value="Active">
+                                            Active
+                                        </option>
+
+                                        <option value="Inactive">
+                                            Inactive
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="account-form-actions">
+                                <button
+                                    type="button"
+                                    className="account-cancel-button"
+                                    onClick={handleCancelAccount}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    className="account-submit-button"
+                                >
+                                    {editingAccountId === null
+                                        ? "Add Account"
+                                        : "Save Changes"}
+                                </button>
+                            </div>
+                        </form>
+                        ) : (
+                            <table className="admin-table admin-accounts-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Birthdate</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Created</th>
+                                        <th>Status</th>
+                                        <th>Last Login</th>
+                                        <th>Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody>
+                                    {accounts.map((account) => (
+                                        <tr key={account.id}>
+                                            <td>{account.name}</td>
+                                            <td>{formatAccountBirthdate(account.birthdate)}</td>
+                                            <td>{account.email}</td>
+                                            <td>{account.role}</td>
+                                            <td>{account.created}</td>
+
+                                            <td>
+                                                <span
+                                                    className={`admin-status admin-status-${account.status.toLowerCase()}`}
+                                                >
+                                                    {account.status}
+                                                </span>
+                                            </td>
+
+                                            <td>{account.lastLogin}</td>
+
+                                            <td>
+                                                <div className="account-row-actions">
+                                                    <button
+                                                        type="button"
+                                                        className="admin-table-action"
+                                                        onClick={() => handleEditAccount(account)}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className="admin-table-action admin-table-delete"
+                                                        onClick={() => handleDeleteAccount(account)}
+                                                    >
+                                                        Delete
+                                                    </button>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 )}
 
@@ -651,6 +961,48 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
+        )}
+        {/* Account Deletion modal */}
+        {accountPendingDelete && (
+         <div
+             className="logout-modal-overlay"
+             onClick={handleCancelDeleteAccount}
+         >
+             <div
+             className="logout-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="delete-account-title"
+             onClick={(event) => event.stopPropagation()}
+             >   
+                 <h2 id="delete-account-title">
+                     Delete Account
+                 </h2>
+
+                 <p>
+                     Are you sure you want to delete the account for{" "}
+                     <strong>{accountPendingDelete.name}</strong>?
+                 </p>
+
+                 <div className="logout-modal-actions">
+                     <button
+                         type="button"
+                         className="logout-no-button"
+                         onClick={handleCancelDeleteAccount}
+                     >
+                         No
+                     </button>
+
+                     <button
+                         type="button"
+                         className="logout-yes-button"
+                         onClick={handleConfirmDeleteAccount}
+                     >
+                         Yes
+                     </button>
+                 </div>
+             </div>
+         </div>
         )}
     </div>
     );
