@@ -571,6 +571,16 @@ td {
     align-items: center;
     gap: 4px
 }
+
+td .btn-reschedule,
+td .btn-cancel-appt {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+table td:last-child {
+    white-space: nowrap;
+}
 .card-icon-blue { background-color: #dbeafe; color: #2563eb; }
 .card-icon-green { background-color: #dcfce7; color: #16a34a; }
 .card-icon-purple { background-color: #f3e8ff; color: #9333ea; }
