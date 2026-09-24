@@ -8,12 +8,143 @@ const AdminDashboard = () => {
     const [tab, setTab] = useState("appointments");
     const navigate = useNavigate();
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+    const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+    const [editingAppointmentId, setEditingAppointmentId] = useState(null);
+    const [appointmentPendingDelete, setAppointmentPendingDelete] = useState(null);
 
-    const appointments = [  //hard coded appointments
-        { name: "John Doe", service: "Home Health", date: "March 5", status: "Confirmed" },
-        { name: "Mary Smith", service: "Hospice", date: "March 5", status: "Pending" },
-        { name: "Robert Williams", service: "Home Health", date: "March 6", status: "Confirmed" },
-    ];
+    const [appointments, setAppointments] = useState([  //Initial Appointments in React state
+        { id: 1, name: "John Doe", service: "Home Health", date: "2026-03-05", status: "Confirmed" },
+        { id: 2, name: "Mary Smith", service: "Hospice", date: "2026-03-06", status: "Pending" },
+        { id: 3, name: "Robert Williams", service: "Home Health", date: "2026-03-07", status: "Confirmed" },
+    ]);
+
+    const [appointmentForm, setAppointmentForm] = useState({    //Appointment Form State
+        name: "", service: "", date: "", status: "",
+    });
+
+    const handleAppointmentInputChange = (event) => {   //Update Appointment Change
+        const { name, value } = event.target;
+        setAppointmentForm((currentForm) => ({
+            ...currentForm,
+            [name]: value,
+        }));
+    };
+
+    // Converts the stored YYYY-MM-DD date into a readable table date.
+    const formatAppointmentDate = (date) => {
+        return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+        });
+    };
+
+    // Clears all appointment form fields.
+    const resetAppointmentForm = () => {
+        setAppointmentForm({
+            name: "",
+            service: "",
+            date: "",
+            status: "",
+        });
+    };
+
+    // Opens a blank form for a new appointment.
+    const handleOpenAddAppointment = () => {
+        resetAppointmentForm();
+        setEditingAppointmentId(null);
+        setShowAppointmentForm(true);
+    };
+
+    // Opens the form with the selected appointment's information.
+    const handleEditAppointment = (appointment) => {
+        setAppointmentForm({
+            name: appointment.name,
+            service: appointment.service,
+            date: appointment.date,
+            status: appointment.status,
+        });
+
+        setEditingAppointmentId(appointment.id);
+        setShowAppointmentForm(true);
+    };
+
+    // Adds a new appointment or saves changes to an existing appointment.
+    const handleAddAppointment = (event) => {
+        event.preventDefault();
+
+        const patientName = appointmentForm.name.trim();
+
+        if (
+            !patientName ||
+            !appointmentForm.service ||
+            !appointmentForm.date ||
+            !appointmentForm.status
+        ) {
+            return;
+        }
+
+        if (editingAppointmentId !== null) {
+            setAppointments((currentAppointments) =>
+                currentAppointments.map((appointment) =>
+                    appointment.id === editingAppointmentId
+                        ? {
+                            ...appointment,
+                            name: patientName,
+                            service: appointmentForm.service,
+                            date: appointmentForm.date,
+                            status: appointmentForm.status,
+                        }
+                        : appointment
+                )
+            );
+        } else {
+            const newAppointment = {
+                id: Date.now(),
+                name: patientName,
+                service: appointmentForm.service,
+                date: appointmentForm.date,
+                status: appointmentForm.status,
+            };
+
+            setAppointments((currentAppointments) => [
+                ...currentAppointments,
+                newAppointment,
+            ]);
+        }
+
+        resetAppointmentForm();
+        setEditingAppointmentId(null);
+        setShowAppointmentForm(false);
+    };
+
+    // Opens the Delete confirmation prompt.
+    const handleDeleteAppointment = (appointment) => {
+        setAppointmentPendingDelete(appointment);
+    };
+
+    // Closes the prompt without deleting anything.
+    const handleCancelDeleteAppointment = () => {
+        setAppointmentPendingDelete(null);
+    };
+
+    // Deletes the selected appointment and closes the prompt.
+    const handleConfirmDeleteAppointment = () => {
+        setAppointments((currentAppointments) =>
+            currentAppointments.filter(
+                (appointment) =>
+                    appointment.id !== appointmentPendingDelete.id
+            )
+        );
+
+        setAppointmentPendingDelete(null);
+    };
+
+    // Discards form changes and returns to the table.
+    const handleCancelAppointment = () => {
+        resetAppointmentForm();
+        setEditingAppointmentId(null);
+        setShowAppointmentForm(false);
+    };
 
     const accounts = [      //hard coded accounts
         { id: 1, name: "John Doe", birthdate: "Apr 12, 88", email: "john.doe@example.com", 
@@ -83,32 +214,203 @@ const AdminDashboard = () => {
             <main className="content">      {/* All tab information below */}
                 {tab === "appointments" && (
                     <div className="admin-table-card">
-                        <h2>{t('admin.tabs.appointments')}</h2>
-                        <p className="admin-table-description">View and manage scheduled appointments</p>
-                        <table className="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>{t('admin.table.patient')}</th>
-                                    <th>{t('admin.table.service')}</th>
-                                    <th>{t('admin.table.date')}</th>
-                                    <th>{t('admin.table.status')}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {appointments.map((a, i) => (
-                                    <tr key={i}>
-                                        <td>{a.name}</td>
-                                        <td>{a.service}</td>
-                                        <td>{a.date}</td>
+                        <div className="appointment-section-header">
+                            <div>
+                                <h2>{t("admin.tabs.appointments")}</h2>
+                                <p className="admin-table-description">
+                                    View and manage scheduled appointments
+                                </p>
+                            </div>
+
+                            {!showAppointmentForm && (
+                                <button
+                                    type="button"
+                                    className="admin-add-button"
+                                    onClick={handleOpenAddAppointment}
+                                >
+                                    Add Appointment
+                                </button>
+                            )}
+                        </div>
+
+                        {/*Display either form or table*/}
+                        {showAppointmentForm ? (
+                            <form
+                                className="appointment-form"
+                                onSubmit={handleAddAppointment}
+                            >
+                                <h2>
+                                    {editingAppointmentId === null
+                                        ? "Add Appointment"
+                                        : "Edit Appointment"}
+                                </h2>
+
+                                <p className="appointment-form-description">
+                                    Complete every field to add an appointment.
+                                </p>
+
+                                <div className="appointment-form-grid">
+                                    <div className="appointment-form-field">
+                                        <label htmlFor="appointment-name">
+                                            Patient Name
+                                        </label>
+
+                                    <input
+                                        id="appointment-name"
+                                        name="name"
+                                        type="text"
+                                        value={appointmentForm.name}
+                                        onChange={handleAppointmentInputChange}
+                                        placeholder="Enter patient name"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="appointment-form-field">
+                                    <label htmlFor="appointment-service">
+                                        Service
+                                    </label>
+                                {/* Admin has drop down menu to select information */}
+                                    <select
+                                        id="appointment-service"
+                                        name="service"
+                                        value={appointmentForm.service}
+                                        onChange={handleAppointmentInputChange}
+                                        required
+                                    >
+                                        <option value="" disabled>
+                                            Select a service
+                                        </option>
+
+                                        <option value="Home Health">
+                                            Home Health
+                                        </option>
+
+                                        <option value="Hospice">
+                                            Hospice
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div className="appointment-form-field">
+                                    <label htmlFor="appointment-date">
+                                        Date
+                                    </label>
+
+                                    <input
+                                        id="appointment-date"
+                                        name="date"
+                                        type="date"
+                                        value={appointmentForm.date}
+                                        onChange={handleAppointmentInputChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="appointment-form-field">
+                                    <label htmlFor="appointment-status">
+                                        Status
+                                    </label>
+
+                                    <select
+                                        id="appointment-status"
+                                        name="status"
+                                        value={appointmentForm.status}
+                                        onChange={handleAppointmentInputChange}
+                                        required
+                                    >
+                                        <option value="" disabled>
+                                            Select a status
+                                        </option>
+
+                                        <option value="Pending">
+                                            Pending
+                                        </option>
+
+                                        <option value="Confirmed">
+                                            Confirmed
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="appointment-form-actions">
+                                <button
+                                    type="button"
+                                    className="appointment-cancel-button"
+                                    onClick={handleCancelAppointment}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="appointment-submit-button"
+                                >
+                                    {editingAppointmentId === null
+                                        ? "Add Appointment"
+                                        : "Save Changes"}
+                                </button>
+                            </div>
+                        </form>
+                        ) : (
+                            <table className="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>{t("admin.table.patient")}</th>
+                                        <th>{t("admin.table.service")}</th>
+                                        <th>{t("admin.table.date")}</th>
+                                        <th>{t("admin.table.status")}</th>
+                                        <th className="appointment-actions-heading">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {appointments.map((appointment) => (
+                                    <tr key={appointment.id}>
+                                        <td>{appointment.name}</td>
+                                        <td>{appointment.service}</td>
+
                                         <td>
-                                            <span className={`admin-status admin-status-${a.status.toLowerCase()}`}>
-                                                {a.status}
+                                            {formatAppointmentDate(appointment.date)}
+                                        </td>
+
+                                        <td>
+                                            <span
+                                                className={`admin-status admin-status-${appointment.status.toLowerCase()}`}
+                                            >
+                                                {appointment.status}
                                             </span>
                                         </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+
+                                        <td>
+                                            <div className="appointment-row-actions">
+                                                <button
+                                                    type="button"
+                                                    className="appointment-edit-button"
+                                                        onClick={() =>
+                                                            handleEditAppointment(appointment)
+                                                        }
+                                                    >
+                                                        Edit
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    className="appointment-delete-button"
+                                                    onClick={() => handleDeleteAppointment(appointment)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 )}
                 
@@ -308,8 +610,49 @@ const AdminDashboard = () => {
                 </div>
             </div>
         </div>
-    )}
-        </div>
+        )}
+        {appointmentPendingDelete && (
+            <div
+                className="logout-modal-overlay"
+                onClick={handleCancelDeleteAppointment}
+            >
+                <div
+                    className="logout-modal"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="delete-appointment-title"
+                    onClick={(event) => event.stopPropagation()}
+                >
+                    <h2 id="delete-appointment-title">
+                        Delete Appointment
+                    </h2>
+
+                    <p>
+                        Are you sure you want to delete the appointment for{" "}
+                        <strong>{appointmentPendingDelete.name}</strong>?
+                    </p>
+
+                    <div className="logout-modal-actions">
+                        <button
+                        type="button"
+                        className="logout-no-button"
+                        onClick={handleCancelDeleteAppointment}
+                        >
+                            No
+                        </button>
+
+                        <button
+                            type="button"
+                            className="logout-yes-button"
+                            onClick={handleConfirmDeleteAppointment}
+                        >
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+    </div>
     );
 };
 
