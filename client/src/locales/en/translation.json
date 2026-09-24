@@ -9,7 +9,8 @@
     "portal": "Portal",
     "admin": "Admin",
     "logout": "Logout",
-        "dashboard": "User Dashboard"
+    "dashboard": "User Dashboard",
+    "home": "Home"
   },
   "landing": {
     "heroTitle": "Compassionate Care for Your Loved Ones",
@@ -342,7 +343,7 @@
   },
   "login": {
     "title": "Sign In",
-    "subtitle": "Enter your credentials to continue.",
+    "subtitle": "Access your account to manage appointments and care",
     "email": "Email Address",
     "emailPlaceholder": "you@example.com",
     "password": "Password",

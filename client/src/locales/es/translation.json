@@ -9,7 +9,8 @@
     "portal": "Portal",
     "admin": "Administrador",
     "logout": "Cerrar Sesión",
-      "dashboard": "Panel De Usuario"
+    "dashboard": "Panel De Usuario",
+    "home": "Inicio"
   },
   "landing": {
     "heroTitle": "Cuidado compasivo para sus seres queridos",
