@@ -8,7 +8,9 @@
     "login": "Iniciar Sesión",
     "portal": "Portal",
     "admin": "Administrador",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar Sesión",
+    "dashboard": "Panel De Usuario",
+    "home": "Inicio"
   },
   "landing": {
     "heroTitle": "Cuidado compasivo para sus seres queridos",
@@ -249,7 +251,18 @@
     "notesPlaceholder": "Cualquier síntoma, inquietud o solicitud...",
     "confirm": "Confirmar Cita",
     "cancel": "Cancelar",
-    "successMsg": "¡Solicitud de cita enviada! Confirmaremos su visita en breve."
+    "successMsg": "¡Solicitud de cita enviada! Confirmaremos su visita en breve.",
+    "time": "Hora de la Cita",
+    "selectTime": "Seleccione una hora",
+    "times": {
+      "9": "9:00 a. m.",
+      "10": "10:00 a. m.",
+      "11": "11:00 a. m.",
+      "1": "1:00 p. m.",
+      "2": "2:00 p. m.",
+      "3": "3:00 p. m."
+    },
+    "requiredError": "Complete todos los campos obligatorios de la cita."
   },
   "login": {
     "title": "Iniciar Sesión",
@@ -368,5 +381,38 @@
       "locations": "Ir a Ubicaciones",
       "schedule": "Ir a Programar Cita"
     }
+  },
+  "confirmation": {
+    "title": "¡Cita programada!",
+    "message": "Hemos recibido su solicitud de cita. Nos comunicaremos con usted para confirmarla.",
+    "detailsLabel": "Detalles de la nueva cita",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "service": "Servicio",
+    "date": "Fecha",
+    "time": "Hora",
+    "notes": "Notas",
+    "viewDetails": "Ver detalles de la cita",
+    "returnHome": "Volver al inicio",
+    "notFoundTitle": "Cita no encontrada",
+    "notFoundMessage": "No hay una cita programada correctamente disponible para ver. Primero programe una cita.",
+    "scheduleAgain": "Programar una cita"
+  },
+  "details": {
+    "title": "Detalles de la cita",
+    "subtitle": "Estos son los detalles de la cita que acaba de programar.",
+    "detailsLabel": "Detalles de la cita",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "service": "Servicio",
+    "date": "Fecha",
+    "time": "Hora",
+    "notes": "Notas",
+    "returnDashboard": "Volver al panel",
+    "notFoundTitle": "Cita no encontrada",
+    "notFoundMessage": "No hay una cita programada correctamente disponible para ver. Primero programe una cita.",
+    "scheduleAppointment": "Programar una cita"
   }
 }

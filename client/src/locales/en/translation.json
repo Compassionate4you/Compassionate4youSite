@@ -8,7 +8,9 @@
     "login": "Login",
     "portal": "Portal",
     "admin": "Admin",
-    "logout": "Logout"
+    "logout": "Logout",
+    "dashboard": "User Dashboard",
+    "home": "Home"
   },
   "landing": {
     "heroTitle": "Compassionate Care for Your Loved Ones",
@@ -249,7 +251,18 @@
     "notesPlaceholder": "Any symptoms, concerns, or requests...",
     "confirm": "Confirm Appointment",
     "cancel": "Cancel",
-    "successMsg": "Appointment request submitted! We will confirm your visit shortly."
+    "successMsg": "Appointment request submitted! We will confirm your visit shortly.",
+    "time": "Appointment Time",
+    "selectTime": "Select a time",
+    "times": {
+      "9": "9:00 AM",
+      "10": "10:00 AM",
+      "11": "11:00 AM",
+      "1": "1:00 PM",
+      "2": "2:00 PM",
+      "3": "3:00 PM"
+    },
+    "requiredError": "Please complete all required appointment fields."
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -341,7 +354,7 @@
   },
   "login": {
     "title": "Sign In",
-    "subtitle": "Enter your credentials to continue.",
+    "subtitle": "Access your account to manage appointments and care",
     "email": "Email Address",
     "emailPlaceholder": "you@example.com",
     "password": "Password",
@@ -368,5 +381,38 @@
         "invalid": "Please enter a valid email address or phone number."
       }
     }
+  },
+  "confirmation": {
+    "title": "Appointment Scheduled!",
+    "message": "Your appointment request has been received. We will contact you shortly to confirm.",
+    "detailsLabel": "New appointment details",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "service": "Service",
+    "date": "Date",
+    "time": "Time",
+    "notes": "Notes",
+    "viewDetails": "View Appointment Details",
+    "returnHome": "Return Home",
+    "notFoundTitle": "Appointment Not Found",
+    "notFoundMessage": "No successfully scheduled appointment is available to view. Please schedule an appointment first.",
+    "scheduleAgain": "Schedule an Appointment"
+  },
+  "details": {
+    "title": "Appointment Details",
+    "subtitle": "Here are the details for the appointment you just scheduled.",
+    "detailsLabel": "Appointment details",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "service": "Service",
+    "date": "Date",
+    "time": "Time",
+    "notes": "Notes",
+    "returnDashboard": "Return to Dashboard",
+    "notFoundTitle": "Appointment Not Found",
+    "notFoundMessage": "No successfully scheduled appointment is available to view. Please schedule an appointment first.",
+    "scheduleAppointment": "Schedule an Appointment"
   }
 }

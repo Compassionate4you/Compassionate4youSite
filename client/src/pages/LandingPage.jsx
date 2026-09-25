@@ -40,6 +40,7 @@ function LandingPage() {
             >
               <option value="en">English</option>
               <option value="es">Español</option>
+              <option value="pa">ਪੰਜਾਬੀ</option>
             </select>
           </div>
         </div>
