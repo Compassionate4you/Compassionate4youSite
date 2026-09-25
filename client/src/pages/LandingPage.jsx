@@ -2,6 +2,7 @@ import "../styles/LandingPage.css";
 import CareImage1 from "../assets/images/CareImage1.jpeg";
 import Puzzle from "../assets/images/working_a_puzzle_together.jpeg";
 import Couple from "../assets/images/older_couple_smiling.jpeg";
+import FAQ from "../components/FAQ";
 
 import { useTranslation } from "react-i18next";
 import "../styles/map.css";
@@ -221,7 +222,7 @@ function LandingPage() {
           </a>
         </div>
       </section>
-
+ <FAQ />
     </div>
   );
 }
