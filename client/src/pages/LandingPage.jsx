@@ -222,6 +222,19 @@ function LandingPage() {
         </div>
       </section>
 
+      
+      {/* Task: DT-508
+      Author: PBall
+      Sprint: Sprint 6 */}
+      
+      {/* DYNAMIC SECTION INGESTION (COMMENTED OUT PER CODE CONSIDERATIONS)
+      Uncomment once dynamic publishing schema is finalized. */}
+      
+      {/* {modularSections.map((section) => (
+        <DynamicSectionRenderer key={section.id} config={section} />
+      ))} */}
+       
+
     </div>
   );
 }

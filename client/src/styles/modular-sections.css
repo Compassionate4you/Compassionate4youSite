@@ -1,0 +1,106 @@
+ /* * Task: DT-508
+ * Author: PBall
+ * Sprint: Sprint 6 */
+
+/* //DT-492 Content Editor - Preston Ball: Base container styles for modular content sections with dynamic theme custom property support */
+.modular-section {
+  padding: 48px 24px;
+  background-color: var(--element-custom-bg, transparent);
+  color: var(--element-custom-text, inherit);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Inner wrapper to constrain content width and center it horizontally */
+.modular-section__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Primary section title styling with bold typography and centered alignment */
+.modular-section__title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* IMAGE_HEADER Layout */
+/* //DT-492 Content Editor - Preston Ball: Layout variant centering header image and associated content */
+.modular-layout--image-header {
+  text-align: center;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Constrains and formats hero image with fixed maximum height and rounded corners */
+.modular-layout--image-header img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+/* IMAGE_PARAGRAPH & SPLIT_CONTAINER Layouts */
+/* //DT-492 Content Editor - Preston Ball: Side-by-side flex layout for image-paragraph and split-container modular blocks */
+.modular-layout--image-paragraph,
+.modular-layout--split-container {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Media element styling for split sections allocating up to half the container width */
+.modular-layout--image-paragraph img,
+.modular-layout--split-container .split-media {
+  flex: 1;
+  max-width: 50%;
+  border-radius: 12px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Text content area for split sections with proportional sizing and readable line height */
+.modular-layout--image-paragraph .modular-text,
+.modular-layout--split-container .split-content {
+  flex: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* GRID_CARDS Layout */
+/* //DT-492 Content Editor - Preston Ball: Responsive multi-column grid layout for modular card items */
+.modular-layout--grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Individual modular card container with subtle shadow, border, and background variable */
+.modular-card {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  background: var(--element-card-bg, #ffffff);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* //DT-492 Content Editor - Preston Ball: Header text formatting within modular cards */
+.modular-card h4 {
+  margin: 0 0 12px 0;
+  font-size: 1.25rem;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Body text formatting within modular cards */
+.modular-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Responsive mobile breakpoint to collapse side-by-side split layouts into vertical stacks */
+@media (max-width: 768px) {
+  .modular-layout--image-paragraph,
+  .modular-layout--split-container {
+    flex-direction: column;
+  }
+  .modular-layout--image-paragraph img,
+  .modular-layout--split-container .split-media {
+    max-width: 100%;
+  }
+}

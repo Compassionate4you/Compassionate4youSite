@@ -331,13 +331,7 @@ const AdminDashboard = () => {
         },
     ]);
     
-    //CONTENT pages
-    const contentItems = [  //Content tab example editable pages
-        { id: 1, title: "Home Page", section: "Philosophy", updated: "Feb 20, 2026", },
-        { id: 2, title: "Home Page", section: "2021", updated: "Feb 18, 2026", },
-        { id: 3, title: "Home Page", section: "Specialty Services", updated: "Feb 15, 2026", },
-        { id: 4, title: "Home Page", section: "Contact", updated: "Feb 12, 2026", },
-    ];
+    //DT-492 Content Editor - Preston Ball: Removed the content items from the admin board, and simply directed the user to the content editor page. All editing options are now displayed in the main page.
 
     return (
         <div>
@@ -365,7 +359,7 @@ const AdminDashboard = () => {
                 <button className={tab === "appointments" ? "active" : ""} onClick={() => setTab("appointments")}>
                     {t('admin.tabs.appointments')}
                 </button>
-                <button className={tab === "content" ? "active" : ""} onClick={() => setTab("content")}>
+                <button className={tab === "content" ? "active" : ""} onClick={() => navigate("/admin/content-editor")}>
                     {t('admin.tabs.content')}
                 </button>
                 <button className={tab === "locations" ? "active" : ""} onClick={() => setTab("locations")}>
@@ -793,51 +787,8 @@ const AdminDashboard = () => {
                     </div>
                 )}
 
-                {tab === "content" && (
-                    <div>
-                        <h2>Content Management</h2>
-                        <p>Edit website content, testimonials, and service descriptions</p>
-
-                        <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
-                            {contentItems.map((item) => (
-                                <div
-                                    key={item.id}
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        border: "1px solid #ddd",
-                                        borderRadius: "12px",
-                                        padding: "20px",
-                                        background: "#fff",
-                                    }}
-                                >
-                                    <div>
-                                        <h3 style={{ margin: "0 0 6px" }}>{item.title}</h3>
-                                        <p style={{ margin: "0 0 6px", color: "#555" }}>{item.section}</p>
-                                        <span style={{ color: "#888", fontSize: "14px" }}>
-                                            Last updated: {item.updated}
-                                        </span>
-                                    </div>
-
-                                    <button
-                                        onClick={() => navigate("/admin/content-editor")}
-                                        style={{
-                                            backgroundColor: "#020617",
-                                            color: "white",
-                                            border: "none",
-                                            borderRadius: "10px",
-                                            padding: "10px 16px",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        Edit
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                //DT-492 Content Editor - Preston Ball: Removed the content items from the admin board, and simply directed the user to the content editor page. All editing options are now displayed in the main page.
+                
                 {tab === "locations" && (
                     <div>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>

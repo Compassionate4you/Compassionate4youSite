@@ -1,181 +1,177 @@
+//  * Task: DT-508
+//  * Author: PBall
+//  * Sprint: Sprint 6
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import TranslationTreeExplorer from "../components/admin/content/TranslationTreeExplorer";
+import ContentHistoryDrawer from "../components/admin/content/ContentHistoryDrawer";
+import ModularContentBuilder from "../components/admin/content/ModularContentBuilder";
+import DynamicSectionRenderer from "../components/modular/DynamicSectionRenderer";
+import { saveEnglishText } from "../services/contentStorageService";
+import { AuditHistoryService } from "../services/auditHistoryService";
+import { syncKeyToLocales } from "../services/translationSyncService";
 import "../styles/contenteditor.css";
 
 const ContentEditor = () => {
-  const [activeTab, setActiveTab] = useState("edit");
   const navigate = useNavigate();
+  const [dirtyNodes, setDirtyNodes] = useState({});
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [notification, setNotification] = useState("");
+  const [sections, setSections] = useState([]);
+  const [previewDraftId, setPreviewDraftId] = useState(`draft-${Date.now()}`);
+
+  //DT-492 Content Editor - Preston Ball: Handles changes from the TranslationTreeExplorer component, updating the dirtyNodes state with the modified keypath and its new value.
+  const handleNodeChange = (change) => {
+    const pathStr = change.keyPath.join(".");
+    setDirtyNodes((prev) => ({
+      ...prev,
+      [pathStr]: {
+        keyPath: change.keyPath,
+        currentValue: change.currentValue,
+        originalValue: prev[pathStr]?.originalValue ?? change.currentValue,
+      },
+    }));
+  };
+
+  //DT-492 Content Editor - Preston Ball: Handles the addition of a new modular section, updating the sections state and preview draft ID.
+  const handleAddSection = (newSection) => {
+    setSections((prev) => [...prev, newSection]);
+    setPreviewDraftId(`draft-${Date.now()}`);
+    setNotification(`Appended modular section: "${newSection.title}"`);
+    setTimeout(() => setNotification(""), 3000);
+  };
+
+  //DT-492 Content Editor - Preston Ball: Handles the "Save All" action, persisting all dirty nodes and staged modular sections, synchronizing translations, and recording audit history entries.
+  const handleSaveAll = async () => {
+    const keys = Object.keys(dirtyNodes);
+    if (keys.length === 0 && sections.length === 0) {
+      setNotification("No changes detected to save.");
+      setTimeout(() => setNotification(""), 3000);
+      return;
+    }
+
+    //DT-492 Content Editor - Preston Ball: Persist all staged modular sections to the backend or local storage (not implemented here, placeholder for future integration).
+    for (const key of keys) {
+      const item = dirtyNodes[key];
+      await saveEnglishText(item.keyPath, item.currentValue);
+      syncKeyToLocales(item.keyPath, item.currentValue);
+
+      AuditHistoryService.recordChange({
+        keyPath: item.keyPath,
+        previousValue: item.originalValue,
+        newValue: item.currentValue,
+        author: "Admin User",
+        status: "applied",
+      });
+    }
+
+    setDirtyNodes({});
+    setNotification("All changes and modular sections staged successfully!");
+    setTimeout(() => setNotification(""), 3000);
+  };
+
+  //DT-492 Content Editor - Preston Ball: Handles the revert action for a specific audit log entry, restoring the previous value and updating the audit history accordingly.
+  const handleRevert = async (log) => {
+    await saveEnglishText(log.keyPath.split("."), log.previousValue);
+    syncKeyToLocales(log.keyPath.split("."), log.previousValue);
+
+    AuditHistoryService.recordChange({
+      keyPath: log.keyPath,
+      previousValue: log.newValue,
+      newValue: log.previousValue,
+      author: "Admin User",
+      status: "reverted",
+    });
+    AuditHistoryService.markStatus(log.id, "reverted");
+    setNotification(`Reverted ${log.keyPath}`);
+    setTimeout(() => setNotification(""), 3000);
+    setIsDrawerOpen(false);
+  };
 
   return (
     <div className="content-editor-page">
-      <Link to="/admin" className="content-editor-back-link">
-        Back to Dashboard
-      </Link>
-
-      <h1 className="content-editor-title">Content Editor</h1>
-      <p className="content-editor-subtitle">
-        Edit Home - Philosophy Section
-      </p>
-
-      <div className="content-editor-tabs">
+      <div className="content-editor-header-bar">
+        <Link to="/admin" className="content-editor-back-link">
+          Back to Dashboard
+        </Link>
         <button
           type="button"
-          className={`content-editor-tab ${
-            activeTab === "edit" ? "active" : ""
-          }`}
-          onClick={() => setActiveTab("edit")}
+          onClick={() => setIsDrawerOpen(true)}
+          className="content-editor-changelog-button"
         >
-          Edit Content
-        </button>
-
-        <button
-          type="button"
-          className={`content-editor-tab ${
-            activeTab === "preview" ? "active" : ""
-          }`}
-          onClick={() => setActiveTab("preview")}
-        >
-          Preview
+          View Audit Changelog ({AuditHistoryService.getLogs().length})
         </button>
       </div>
 
-      {activeTab === "edit" && (
-        <div>
-          <section className="content-editor-card">
-            <h2>Text Content</h2>
-            <p className="content-editor-card-description">
-              Update the text that appears on the page
-            </p>
+      <h1 className="content-editor-title">Content Editor</h1>
+      <p className="content-editor-subtitle">
+        Site Translation, Copy &amp; Modular Section Management
+      </p>
 
-            <div className="content-editor-field">
-              <label htmlFor="main-heading">Main Heading</label>
-
-              <input
-                id="main-heading"
-                type="text"
-                defaultValue="Our Philosophy"
-              />
-
-              <p className="content-editor-help-text">
-                This is the primary heading shown at the top of the section
-              </p>
-            </div>
-
-            <div className="content-editor-field">
-              <label htmlFor="content-description">Description</label>
-
-              <textarea
-                id="content-description"
-                rows="6"
-                defaultValue="We believe that every individual deserves compassionate, personalized care. Our dedicated team of healthcare professionals is committed to delivering the highest quality home health and hospice services to patients and their families throughout our community."
-              />
-
-              <p className="content-editor-help-text">
-                Main body content for this section
-              </p>
-            </div>
-          </section>
-
-          <section className="content-editor-card">
-            <h2>Media &amp; Images</h2>
-            <p className="content-editor-card-description">
-              Upload or update images for this section
-            </p>
-
-            <div className="content-editor-upload-area">
-              <p className="content-editor-upload-title">
-                Click to upload or drag and drop
-              </p>
-
-              <p className="content-editor-upload-description">
-                PNG, JPG up to 10MB
-              </p>
-
-              <input
-                id="content-image"
-                className="content-editor-file-input"
-                type="file"
-                accept=".png,.jpg,.jpeg"
-              />
-            </div>
-
-            <p className="content-editor-help-text">
-              Current image will be replaced with the new upload
-            </p>
-          </section>
-
-          <section className="content-editor-card">
-            <h2>SEO Settings</h2>
-            <p className="content-editor-card-description">
-              Optimize this content for search engines
-            </p>
-
-            <div className="content-editor-field">
-              <label htmlFor="meta-title">Meta Title</label>
-
-              <input
-                id="meta-title"
-                type="text"
-                placeholder="Page title for search results"
-              />
-            </div>
-
-            <div className="content-editor-field">
-              <label htmlFor="meta-description">Meta Description</label>
-
-              <textarea
-                id="meta-description"
-                rows="4"
-                placeholder="Brief description for search results"
-              />
-            </div>
-
-            <div className="content-editor-actions">
-              <button
-                type="button"
-                className="content-editor-save-button"
-              >
-                Save Changes
-              </button>
-
-              <button
-                type="button"
-                className="content-editor-cancel-button"
-                onClick={() => navigate("/admin")}
-              >
-                Cancel
-              </button>
-            </div>
-          </section>
+      {notification && (
+        <div className="content-editor-notification">
+          {notification}
         </div>
       )}
 
-      {activeTab === "preview" && (
+      <div className="content-editor-workspace">
+        <TranslationTreeExplorer onNodeChange={handleNodeChange} />
+
+        {/* DT-508: Modular Content Builder */}
+        <ModularContentBuilder onAddSection={handleAddSection} />
+
+        {/* DT-508: Section Previews */}
+        {sections.length > 0 && (
+          <section className="content-editor-card">
+            <h2>Staged Modular Sections ({sections.length})</h2>
+            <div className="content-editor-staged-sections">
+              {sections.map((sec) => (
+                <DynamicSectionRenderer key={sec.id} config={sec} theme="light" />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* DT-508: Dynamic Isolated Iframe Preview */}
         <section className="content-editor-card">
-          <h2>Content Preview</h2>
-
+          <h2>Runtime Iframe Preview</h2>
           <p className="content-editor-card-description">
-            This is how the content will appear on the website
+            Viewport isolation check at <code>/?preview=true&amp;draftId={previewDraftId}</code>
           </p>
-
-          <div className="content-editor-preview">
-            <h1>Our Philosophy</h1>
-
-            <p>
-              We believe that every individual deserves compassionate,
-              personalized care. Our dedicated team of healthcare professionals
-              is committed to delivering the highest quality home health and
-              hospice services to patients and their families throughout our
-              community.
-            </p>
-          </div>
-
-          <div className="content-editor-preview-note">
-            <strong>Note:</strong> This is a simplified preview. The actual
-            appearance may vary based on page styling and layout.
+          <div className="content-editor-iframe-container">
+            <iframe
+              src={`/?preview=true&draftId=${previewDraftId}`}
+              title="Site Live Preview"
+              className="content-editor-preview-iframe"
+            />
           </div>
         </section>
-      )}
+
+        <div className="content-editor-actions">
+          <button
+            type="button"
+            className="content-editor-save-button"
+            onClick={handleSaveAll}
+          >
+            Save Changes ({Object.keys(dirtyNodes).length + sections.length})
+          </button>
+          <button
+            type="button"
+            className="content-editor-cancel-button"
+            onClick={() => navigate("/admin")}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+        {/* //DT-492 Content Editor - Preston Ball:Display the history component. */}
+      <ContentHistoryDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        logs={AuditHistoryService.getLogs()}
+        onRevert={handleRevert}
+      />
     </div>
   );
 };

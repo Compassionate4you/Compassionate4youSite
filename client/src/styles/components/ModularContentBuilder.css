@@ -1,0 +1,48 @@
+ /* * Task: DT-508
+ * Author: PBall
+ * Sprint: Sprint 6 */
+
+/* //DT-492 Content Editor - Preston Ball: Container for the modular content editor form, using vertical column layout and consistent element spacing */
+.modular-content-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Responsive multi-column layout grid for arranging input fields across various screen sizes */
+.modular-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Form label styling enforcing clear separation and bold visual hierarchy above input controls */
+.modular-content-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Unified base styling for form controls ensuring consistent sizing, padding, and subtle borders */
+.modular-content-input,
+.modular-content-select,
+.modular-content-textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  box-sizing: border-box;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Primary action button styling for submitting modular content changes */
+.modular-content-submit-button {
+  align-self: flex-start;
+  padding: 10px 20px;
+  background-color: #020617;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
