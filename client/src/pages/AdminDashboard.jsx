@@ -330,47 +330,6 @@ const AdminDashboard = () => {
             status: "Active",
         },
     ]);
-        const [editingLocationId, setEditingLocationId] = useState(null);
-    const [editForm, setEditForm] = useState({
-        name: "",
-        address: "",
-        phone: "",
-        status: "",
-    });
-
-    // Edit mode is entered
-    const handleEditClick = (location) => {
-        setEditingLocationId(location.id);
-        setEditForm({
-            name: location.name,
-            address: location.address,
-            phone: location.phone,
-            status: location.status,
-        });
-    };
-
-    // Edit form is updated as its typed
-    const handleEditFormChange = (field, value) => {
-        setEditForm((prev) => ({ ...prev, [field]: value }));
-    };
-
-    // Saves the changes when save is clicked
-    const handleSaveLocation = (id) => {
-        setLocations((prevLocations) =>
-            prevLocations.map((location) =>
-                location.id === id
-                    ? { ...location, ...editForm }
-                    : location
-            )
-        );
-        setEditingLocationId(null);
-    };
-
-    // When you cancel edit, it doesnt change/save
-    const handleCancelEdit = () => {
-        setEditingLocationId(null);
-    };
-
     
     //CONTENT pages
     const contentItems = [  //Content tab example editable pages
@@ -379,6 +338,7 @@ const AdminDashboard = () => {
         { id: 3, title: "Home Page", section: "Specialty Services", updated: "Feb 15, 2026", },
         { id: 4, title: "Home Page", section: "Contact", updated: "Feb 12, 2026", },
     ];
+
     return (
         <div>
             <header className="topbar">    {/* Welcome Admin User display */}
@@ -879,103 +839,50 @@ const AdminDashboard = () => {
                     </div>
                 )}
                 {tab === "locations" && (
-    <div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-            <div>
-                <h2>Location Management</h2>
-                <p>Manage office locations and contact information</p>
-            </div>
-            <button style={{ backgroundColor: "#020617", color: "white", border: "none", borderRadius: "10px", padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                </svg>
-                Add Location
-            </button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {locations.map((location) => (
-                <div key={location.id} style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px" }}>
-                    {/* When this location is being edited, it shows an inline form instead of the static view */}
-                    {editingLocationId === location.id ? (
-                        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                            <input
-                                type="text"
-                                value={editForm.name}
-                                onChange={(e) => handleEditFormChange("name", e.target.value)}
-                                placeholder="Location name"
-                                style={{ padding: "8px 10px", borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "14px" }}
-                            />
-                            <input
-                                type="text"
-                                value={editForm.address}
-                                onChange={(e) => handleEditFormChange("address", e.target.value)}
-                                placeholder="Address"
-                                style={{ padding: "8px 10px", borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "14px" }}
-                            />
-                            <input
-                                type="text"
-                                value={editForm.phone}
-                                onChange={(e) => handleEditFormChange("phone", e.target.value)}
-                                placeholder="Phone"
-                                style={{ padding: "8px 10px", borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "14px" }}
-                            />
-                            <select
-                                value={editForm.status}
-                                onChange={(e) => handleEditFormChange("status", e.target.value)}
-                                style={{ padding: "8px 10px", borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "14px" }}
-                            >
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
-                            <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
-                                <button
-                                    onClick={() => handleSaveLocation(location.id)}
-                                    style={{ backgroundColor: "#020617", color: "white", border: "none", borderRadius: "8px", padding: "8px 14px", cursor: "pointer", fontSize: "13px" }}
-                                >
-                                    Save
-                                </button>
-                                <button
-                                    onClick={handleCancelEdit}
-                                    style={{ backgroundColor: "transparent", color: "#374151", border: "1px solid #e5e7eb", borderRadius: "8px", padding: "8px 14px", cursor: "pointer", fontSize: "13px" }}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+                    <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
                             <div>
-                                <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>{location.name}</h3>
-                                <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
-                                        <circle cx="12" cy="10" r="3"/>
-                                    </svg>
-                                    {location.address}
-                                </p>
-                                <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "10px" }}>Phone: {location.phone}</p>
-                                <span style={{ display: "inline-flex", padding: "4px 12px", borderRadius: "999px", fontSize: "12px", fontWeight: "500", background: "#dcfce7", color: "#15803d" }}>
-                                    {location.status}
-                                </span>
+                                <h2>Location Management</h2>
+                                <p>Manage office locations and contact information</p>
                             </div>
-                            {/* Pencil/Edit button now opens and allows the admin to adjust the location DT-493 */}
-                            <button
-                                onClick={() => handleEditClick(location)}
-                                style={{ width: "32px", height: "32px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-                            >
+                            <button style={{ backgroundColor: "#020617", color: "white", border: "none", borderRadius: "10px", padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z" />
+                                    <circle cx="12" cy="10" r="3" />
                                 </svg>
+                                Add Location
                             </button>
                         </div>
-                    )}
-                </div>
-            ))}
-        </div>
-    </div>
-)}
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                            {locations.map((location) => (
+                                <div key={location.id} style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px" }}>
+                                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+                                        <div>
+                                            <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>{location.name}</h3>
+                                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z" />
+                                                    <circle cx="12" cy="10" r="3" />
+                                                </svg>
+                                                {location.address}
+                                            </p>
+                                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "10px" }}>Phone: {location.phone}</p>
+                                            <span style={{ display: "inline-flex", padding: "4px 12px", borderRadius: "999px", fontSize: "12px", fontWeight: "500", background: "#dcfce7", color: "#15803d" }}>
+                                                {location.status}
+                                            </span>
+                                        </div>
+                                        <button style={{ width: "32px", height: "32px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </main>
             {/* Logout Button confirmation*/}
             {showLogoutConfirm && (

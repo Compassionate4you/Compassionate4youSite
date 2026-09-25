@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
-import AccountBenefits from '../components/AccountBenefits';
 import '../styles/portal.css';  // used for the navbar and content styling
 import '../styles/login.css';   // used for the login form styling
+
 function LoginPage() {
     const { t } = useTranslation();
     const { login } = useAuth();
@@ -111,7 +111,6 @@ function LoginPage() {
                         Don't have an account? <Link to="/signup">Create account</Link>
                     </p>
                 </div>
-                <AccountBenefits />
             </div>
         </div>
     );

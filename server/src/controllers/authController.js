@@ -61,6 +61,7 @@ async function forgotPassword(req, res) {
     const user = await prisma.user.findUnique({ where: { email } });
 
     // Always return the same generic response, whether or not the user exists
+    // (prevents attackers from discovering which emails are registered)
     const genericResponse = {
         success: true,
         message: 'If an account with that email exists, a password reset link has been sent.',
@@ -78,7 +79,7 @@ async function forgotPassword(req, res) {
         data: { resetToken, resetTokenExpiry },
     });
 
-    // This is where you would usally email the token to the user here.
+    // In a real app, you'd email the token to the user here.
     // For now, logging it so you can test the flow manually.
     console.log(`Password reset token for ${email}: ${resetToken}`);
 
