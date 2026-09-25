@@ -1,4 +1,4 @@
-import "../../styles/NavBar.css";
+import "./styles/NavBar.css";
 import logo from "../../assets/images/CompassionateLogo.jpeg";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation } from "react-router-dom";
