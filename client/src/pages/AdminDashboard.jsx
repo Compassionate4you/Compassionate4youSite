@@ -5,26 +5,27 @@ import "../styles/admindashboard.css";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
-    const [tab, setTab] = useState("appointments");
     const navigate = useNavigate();
+    
+    //General Dashboard state
+    const [tab, setTab] = useState("appointments");
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+    //APPOINTMENT State
     const [showAppointmentForm, setShowAppointmentForm] = useState(false);
     const [editingAppointmentId, setEditingAppointmentId] = useState(null);
     const [appointmentPendingDelete, setAppointmentPendingDelete] = useState(null);
-    const [showAccountForm, setShowAccountForm] = useState(false);
-    const [editingAccountId, setEditingAccountId] = useState(null);
-    const [accountPendingDelete, setAccountPendingDelete] = useState(null);
-
     const [appointments, setAppointments] = useState([  //Initial Appointments in React state
         { id: 1, name: "John Doe", service: "Home Health", date: "2026-03-05", status: "Confirmed" },
         { id: 2, name: "Mary Smith", service: "Hospice", date: "2026-03-06", status: "Pending" },
         { id: 3, name: "Robert Williams", service: "Home Health", date: "2026-03-07", status: "Confirmed" },
     ]);
 
-    const [appointmentForm, setAppointmentForm] = useState({    //Appointment Form State
+    const [appointmentForm, setAppointmentForm] = useState({    //Appointment Empty Form State
         name: "", service: "", date: "", status: "",
     });
 
+    //APPOINTMENT Handlers
     const handleAppointmentInputChange = (event) => {   //Update Appointment Change
         const { name, value } = event.target;
         setAppointmentForm((currentForm) => ({
@@ -44,10 +45,7 @@ const AdminDashboard = () => {
     // Clears all appointment form fields.
     const resetAppointmentForm = () => {
         setAppointmentForm({
-            name: "",
-            service: "",
-            date: "",
-            status: "",
+            name: "", service: "", date: "", status: "",
         });
     };
 
@@ -66,7 +64,6 @@ const AdminDashboard = () => {
             date: appointment.date,
             status: appointment.status,
         });
-
         setEditingAppointmentId(appointment.id);
         setShowAppointmentForm(true);
     };
@@ -149,25 +146,34 @@ const AdminDashboard = () => {
         setShowAppointmentForm(false);
     };
 
+    //ACCOUNTS state
+    const [showAccountForm, setShowAccountForm] = useState(false);
+    const [editingAccountId, setEditingAccountId] = useState(null);
+    const [accountPendingDelete, setAccountPendingDelete] = useState(null);
     const [accounts, setAccounts] = useState([      //Accounts now in React State
-        { id: 1, name: "John Doe", birthdate: "1988-04-12", email: "john.doe@example.com", 
-            role: "Customer", created: "Jan 15, 26", status: "Active", lastLogin: "Mar 08, 26", },
-        { id: 2, name: "Mary Smith", birthdate: "1975-10-03", email: "mary.smith@example.com",
-            role: "Customer", created: "Feb 10, 26", status: "Active", lastLogin: "Mar 07, 26", },
-        { id: 3, name: "Robert Williams", birthdate: "1969-11-21", email: "robert.will@example.com",
-            role: "Customer", created: "May 22, 25", status: "Inactive", lastLogin: "Oct 28, 25", },
-        { id: 4, name: "James Cameron", birthdate: "1980-08-18", email: "james.cam@admin.com",
-            role: "Admin", created: "Sep 01, 25", status: "Active", lastLogin: "April 08, 26", },
-        { id: 5, name: "Michael Brown", birthdate: "1975-09-16", email: "michael.brown@admin.com",
-            role: "Admin", created: "Jan 26, 26", status: "Active", lastLogin: "April 01, 26", },
+        {
+            id: 1, name: "John Doe", birthdate: "1988-04-12", email: "john.doe@example.com",
+            role: "Customer", created: "Jan 15, 26", status: "Active", lastLogin: "Mar 08, 26",},
+        {
+            id: 2, name: "Mary Smith", birthdate: "1975-10-03", email: "mary.smith@example.com",
+            role: "Customer", created: "Feb 10, 26", status: "Active", lastLogin: "Mar 07, 26",},
+        {
+            id: 3, name: "Robert Williams", birthdate: "1969-11-21", email: "robert.will@example.com",
+            role: "Customer", created: "May 22, 25", status: "Inactive", lastLogin: "Oct 28, 25",},
+        {
+            id: 4, name: "James Cameron", birthdate: "1980-08-18", email: "james.cam@admin.com",
+            role: "Admin", created: "Sep 01, 25", status: "Active", lastLogin: "April 08, 26",},
+        {
+            id: 5, name: "Michael Brown", birthdate: "1975-09-16", email: "michael.brown@admin.com",
+            role: "Admin", created: "Jan 26, 26", status: "Active", lastLogin: "April 01, 26",},
     ]);
 
     const [accountForm, setAccountForm] = useState({
         name: "", birthdate: "", email: "", role: "", status: "",
     });
 
-    // Opens a blank form for a new account.
-    const handleOpenAddAccount = () => {
+    //ACCOUNT Handlers
+    const handleOpenAddAccount = () => { // Opens a blank form for a new account.
         setAccountForm({
             name: "",
             birthdate: "",
@@ -175,7 +181,6 @@ const AdminDashboard = () => {
             role: "",
             status: "",
         });
-        
         setEditingAccountId(null);
         setShowAccountForm(true);
     };
@@ -189,7 +194,6 @@ const AdminDashboard = () => {
             role: "",
             status: "",
         });
-
         setEditingAccountId(null);
         setShowAccountForm(false);
     };
@@ -219,7 +223,6 @@ const AdminDashboard = () => {
     // Adds a new account or saves changes to an existing account.
     const handleAddAccount = (event) => {
         event.preventDefault();
-
         const accountName = accountForm.name.trim();
         const accountEmail = accountForm.email.trim().toLowerCase();
 
@@ -232,19 +235,18 @@ const AdminDashboard = () => {
         ) {
             return;
         }
-
         if (editingAccountId !== null) {
             setAccounts((currentAccounts) =>
                 currentAccounts.map((account) =>
                     account.id === editingAccountId
                         ? {
-                              ...account,
+                            ...account,
                             name: accountName,
                             birthdate: accountForm.birthdate,
                             email: accountEmail,
                             role: accountForm.role,
                             status: accountForm.status,
-                          }
+                        }
                         : account
                 )
             );
@@ -257,7 +259,6 @@ const AdminDashboard = () => {
                     year: "2-digit",
                 }
             );
-
             const newAccount = {
                 id: Date.now(),
                 name: accountName,
@@ -268,13 +269,11 @@ const AdminDashboard = () => {
                 status: accountForm.status,
                 lastLogin: "Never",
             };
-
             setAccounts((currentAccounts) => [
                 ...currentAccounts,
                 newAccount,
             ]);
         }
-
         setAccountForm({
             name: "",
             birthdate: "",
@@ -282,7 +281,6 @@ const AdminDashboard = () => {
             role: "",
             status: "",
         });
-
         setEditingAccountId(null);
         setShowAccountForm(false);
     };
@@ -319,10 +317,10 @@ const AdminDashboard = () => {
                     account.id !== accountPendingDelete.id
             )
         );
-
         setAccountPendingDelete(null);
     };
 
+    //LOCATIONS state
     const [locations, setLocations] = useState([    //Current office location, hardcoded
         {
             id: 1,
@@ -332,6 +330,8 @@ const AdminDashboard = () => {
             status: "Active",
         },
     ]);
+    
+    //CONTENT pages
     const contentItems = [  //Content tab example editable pages
         { id: 1, title: "Home Page", section: "Philosophy", updated: "Feb 20, 2026", },
         { id: 2, title: "Home Page", section: "2021", updated: "Feb 18, 2026", },
@@ -349,11 +349,11 @@ const AdminDashboard = () => {
                         <p>{t('admin.welcome')}</p>
                     </div>
                 </div>
-                
+
                 <div className="top-actions">
-                    <button 
-                        type="button" 
-                        className="logout-button" 
+                    <button
+                        type="button"
+                        className="logout-button"
                         onClick={() => setShowLogoutConfirm(true)}
                     >
                         {t('nav.logout')}
@@ -420,103 +420,103 @@ const AdminDashboard = () => {
                                             Patient Name
                                         </label>
 
-                                    <input
-                                        id="appointment-name"
-                                        name="name"
-                                        type="text"
-                                        value={appointmentForm.name}
-                                        onChange={handleAppointmentInputChange}
-                                        placeholder="Enter patient name"
-                                        required
-                                    />
+                                        <input
+                                            id="appointment-name"
+                                            name="name"
+                                            type="text"
+                                            value={appointmentForm.name}
+                                            onChange={handleAppointmentInputChange}
+                                            placeholder="Enter patient name"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="appointment-form-field">
+                                        <label htmlFor="appointment-service">
+                                            Service
+                                        </label>
+                                        {/* Admin has drop down menu to select information */}
+                                        <select
+                                            id="appointment-service"
+                                            name="service"
+                                            value={appointmentForm.service}
+                                            onChange={handleAppointmentInputChange}
+                                            required
+                                        >
+                                            <option value="" disabled>
+                                                Select a service
+                                            </option>
+
+                                            <option value="Home Health">
+                                                Home Health
+                                            </option>
+
+                                            <option value="Hospice">
+                                                Hospice
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div className="appointment-form-field">
+                                        <label htmlFor="appointment-date">
+                                            Date
+                                        </label>
+
+                                        <input
+                                            id="appointment-date"
+                                            name="date"
+                                            type="date"
+                                            value={appointmentForm.date}
+                                            onChange={handleAppointmentInputChange}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="appointment-form-field">
+                                        <label htmlFor="appointment-status">
+                                            Status
+                                        </label>
+
+                                        <select
+                                            id="appointment-status"
+                                            name="status"
+                                            value={appointmentForm.status}
+                                            onChange={handleAppointmentInputChange}
+                                            required
+                                        >
+                                            <option value="" disabled>
+                                                Select a status
+                                            </option>
+
+                                            <option value="Pending">
+                                                Pending
+                                            </option>
+
+                                            <option value="Confirmed">
+                                                Confirmed
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div className="appointment-form-field">
-                                    <label htmlFor="appointment-service">
-                                        Service
-                                    </label>
-                                {/* Admin has drop down menu to select information */}
-                                    <select
-                                        id="appointment-service"
-                                        name="service"
-                                        value={appointmentForm.service}
-                                        onChange={handleAppointmentInputChange}
-                                        required
+                                <div className="appointment-form-actions">
+                                    <button
+                                        type="button"
+                                        className="appointment-cancel-button"
+                                        onClick={handleCancelAppointment}
                                     >
-                                        <option value="" disabled>
-                                            Select a service
-                                        </option>
-
-                                        <option value="Home Health">
-                                            Home Health
-                                        </option>
-
-                                        <option value="Hospice">
-                                            Hospice
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div className="appointment-form-field">
-                                    <label htmlFor="appointment-date">
-                                        Date
-                                    </label>
-
-                                    <input
-                                        id="appointment-date"
-                                        name="date"
-                                        type="date"
-                                        value={appointmentForm.date}
-                                        onChange={handleAppointmentInputChange}
-                                        required
-                                    />
-                                </div>
-
-                                <div className="appointment-form-field">
-                                    <label htmlFor="appointment-status">
-                                        Status
-                                    </label>
-
-                                    <select
-                                        id="appointment-status"
-                                        name="status"
-                                        value={appointmentForm.status}
-                                        onChange={handleAppointmentInputChange}
-                                        required
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="appointment-submit-button"
                                     >
-                                        <option value="" disabled>
-                                            Select a status
-                                        </option>
-
-                                        <option value="Pending">
-                                            Pending
-                                        </option>
-
-                                        <option value="Confirmed">
-                                            Confirmed
-                                        </option>
-                                    </select>
+                                        {editingAppointmentId === null
+                                            ? "Add Appointment"
+                                            : "Save Changes"}
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div className="appointment-form-actions">
-                                <button
-                                    type="button"
-                                    className="appointment-cancel-button"
-                                    onClick={handleCancelAppointment}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="appointment-submit-button"
-                                >
-                                    {editingAppointmentId === null
-                                        ? "Add Appointment"
-                                        : "Save Changes"}
-                                </button>
-                            </div>
-                        </form>
+                            </form>
                         ) : (
                             <table className="admin-table">
                                 <thead>
@@ -533,42 +533,40 @@ const AdminDashboard = () => {
 
                                 <tbody>
                                     {appointments.map((appointment) => (
-                                    <tr key={appointment.id}>
-                                        <td>{appointment.name}</td>
-                                        <td>{appointment.service}</td>
+                                        <tr key={appointment.id}>
+                                            <td>{appointment.name}</td>
+                                            <td>{appointment.service}</td>
+                                            <td>
+                                                {formatAppointmentDate(appointment.date)}
+                                            </td>
+                                            <td>
+                                                <span
+                                                    className={`admin-status admin-status-${appointment.status.toLowerCase()}`}
+                                                >
+                                                    {appointment.status}
+                                                </span>
+                                            </td>
 
-                                        <td>
-                                            {formatAppointmentDate(appointment.date)}
-                                        </td>
-
-                                        <td>
-                                            <span
-                                                className={`admin-status admin-status-${appointment.status.toLowerCase()}`}
-                                            >
-                                                {appointment.status}
-                                            </span>
-                                        </td>
-
-                                        <td>
-                                            <div className="appointment-row-actions">
-                                                <button
-                                                    type="button"
-                                                    className="appointment-edit-button"
+                                            <td>
+                                                <div className="appointment-row-actions">
+                                                    <button
+                                                        type="button"
+                                                        className="appointment-edit-button"
                                                         onClick={() =>
                                                             handleEditAppointment(appointment)
                                                         }
                                                     >
                                                         Edit
-                                                </button>
+                                                    </button>
 
-                                                <button
-                                                    type="button"
-                                                    className="appointment-delete-button"
-                                                    onClick={() => handleDeleteAppointment(appointment)
-                                                    }
-                                                >
-                                                    Delete
-                                                </button>
+                                                    <button
+                                                        type="button"
+                                                        className="appointment-delete-button"
+                                                        onClick={() => handleDeleteAppointment(appointment)
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -578,7 +576,7 @@ const AdminDashboard = () => {
                         )}
                     </div>
                 )}
-                
+
                 {/* Accounts tab info */}
                 {tab === "accounts" && (
                     <div className="admin-table-card">
@@ -620,120 +618,120 @@ const AdminDashboard = () => {
                                             Name
                                         </label>
 
-                                    <input
-                                        id="account-name"
-                                        name="name"
-                                        type="text"
-                                        value={accountForm.name}
-                                        onChange={handleAccountInputChange}
-                                        placeholder="Enter full name"
-                                        required
-                                    />
+                                        <input
+                                            id="account-name"
+                                            name="name"
+                                            type="text"
+                                            value={accountForm.name}
+                                            onChange={handleAccountInputChange}
+                                            placeholder="Enter full name"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="account-form-field">
+                                        <label htmlFor="account-birthdate">
+                                            Birthdate
+                                        </label>
+
+                                        <input
+                                            id="account-birthdate"
+                                            name="birthdate"
+                                            type="date"
+                                            value={accountForm.birthdate}
+                                            onChange={handleAccountInputChange}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="account-form-field account-email-field">
+                                        <label htmlFor="account-email">
+                                            Email
+                                        </label>
+
+                                        <input
+                                            id="account-email"
+                                            name="email"
+                                            type="email"
+                                            value={accountForm.email}
+                                            onChange={handleAccountInputChange}
+                                            placeholder="name@example.com"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="account-form-field">
+                                        <label htmlFor="account-role">
+                                            Role
+                                        </label>
+
+                                        <select
+                                            id="account-role"
+                                            name="role"
+                                            value={accountForm.role}
+                                            onChange={handleAccountInputChange}
+                                            required
+                                        >
+                                            <option value="" disabled>
+                                                Select a role
+                                            </option>
+
+                                            <option value="Customer">
+                                                Customer
+                                            </option>
+
+                                            <option value="Admin">
+                                                Admin
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div className="account-form-field">
+                                        <label htmlFor="account-status">
+                                            Status
+                                        </label>
+
+                                        <select
+                                            id="account-status"
+                                            name="status"
+                                            value={accountForm.status}
+                                            onChange={handleAccountInputChange}
+                                            required
+                                        >
+                                            <option value="" disabled>
+                                                Select a status
+                                            </option>
+
+                                            <option value="Active">
+                                                Active
+                                            </option>
+
+                                            <option value="Inactive">
+                                                Inactive
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div className="account-form-field">
-                                    <label htmlFor="account-birthdate">
-                                        Birthdate
-                                    </label>
-
-                                    <input
-                                        id="account-birthdate"
-                                        name="birthdate"
-                                        type="date"
-                                        value={accountForm.birthdate}
-                                        onChange={handleAccountInputChange}
-                                        required
-                                    />
-                                </div>
-
-                                <div className="account-form-field account-email-field">
-                                    <label htmlFor="account-email">
-                                        Email
-                                    </label>
-
-                                    <input
-                                        id="account-email"
-                                        name="email"
-                                        type="email"
-                                        value={accountForm.email}
-                                        onChange={handleAccountInputChange}
-                                        placeholder="name@example.com"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="account-form-field">
-                                    <label htmlFor="account-role">
-                                        Role
-                                    </label>
-
-                                    <select
-                                        id="account-role"
-                                        name="role"
-                                        value={accountForm.role}
-                                        onChange={handleAccountInputChange}
-                                        required
+                                <div className="account-form-actions">
+                                    <button
+                                        type="button"
+                                        className="account-cancel-button"
+                                        onClick={handleCancelAccount}
                                     >
-                                        <option value="" disabled>
-                                            Select a role
-                                        </option>
+                                        Cancel
+                                    </button>
 
-                                        <option value="Customer">
-                                            Customer
-                                        </option>
-
-                                        <option value="Admin">
-                                            Admin
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div className="account-form-field">
-                                    <label htmlFor="account-status">
-                                        Status
-                                    </label>
-
-                                    <select
-                                        id="account-status"
-                                        name="status"
-                                        value={accountForm.status}
-                                        onChange={handleAccountInputChange}
-                                        required
+                                    <button
+                                        type="submit"
+                                        className="account-submit-button"
                                     >
-                                        <option value="" disabled>
-                                            Select a status
-                                        </option>
-
-                                        <option value="Active">
-                                            Active
-                                        </option>
-
-                                        <option value="Inactive">
-                                            Inactive
-                                        </option>
-                                    </select>
+                                        {editingAccountId === null
+                                            ? "Add Account"
+                                            : "Save Changes"}
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div className="account-form-actions">
-                                <button
-                                    type="button"
-                                    className="account-cancel-button"
-                                    onClick={handleCancelAccount}
-                                >
-                                    Cancel
-                                </button>
-
-                                <button
-                                    type="submit"
-                                    className="account-submit-button"
-                                >
-                                    {editingAccountId === null
-                                        ? "Add Account"
-                                        : "Save Changes"}
-                                </button>
-                            </div>
-                        </form>
+                            </form>
                         ) : (
                             <table className="admin-table admin-accounts-table">
                                 <thead>
@@ -841,170 +839,170 @@ const AdminDashboard = () => {
                     </div>
                 )}
                 {tab === "locations" && (
-    <div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-            <div>
-                <h2>Location Management</h2>
-                <p>Manage office locations and contact information</p>
-            </div>
-            <button style={{ backgroundColor: "#020617", color: "white", border: "none", borderRadius: "10px", padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                </svg>
-                Add Location
-            </button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {locations.map((location) => (
-                <div key={location.id} style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px" }}>
-                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-                        <div>
-                            <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>{location.name}</h3>
-                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+                            <div>
+                                <h2>Location Management</h2>
+                                <p>Manage office locations and contact information</p>
+                            </div>
+                            <button style={{ backgroundColor: "#020617", color: "white", border: "none", borderRadius: "10px", padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
-                                    <circle cx="12" cy="10" r="3"/>
+                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z" />
+                                    <circle cx="12" cy="10" r="3" />
                                 </svg>
-                                {location.address}
-                            </p>
-                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "10px" }}>Phone: {location.phone}</p>
-                            <span style={{ display: "inline-flex", padding: "4px 12px", borderRadius: "999px", fontSize: "12px", fontWeight: "500", background: "#dcfce7", color: "#15803d" }}>
-                                {location.status}
-                            </span>
+                                Add Location
+                            </button>
                         </div>
-                        <button style={{ width: "32px", height: "32px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                            </svg>
-                        </button>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                            {locations.map((location) => (
+                                <div key={location.id} style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px" }}>
+                                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+                                        <div>
+                                            <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>{location.name}</h3>
+                                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z" />
+                                                    <circle cx="12" cy="10" r="3" />
+                                                </svg>
+                                                {location.address}
+                                            </p>
+                                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "10px" }}>Phone: {location.phone}</p>
+                                            <span style={{ display: "inline-flex", padding: "4px 12px", borderRadius: "999px", fontSize: "12px", fontWeight: "500", background: "#dcfce7", color: "#15803d" }}>
+                                                {location.status}
+                                            </span>
+                                        </div>
+                                        <button style={{ width: "32px", height: "32px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            ))}
-        </div>
-    </div>
-)}
+                )}
             </main>
-        {/* Logout Button confirmation*/}
-        {showLogoutConfirm && (
-            <div                                    
-                className="logout-modal-overlay"
-                onClick={() => setShowLogoutConfirm(false)}
-            >
-            <div
-                className="logout-modal"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="logout-modal-title"
-                onClick={(event) => event.stopPropagation()}
-            >
-                <h2 id="logout-modal-title">Confirm Logout</h2>
-                <p>Are you sure you want to log out?</p>
-                <div className="logout-modal-actions">
-                    <button
-                        type="button"
-                        className="logout-no-button"
-                        onClick={() => setShowLogoutConfirm(false)}
-                    >
-                        No
-                    </button>
-
-                    <button
-                        type="button"
-                        className="logout-yes-button"
-                        onClick={() => navigate("/")}
-                    >
-                        Yes
-                    </button>
-                </div>
-            </div>
-        </div>
-        )}
-        {appointmentPendingDelete && (
-            <div
-                className="logout-modal-overlay"
-                onClick={handleCancelDeleteAppointment}
-            >
+            {/* Logout Button confirmation*/}
+            {showLogoutConfirm && (
                 <div
-                    className="logout-modal"
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby="delete-appointment-title"
-                    onClick={(event) => event.stopPropagation()}
+                    className="logout-modal-overlay"
+                    onClick={() => setShowLogoutConfirm(false)}
                 >
-                    <h2 id="delete-appointment-title">
-                        Delete Appointment
-                    </h2>
+                    <div
+                        className="logout-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="logout-modal-title"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <h2 id="logout-modal-title">Confirm Logout</h2>
+                        <p>Are you sure you want to log out?</p>
+                        <div className="logout-modal-actions">
+                            <button
+                                type="button"
+                                className="logout-no-button"
+                                onClick={() => setShowLogoutConfirm(false)}
+                            >
+                                No
+                            </button>
 
-                    <p>
-                        Are you sure you want to delete the appointment for{" "}
-                        <strong>{appointmentPendingDelete.name}</strong>?
-                    </p>
-
-                    <div className="logout-modal-actions">
-                        <button
-                        type="button"
-                        className="logout-no-button"
-                        onClick={handleCancelDeleteAppointment}
-                        >
-                            No
-                        </button>
-
-                        <button
-                            type="button"
-                            className="logout-yes-button"
-                            onClick={handleConfirmDeleteAppointment}
-                        >
-                            Yes
-                        </button>
+                            <button
+                                type="button"
+                                className="logout-yes-button"
+                                onClick={() => navigate("/")}
+                            >
+                                Yes
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )}
-        {/* Account Deletion modal */}
-        {accountPendingDelete && (
-         <div
-             className="logout-modal-overlay"
-             onClick={handleCancelDeleteAccount}
-         >
-             <div
-             className="logout-modal"
-             role="dialog"
-             aria-modal="true"
-             aria-labelledby="delete-account-title"
-             onClick={(event) => event.stopPropagation()}
-             >   
-                 <h2 id="delete-account-title">
-                     Delete Account
-                 </h2>
+            )}
+            {appointmentPendingDelete && (
+                <div
+                    className="logout-modal-overlay"
+                    onClick={handleCancelDeleteAppointment}
+                >
+                    <div
+                        className="logout-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="delete-appointment-title"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <h2 id="delete-appointment-title">
+                            Delete Appointment
+                        </h2>
 
-                 <p>
-                     Are you sure you want to delete the account for{" "}
-                     <strong>{accountPendingDelete.name}</strong>?
-                 </p>
+                        <p>
+                            Are you sure you want to delete the appointment for{" "}
+                            <strong>{appointmentPendingDelete.name}</strong>?
+                        </p>
 
-                 <div className="logout-modal-actions">
-                     <button
-                         type="button"
-                         className="logout-no-button"
-                         onClick={handleCancelDeleteAccount}
-                     >
-                         No
-                     </button>
+                        <div className="logout-modal-actions">
+                            <button
+                                type="button"
+                                className="logout-no-button"
+                                onClick={handleCancelDeleteAppointment}
+                            >
+                                No
+                            </button>
 
-                     <button
-                         type="button"
-                         className="logout-yes-button"
-                         onClick={handleConfirmDeleteAccount}
-                     >
-                         Yes
-                     </button>
-                 </div>
-             </div>
-         </div>
-        )}
-    </div>
+                            <button
+                                type="button"
+                                className="logout-yes-button"
+                                onClick={handleConfirmDeleteAppointment}
+                            >
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* Account Deletion modal */}
+            {accountPendingDelete && (
+                <div
+                    className="logout-modal-overlay"
+                    onClick={handleCancelDeleteAccount}
+                >
+                    <div
+                        className="logout-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="delete-account-title"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <h2 id="delete-account-title">
+                            Delete Account
+                        </h2>
+
+                        <p>
+                            Are you sure you want to delete the account for{" "}
+                            <strong>{accountPendingDelete.name}</strong>?
+                        </p>
+
+                        <div className="logout-modal-actions">
+                            <button
+                                type="button"
+                                className="logout-no-button"
+                                onClick={handleCancelDeleteAccount}
+                            >
+                                No
+                            </button>
+
+                            <button
+                                type="button"
+                                className="logout-yes-button"
+                                onClick={handleConfirmDeleteAccount}
+                            >
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 
