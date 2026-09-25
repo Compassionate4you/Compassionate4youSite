@@ -45,10 +45,6 @@ function ForgotPasswordPage() {
 
     return (
         <div>
-            <div className="navbar">
-                <div className="navbar-title">{t('portal.title')}</div>
-            </div>
-
             <div className="content">
                 <div className="section-box">
                     <h2>{t('login.reset.title')}</h2>
