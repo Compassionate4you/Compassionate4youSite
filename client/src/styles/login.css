@@ -1,0 +1,135 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2ee;
+  margin: 0;
+  padding: 0;
+}
+
+/* LOGIN NAVBAR */
+.login-navbar {
+  background-color: #e6e6e6;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.login-navbar-title {
+  font-size: 95%;
+  font-weight: bold;
+}
+
+/* LOGIN CONTENT */
+.login-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
+
+/* LOGIN SECTION */
+.login-section-box {
+  background-color: #dfe8c5;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  color: gray;
+}
+
+.login-section-box h2 {
+  font-size: 120%;
+  margin: 0 0 4px 0;
+}
+
+.login-desc {
+  font-size: 90%;
+  margin: 0 0 18px 0;
+  color: var(--color10);
+}
+
+/* LOGIN FORM */
+.login-field {
+  margin-bottom: 16px;
+}
+
+.login-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--color10);
+  margin-bottom: 6px;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 95%;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+/* LOGIN ERROR */
+.login-field--error input {
+  border-color: #c0392b;
+  background-color: #fdecea;
+}
+
+.login-field--error label {
+  color: #c0392b;
+}
+
+.login-form-error {
+  background-color: #fdecea;
+  border: 1px solid #f0b3ad;
+  color: #a52a1f;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin: 0 0 16px 0;
+}
+
+/* LOGIN ACTIONS */
+.login-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.login-btn-primary {
+  padding: 10px 22px;
+  background-color: #93B48D;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 95%;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.login-btn-primary:hover {
+  background-color: #3a7a22;
+}
+
+.login-forgot-link {
+  font-size: 80%;
+  color: #4B6681;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.login-forgot-link:hover,
+.login-forgot-link:focus {
+  text-decoration: underline;
+  color: #3A5F5F;
+}

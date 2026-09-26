@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
-import '../styles/portal.css';
+import '../styles/login.css';
 
 function LoginPage() {
     const { t } = useTranslation();
@@ -37,18 +37,18 @@ function LoginPage() {
     return (
         <div>
             {/* DT-64: Login page  |  DT-336: form, error UI, reset link */}
-            <div className="navbar">
-                <div className="navbar-title">{t('portal.title')}</div>
+            <div className="login-navbar">
+                <div className="login-navbar-title">{t('portal.title')}</div>
             </div>
 
-            <div className="content">
-                <div className="section-box">
+            <div className="login-content">
+                <div className="login-section-box">
                     <h2>{t('login.title')}</h2>
-                    <p className="desc">{t('login.subtitle')}</p>
+                    <p className="login-desc">{t('login.subtitle')}</p>
 
                     <form onSubmit={handleSubmit} noValidate>
                         <div
-                            className={`field${isEmailError ? ' field--error' : ''}`}
+                            className={`login-field${isEmailError ? ' login-field--error' : ''}`}
                         >
                             <label htmlFor="login-email">{t('login.email')}</label>
                             <input
@@ -62,7 +62,7 @@ function LoginPage() {
                             />
                         </div>
                         <div
-                            className={`field${isPasswordError ? ' field--error' : ''}`}
+                            className={`login-field${isPasswordError ? ' login-field--error' : ''}`}
                         >
                             <label htmlFor="login-password">
                                 {t('login.password')}
@@ -79,13 +79,13 @@ function LoginPage() {
                         </div>
 
                         {errorKey && (
-                            <div className="form-error" role="alert">
+                            <div className="login-form-error" role="alert">
                                 {t(errorKey)}
                             </div>
                         )}
 
                         <div className="login-actions">
-                            <button type="submit" className="btn-primary">
+                            <button type="submit" className="login-btn-primary">
                                 {t('login.signIn')}
                             </button>
                             <Link
@@ -97,7 +97,7 @@ function LoginPage() {
                         </div>
                     </form>
                     {/* DT-37/ Dt-389: Set login flag on sign-in so Navbar can detect user log in*/}
-                    <button className="btn-primary" onClick={() => {localStorage.setItem('isLoggedIn', 'true');
+                    <button className="login-btn-primary" onClick={() => {localStorage.setItem('isLoggedIn', 'true');
                     navigate('/portal'); }}>
 
                         {t('login.signIn')}
