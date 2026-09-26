@@ -17,6 +17,8 @@ function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorKey, setErrorKey] = useState(null);
+    const [serverError, setServerError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const isEmailError =
         errorKey === 'login.errors.invalidEmail' || 
@@ -25,21 +27,31 @@ function LoginPage() {
         errorKey === 'login.errors.invalidCredentials' ||
         errorKey === 'login.errors.required';
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = login(email, password);
-        if (result.ok) {
-            setErrorKey(null);
-            localStorage.setItem('isLoggedIn', 'true');
+        if (isSubmitting) return;
 
-            // DT-498: sends admin to admin dashboard, and customer to user dashboard
-            if(result.role === 'admin'){
-                navigate('/admin');
+        setIsSubmitting(true);
+        setServerError(null);
+        try {
+            const result = await login(email, password);
+            if (result.ok) {
+                setErrorKey(null);
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // DT-498: sends admin to admin dashboard, and customer to user dashboard
+                if (result.role === 'admin') {
+                    navigate('/admin');
+                } else {
+                    navigate('/portal');
+                }
             } else {
-                navigate('/portal');
+                // Backend messages come back as plain text, local checks as keys.
+                setErrorKey(result.errorKey ?? null);
+                setServerError(result.error ?? null);
             }
-        } else {
-            setErrorKey(result.errorKey);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -87,9 +99,9 @@ function LoginPage() {
                             />
                         </div>
 
-                        {errorKey && (
+                        {(errorKey || serverError) && (
                             <div className="form-error" role="alert">
-                                {t(errorKey)}
+                                {errorKey ? t(errorKey) : serverError}
                             </div>
                         )}
 
@@ -99,9 +111,9 @@ function LoginPage() {
 
                         {/* DT-498: single sign-in button. Dupclicate button removed*/}
                         {/* DT-511: Add arrow icon for sign in button*/}
-                        <button type="submit" className="btn-signin-full">
+                        <button type="submit" className="btn-signin-full" disabled={isSubmitting}>
                             <LogIn size={18}/>
-                            {t('login.signIn')}
+                            {isSubmitting ? t('login.signingIn') : t('login.signIn')}
                         </button>
 
                     </form>

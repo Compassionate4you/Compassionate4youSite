@@ -18,6 +18,48 @@ model User {
   resetTokenExpiry  DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+
+  appointments Appointment[]
+}
+
+// DT-563: appointments booked through the scheduling page.
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Appointment {
+  id String @id @default(uuid())
+
+  // DT-564: set for logged-in users, null when a visitor books without an account.
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Contact details as entered on the form, kept even for guest bookings.
+  fullName String @map("full_name")
+  email    String
+  phone    String?
+
+  // 'Home Health' | 'Hospice Care' | 'Consultation'
+  serviceType String @map("service_type")
+
+  // Date and slot are stored as entered so the form round-trips exactly.
+  date     String
+  timeSlot String @map("time_slot")
+
+  notes  String?
+  status AppointmentStatus @default(PENDING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // DT-563: one slot per day cannot be booked twice.
+  @@unique([date, timeSlot])
+  @@index([userId])
+  @@index([date])
+  @@map("appointments")
 }
 
 // DT-397: chatbot history. userId is a plain string rather than a relation so
