@@ -103,8 +103,13 @@ async function createAppointment(req, res, next) {
             },
         });
 
-        // DT-565 / DT-566: notifications are mocked until providers are wired up.
-        await sendAppointmentConfirmation(appointment);
+        // DT-565 / DT-566: a failed notification must not lose the booking.
+        try {
+            await sendAppointmentConfirmation(appointment);
+        } catch (notifyErr) {
+            // eslint-disable-next-line no-console
+            console.error('Appointment saved but notification failed:', notifyErr.message);
+        }
 
         return res.status(201).json({ success: true, appointment });
     } catch (err) {
