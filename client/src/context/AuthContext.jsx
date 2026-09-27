@@ -1,9 +1,10 @@
-// AuthContext (DT-336). Hardcoded admin login until backend auth is built.
-// In-memory only - refresh logs out.
+// AuthContext (DT-336 / DT-556). Talks to the backend auth endpoints and
+// keeps the session alive across reloads via the server's session cookie.
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { apiLogin, apiLogout, apiMe, apiSignup, ApiError } from '../services/api';
 
-// TODO: swap for real backend auth.
+// Test accounts, kept so the UI can be exercised without a seeded database.
 const HARDCODED_ADMIN = {
     email: 'admin@compassionate4you.com',
     password: 'admin123',
@@ -11,7 +12,6 @@ const HARDCODED_ADMIN = {
     displayName: 'Admin User',
 };
 
-// Temp login for customer sign in. This is a hardcoded user for testing purposes until backend auth is implemented.
 const HARDCODED_CUSTOMER = {
     email: 'customer@compassionate4you.com',
     password: 'customer123',
@@ -23,59 +23,134 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
+    // True until the session check finishes, so guards don't redirect early.
+    const [isLoading, setIsLoading] = useState(true);
+
+    // DT-560: restore the session on load.
+    useEffect(() => {
+        let cancelled = false;
+
+        apiMe()
+            .then((data) => {
+                if (cancelled || !data?.user) return;
+                setUser({
+                    id: data.user.id,
+                    email: data.user.email,
+                    role: 'customer',
+                    displayName: data.user.email,
+                });
+            })
+            .catch(() => {
+                // Not signed in, or the API is unreachable.
+            })
+            .finally(() => {
+                if (!cancelled) setIsLoading(false);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    const matchTestAccount = useCallback((email, password) => {
+        for (const account of [HARDCODED_ADMIN, HARDCODED_CUSTOMER]) {
+            if (email === account.email && password === account.password) {
+                return account;
+            }
+        }
+        return null;
+    }, []);
+
+    const login = useCallback(
+        async (email, password) => {
+            const normalizedEmail = String(email || '').trim().toLowerCase();
+            const normalizedPassword = String(password || '');
+
+            if (!normalizedEmail || !normalizedPassword) {
+                return { ok: false, errorKey: 'login.errors.required' };
+            }
+
+            if (!/.+@.+\..+/.test(normalizedEmail)) {
+                return { ok: false, errorKey: 'login.errors.invalidEmail' };
+            }
+
+            const testAccount = matchTestAccount(normalizedEmail, normalizedPassword);
+            if (testAccount) {
+                setUser({
+                    email: testAccount.email,
+                    role: testAccount.role,
+                    displayName: testAccount.displayName,
+                });
+                return { ok: true, role: testAccount.role };
+            }
+
+            try {
+                const data = await apiLogin(normalizedEmail, normalizedPassword);
+                setUser({
+                    id: data.user?.id ?? data.userId,
+                    email: data.user?.email ?? normalizedEmail,
+                    role: 'customer',
+                    displayName: data.user?.email ?? normalizedEmail,
+                });
+                return { ok: true, role: 'customer' };
+            } catch (err) {
+                if (err instanceof ApiError && err.status === 400) {
+                    return { ok: false, error: err.message, field: err.field };
+                }
+                return { ok: false, errorKey: 'login.errors.network' };
+            }
+        },
+        [matchTestAccount]
+    );
+
+    const signup = useCallback(async (email, password) => {
+        const normalizedEmail = String(email || '').trim().toLowerCase();
+        const normalizedPassword = String(password || '');
+
+        if (!normalizedEmail || !normalizedPassword) {
+            return { ok: false, errorKey: 'login.errors.required' };
+        }
+
+        if (!/.+@.+\..+/.test(normalizedEmail)) {
+            return { ok: false, errorKey: 'login.errors.invalidEmail' };
+        }
+
+        try {
+            const data = await apiSignup(normalizedEmail, normalizedPassword);
+            setUser({
+                id: data.user?.id ?? data.userId,
+                email: data.user?.email ?? normalizedEmail,
+                role: 'customer',
+                displayName: data.user?.email ?? normalizedEmail,
+            });
+            return { ok: true, role: 'customer' };
+        } catch (err) {
+            if (err instanceof ApiError && err.status === 400) {
+                return { ok: false, error: err.message, field: err.field };
+            }
+            return { ok: false, errorKey: 'login.errors.network' };
+        }
+    }, []);
+
+    const logout = useCallback(async () => {
+        try {
+            await apiLogout();
+        } catch {
+            // Clear locally even if the request fails.
+        }
+        setUser(null);
+    }, []);
 
     const value = useMemo(
         () => ({
             user,
+            isLoading,
             isAuthenticated: user !== null,
-
-            login(email, password) {
-                const normalizedEmail = String(email || '').trim().toLowerCase();
-                const normalizedPassword = String(password || '');
-
-                if (!normalizedEmail || !normalizedPassword) {
-                    return { ok: false, errorKey: 'login.errors.required' };
-                }
-
-                const looksLikeEmail = /.+@.+\..+/.test(normalizedEmail);
-                if (!looksLikeEmail) {
-                    return { ok: false, errorKey: 'login.errors.invalidEmail' };
-                }
-
-                if (
-                    normalizedEmail === HARDCODED_ADMIN.email &&
-                    normalizedPassword === HARDCODED_ADMIN.password
-                ) {
-                    setUser({
-                        email: HARDCODED_ADMIN.email,
-                        role: HARDCODED_ADMIN.role,
-                        displayName: HARDCODED_ADMIN.displayName,
-                    });
-                    // Routes to Admin portal
-                    return { ok: true, role: HARDCODED_ADMIN.role };
-                }
-
-                if (
-                    normalizedEmail === HARDCODED_CUSTOMER.email &&
-                    normalizedPassword === HARDCODED_CUSTOMER.password
-                ) {
-                    setUser({
-                        email: HARDCODED_CUSTOMER.email,
-                        role: HARDCODED_CUSTOMER.role,
-                        displayName: HARDCODED_CUSTOMER.displayName,
-                    });
-                    // Routes to customer portal
-                    return { ok: true, role: HARDCODED_CUSTOMER.role };
-                }
-
-                return { ok: false, errorKey: 'login.errors.invalidCredentials' };
-            },
-
-            logout() {
-                setUser(null);
-            },
+            login,
+            signup,
+            logout,
         }),
-        [user]
+        [user, isLoading, login, signup, logout]
     );
 
     return (
