@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import LandingPage from "../pages/LandingPage";
 import AdminDashboard from "../pages/AdminDashboard";
 import HomeHealthPage from "../pages/HomeHealthPage";
@@ -14,6 +15,20 @@ import ContentEditor from "../pages/ContentEditor";
 import ClientSchedulingConfirmation from "../pages/ClientSchedulingConfirmation";
 import ViewAppointmentDetailsPage from "../pages/ViewAppointmentDetailsPage";
 function AppRoutes() {
+    const location = useLocation();
+    const firstRender = useRef(true);
+
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
+
+        // Move focus to the new page's main region after client-side navigation.
+        // This gives keyboard and screen-reader users a clear starting point.
+        document.getElementById("main-content")?.focus();
+    }, [location.pathname]);
+
     return (
         <Routes>
             <Route path="/" element={<LandingPage />} />
