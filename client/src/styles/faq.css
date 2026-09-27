@@ -1,5 +1,5 @@
 .faq-section {
-  background: var(--map-bg, #ffffff);
+  background: var(--color-white);
   padding: 5rem 1rem;
   font-family: 'Lora', Georgia, serif;
 }
@@ -13,7 +13,7 @@
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 700;
   text-align: center;
-  color: var(--map-text, #111827);
+  color: var(--color-white-text, #111827);
   margin-bottom: 2.5rem;
   letter-spacing: -0.02em;
 }
@@ -35,7 +35,7 @@
   font-family: inherit;
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--map-text, #111827);
+  color: var(--color-white-text, #111827);
   cursor: pointer;
 }
 
@@ -70,7 +70,7 @@
 
 .faq-item__answer {
   margin: 0 0.25rem 1.25rem;
-  color: var(--map-muted, #4b5563);
+  color: var(--color-white-text, #4b5563);
   font-size: 1rem;
   line-height: 1.6;
 }
