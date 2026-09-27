@@ -1,0 +1,335 @@
+/*
+Responsive layout additions.
+These rules only apply below tablet/phone breakpoints so the existing
+desktop design remains unchanged.
+*/
+
+@media (max-width: 900px) {
+  .content {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cards-row {
+    flex-wrap: wrap;
+  }
+
+  .form-row-two,
+  .form-row-three {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .modal {
+    width: calc(100% - 32px);
+    box-sizing: border-box;
+  }
+
+  .HospiceBannerMiddle {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .HospiceDescription {
+    width: 100%;
+  }
+
+  .HospiceInformationCard {
+    width: calc(50% - 10px);
+    box-sizing: border-box;
+  }
+
+  .HospiceAboveAndBeyondText {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .HospiceAboveAndBeyondCard {
+    width: 80%;
+  }
+
+  .HospiceProcess {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .map-section {
+    padding: 3rem 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  html,
+  body,
+  #root {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Keep the existing navigation and simply allow it to wrap on phones. */
+  .navbar {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    gap: 10px;
+  }
+
+  .logo-img {
+    min-height: 44px;
+    height: 36px;
+    border-width: 6px;
+  }
+
+  .nav-links {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 8px;
+    font-size: 100%;
+  }
+
+  .nav-links a {
+    display: inline-block;
+    padding: 8px 6px;
+  }
+
+  /* Landing page */
+  .hero {
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+  }
+
+  .hero-left {
+    padding: 32px 20px;
+  }
+
+  .hero-left h1 {
+    font-size: 2.25rem;
+    line-height: 1.1;
+  }
+
+  .hero-right {
+    height: 280px;
+    flex: none;
+    border-radius: 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 28px;
+  }
+
+  .philosophy,
+  .care,
+  .about {
+    padding: 40px 20px;
+  }
+
+  .info-card,
+  .info-card.reverse {
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 36px;
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+
+  .info-card-image img {
+    height: 220px;
+  }
+
+  .info-card-content h3 {
+    font-size: 1.75rem;
+    margin-bottom: 18px;
+  }
+
+  .contact-section {
+    padding: 50px 20px;
+  }
+
+  .contact-container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .contact-item h3 {
+    font-size: 1.5rem;
+  }
+
+  /* Scheduling / portal / forms */
+  .content {
+    padding: 20px 14px;
+  }
+
+  .section-box {
+    padding: 20px 16px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .btn-secondary {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .confirmation-actions {
+    flex-direction: column;
+  }
+
+  .confirmation-actions .btn-primary,
+  .confirmation-actions .btn-secondary {
+    width: 100%;
+  }
+
+  .cards-row {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .tab {
+    flex: 0 0 auto;
+  }
+
+  .form-row-two,
+  .form-row-three {
+    flex-direction: column;
+  }
+
+  /* Hospice */
+  .HospiceBanner {
+    min-height: 0;
+    padding-bottom: 40px;
+  }
+
+  .HospiceBannerMiddle {
+    padding: 32px 20px 0;
+  }
+
+  .HospiceBlurb {
+    align-items: stretch;
+  }
+
+  .HospiceTitle {
+    align-items: flex-start;
+  }
+
+  .HospiceTitleText {
+    font-size: 2.25rem;
+  }
+
+  .HospiceInformationCards {
+    flex-direction: column;
+  }
+
+  .HospiceInformationCard {
+    width: 100%;
+  }
+
+  .UnderstandingHospiceSection,
+  .HospiceCareAndBenefits,
+  .HospiceComprehensiveServices,
+  .HospiceAboveAndBeyond,
+  .HospiceProcess {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .HospiceAboveAndBeyondText {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .HospiceAboveAndBeyondCard {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .HospiceAboveAndBeyondCardText {
+    font-size: 1.1rem;
+    margin-left: 10px;
+  }
+
+  .HospiceProcessSteps {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .HospiceProcessStepText {
+    width: min(100%, 300px);
+  }
+
+  .HospiceContactButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .HospiceContactButton,
+  .HospiceHomeButton {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Maps */
+  .map-section {
+    padding: 2.5rem 12px;
+  }
+
+  .map-embed {
+    height: 300px;
+  }
+
+  .map-section__directions {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+
+  /* Admin tables can stay scrollable rather than breaking the desktop table. */
+  .admin-table-card {
+    padding: 18px 14px;
+  }
+
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .top-actions {
+    position: static;
+    margin-top: 12px;
+  }
+
+  /* Footer already uses an auto-fit grid; reduce its padding on phones. */
+  .footer__inner {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Keyboard visibility: do not remove the browser focus indicator. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #00aec5;
+  outline-offset: 3px;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
