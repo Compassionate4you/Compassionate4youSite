@@ -2,7 +2,7 @@
   position: fixed;
   left: 0;
   bottom: 32px;
-  z-index: 50;
+  z-index: 1003;
   background: #436689;
   color: #ffffff;
   border: 2px solid #000;
@@ -35,7 +35,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 30;
+  z-index: 1001;
 }
 .a11y-panel {
   position: fixed;
@@ -45,7 +45,7 @@
   height: 100%;
   background: #ffffff;
   box-shadow: 2px 0 24px rgba(0, 0, 0, 0.12);
-  z-index: 40;
+  z-index: 1002;
   overflow-y: auto;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
@@ -228,4 +228,47 @@ html[theme='dark'] .opt-btn:hover {
 html[theme='dark'] .notice {
   background: #26343d;
   color: #e5e7eb;
+}
+
+
+.a11y-toggle:focus-visible,
+.close-btn:focus-visible,
+.opt-btn:focus-visible,
+.a11y-panel select:focus-visible {
+  outline: 3px solid #00aec5;
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 600px) {
+  .a11y-toggle {
+    bottom: 16px;
+    padding: 10px 12px;
+    font-size: 90%;
+  }
+
+  .a11y-panel {
+    width: min(320px, 92vw);
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
+
+  .btn-group.row {
+    flex-direction: column;
+  }
+
+  .opt-btn {
+    min-height: 44px;
+  }
 }

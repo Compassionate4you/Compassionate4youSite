@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccessibility } from '../../context/AccessibilityContext';
 import './styles/accessibility.css';
@@ -7,12 +7,48 @@ function AccessibilityPanel() {
     const { t, i18n } = useTranslation();
     const { textSize, theme, highContrast, setTextSize, setTheme, setHighContrast } = useAccessibility();
     const [isOpen, setIsOpen] = useState(false);
+    const toggleRef = useRef(null);
+    const closeRef = useRef(null);
+    const panelRef = useRef(null);
+    const wasOpen = useRef(false);
 
     useEffect(() => {
-        if (!isOpen) return undefined;
+        if (!isOpen) {
+            if (wasOpen.current) toggleRef.current?.focus();
+            wasOpen.current = false;
+            return undefined;
+        }
+
+        wasOpen.current = true;
+
+        closeRef.current?.focus();
 
         const handleKeyDown = (event) => {
-            if (event.key === 'Escape') setIsOpen(false);
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setIsOpen(false);
+                return;
+            }
+
+            // Keep keyboard focus inside the open accessibility dialog.
+            if (event.key === 'Tab' && panelRef.current) {
+                const focusable = panelRef.current.querySelectorAll(
+                    'button:not([disabled]), select:not([disabled]), input:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+                );
+
+                if (!focusable.length) return;
+
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            }
         };
 
         document.addEventListener('keydown', handleKeyDown);
@@ -26,11 +62,13 @@ function AccessibilityPanel() {
     return (
         <>
             <button
+                ref={toggleRef}
                 type="button"
                 className="a11y-toggle"
                 onClick={() => setIsOpen(true)}
                 aria-label={t('accessibility.openPanel')}
                 aria-expanded={isOpen}
+                aria-controls="accessibility-panel"
             >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                     <circle cx="12" cy="12" r="3" />
@@ -48,15 +86,19 @@ function AccessibilityPanel() {
             )}
 
             <div
+                id="accessibility-panel"
+                ref={panelRef}
                 className={`a11y-panel ${isOpen ? 'open' : ''}`}
                 role="dialog"
                 aria-modal="true"
-                aria-label={t('accessibility.title')}
+                aria-labelledby="accessibility-panel-title"
                 aria-hidden={!isOpen}
+                inert={!isOpen ? '' : undefined}
             >
                 <div className="panel-header">
-                    <h2>{t('accessibility.title')}</h2>
+                    <h2 id="accessibility-panel-title">{t('accessibility.title')}</h2>
                     <button
+                        ref={closeRef}
                         type="button"
                         className="close-btn"
                         onClick={() => setIsOpen(false)}
@@ -126,7 +168,11 @@ function AccessibilityPanel() {
                         </svg>
                         {t('accessibility.language')}
                     </div>
+                    <label className="sr-only" htmlFor="accessibility-language">
+                        {t('accessibility.selectLanguage')}
+                    </label>
                     <select
+                        id="accessibility-language"
                         value={i18n.language.startsWith('es') ? 'es' : 'en'}
                         onChange={handleLanguageChange}
                         aria-label={t('accessibility.selectLanguage')}
@@ -136,7 +182,7 @@ function AccessibilityPanel() {
                     </select>
                 </div>
 
-                <div className="notice">
+                <div className="notice" role="note">
                     {t('accessibility.screenReaderNotice')}
                 </div>
             </div>
