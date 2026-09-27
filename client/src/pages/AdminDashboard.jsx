@@ -1,214 +1,336 @@
 import React, { useState } from "react";
-//import css - Chnage name later
-//import "./CSS-Compassionate-Appointments.css"; 
-// testing commit for Questionaire check assignment 8/30/2026
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
+import "../styles/admindashboard.css";
 
 const AdminDashboard = () => {
-  const [tab, setTab] = useState("appointments");
-//placeholder, not funtion, after schedule
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      service: "Home Health",
-      date: "March 5, 2026",
-      time: "10:00 AM",
-      provider: "Nurse Johnson",
-      status: "Confirmed",
-    },
-    {
-      id: 2,
-      name: "Mary Smith",
-      service: "Hospice",
-      date: "March 5, 2026",
-      time: "2:00 PM",
-      provider: "TBD",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      name: "Robert Williams",
-      service: "Home Health",
-      date: "March 6, 2026",
-      time: "9:00 AM",
-      provider: "Therapist Davis",
-      status: "Confirmed",
-    },
-  ]);
+    const { t } = useTranslation();
+    const [tab, setTab] = useState("appointments");
+    const navigate = useNavigate();
 
-  const confirmAppointment = (id) => {
-    setAppointments((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: "Confirmed" } : a))
-    );
-  };
+    const appointments = [
+        { name: "John Doe", service: "Home Health", date: "March 5", status: "Confirmed" },
+        { name: "Mary Smith", service: "Hospice", date: "March 5", status: "Pending" },
+        { name: "Robert Williams", service: "Home Health", date: "March 6", status: "Confirmed" },
+    ];
 
-  const rejectAppointment = (id) => {
-    setAppointments((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: "Rejected" } : a))
-    );
-  };
+    const accounts = [
+        {
+        id: 1,
+        name: "John Doe",
+        birthdate: "Apr 12, 88",
+        email: "john.doe@example.com",
+        role: "Customer",
+        created: "Jan 15, 26",
+        status: "Active",
+        lastLogin: "Mar 08, 26",
+        },
+        {
+        id: 2,
+        name: "Mary Smith",
+        birthdate: "Oct 03, 75",
+        email: "mary.smith@example.com",
+        role: "Customer",
+        created: "Feb 10, 26",
+        status: "Active",
+        lastLogin: "Mar 07, 26",
+        },
+        {
+        id: 3,
+        name: "Robert Williams",
+        birthdate: "Nov 21, 69",
+        email: "robert.will@example.com",
+        role: "Customer",
+        created: "May 22, 25",
+        status: "Inactive",
+        lastLogin: "Oct 28, 25",
+        },
+        {
+        id: 4,
+        name: "James Cameron",
+        birthdate: "Aug 18, 80",
+        email: "james.cam@admin.com",
+        role: "Admin",
+        created: "Sep 01, 25",
+        status: "Active",
+        lastLogin: "April 08, 26",
+        },
+        {
+        id: 5,
+        name: "Michael Brown",
+        birthdate: "Sep 16, 75",
+        email: "michael.brown@admin.com",
+        role: "Admin",
+        created: "Jan 26, 26",
+        status: "Active",
+        lastLogin: "April 01, 26",
+        },
+    ];
+    const [locations, setLocations] = useState([
+        {
+            id: 1,
+            name: "Main Office",
+            address: "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+            phone: "(925) 425-7104",
+            status: "Active",
+        },
+    ]);
+    const contentItems = [
+        {
+        id: 1,
+        title: "Home Page",
+        section: "Philosophy",
+        updated: "Feb 20, 2026",
+        },
+        {
+        id: 2,
+        title: "Home Page",
+        section: "2021",
+        updated: "Feb 18, 2026",
+        },
+        {
+        id: 3,
+        title: "Home Page",
+        section: "Specialty Services",
+        updated: "Feb 15, 2026",
+        },
+        {
+        id: 4,
+        title: "Home Page",
+        section: "Contact",
+        updated: "Feb 12, 2026",
+        },
+    ];
 
-  return (
-    <div className="admin-dashboard">
-      {/* Header */}
-      <header className="topbar">
-        <div className="logo">CH</div>
-        <div className="header-text">
-          <h1>Admin Dashboard</h1>
-          <p>Welcome, Admin User</p>
-        </div>
-        <div className="top-actions">
-          <button>Home</button>
-          <button>Logout</button>
-        </div>
-      </header>
-
-      {/* Tabs */}
-      <nav className="tabs">
-        <button
-          className={tab === "appointments" ? "active" : ""}
-          onClick={() => setTab("appointments")}
-        >
-          Appointments
-        </button>
-        <button
-          className={tab === "content" ? "active" : ""}
-          onClick={() => setTab("content")}
-        >
-          Content
-        </button>
-        <button
-          className={tab === "locations" ? "active" : ""}
-          onClick={() => setTab("locations")}
-        >
-          Locations
-        </button>
-        <button
-          className={tab === "accounts" ? "active" : ""}
-          onClick={() => setTab("accounts")}
-        >
-          Accounts
-        </button>
-      </nav>
-
-      <main className="content">
-        {/* Appointments Tab */}
-        {tab === "appointments" && (
-          <>
-            {/* Appointment Management */}
-            <section className="appointments">
-              <div className="appointments-header">
-                <div>
-                  <h2>Appointment Management</h2>
-                  <p>View and manage all patient appointments</p>
+    return (
+        <div>
+            <header className="topbar">
+                <div className="admin-identity">
+                    <div className="admin-avatar">AD</div>
+                    <div className="header-text">
+                        <h1>{t('admin.title')}</h1>
+                        <p>{t('admin.welcome')}</p>
+                    </div>
                 </div>
-                <div className="controls">
-                  <input type="text" placeholder="Search patients..." />
-                  <select>
-                    <option>All Services</option>
-                    <option>Home Health</option>
-                    <option>Hospice</option>
-                  </select>
+                
+                <div className="top-actions">
+                    <button type="button" className="logout-button">
+                        {t('nav.logout')}
+                    </button>
                 </div>
-              </div>
+            </header>
 
-              <table className="appointments-table">
-                <thead>
-                  <tr>
-                    <th>Patient</th>
-                    <th>Service</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Provider</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {appointments.map((a) => (
-                    <tr key={a.id}>
-                      <td>{a.name}</td>
-                      <td>{a.service}</td>
-                      <td>{a.date}</td>
-                      <td>{a.time}</td>
-                      <td>{a.provider}</td>
-                      <td>
-                        <span
-                          className={`status ${
-                            a.status.toLowerCase() === "confirmed"
-                              ? "confirmed"
-                              : a.status.toLowerCase() === "pending"
-                              ? "pending"
-                              : "rejected"
-                          }`}
+            <nav className="admin-tabs" aria-label="Admin dashboard sections">
+                <button className={tab === "appointments" ? "active" : ""} onClick={() => setTab("appointments")}>
+                    {t('admin.tabs.appointments')}
+                </button>
+                <button className={tab === "content" ? "active" : ""} onClick={() => setTab("content")}>
+                    {t('admin.tabs.content')}
+                </button>
+                <button className={tab === "locations" ? "active" : ""} onClick={() => setTab("locations")}>
+                    {t('admin.tabs.locations')}
+                </button>
+                <button className={tab === "accounts" ? "active" : ""} onClick={() => setTab("accounts")}>
+                    {t('admin.tabs.accounts')}
+                </button>
+            </nav>
+
+            <main className="content">
+                {tab === "appointments" && (
+                    <div className="admin-table-card">
+                        <h2>{t('admin.tabs.appointments')}</h2>
+                        <p className="admin-table-description">View and manage scheduled appointments</p>
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>{t('admin.table.patient')}</th>
+                                    <th>{t('admin.table.service')}</th>
+                                    <th>{t('admin.table.date')}</th>
+                                    <th>{t('admin.table.status')}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {appointments.map((a, i) => (
+                                    <tr key={i}>
+                                        <td>{a.name}</td>
+                                        <td>{a.service}</td>
+                                        <td>{a.date}</td>
+                                        <td>
+                                            <span className={`admin-status admin-status-${a.status.toLowerCase()}`}>
+                                                {a.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+                
+                {tab === "accounts" && (
+                    <div className="admin-table-card">
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: "20px",
+                            }}
                         >
-                          {a.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button className="reschedule">Reschedule</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
+                            <div>
+                                <h2>Account Management</h2>
+                                    <p>Manage user accounts</p>
+                            </div>
 
-            {/* Appointment Reminder */}
-            <section className="appointments" style={{ marginTop: "20px" }}>
-              <h2>Appointment Reminder</h2>
-              <p>Upcoming appointments requiring confirmation</p>
+                            <button
+                                style={{
+                                    backgroundColor: "#020617",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "10px",
+                                    padding: "10px 16px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Add Account
+                            </button>
+                        </div>
 
-              <table className="appointments-table">
-                <thead>
-                  <tr>
-                    <th>Patient</th>
-                    <th>Service</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {appointments
-                    .filter((a) => a.status === "Pending")
-                    .map((a) => (
-                      <tr key={a.id}>
-                        <td>{a.name}</td>
-                        <td>{a.service}</td>
-                        <td>{a.date}</td>
-                        <td>
-                          <span className="status pending">{a.status}</span>
-                        </td>
-                        <td>
-                          <button
-                            className="confirm"
-                            onClick={() => confirmAppointment(a.id)}
-                          >
-                            Confirm
-                          </button>
-                          <button
-                            className="reject"
-                            onClick={() => rejectAppointment(a.id)}
-                          >
-                            Reject
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </section>
-          </>
-        )}
+                        <table className="admin-table admin-accounts-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Birthdate</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Created</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {accounts.map((account) => (
+                                    <tr key={account.id}>
+                                        <td>{account.name}</td>
+                                        <td>{account.birthdate}</td>
+                                        <td>{account.email}</td>
+                                        <td>{account.role}</td>
+                                        <td>{account.created}</td>
+                                        <td>
+                                            <span className={`admin-status admin-status-${account.status.toLowerCase()}`}>
+                                                {account.status}
+                                            </span>
+                                        </td>
+                                        <td>{account.lastLogin}</td>
+                                        <td>
+                                            <button className="admin-table-action">
+                                                Edit
+                                            </button>
+                                            <button className="admin-table-action admin-table-delete">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
 
-        {/* Other Tabs */}
-        {tab === "content" && <h2>Content Page</h2>}
-        {tab === "locations" && <h2>Locations Page</h2>}
-        {tab === "accounts" && <h2>Accounts Page</h2>}
-      </main>
+                {tab === "content" && (
+                    <div>
+                        <h2>Content Management</h2>
+                        <p>Edit website content, testimonials, and service descriptions</p>
+
+                        <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
+                            {contentItems.map((item) => (
+                                <div
+                                    key={item.id}
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        border: "1px solid #ddd",
+                                        borderRadius: "12px",
+                                        padding: "20px",
+                                        background: "#fff",
+                                    }}
+                                >
+                                    <div>
+                                        <h3 style={{ margin: "0 0 6px" }}>{item.title}</h3>
+                                        <p style={{ margin: "0 0 6px", color: "#555" }}>{item.section}</p>
+                                        <span style={{ color: "#888", fontSize: "14px" }}>
+                                            Last updated: {item.updated}
+                                        </span>
+                                    </div>
+
+                                    <button
+                                        onClick={() => navigate("/admin/content-editor")}
+                                        style={{
+                                            backgroundColor: "#020617",
+                                            color: "white",
+                                            border: "none",
+                                            borderRadius: "10px",
+                                            padding: "10px 16px",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+                {tab === "locations" && (
+    <div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+            <div>
+                <h2>Location Management</h2>
+                <p>Manage office locations and contact information</p>
+            </div>
+            <button style={{ backgroundColor: "#020617", color: "white", border: "none", borderRadius: "10px", padding: "10px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Add Location
+            </button>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {locations.map((location) => (
+                <div key={location.id} style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: "12px", padding: "20px" }}>
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+                        <div>
+                            <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>{location.name}</h3>
+                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "6px", display: "flex", alignItems: "center", gap: "6px" }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                {location.address}
+                            </p>
+                            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "10px" }}>Phone: {location.phone}</p>
+                            <span style={{ display: "inline-flex", padding: "4px 12px", borderRadius: "999px", fontSize: "12px", fontWeight: "500", background: "#dcfce7", color: "#15803d" }}>
+                                {location.status}
+                            </span>
+                        </div>
+                        <button style={{ width: "32px", height: "32px", borderRadius: "8px", border: "1px solid #e5e7eb", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            ))}
+        </div>
     </div>
-  );
+)}
+            </main>
+        </div>
+    );
 };
 
 export default AdminDashboard;

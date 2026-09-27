@@ -1,22 +1,29 @@
 import React from "react";
-import "./schedule.css"; // reuse schedule.css for styling
 
 export function Calendar({ selected, onSelect }) {
-  const today = new Date();
-  const daysInMonth = 30; // simple 30-day view for demo
-  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+  const days = Array.from({ length: 30 }, (_, i) => {
+    const date = new Date();
+    date.setDate(i + 1);
+    return date;
+  });
 
   return (
     <div className="calendar">
-      {days.map((day) => (
-        <div
-          key={day}
-          className={`calendar-day ${selected === day ? "selected" : ""}`}
-          onClick={() => onSelect(day)}
-        >
-          {day}
-        </div>
-      ))}
+      {days.map((date, i) => {
+        const isSelected =
+          selected &&
+          date.toDateString() === selected.toDateString();
+
+        return (
+          <div
+            key={i}
+            className={`calendar-day ${isSelected ? "selected" : ""}`}
+            onClick={() => onSelect(date)}
+          >
+            {date.getDate()}
+          </div>
+        );
+      })}
     </div>
   );
 }

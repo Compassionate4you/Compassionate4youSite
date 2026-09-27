@@ -1,0 +1,245 @@
+/* RESET */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--color1);
+  margin: 0;
+  padding: 0;
+}
+
+/* NAVBAR */
+/* Update from Preston 9/13 - The navbar rules were not in use since it has its own css with a higher priority. */
+/* .navbar {
+  background-color: var(--color2);
+  border-bottom: 1px solid #ddd;
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+} */
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color6);
+  color: var(--color6-text);
+  font-weight: bold;
+  font-size: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .navbar-title {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.navbar-subtitle {
+  font-size: 12px;
+  color: gray;
+}
+
+.navbar-right button {
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+.navbar-right button:hover {
+  background-color: #f0f2ee;
+} */
+
+/* CONTENT */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
+
+/* SECTION */
+.section-box {
+  background-color: var(--color5);
+  border: 1px solid var(--color1);
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+
+.section-box h2 {
+  margin: 0 0 4px;
+}
+
+.desc {
+  color: var(--color5-text);
+  font-size: 90%;
+  margin-bottom: 18px;
+}
+
+/* FORM */
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  font-size: 90%;
+  font-weight: bold;
+  color: var(--color5-text);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-white);
+  border-radius: 6px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color6);
+}
+
+/* BUTTONS */
+.btn-primary {
+  background-color: var(--color6);
+  color: var(--color-white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-primary:disabled {
+  background-color: var(--color3);
+}
+
+.btn-secondary {
+  margin-left: 10px;
+  background: var(--color-white);
+  border: 1px solid var(--color-lightGrey);
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  background: none;
+  border: none;
+  margin-bottom: 16px;
+  color: var(--color3);
+  cursor: pointer;
+}
+
+/* SUCCESS */
+.success-msg {
+  background: var(--color1);
+  color: var(--color1-text);
+  border: 1px solid var(--color5);
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 6px;
+}
+
+/* CALENDAR */
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--color-white);
+  border-radius: 6px;
+}
+
+.calendar-day {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color1);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.calendar-day.selected {
+  background: var(--color5);
+  color: var(--color5-text);
+}
+
+
+/* Appointment details and confirmation flow */
+.form-error {
+  background: #fff1f2;
+  border: 1px solid #fda4af;
+  color: #9f1239;
+  padding: 10px;
+  margin: 0 0 12px;
+  border-radius: 6px;
+}
+
+.appointment-page {
+  min-height: 50vh;
+}
+
+.appointment-details {
+  margin: 18px 0;
+  padding: 14px 18px;
+  background: #f8faf8;
+  border: 1px solid #e0e5df;
+  border-radius: 8px;
+}
+
+.appointment-details p {
+  margin: 8px 0;
+}
+
+.confirmation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* The confirmation/details pages respond to the existing accessibility theme
+   without changing the site's existing text-size rules. */
+html[theme='dark'] .appointment-page .section-box {
+  background: #222829;
+  color: #f3f4f6;
+  border-color: #465052;
+}
+
+html[theme='dark'] .appointment-page .desc,
+html[theme='dark'] .appointment-page .appointment-details {
+  color: #f3f4f6;
+}
+
+html[theme='dark'] .appointment-page .appointment-details {
+  background: #1b2021;
+  border-color: #465052;
+}
+
+html[theme='dark'] .appointment-page .btn-secondary {
+  background: #15191a;
+  color: #f3f4f6;
+  border-color: #596467;
+}
+
+html.high-contrast .appointment-page .section-box,
+html.high-contrast .appointment-page .appointment-details,
+html.high-contrast .appointment-page .btn-secondary {
+  border-width: 2px;
+}

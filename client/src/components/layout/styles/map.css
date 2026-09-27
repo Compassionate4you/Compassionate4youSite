@@ -1,0 +1,135 @@
+:root {
+  --map-bg: #1a1a2e;
+  --map-card: #16213e;
+  --map-accent: #0f3460;
+  --map-green: #366454;
+  --map-text: #e2e8f0;
+  --map-muted: #94a3b8;
+  --map-radius: 1rem;
+  --map-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.map-section {
+  background: var(--map-bg);
+  padding: 5rem 1rem;
+  font-family: 'Lora', Georgia, serif;
+}
+
+.map-section__inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.map-section__title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  text-align: center;
+  color: var(--map-text);
+  margin-bottom: 3rem;
+  letter-spacing: -0.02em;
+}
+
+/* DT-163: Distance display card */
+.distance-card {
+  background: var(--map-card);
+  border: 1px solid var(--map-accent);
+  border-radius: var(--map-radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--map-shadow);
+  color: var(--map-text);
+}
+
+.distance-card__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--map-green);
+  flex-shrink: 0;
+}
+
+.distance-card__label {
+  font-size: 0.85rem;
+  color: var(--map-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.distance-card__value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--map-green);
+}
+
+.distance-card__address {
+  font-size: 0.9rem;
+  color: var(--map-muted);
+  margin-top: 0.2rem;
+}
+
+/* DT-160: Map embed area showing company location */
+.map-embed {
+  border-radius: var(--map-radius);
+  overflow: hidden;
+  box-shadow: var(--map-shadow);
+  border: 1px solid var(--map-accent);
+  height: 420px;
+  position: relative;
+}
+
+.map-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.map-embed__fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--map-card);
+  gap: 0.75rem;
+  color: var(--map-muted);
+}
+
+.map-embed__fallback svg {
+  width: 3.5rem;
+  height: 3.5rem;
+  color: var(--map-green);
+}
+
+.map-embed__fallback p {
+  font-size: 1rem;
+  color: var(--map-text);
+}
+
+.map-embed__fallback small {
+  font-size: 0.8rem;
+  color: var(--map-muted);
+}
+
+/* Get directions button */
+.map-section__directions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.65rem 1.4rem;
+  background: var(--map-green);
+  color: #0a0a0a;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 2rem;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s;
+}
+
+.map-section__directions:hover { 
+  opacity: 0.85; 
+}
