@@ -354,7 +354,7 @@
   },
   "login": {
     "title": "Sign In",
-    "subtitle": "Enter your credentials to continue.",
+    "subtitle": "Access your account to manage appointments and care",
     "email": "Email Address",
     "emailPlaceholder": "you@example.com",
     "password": "Password",

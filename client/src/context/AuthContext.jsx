@@ -11,6 +11,14 @@ const HARDCODED_ADMIN = {
     displayName: 'Admin User',
 };
 
+// Temp login for customer sign in. This is a hardcoded user for testing purposes until backend auth is implemented.
+const HARDCODED_CUSTOMER = {
+    email: 'customer@compassionate4you.com',
+    password: 'customer123',
+    role: 'customer',
+    displayName: 'Customer User',
+};
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -43,7 +51,21 @@ export function AuthProvider({ children }) {
                         role: HARDCODED_ADMIN.role,
                         displayName: HARDCODED_ADMIN.displayName,
                     });
-                    return { ok: true };
+                    // Routes to Admin portal
+                    return { ok: true, role: HARDCODED_ADMIN.role };
+                }
+
+                if (
+                    normalizedEmail === HARDCODED_CUSTOMER.email &&
+                    normalizedPassword === HARDCODED_CUSTOMER.password
+                ) {
+                    setUser({
+                        email: HARDCODED_CUSTOMER.email,
+                        role: HARDCODED_CUSTOMER.role,
+                        displayName: HARDCODED_CUSTOMER.displayName,
+                    });
+                    // Routes to customer portal
+                    return { ok: true, role: HARDCODED_CUSTOMER.role };
                 }
 
                 return { ok: false, errorKey: 'login.errors.invalidCredentials' };
