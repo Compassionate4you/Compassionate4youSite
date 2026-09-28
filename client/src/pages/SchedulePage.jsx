@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { apiCreateAppointment, apiGetAvailability } from '../services/api';
 import '../styles/portal.css';
 import '../styles/scheduling.css';
 
@@ -18,15 +19,53 @@ function SchedulePage() {
         notes: '',
     });
     const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // DT-562: slots already booked for the chosen date, so the form only
+    // offers times that are actually free.
+    const [takenSlots, setTakenSlots] = useState([]);
+
+    useEffect(() => {
+        if (!form.date) {
+            setTakenSlots([]);
+            return undefined;
+        }
+
+        let cancelled = false;
+        apiGetAvailability(form.date)
+            .then((data) => {
+                if (cancelled) return;
+                setTakenSlots(
+                    (data.slots || [])
+                        .filter((slot) => !slot.available)
+                        .map((slot) => slot.timeSlot)
+                );
+            })
+            .catch(() => {
+                // Availability is a convenience - the server still rejects
+                // a double booking on submit.
+                if (!cancelled) setTakenSlots([]);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [form.date]);
 
     const updateField = (event) => {
         const { name, value } = event.target;
-        setForm((current) => ({ ...current, [name]: value }));
+        setForm((current) => {
+            const next = { ...current, [name]: value };
+            // Changing the date invalidates a slot chosen for the old one.
+            if (name === 'date') next.timeSlot = '';
+            return next;
+        });
         setError('');
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        if (isSubmitting) return;
 
         if (
             !form.fullName.trim() ||
@@ -40,8 +79,6 @@ function SchedulePage() {
             return;
         }
 
-        // Treat successful validation as creation of this client-side appointment.
-        // Store it so the details page survives a browser refresh during this flow.
         const appointment = {
             ...form,
             fullName: form.fullName.trim(),
@@ -50,8 +87,19 @@ function SchedulePage() {
             notes: form.notes.trim(),
         };
 
-        sessionStorage.setItem('newAppointment', JSON.stringify(appointment));
-        navigate('/schedule/confirmation', { state: { appointment } });
+        setIsSubmitting(true);
+        try {
+            // DT-563 / DT-564: save it, linked to the account when signed in.
+            const data = await apiCreateAppointment(appointment);
+            const saved = data.appointment ?? appointment;
+
+            sessionStorage.setItem('newAppointment', JSON.stringify(saved));
+            navigate('/schedule/confirmation', { state: { appointment: saved } });
+        } catch (err) {
+            setError(err.message || t('schedule.requiredError'));
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -79,7 +127,9 @@ function SchedulePage() {
                     <h2>{t('schedule.title')}</h2>
                     <p className="desc">{t('schedule.subtitle')}</p>
 
-                    <form onSubmit={handleSubmit}>
+                    {/* noValidate so the page's own error message is used
+                        instead of the browser's native validation popups. */}
+                    <form onSubmit={handleSubmit} noValidate>
                         <div className="field">
                             <label htmlFor="fullName">{t('schedule.fullName')}</label>
                             <input id="fullName" name="fullName" value={form.fullName} onChange={updateField} type="text" placeholder={t('schedule.fullNamePlaceholder')} required />
@@ -109,12 +159,22 @@ function SchedulePage() {
                             <label htmlFor="timeSlot">{t('schedule.time')}</label>
                             <select id="timeSlot" name="timeSlot" value={form.timeSlot} onChange={updateField} required>
                                 <option value="">{t('schedule.selectTime')}</option>
-                                <option value="9:00 AM">{t('schedule.times.9')}</option>
-                                <option value="10:00 AM">{t('schedule.times.10')}</option>
-                                <option value="11:00 AM">{t('schedule.times.11')}</option>
-                                <option value="1:00 PM">{t('schedule.times.1')}</option>
-                                <option value="2:00 PM">{t('schedule.times.2')}</option>
-                                <option value="3:00 PM">{t('schedule.times.3')}</option>
+                                {[
+                                    ['9:00 AM', 'schedule.times.9'],
+                                    ['10:00 AM', 'schedule.times.10'],
+                                    ['11:00 AM', 'schedule.times.11'],
+                                    ['1:00 PM', 'schedule.times.1'],
+                                    ['2:00 PM', 'schedule.times.2'],
+                                    ['3:00 PM', 'schedule.times.3'],
+                                ].map(([value, labelKey]) => {
+                                    const taken = takenSlots.includes(value);
+                                    return (
+                                        <option key={value} value={value} disabled={taken}>
+                                            {t(labelKey)}
+                                            {taken ? ` - ${t('schedule.slotTaken')}` : ''}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                         <div className="field">
@@ -124,7 +184,9 @@ function SchedulePage() {
 
                         {error && <div className="form-error" role="alert">{error}</div>}
 
-                        <button type="submit" className="btn-primary">{t('schedule.confirm')}</button>
+                        <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                            {isSubmitting ? t('schedule.submitting') : t('schedule.confirm')}
+                        </button>
                         <button type="button" className="btn-secondary" onClick={() => navigate('/portal')}>{t('schedule.cancel')}</button>
                     </form>
                 </div>

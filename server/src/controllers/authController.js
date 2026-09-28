@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const prisma = require('../config/db');
 const { isValidEmail, isValidPassword, getPasswordRequirements, generateResetToken } = require('../validators/authValidation');
 const { sendValidationError } = require('../utils/errorResponse');
+const { signToken, setSessionCookie, clearSessionCookie } = require('../utils/token');
 
 async function signup(req, res) {
     const { email, password } = req.body;
@@ -24,7 +25,13 @@ async function signup(req, res) {
         data: { email, password: hashedPassword },
     });
 
-    return res.status(201).json({ success: true, userId: user.id });
+    setSessionCookie(res, signToken(user));
+
+    return res.status(201).json({
+        success: true,
+        userId: user.id,
+        user: { id: user.id, email: user.email },
+    });
 }
 
 async function login(req, res) {
@@ -48,7 +55,13 @@ async function login(req, res) {
         return sendValidationError(res, 'Invalid email or password.', null);
     }
 
-    return res.status(200).json({ success: true, userId: user.id });
+    setSessionCookie(res, signToken(user));
+
+    return res.status(200).json({
+        success: true,
+        userId: user.id,
+        user: { id: user.id, email: user.email },
+    });
 }
 
 async function forgotPassword(req, res) {
@@ -61,7 +74,6 @@ async function forgotPassword(req, res) {
     const user = await prisma.user.findUnique({ where: { email } });
 
     // Always return the same generic response, whether or not the user exists
-    // (prevents attackers from discovering which emails are registered)
     const genericResponse = {
         success: true,
         message: 'If an account with that email exists, a password reset link has been sent.',
@@ -79,7 +91,7 @@ async function forgotPassword(req, res) {
         data: { resetToken, resetTokenExpiry },
     });
 
-    // In a real app, you'd email the token to the user here.
+    // This is where you would usally email the token to the user here.
     // For now, logging it so you can test the flow manually.
     console.log(`Password reset token for ${email}: ${resetToken}`);
 
@@ -115,4 +127,17 @@ async function resetPassword(req, res) {
 
     return res.status(200).json({ success: true, message: 'Your password has been updated successfully.' });
 }
-module.exports = { signup, login, forgotPassword, resetPassword };
+function logout(req, res) {
+    clearSessionCookie(res);
+    return res.status(200).json({ success: true });
+}
+
+// Lets the client restore a session on page load.
+function me(req, res) {
+    if (!req.user) {
+        return res.status(200).json({ user: null });
+    }
+    return res.status(200).json({ user: req.user });
+}
+
+module.exports = { signup, login, forgotPassword, resetPassword, logout, me };

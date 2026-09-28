@@ -162,7 +162,7 @@
 }
 
 .chat-faq-toggle:focus-visible {
-    outline: 2px solid var(--color-linkHighlight, #00aec5);
+    outline: 2px solid var(--color-link-highlight, #00aec5);
     outline-offset: -2px;
 }
 
@@ -212,7 +212,7 @@
 }
 
 .chat-faq__item:focus-visible {
-    outline: 2px solid var(--color-linkHighlight, #00aec5);
+    outline: 2px solid var(--color-link-highlight, #00aec5);
     outline-offset: 2px;
 }
 
@@ -236,6 +236,6 @@
 }
 
 .chat-action-btn:focus-visible {
-    outline: 2px solid var(--color-linkHighlight, #00aec5);
+    outline: 2px solid var(--color-link-highlight, #00aec5);
     outline-offset: 2px;
 }

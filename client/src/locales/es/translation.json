@@ -262,7 +262,9 @@
       "2": "2:00 p. m.",
       "3": "3:00 p. m."
     },
-    "requiredError": "Complete todos los campos obligatorios de la cita."
+    "requiredError": "Complete todos los campos obligatorios de la cita.",
+    "slotTaken": "reservado",
+    "submitting": "Reservando..."
   },
   "login": {
     "title": "Iniciar Sesión",
@@ -272,12 +274,13 @@
     "password": "Contraseña",
     "passwordPlaceholder": "••••••••",
     "signIn": "Iniciar Sesión",
-    "signingIn": "Iniciando sesión…",
+    "signingIn": "Iniciando sesión...",
     "forgotPassword": "¿Olvidó su contraseña?",
     "errors": {
       "required": "Por favor ingrese correo electrónico y contraseña.",
       "invalidEmail": "Eso no parece un correo electrónico válido.",
-      "invalidCredentials": "Correo electrónico o contraseña incorrectos. Inténtelo de nuevo."
+      "invalidCredentials": "Correo electrónico o contraseña incorrectos. Inténtelo de nuevo.",
+      "network": "No se pudo conectar con el servidor. Inténtelo de nuevo."
     },
     "reset": {
       "title": "Restablecer su contraseña",
@@ -414,5 +417,24 @@
     "notFoundTitle": "Cita no encontrada",
     "notFoundMessage": "No hay una cita programada correctamente disponible para ver. Primero programe una cita.",
     "scheduleAppointment": "Programar una cita"
+  },
+  "signup": {
+    "title": "Crear una cuenta",
+    "subtitle": "Regístrese para administrar sus citas.",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "usted@ejemplo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Cree una contraseña",
+    "passwordHint": "Al menos 8 caracteres, con una letra mayúscula, una minúscula, un número y un carácter especial.",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Vuelva a escribir su contraseña",
+    "createAccount": "Crear cuenta",
+    "creating": "Creando cuenta...",
+    "haveAccount": "¿Ya tiene una cuenta?",
+    "signInInstead": "Iniciar sesión",
+    "errors": {
+      "required": "Complete todos los campos.",
+      "passwordMismatch": "Las contraseñas no coinciden."
+    }
   }
 }

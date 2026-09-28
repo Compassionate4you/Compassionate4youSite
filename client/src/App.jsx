@@ -5,13 +5,17 @@ import Footer from "./components/layout/Footer";
 import ChatbotWidget from "./components/chatbot/app_imports/ChatbotWidget";
 import AccessibilityPanel from "./components/accessibility/AccessibilityPanel";
 import "./styles/global.css";
+import "./styles/responsive.css";
 
 function App() {
     return (
         <Router>
             <div className="app">
-                <Navbar /> 
-                <AppRoutes />
+                <a className="skip-link" href="#main-content">Skip to main content</a>
+                <Navbar />
+                <main id="main-content" tabIndex="-1">
+                    <AppRoutes />
+                </main>
                 <Footer />
                 <ChatbotWidget />
                 <AccessibilityPanel />

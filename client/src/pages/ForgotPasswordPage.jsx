@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import '../styles/portal.css';
+import '../styles/forgotPassword.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_DIGITS_RE = /^[+]?\d{7,15}$/;
@@ -45,29 +45,29 @@ function ForgotPasswordPage() {
 
     return (
         <div>
-            <div className="navbar">
-                <div className="navbar-title">{t('portal.title')}</div>
+            <div className="forgotpassword-navbar">
+                <div className="forgotpassword-navbar-title">{t('portal.title')}</div>
             </div>
 
-            <div className="content">
-                <div className="section-box">
+            <div className="forgotpassword-content">
+                <div className="forgotpassword-section-box">
                     <h2>{t('login.reset.title')}</h2>
-                    <p className="desc">{t('login.reset.subtitle')}</p>
+                    <p className="forgotpassword-desc">{t('login.reset.subtitle')}</p>
 
                     {submitted ? (
                         <>
-                            <div className="form-success" role="status">
+                            <div className="forgotpassword-form-success" role="status">
                                 {t('login.reset.confirmation')}
                             </div>
-                            <Link to="/login" className="back-link">
+                            <Link to="/login" className="forgotpassword-back-link">
                                 {t('login.reset.backToLogin')}
                             </Link>
                         </>
                     ) : (
                         <form onSubmit={handleSubmit} noValidate>
                             <div
-                                className={`field${
-                                    errorKey ? ' field--error' : ''
+                                className={`forgotpassword-field${
+                                    errorKey ? ' forgotpassword-field--error' : ''
                                 }`}
                             >
                                 <label htmlFor="reset-identifier">
@@ -90,16 +90,16 @@ function ForgotPasswordPage() {
                             </div>
 
                             {errorKey && (
-                                <div className="form-error" role="alert">
+                                <div className="forgotpassword-form-error" role="alert">
                                     {t(errorKey)}
                                 </div>
                             )}
 
-                            <div className="login-actions">
-                                <button type="submit" className="btn-primary">
+                            <div className="forgotpassword-login-actions">
+                                <button type="submit" className="forgotpassword-btn-primary">
                                     {t('login.reset.submit')}
                                 </button>
-                                <Link to="/login" className="login-forgot-link">
+                                <Link to="/login" className="forgotpassword-login-forgot-link">
                                     {t('login.reset.backToLogin')}
                                 </Link>
                             </div>
