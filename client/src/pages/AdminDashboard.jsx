@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import "../styles/admindashboard.css";
+import compassionateLogo from "../assets/images/CompassionateLogo.jpeg";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
@@ -383,6 +384,13 @@ const AdminDashboard = () => {
                         <h1>{t('admin.title')}</h1>
                         <p>{t('admin.welcome')}</p>
                     </div>
+                </div>
+
+                <div className="admin-header-logo">
+                    <img
+                        src={compassionateLogo}
+                        alt="Compassionate Home Health and Hospice"
+                    />
                 </div>
 
                 <div className="top-actions">

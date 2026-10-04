@@ -9,6 +9,11 @@ function Navbar() {
 
   // DT-37: re render Navbar on route change so login check stays updated
   const location = useLocation();
+  // DT-586: Remove NavBar from Admin Dashboard
+  const isAdminPage = location.pathname.startsWith("/admin");
+  if (isAdminPage) {
+    return null;
+  }
   // Check if user is logged in
   const isLoggedIn=localStorage.getItem('isLoggedIn') === 'true';
   // Log user out and send them back to login

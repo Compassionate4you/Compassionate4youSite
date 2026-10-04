@@ -1,16 +1,31 @@
 /* ----------  Admin Header ----------*/
 .topbar {
-  position: relative; 
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   min-height: 70px;
   padding: 14px 32px;
+  border-bottom: 1px solid #ddd;
   background-color: #fff;
-  border-bottom:1px solid #ddd;
 }
 
 .admin-identity {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.admin-header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-header-logo img {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
 }
 
 .admin-avatar {
@@ -46,9 +61,8 @@
 }
 
 .top-actions {
-  position: absolute;
-  top: 16px;
-  right:32px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .logout-button {
@@ -517,6 +531,16 @@
   .account-email-field {
     grid-column: auto;
   }
+
+  .topbar {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 14px 20px;
+  }
+
+  .admin-header-logo {
+    display: none;
+  }
 }
 
 /* ---------- Locations Section ---------- */
@@ -552,8 +576,6 @@
     border-radius: 12px;
     background-color: white;
 }
-
-/* Location editing form */
 
 .admin-location-edit-form {
     display: flex;
