@@ -518,3 +518,129 @@
     grid-column: auto;
   }
 }
+
+/* ---------- Locations Section ---------- */
+
+.admin-locations-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.admin-location-add-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    background-color: #020617;
+    color: white;
+    cursor: pointer;
+}
+
+.admin-locations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-location-card {
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: white;
+}
+
+/* Location editing form */
+
+.admin-location-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-location-form-control {
+    padding: 8px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.admin-location-form-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.admin-location-save-button,
+.admin-location-cancel-button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.admin-location-save-button {
+    border: none;
+    background-color: #020617;
+    color: white;
+}
+
+.admin-location-cancel-button {
+    border: 1px solid #e5e7eb;
+    background-color: transparent;
+    color: #374151;
+}
+
+/* Location information */
+
+.admin-location-details {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.admin-location-name {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin-location-address {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.admin-location-phone {
+    margin-bottom: 10px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.admin-location-status {
+    display: inline-flex;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background-color: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.admin-location-edit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: transparent;
+    cursor: pointer;
+}
