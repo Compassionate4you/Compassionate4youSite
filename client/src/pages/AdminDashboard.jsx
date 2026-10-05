@@ -331,7 +331,7 @@ const AdminDashboard = () => {
             status: "Active",
         },
     ]);
-        const [editingLocationId, setEditingLocationId] = useState(null);
+    const [editingLocationId, setEditingLocationId] = useState(null);
     const [editForm, setEditForm] = useState({
         name: "",
         address: "",
@@ -371,7 +371,88 @@ const AdminDashboard = () => {
     const handleCancelEdit = () => {
         setEditingLocationId(null);
     };
+    const [showLocationForm, setShowLocationForm] = useState(false);
 
+    const [locationForm, setLocationForm] = useState({
+        name: "",
+        address: "",
+        phone: "",
+        status: "",
+    });
+
+    // Updates fields in the Add Location form.
+    const handleLocationFormChange = (event) => {
+        const { name, value } = event.target;
+
+        setLocationForm((currentForm) => ({
+            ...currentForm,
+            [name]: value,
+        }));
+    };
+
+    // Opens a blank Add Location form.
+    const handleOpenAddLocation = () => {
+        setLocationForm({
+            name: "",
+            address: "",
+            phone: "",
+            status: "",
+        });
+
+        setShowLocationForm(true);
+    };
+
+    // Closes the form without adding a location.
+    const handleCancelAddLocation = () => {
+        setLocationForm({
+            name: "",
+            address: "",
+            phone: "",
+            status: "",
+        });
+
+        setShowLocationForm(false);
+    };
+
+    // Adds the new location to temporary React state.
+    const handleAddLocation = (event) => {
+        event.preventDefault();
+
+        const locationName = locationForm.name.trim();
+        const address = locationForm.address.trim();
+        const phone = locationForm.phone.trim();
+
+        if (
+            !locationName ||
+            !address ||
+            !phone ||
+            !locationForm.status
+        ) {
+            return;
+        }
+
+        const newLocation = {
+            id: Date.now(),
+            name: locationName,
+            address,
+            phone,
+            status: locationForm.status,
+        };
+
+        setLocations((currentLocations) => [
+            ...currentLocations,
+            newLocation,
+        ]);
+
+        setLocationForm({
+            name: "",
+            address: "",
+            phone: "",
+            status: "",
+        });
+
+        setShowLocationForm(false);
+    };
     
     //DT-492 Content Editor - Preston Ball: Removed the content items from the admin board, and simply directed the user to the content editor page. All editing options are now displayed in the main page.
 
@@ -846,7 +927,11 @@ const AdminDashboard = () => {
                                 <p>Manage office locations and contact information</p>
                             </div>
 
-                            <button className="admin-location-add-button">
+                            <button
+                                type="button"
+                                className="admin-location-add-button"
+                                onClick={handleOpenAddLocation}
+                            >
                                 <svg
                                     width="14"
                                     height="14"
@@ -861,6 +946,103 @@ const AdminDashboard = () => {
                                 Add Location
                             </button>
                         </div>
+                        
+                        {showLocationForm && (
+                            <form
+                                className="admin-location-add-form"
+                                onSubmit={handleAddLocation}
+                            >
+                                <div className="admin-location-form-heading">
+                                    <h3>Add Location</h3>
+                                    <p>Enter the new office location information.</p>
+                                </div>
+
+                            <div className="admin-location-form-grid">
+                                <div className="admin-location-form-field">
+                                    <label htmlFor="location-name">
+                                        Location title
+                                    </label>
+
+                                    <input
+                                        id="location-name"
+                                        type="text"
+                                        name="name"
+                                        value={locationForm.name}
+                                        onChange={handleLocationFormChange}
+                                        placeholder="Example: Sacramento Office"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="admin-location-form-field">
+                                    <label htmlFor="location-phone">
+                                        Phone number
+                                    </label>
+
+                                    <input
+                                        id="location-phone"
+                                        type="tel"
+                                        name="phone"
+                                        value={locationForm.phone}
+                                        onChange={handleLocationFormChange}
+                                        placeholder="Example: (916) 555-0123"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="admin-location-form-field admin-location-address-field">
+                                    <label htmlFor="location-address">
+                                        Full address
+                                    </label>
+
+                                    <input
+                                        id="location-address"
+                                        type="text"
+                                        name="address"
+                                        value={locationForm.address}
+                                        onChange={handleLocationFormChange}
+                                        placeholder="Street, suite, city, state, and ZIP code"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="admin-location-form-field">
+                                    <label htmlFor="location-status">
+                                        Status
+                                    </label>
+
+                                    <select
+                                        id="location-status"
+                                        name="status"
+                                        value={locationForm.status}
+                                        onChange={handleLocationFormChange}
+                                        required
+                                    >
+                                        <option value="">Select a status</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="admin-location-add-actions">
+                                <button
+                                    type="button"
+                                    className="admin-location-cancel-button"
+                                    onClick={handleCancelAddLocation}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    className="admin-location-submit-button"
+                                    >
+                                    Add Location
+                                    </button>
+                                </div>
+                            </form>
+                        )}
 
                         <div className="admin-locations-list">
                             {locations.map((location) => (
@@ -968,7 +1150,9 @@ const AdminDashboard = () => {
                                             Phone: {location.phone}
                                         </p>
 
-                                        <span className="admin-location-status">
+                                        <span
+                                            className={`admin-location-status admin-location-status-${location.status.toLowerCase()}`}
+                                        >
                                             {location.status}
                                         </span>
                                     </div>

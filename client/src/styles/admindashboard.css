@@ -675,6 +675,19 @@
     width: 125px;
   }
 
+  .admin-location-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-location-address-field {
+    grid-column: auto;
+  }
+
+  .admin-locations-header {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
 }
 
 /* ---------- Locations Section ---------- */
@@ -783,20 +796,113 @@
     display: inline-flex;
     padding: 4px 12px;
     border-radius: 999px;
-    background-color: #dcfce7;
-    color: #15803d;
     font-size: 12px;
     font-weight: 500;
 }
 
+.admin-location-status-active {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.admin-location-status-inactive {
+  background-color: #e5e7eb;
+  color: #64748b;
+}
+
 .admin-location-edit-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background-color: transparent;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* ---------- Add Location Form ---------- */
+
+.admin-location-add-form {
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background-color: white;
+}
+
+.admin-location-form-heading {
+  margin-bottom: 20px;
+}
+
+.admin-location-form-heading h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.admin-location-form-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.admin-location-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-location-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-location-form-field label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-location-form-field input,
+.admin-location-form-field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: white;
+  color: #020617;
+  font: inherit;
+}
+
+.admin-location-form-field input:focus,
+.admin-location-form-field select:focus {
+  border-color: #366454;
+  outline: 2px solid rgba(54, 100, 84, 0.2);
+}
+
+.admin-location-address-field {
+  grid-column: 1 / -1;
+}
+
+.admin-location-add-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.admin-location-submit-button {
+  padding: 9px 16px;
+  border: 1px solid #366454;
+  border-radius: 8px;
+  background-color: #366454;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-location-submit-button:hover {
+  background-color: #294f42;
 }
