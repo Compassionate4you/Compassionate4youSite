@@ -446,6 +446,107 @@
   background-color: #294f42;
 }
 
+/* ---------- Admin Footer ---------- */
+
+.admin-footer {
+  width: 100%;
+  margin-top: 40px;
+  padding: 26px 32px 14px;
+  background-color: #366454;
+  color: white;
+  font-family: "Lora", Georgia, serif;
+}
+
+.admin-footer-content {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 60px;
+  width: min(100%, 1000px);
+  margin: 0 auto;
+}
+
+.admin-footer-column h3 {
+  margin: 0 0 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.admin-footer-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #c3c9d1;
+}
+
+.admin-footer-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: white;
+}
+
+.admin-footer-item a {
+  color: #c3c9d1;
+  font-size: 14px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.admin-footer-item a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.admin-footer-address {
+  padding-left: 9px;
+  border-left: 2px solid #4ade80;
+  color: #c3c9d1;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1.6;
+}
+
+.admin-footer-hours {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 245px;
+}
+
+.admin-footer-hours-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: #c3c9d1;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.admin-footer-hours-row span:last-child {
+  white-space: nowrap;
+}
+
+.admin-footer-bottom {
+  width: min(100%, 1000px);
+  margin: 18px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  text-align: center;
+}
+
+.admin-footer-bottom p {
+  margin: 0;
+  color: #c3c9d1;
+  font-size: 13px;
+}
+
+.admin-footer-divider {
+  margin: 0 8px;
+}
+
 /* --------- Logout Confirmation Modals ----------  */
 .logout-modal-overlay {
   position: fixed;
@@ -541,6 +642,39 @@
   .admin-header-logo {
     display: none;
   }
+
+  .admin-footer {
+    padding: 30px 24px 18px;
+  }
+
+  .admin-footer-content {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .admin-footer-bottom {
+    margin-top: 28px;
+  }
+
+  .admin-footer-divider {
+    display: block;
+    height: 6px;
+    font-size: 0;
+  }
+
+  .admin-footer-hours {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .admin-footer-hours-row {
+    justify-content: flex-start;
+  }
+
+  .admin-footer-hours-row span:first-child {
+    width: 125px;
+  }
+
 }
 
 /* ---------- Locations Section ---------- */
