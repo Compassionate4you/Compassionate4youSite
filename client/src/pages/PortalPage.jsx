@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../styles/portal.css';
-import { Plus, Calendar, Settings, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react';
 
 function PortalPage() {
     const { t } = useTranslation();
@@ -34,7 +34,10 @@ function PortalPage() {
     const[twoFactor,setTwoFactor]=useState(saved.twoFactor ?? false);
     //DT-66: track which appointment tab is active (upcoming or past)
     const[apptTab, setApptTab]=useState('upcoming');
-
+    // DT-67 User can message provider/support team
+    const [showContactForm, setShowContactForm] = useState(false);
+    const [messageSent, setMessageSent] = useState(false);
+    const [contactForm, setContactForm] = useState({ fullName: "", reason: "", message: "", });
 
     // DT-144: mock appointments with a date near today so upcoming notification logic can trigger
   const [appointments, setAppointments] = useState([
@@ -95,6 +98,47 @@ function PortalPage() {
 
     const upcomingAppt=getUpcomingAppointments();
 
+    // DT-67: User can message provider/support team, handlers below
+    function handleOpenContactForm() {
+        setContactForm({ fullName, reason: "", message: "", });
+        setMessageSent(false);
+        setShowContactForm(true);
+    }
+
+        // Updates a field in the Contact Provider form.
+    function handleContactFormChange(event) {
+        const { name, value } = event.target;
+        setContactForm((currentForm) => ({
+            ...currentForm,
+            [name]: value,
+        }));
+    }
+
+    // Closes the form without submitting it.
+    function handleCancelContactForm() {
+        setShowContactForm(false);
+        setContactForm({ fullName: "", reason: "", message: "", });
+    }
+
+    // Simulates sending the message and returns to the portal.
+    function handleSubmitContactForm(event) {
+        event.preventDefault();
+        const submittedName = contactForm.fullName.trim();
+        const submittedReason = contactForm.reason.trim();
+        const submittedMessage = contactForm.message.trim();
+        if (
+            !submittedName || !submittedReason || !submittedMessage
+        ) {
+            return;
+        }
+        // No API, so no message is permanently saved.
+        setContactForm({
+            fullName: "", reason: "", message: "",
+        });
+        setShowContactForm(false);
+        setMessageSent(true);
+    }
+
     return (
         <div>
             {/* DT-59: User Dashboard / Welcome page */}
@@ -117,8 +161,114 @@ function PortalPage() {
                     </div>
                 </div>
             </div>
-
+            {/* Message Provider form */}
             <div className="content">
+                {showContactForm ? (
+                    <section className="portal-contact-form-card">
+                        <div className="portal-contact-form-heading">
+                            <h1>Contact Your Provider</h1>
+                             <p>
+                                Complete the form below and a member of your care team
+                                will follow up with you.
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSubmitContactForm}>
+                            <div className="field">
+                                <label htmlFor="contact-full-name">
+                                    Full Name *
+                                </label>
+
+                            <input
+                                id="contact-full-name"
+                                type="text"
+                                name="fullName"
+                                value={contactForm.fullName}
+                                onChange={handleContactFormChange}
+                                placeholder="Enter your full name"
+                                required
+                            />
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="contact-reason">
+                                Reason for Message *
+                            </label>
+
+                            <select
+                                id="contact-reason"
+                                name="reason"
+                                value={contactForm.reason}
+                                onChange={handleContactFormChange}
+                                required
+                            >   {/* Easy dropdown menu for reason of message */}
+                                <option value="">Select a reason</option>
+                                <option value="Appointment question">
+                                    Appointment question
+                                </option>
+                                <option value="Home health question">
+                                    Home health question
+                                </option>
+                                <option value="Hospice question">
+                                    Hospice question
+                                </option>
+                                <option value="Billing question">
+                                    Billing question
+                                </option>
+                                <option value="General question">
+                                    General question
+                                </option>
+                                <option value="Other">
+                                    Other
+                                </option>
+                            </select>
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="contact-message">
+                                Message *
+                            </label>
+
+                            <textarea
+                                id="contact-message"
+                                name="message"
+                                value={contactForm.message}
+                                onChange={handleContactFormChange}
+                                placeholder="Describe your question in more detail"
+                                rows="7"
+                                required
+                            />
+                        </div>
+
+                        <div className="portal-contact-form-actions">
+                            <button
+                                type="button"
+                                className="btn-secondary"
+                                onClick={handleCancelContactForm}
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="btn-primary"
+                            >
+                                Submit Message
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            ) : (
+                <>  {/* Will show temporary confirmation message after submition */}
+                    {messageSent && (
+                        <div
+                            className="portal-message-success"
+                            role="status"
+                        >
+                            Your message was successfully sent. A member of your
+                            care team will follow up with you.
+                        </div>
+                    )}
                 <div className="welcome-banner">
                     <h1>{t('portal.welcomeBanner')}</h1>
                     <p>{t('portal.welcomeSubtitle')}</p>
@@ -153,6 +303,20 @@ function PortalPage() {
                     <h3>Profile Settings</h3>
                     <p>Update your contact information and preferences</p>
                 </div>
+                
+                {/* Button to message provider */}
+                <button
+                    type="button"
+                    className="card portal-contact-card"
+                    onClick={handleOpenContactForm}
+                >
+                    <div className="card-icon card-icon-contact">
+                    <MessageCircle size={20} />
+                    </div>
+
+                    <h3>Contact Your Provider</h3>
+                    <p>Send a question or message to your care team</p>
+                </button>
 
             </div>
 
@@ -206,6 +370,8 @@ function PortalPage() {
                     </tbody>
                 </table>
             </div>
+        </>
+        )}
         </div>
 
         {/* DT-63: Profile Settings Modal */}

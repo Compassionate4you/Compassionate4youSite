@@ -509,3 +509,89 @@ table td:last-child {
 .card-icon-blue { background-color: #dbeafe; color: #2563eb; }
 .card-icon-green { background-color: #dcfce7; color: #16a34a; }
 .card-icon-purple { background-color: #f3e8ff; color: #9333ea; }
+
+/* Contact Provider Card */
+
+.cards-row {
+    flex-wrap: wrap;
+}
+
+.portal-contact-card {
+    appearance: none;
+    color: inherit;
+    font-family: inherit;
+    text-align: left;
+}
+
+.card-icon-contact {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+/*  Contact Provider Form  */
+.portal-contact-form-card {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.portal-contact-form-heading {
+    margin-bottom: 24px;
+}
+
+.portal-contact-form-heading h1 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.portal-contact-form-heading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.portal-contact-form-card textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.portal-contact-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.portal-contact-form-actions .btn-primary,
+.portal-contact-form-actions .btn-secondary {
+    margin: 0;
+}
+
+/*  Message Sent Confirmation  */
+.portal-message-success {
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border: 1px solid #86d5a4;
+    border-radius: 8px;
+    background-color: #e6f9ee;
+    color: #166534;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Visible field borders for Contact Provider form */
+.portal-contact-form-card .field input,
+.portal-contact-form-card .field select,
+.portal-contact-form-card .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #9ca3af;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #111827;
+    box-sizing: border-box;
+}
