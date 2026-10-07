@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import '../styles/portal.css';
 import '../styles/scheduling.css';
 
 function SchedulePage() {
