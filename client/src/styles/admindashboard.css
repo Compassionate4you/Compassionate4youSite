@@ -80,6 +80,7 @@
 }
 
 /* ---------- Dashboard Tabs ----------*/
+
 .admin-tabs {
   width: min(920px, calc(100% - 40px));
   margin: 32px auto 20px;
@@ -113,6 +114,7 @@
 }
 
 /* ---------- Table styling ---------- */
+
 .admin-table-card {
   margin-bottom: 24px;
   overflow-x: auto;
@@ -163,6 +165,7 @@
 }
 
 /* ---------- Status Badges --------- */
+
 .admin-status {
   display: inline-block;
   padding: 4px 12px;
@@ -188,6 +191,7 @@
 }
 
 /* ---------- Shared "Add xxx" button ---------- */
+
 .admin-add-button {
   flex-shrink: 0;
   padding: 10px 16px;
@@ -200,6 +204,7 @@
 }
 
 /* ---------- Accounts Section ----------*/
+
 .account-section-header {
   display: flex;
   align-items: flex-start;
@@ -235,6 +240,7 @@
 }
 
 /* ---------- Account Form styling ----------*/
+
 .account-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -309,6 +315,7 @@
 }
 
 /* --------- Appointments Section ----------- */
+
 .appointment-actions-heading,
 .appointment-actions-cell {
   width: 150px;
@@ -351,6 +358,7 @@
 }
 
 /* ---------- Appointment Form ----------*/
+
 .appointment-section-header {
   display: flex;
   align-items: flex-start;
@@ -448,9 +456,21 @@
 
 /* ---------- Admin Footer ---------- */
 
+.admin-dashboard-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-dashboard-page > main {
+  flex: 1;
+  width: 100%;
+}
+
 .admin-footer {
   width: 100%;
   margin-top: 40px;
+  margin-bottom: 0;
   padding: 26px 32px 14px;
   background-color: #366454;
   color: white;
@@ -548,6 +568,7 @@
 }
 
 /* --------- Logout Confirmation Modals ----------  */
+
 .logout-modal-overlay {
   position: fixed;
   inset: 0;
@@ -614,6 +635,7 @@
 }
 
 /* ---------Responsive Styles --------- */
+
 @media (max-width: 640px) {
   .admin-tabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -763,7 +785,7 @@
     color: #374151;
 }
 
-/* Location information */
+/* ---------- Location information ----------*/
 
 .admin-location-details {
     display: flex;
