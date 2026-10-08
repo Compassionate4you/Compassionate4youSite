@@ -27,6 +27,12 @@ function LanguageSelector(){
                     <button className="LanguageOption" onClick={handleLanguageChange} value="Punjabi">
                         Punjabi
                     </button>
+                    <button className="LanguageOption" onClick={handleLanguageChange} value="Mandarin">
+                        Mandarin
+                    </button>
+                    <button className="LanguageOption" onClick={handleLanguageChange} value="Vietnamese">
+                        Vietnamese
+                    </button>
                 </html>
             ) : ( <></> )}
         </html>

@@ -173,12 +173,15 @@ function AccessibilityPanel() {
                     </label>
                     <select
                         id="accessibility-language"
-                        value={i18n.language.startsWith('es') ? 'es' : 'en'}
+                        value={['en', 'es', 'pa', 'zh', 'vi'].find((code) => i18n.language?.startsWith(code)) || 'en'}
                         onChange={handleLanguageChange}
                         aria-label={t('accessibility.selectLanguage')}
                     >
                         <option value="en">English</option>
                         <option value="es">Español</option>
+                        <option value="pa">Punjabi</option>
+                        <option value="zh">Mandarin</option>
+                        <option value="vi">Vietnamese</option>
                     </select>
                 </div>
 
