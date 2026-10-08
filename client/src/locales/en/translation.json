@@ -436,5 +436,87 @@
       "required": "Please fill in all fields.",
       "passwordMismatch": "Those passwords do not match."
     }
+    
+  },
+  
+  "layout": {
+    "skipToMain": "Skip to main content"
+  },
+  "homeHealthPage": {
+    "scheduleConsultation": "Schedule a Consultation",
+    "advantagesTitle": "Home Health Advantages",
+    "advantages": [
+      "We manage all employer obligations in payroll, taxes and compensation",
+      "More cost efficient than hospitalization",
+      "Faster rate of client recovery",
+      "Clients have the right to participate in their plan of care",
+      "Services are rendered in the client's place of residence",
+      "Avoidance of hospital acquired infections",
+      "Care transition, fall prevention and medical equipment training"
+    ],
+    "specialtyTitle": "Specialty Services",
+    "specialties": [
+      "CHF",
+      "COPD",
+      "Orthopedic Post-Surgical Therapy (Joint Replacement)",
+      "Wound Care",
+      "I.V. Infusion",
+      "Physical, Occupational, Speech Therapy",
+      "Medication Management",
+      "Catheter Care",
+      "Diet, Exercise, Nutrition Education",
+      "Labs (PT/INR, Blood Draw)"
+    ],
+    "ctaTitle": "Start Your Home Health Care Today",
+    "ctaDescription": "Let us help you or your loved one receive the quality care you deserve in the comfort of your home.",
+    "ctaSchedule": "Schedule Appointment",
+    "ctaBack": "Back to Home"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": [
+      {
+        "question": "What does hospice provide?",
+        "answer": "Hospice offers care from a team of different types of practitioners who work together to meet the medical, psychological and spiritual needs of you and your family."
+      },
+      {
+        "question": "What other benefits do patients have when they are under hospice care?",
+        "answer": "Once you're admitted into the Hospice Program, you will be provided with medical appliances, medical supplies and medication for symptoms and pain relief."
+      },
+      {
+        "question": "Who provides the care?",
+        "answer": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
+      },
+      {
+        "question": "What kind of help might I need?",
+        "answer": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
+      },
+      {
+        "question": "What if a difficult situation arises?",
+        "answer": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
+      }
+    ]
+  },
+  "accountBenefits": {
+    "title": "Why Should I Create an Account?",
+    "items": [
+      {
+        "heading": "Book Appointments in Seconds!",
+        "description": "Easily fill out the application and book your first appointment with us. You can see your scheduled appointments and see information regarding the location, time and more."
+      },
+      {
+        "heading": "Reschedule with Ease",
+        "description": "Simply sign in with your account information, and with a few clicks, you can change the date, time and location of your appointment. This is all saved under your account information."
+      },
+      {
+        "heading": "Never Miss a Visit",
+        "description": "If you were to sign up and create an account, you can view and adjust all your information as needed and view the important details for your first and following visits."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "Sorry, we couldn't find the page you're looking for. It may have been moved, renamed, or doesn't exist.",
+    "home": "Return to homepage"
   }
 }
