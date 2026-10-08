@@ -1,0 +1,500 @@
+{
+  "nav": {
+    "welcome": "Chào mừng",
+    "homeHealth": "Y tế tại nhà",
+    "hospice": "Chăm sóc cuối đời",
+    "locations": "Địa điểm",
+    "schedule": "Đặt lịch hẹn",
+    "login": "Đăng nhập",
+    "portal": "Cổng thông tin",
+    "admin": "Quản trị viên",
+    "logout": "Đăng xuất",
+    "dashboard": "Bảng điều khiển người dùng",
+    "home": "Trang chủ"
+  },
+  "landing": {
+    "heroTitle": "Chăm sóc tận tâm cho những người thân yêu của quý vị",
+    "heroSubtitle": "Dịch vụ chăm sóc sức khỏe tại nhà và chăm sóc cuối đời chuyên nghiệp, tận tâm mang đến sự chăm sóc chất lượng với phẩm giá và sự tôn trọng.",
+    "heroImageAlt": "Dịch vụ chăm sóc tận tâm",
+    "philosophyTitle": "Triết lý của chúng tôi",
+    "philosophyText": "Chúng tôi tin vào việc đối xử với bệnh nhân bằng phẩm giá, sự tôn trọng và lòng đồng cảm. Chúng tôi nỗ lực giúp hành trình cuối đời của quý vị thoải mái và ý nghĩa nhất có thể.",
+    "caringSinceTitle": "Tận tâm chăm sóc từ năm 2021",
+    "caringSinceText": "Mang đến sự chăm sóc tận tâm ngay tại ngôi nhà thoải mái của quý vị từ năm 2021.",
+    "aboutTitle": "Giới thiệu",
+    "aboutText": "Compassionate Home Health & Hospice là doanh nghiệp gia đình do Jane Smith, RN sáng lập và điều hành. Với hơn 15 năm kinh nghiệm trong lĩnh vực y tế, Jane thành lập công ty này để mang đến sự chăm sóc cá nhân hóa và tận tâm cho bệnh nhân ngay tại nhà. Đội ngũ chuyên gia tận tụy của chúng tôi cam kết nâng cao chất lượng cuộc sống của bệnh nhân và gia đình họ thông qua các dịch vụ chăm sóc sức khỏe tại nhà và chăm sóc cuối đời toàn diện.",
+    "contactTitle": "Liên hệ",
+    "contactPhoneLabel": "Điện thoại",
+    "contactPhone": "(925) 425-7104",
+    "contactEmailLabel": "Email",
+    "contactEmail": "compassionateforall@gmail.com",
+    "contactFaxLabel": "Fax",
+    "contactFax": "(844) 361-1170",
+    "contactAddressLabel": "Địa chỉ",
+    "contactAddressLine1": "1501 N Broadway, Ste 350A/B",
+    "contactAddressLine2": "Walnut Creek, CA 94596",
+    "contactFormName": "Họ tên",
+    "contactFormNamePlaceholder": "Họ tên của quý vị",
+    "contactFormEmail": "Email",
+    "contactFormEmailPlaceholder": "email@example.com",
+    "contactFormMessage": "Tin nhắn",
+    "contactFormMessagePlaceholder": "Chúng tôi có thể giúp gì cho quý vị?",
+    "contactFormButton": "Gửi tin nhắn"
+  },
+  "hospice": {
+    "blurb": {
+      "title": "Chăm sóc cuối đời",
+      "description": "Chúng tôi mang đến sự an ủi, phẩm giá và hỗ trợ tận tâm trong hành trình cuối cùng của cuộc đời. Chúng tôi luôn ở bên bệnh nhân và gia đình trong từng bước đi.",
+      "contactButton": "Liên hệ với đội ngũ của chúng tôi"
+    },
+    "understanding": {
+      "title": "Tìm hiểu về chăm sóc cuối đời",
+      "cards": {
+        "card1": {
+          "title": "Chăm sóc cuối đời là gì?",
+          "description": "Chăm sóc cuối đời tập trung vào việc mang lại sự thoải mái, chất lượng cuộc sống và hỗ trợ cho những người sắp đến cuối đời, thay vì chữa khỏi bệnh. Dịch vụ do một đội ngũ chuyên gia thực hiện, kiểm soát cơn đau và các triệu chứng khác, đồng thời đáp ứng nhu cầu về cảm xúc, thể chất, tâm linh và xã hội của bệnh nhân cũng như gia đình họ, với tất cả sự tận tâm. Dịch vụ này có thể được cung cấp tại nhà của bệnh nhân hoặc tại cơ sở chuyên về chăm sóc cuối đời; mục tiêu là giúp bệnh nhân sống quãng thời gian còn lại với phẩm giá và sự bình an nhất có thể."
+        },
+        "card2": {
+          "title": "Ai đủ điều kiện?",
+          "description": "Bất kể tín ngưỡng hay niềm tin của quý vị, quý vị và gia đình đều có thể nhận được sự hỗ trợ về tâm linh và cảm xúc từ đội ngũ chăm sóc của chúng tôi."
+        },
+        "card3": {
+          "title": "Chăm sóc cuối đời khác biệt như thế nào?",
+          "description": "Đội ngũ của chúng tôi mang đến một môi trường đầy lòng trắc ẩn cho bệnh nhân và gia đình, để họ cảm thấy được hỗ trợ và thấu hiểu trong quá trình chăm sóc cuối đời."
+        },
+        "card4": {
+          "title": "Tại sao quý vị có thể chọn dịch vụ này?",
+          "description": "Đội ngũ chăm sóc cuối đời của chúng tôi hỗ trợ về mặt cảm xúc và tâm linh cho các gia đình trong quá trình chăm sóc cuối đời."
+        },
+        "card5": {
+          "title": "Ai cung cấp dịch vụ chăm sóc?",
+          "description": "Nền tảng của dịch vụ chúng tôi là đội ngũ chuyên gia có tay nghề cao và được đào tạo bài bản, mang đến sự chăm sóc tận tâm và cá nhân hóa, phù hợp với nhu cầu riêng của từng người. Chúng tôi có đội ngũ đa ngành gồm nhiều chuyên gia, bao gồm bác sĩ, y tá, nhân viên xã hội, tuyên úy và trợ lý chăm sóc cuối đời, nhằm cung cấp sự chăm sóc và hỗ trợ toàn diện cho bệnh nhân và gia đình họ. Ngoài ra, các chuyên viên vật lý trị liệu, hoạt động trị liệu và ngôn ngữ trị liệu, cũng như tình nguyện viên và chuyên gia hỗ trợ tang quyến, có thể tham gia tùy theo nhu cầu cụ thể của từng bệnh nhân và chỉ định của đơn vị chăm sóc cuối đời."
+        }
+      }
+    },
+    "careAndBenefits": {
+      "title": "Đội ngũ chăm sóc cuối đời và quyền lợi",
+      "cards": {
+        "card1": {
+          "title": "Dịch vụ chăm sóc cuối đời cung cấp những gì?",
+          "description": "Chăm sóc cuối đời cung cấp dịch vụ từ một đội ngũ gồm các chuyên gia thuộc nhiều lĩnh vực, cùng phối hợp để đáp ứng nhu cầu y tế, tâm lý và tâm linh của quý vị và gia đình."
+        },
+        "card2": {
+          "title": "Thời gian hỗ trợ trong quá trình chăm sóc cuối đời...",
+          "description": "Chương trình chăm sóc cuối đời cung cấp cho quý vị một số điện thoại có thể gọi 24 giờ một ngày, 7 ngày một tuần, để giúp giải đáp mọi thắc mắc."
+        },
+        "card3": {
+          "title": "Bệnh nhân còn có những quyền lợi nào khác khi được chăm sóc cuối đời?",
+          "description": {
+            "top": " - Sau khi quý vị được nhận vào Chương trình Chăm sóc Cuối đời, quý vị sẽ được cung cấp những điều sau:",
+            "list1": " - Thiết bị y tế",
+            "list2": " - Vật tư y tế",
+            "list3": " - Thuốc giảm triệu chứng và giảm đau"
+          }
+        },
+        "card4": {
+          "title": "Bác sĩ",
+          "description": "Bác sĩ riêng của quý vị tiếp tục chăm sóc quý vị trong thời gian tham gia Chương trình Chăm sóc Cuối đời. Bác sĩ chăm sóc cuối đời sẽ phối hợp chặt chẽ với bác sĩ riêng của quý vị và có thể tham khảo ý kiến của bác sĩ."
+        },
+        "card5": {
+          "title": "Y tá",
+          "description": "Y tá đến thăm trong tuần để hướng dẫn người chăm sóc của quý vị và điều phối việc chăm sóc. Y tá định kỳ báo cáo tình trạng của quý vị cho bác sĩ chăm sóc cuối đời."
+        },
+        "card6": {
+          "title": "Nhân viên xã hội",
+          "description": {
+            "top": " - Nhân viên xã hội giúp quý vị và người chăm sóc:",
+            "list1": " - Hỗ trợ về mặt cảm xúc",
+            "list2": " - Hỗ trợ các vấn đề thực tế, chẳng hạn như tìm thêm sự giúp đỡ tại nhà"
+          }
+        }
+      }
+    },
+    "comprehensiveServices": {
+      "title": "Dịch vụ hỗ trợ toàn diện",
+      "cards": {
+        "card1": {
+          "title": "Dịch vụ trợ lý chăm sóc cuối đời và trợ giúp việc nhà",
+          "description": "Trợ lý chăm sóc cuối đời đến thăm trong tuần, khi cần thiết, để giúp quý vị và người chăm sóc trong việc chăm sóc cá nhân, chẳng hạn như thay ga trải giường, tắm rửa và giúp quý vị mặc quần áo."
+        },
+        "card2": {
+          "title": "Tuyên úy",
+          "description": "Tuyên úy là một mục sư hoặc cố vấn tận tâm đáp ứng nhu cầu tâm linh của quý vị và gia đình, bất kể tôn giáo nào. Quý vị và gia đình có thể yêu cầu tuyên úy đến thăm bất cứ lúc nào."
+        },
+        "card3": {
+          "title": "Tình nguyện viên",
+          "description": "Tình nguyện viên là người trong cộng đồng đã được Chương trình Chăm sóc Cuối đời của chúng tôi đào tạo để giúp đỡ quý vị và gia đình. Tình nguyện viên làm việc dưới sự hướng dẫn của một nhân viên trong chương trình."
+        },
+        "card4": {
+          "title": "Còn các cuộc hẹn khám bệnh thì sao?",
+          "description": "Bác sĩ riêng của quý vị vẫn phụ trách việc chăm sóc cho quý vị, ngay cả sau khi quý vị được nhận vào Chương trình Chăm sóc Cuối đời của chúng tôi. Bác sĩ chăm sóc cuối đời sẽ phối hợp với bác sĩ riêng của quý vị để mang đến sự chăm sóc mà quý vị cần."
+        },
+        "card5": {
+          "title": "Quý vị có thể cần loại giúp đỡ nào?",
+          "description": "Đến một lúc nào đó, quý vị có thể phải nằm liệt giường và không thể tự trở mình hoặc ăn uống mà không có sự giúp đỡ. Người chăm sóc có thể cần thay tã và ga trải giường cho quý vị, cũng như chăm sóc làn da để ngừa loét tỳ đè. Y tá chăm sóc cuối đời sẽ hướng dẫn người chăm sóc cách thực hiện những việc này."
+        },
+        "card6": {
+          "title": "Nếu xảy ra tình huống khó khăn thì sao?",
+          "description": "Chúng tôi hiểu rằng người chăm sóc có thể gặp những tình huống khó khăn. Đường dây điện thoại hoạt động 24 giờ giúp người chăm sóc liên lạc với một y tá chuyên về chăm sóc cuối đời, người có thể tư vấn qua điện thoại hoặc đến thăm tại nhà nếu cần."
+        }
+      }
+    },
+    "aboveAndBeyond": {
+      "title": "Sự chăm sóc vượt trên mong đợi",
+      "description": "Chúng tôi hiểu rằng chăm sóc cuối đời ảnh hưởng đến cả gia đình. Cách tiếp cận của chúng tôi vượt ra ngoài chăm sóc y tế, mang đến sự hỗ trợ về cảm xúc, tâm linh và thực tế cho tất cả những người liên quan. Từ buổi tư vấn đầu tiên đến giai đoạn tang quyến, chúng tôi luôn đồng hành cùng quý vị bằng sự thấu hiểu và quan tâm.",
+      "cards": {
+        "card1": "Kiểm soát cơn đau và triệu chứng",
+        "card2": "Hỗ trợ về cảm xúc và tâm linh",
+        "card3": "Hướng dẫn cho người chăm sóc",
+        "card4": "Dịch vụ tình nguyện viên và đồng hành",
+        "card5": "Tuyên úy",
+        "card6": "Hỗ trợ khi đau buồn và mất mát",
+        "card7": "Dịch vụ trợ lý chăm sóc cuối đời"
+      }
+    },
+    "hospiceProcess": {
+      "title": "Quy trình chăm sóc của chúng tôi",
+      "cards": {
+        "card1": { "number": "1", "title": "Giới thiệu", "description": "Bác sĩ, bệnh viện hoặc gia đình bắt đầu quy trình." },
+        "card2": { "number": "2", "title": "Đánh giá", "description": "Y tá hoặc chuyên viên trị liệu đánh giá sức khỏe, khả năng và mục tiêu của gia đình." },
+        "card3": { "number": "3", "title": "Kế hoạch chăm sóc", "description": "Kế hoạch cá nhân hóa bao gồm điều dưỡng, trị liệu và các dịch vụ hỗ trợ." },
+        "card4": { "number": "4", "title": "Hỗ trợ liên tục", "description": "Thăm khám định kỳ, theo dõi qua y tế từ xa và hướng dẫn cho người chăm sóc." },
+        "card5": { "number": "5", "title": "Giao tiếp", "description": "Trao đổi cởi mở giữa bệnh nhân, gia đình và đội ngũ chăm sóc." }
+      }
+    },
+    "hospiceContact": {
+      "title": "Chúng tôi luôn sẵn sàng giúp đỡ",
+      "description": "Đội ngũ chăm sóc cuối đời tận tâm của chúng tôi luôn sẵn sàng 24 giờ một ngày, 7 ngày một tuần để giải đáp thắc mắc và hỗ trợ quý vị.",
+      "contactButton": "Liên hệ với chúng tôi ngay hôm nay",
+      "homeButton": "Về trang chủ"
+    }
+  },
+  "homeHealth": {
+    "title": "Chăm sóc sức khỏe tại nhà",
+    "subtitle": "Dịch vụ y tế chuyên nghiệp trong sự thoải mái và an toàn của ngôi nhà quý vị, thúc đẩy sự độc lập và chất lượng cuộc sống.",
+    "servicesHeading": "Dịch vụ chăm sóc sức khỏe tại nhà của chúng tôi",
+    "services": {
+      "doctors": "Bác sĩ",
+      "doctorsDesc": "Các bác sĩ của chúng tôi xây dựng và xem xét kế hoạch chăm sóc, kiểm soát triệu chứng và là nguồn hỗ trợ y tế.",
+      "pt": "Chuyên viên vật lý trị liệu (PT và PTA)",
+      "ptDesc": "Giúp bệnh nhân duy trì khả năng vận động, kiểm soát cơn đau và nâng cao chất lượng cuộc sống.",
+      "ot": "Chuyên viên hoạt động trị liệu (OT)",
+      "otDesc": "Hỗ trợ bệnh nhân duy trì sự độc lập trong các sinh hoạt hằng ngày.",
+      "nurses": "Y tá chuyên khoa (RN, LVN)",
+      "nursesDesc": "Phối hợp với bác sĩ và cung cấp dịch vụ chăm sóc y tế tại nhà.",
+      "st": "Chuyên viên ngôn ngữ trị liệu (ST)",
+      "stDesc": "Giúp bệnh nhân cải thiện khả năng giao tiếp, nuốt và chức năng nhận thức.",
+      "chha": "Trợ lý chăm sóc sức khỏe tại nhà được chứng nhận (CHHA)",
+      "chhaDesc": "Hỗ trợ các sinh hoạt hằng ngày như tắm rửa, mặc quần áo và chuẩn bị bữa ăn.",
+      "msw": "Nhân viên xã hội y tế (MSW)",
+      "mswDesc": "Hỗ trợ về mặt cảm xúc và kết nối bệnh nhân với các nguồn lực cộng đồng.",
+      "multilingual": "Đa ngôn ngữ",
+      "multilingualDesc": "Dịch vụ có sẵn bằng nhiều ngôn ngữ để đáp ứng nhu cầu của các bệnh nhân đa dạng."
+    }
+  },
+  "locations": {
+    "title": "Địa điểm của chúng tôi",
+    "distanceLabel": "Khoảng cách từ quý vị đến văn phòng của chúng tôi",
+    "calculating": "Đang tính toán…",
+    "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+    "address2": "1501 N Broadway, Ste 350A/B",
+    "address3": "Walnut Creek, CA 94596",
+    "mapTitle": "Vị trí của Compassionate Home Health & Hospice",
+    "getDirections": "Chỉ đường"
+  },
+  "portal": {
+    "title": "Cổng thông tin khách hàng",
+    "welcome": "Chào mừng, John Doe",
+    "welcomeBanner": "Chào mừng quay lại, John Doe!",
+    "welcomeSubtitle": "Quản lý lịch hẹn và thông tin chăm sóc sức khỏe của quý vị",
+    "scheduleCard": "Đặt lịch hẹn",
+    "scheduleCardDesc": "Đặt lịch hẹn chăm sóc sức khỏe tại nhà hoặc chăm sóc cuối đời mới",
+    "upcomingVisits": "Các lần thăm khám sắp tới",
+    "confirmedAppointments": "Lịch hẹn đã xác nhận"
+  },
+  "schedule": {
+    "backToDashboard": "← Quay lại bảng điều khiển",
+    "title": "Đặt lịch hẹn",
+    "subtitle": "Vui lòng cung cấp thông tin của quý vị và thời gian hẹn mong muốn.",
+    "fullName": "Họ và tên",
+    "fullNamePlaceholder": "Nguyễn Văn An",
+    "phone": "Số điện thoại",
+    "phonePlaceholder": "(555) 123-4567",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "serviceType": "Loại dịch vụ",
+    "selectService": "Chọn một dịch vụ",
+    "homeHealth": "Chăm sóc sức khỏe tại nhà",
+    "hospiceCare": "Chăm sóc cuối đời",
+    "generalConsultation": "Tư vấn chung",
+    "preferredDate": "Ngày mong muốn",
+    "notes": "Ghi chú bổ sung",
+    "notesPlaceholder": "Bất kỳ triệu chứng, mối quan tâm hoặc yêu cầu nào...",
+    "confirm": "Xác nhận lịch hẹn",
+    "cancel": "Hủy",
+    "successMsg": "Đã gửi yêu cầu đặt lịch hẹn! Chúng tôi sẽ sớm xác nhận lượt thăm khám của quý vị.",
+    "time": "Giờ hẹn",
+    "selectTime": "Chọn một giờ",
+    "times": {
+      "9": "9:00 sáng",
+      "10": "10:00 sáng",
+      "11": "11:00 sáng",
+      "1": "1:00 chiều",
+      "2": "2:00 chiều",
+      "3": "3:00 chiều"
+    },
+    "requiredError": "Vui lòng điền đầy đủ các trường bắt buộc của lịch hẹn.",
+    "slotTaken": "đã đặt",
+    "submitting": "Đang đặt lịch..."
+  },
+  "login": {
+    "title": "Đăng nhập",
+    "subtitle": "Nhập thông tin đăng nhập của quý vị để tiếp tục.",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "Đăng nhập",
+    "signingIn": "Đang đăng nhập...",
+    "forgotPassword": "Quên mật khẩu?",
+    "errors": {
+      "required": "Vui lòng nhập email và mật khẩu.",
+      "invalidEmail": "Đây không giống một địa chỉ email hợp lệ.",
+      "invalidCredentials": "Email hoặc mật khẩu không đúng. Vui lòng thử lại.",
+      "network": "Không thể kết nối với máy chủ. Vui lòng thử lại."
+    },
+    "reset": {
+      "title": "Đặt lại mật khẩu",
+      "subtitle": "Nhập email hoặc số điện thoại của tài khoản, chúng tôi sẽ gửi cho quý vị liên kết để đặt lại mật khẩu.",
+      "emailOrPhone": "Email hoặc số điện thoại",
+      "emailOrPhonePlaceholder": "you@example.com hoặc (555) 123-4567",
+      "submit": "Gửi liên kết đặt lại",
+      "sending": "Đang gửi…",
+      "backToLogin": "← Quay lại đăng nhập",
+      "confirmation": "Nếu tài khoản đó tồn tại, chúng tôi đã gửi cho quý vị liên kết đặt lại mật khẩu. Vui lòng kiểm tra email hoặc tin nhắn của quý vị.",
+      "errors": {
+        "required": "Vui lòng nhập email hoặc số điện thoại của quý vị.",
+        "invalid": "Vui lòng nhập email hoặc số điện thoại hợp lệ."
+      }
+    }
+  },
+  "admin": {
+    "title": "Bảng điều khiển quản trị",
+    "welcome": "Chào mừng, Quản trị viên",
+    "tabs": {
+      "appointments": "Lịch hẹn",
+      "content": "Nội dung",
+      "locations": "Địa điểm",
+      "accounts": "Tài khoản"
+    },
+    "table": {
+      "patient": "Bệnh nhân",
+      "service": "Dịch vụ",
+      "date": "Ngày",
+      "status": "Trạng thái"
+    },
+    "comingSoon": {
+      "content": "Trang Nội dung (sắp ra mắt)",
+      "locations": "Trang Địa điểm (sắp ra mắt)",
+      "accounts": "Trang Tài khoản (sắp ra mắt)"
+    }
+  },
+  "footer": {
+    "tagline": "Mang đến sự chăm sóc tận tâm ngay tại ngôi nhà thoải mái của quý vị từ năm 2021.",
+    "quickLinks": "Liên kết nhanh",
+    "contactUs": "Liên hệ",
+    "phone": "(925) 425-7104",
+    "email": "info@compassionate4you.com",
+    "address1": "1501 N Broadway, Ste 350A/B",
+    "address2": "Walnut Creek, CA 94596",
+    "officeHours": "Giờ làm việc",
+    "weekdays": "Thứ Hai – Thứ Sáu",
+    "weekdayHours": "8:00 sáng – 6:00 chiều",
+    "saturday": "Thứ Bảy",
+    "saturdayHours": "9:00 sáng – 2:00 chiều",
+    "sunday": "Chủ Nhật",
+    "sundayClosed": "Đóng cửa",
+    "copyright": "Compassionate Home Health & Hospice. Bảo lưu mọi quyền."
+  },
+  "accessibility": {
+    "openPanel": "Mở cài đặt trợ năng",
+    "closePanel": "Đóng bảng trợ năng",
+    "title": "Trợ năng",
+    "tools": "Công cụ trợ năng",
+    "textSize": "Cỡ chữ",
+    "default": "Mặc định",
+    "large": "Lớn",
+    "extraLarge": "Rất lớn",
+    "theme": "Giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "highContrast": "Độ tương phản cao",
+    "enabled": "Bật",
+    "disabled": "Tắt",
+    "language": "Ngôn ngữ",
+    "selectLanguage": "Chọn ngôn ngữ",
+    "screenReaderNotice": "Trang web này được tối ưu hóa cho trình đọc màn hình. Nhấn Tab để di chuyển qua các thành phần tương tác.",
+    "aiAssistant": "Trợ lý AI"
+  },
+  "chatbot": {
+    "title": "Trò chuyện Compassionate4you",
+    "placeholder": "Nhập câu hỏi của quý vị tại đây...",
+    "send": "Gửi",
+    "close": "Đóng trò chuyện",
+    "emptyState": "Xin chào! Hãy hỏi tôi bất cứ điều gì. Tôi cũng có thể giúp quý vị với cài đặt trợ năng (cỡ chữ, chế độ tối, độ tương phản cao).",
+    "actions": {
+      "increaseTextSize": "Tăng cỡ chữ",
+      "decreaseTextSize": "Giảm cỡ chữ",
+      "toggleDarkMode": "Chuyển sang chế độ tối",
+      "toggleLightMode": "Chuyển sang chế độ sáng",
+      "toggleHighContrast": "Bật/tắt độ tương phản cao"
+    },
+    "responses": {
+      "increaseTextSize": "Nhấp vào bên dưới để phóng to chữ. Quý vị có thể nhấp nhiều lần.",
+      "decreaseTextSize": "Nhấp vào bên dưới để thu nhỏ chữ.",
+      "toggleDarkMode": "Nhấp vào bên dưới để chuyển sang chế độ tối.",
+      "toggleLightMode": "Nhấp vào bên dưới để quay lại chế độ sáng.",
+      "toggleHighContrast": "Nhấp vào bên dưới để bật/tắt độ tương phản cao.",
+      "error": "Không thể kết nối với máy chủ. Vui lòng thử lại sau giây lát."
+    },
+    "faqButton": "Câu hỏi thường gặp",
+    "faqIntro": "Dưới đây là một số câu hỏi chúng tôi thường nhận được:",
+    "faqLinks": {
+      "homeHealth": "Đến trang Chăm sóc sức khỏe tại nhà",
+      "hospice": "Đến trang Chăm sóc cuối đời",
+      "locations": "Đến trang Địa điểm",
+      "schedule": "Đến trang Đặt lịch hẹn"
+    }
+  },
+  "confirmation": {
+    "title": "Đã đặt lịch hẹn!",
+    "message": "Chúng tôi đã nhận được yêu cầu đặt lịch hẹn của quý vị. Chúng tôi sẽ liên hệ để xác nhận.",
+    "detailsLabel": "Chi tiết lịch hẹn mới",
+    "name": "Họ tên",
+    "phone": "Điện thoại",
+    "email": "Email",
+    "service": "Dịch vụ",
+    "date": "Ngày",
+    "time": "Giờ",
+    "notes": "Ghi chú",
+    "viewDetails": "Xem chi tiết lịch hẹn",
+    "returnHome": "Về trang chủ",
+    "notFoundTitle": "Không tìm thấy lịch hẹn",
+    "notFoundMessage": "Hiện không có lịch hẹn nào được đặt thành công để xem. Vui lòng đặt lịch hẹn trước.",
+    "scheduleAgain": "Đặt lịch hẹn"
+  },
+  "details": {
+    "title": "Chi tiết lịch hẹn",
+    "subtitle": "Đây là chi tiết của lịch hẹn quý vị vừa đặt.",
+    "detailsLabel": "Chi tiết lịch hẹn",
+    "name": "Họ tên",
+    "phone": "Điện thoại",
+    "email": "Email",
+    "service": "Dịch vụ",
+    "date": "Ngày",
+    "time": "Giờ",
+    "notes": "Ghi chú",
+    "returnDashboard": "Quay lại bảng điều khiển",
+    "notFoundTitle": "Không tìm thấy lịch hẹn",
+    "notFoundMessage": "Hiện không có lịch hẹn nào được đặt thành công để xem. Vui lòng đặt lịch hẹn trước.",
+    "scheduleAppointment": "Đặt lịch hẹn"
+  },
+  "signup": {
+    "title": "Tạo tài khoản",
+    "subtitle": "Đăng ký để quản lý lịch hẹn của quý vị.",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "Tạo mật khẩu",
+    "passwordHint": "Ít nhất 8 ký tự, gồm một chữ hoa, một chữ thường, một chữ số và một ký tự đặc biệt.",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "confirmPasswordPlaceholder": "Nhập lại mật khẩu",
+    "createAccount": "Tạo tài khoản",
+    "creating": "Đang tạo tài khoản...",
+    "haveAccount": "Đã có tài khoản?",
+    "signInInstead": "Đăng nhập",
+    "errors": {
+      "required": "Vui lòng điền vào tất cả các trường.",
+      "passwordMismatch": "Mật khẩu không khớp."
+    }
+  },
+  "layout": {
+    "skipToMain": "Chuyển đến nội dung chính"
+  },
+  "homeHealthPage": {
+    "scheduleConsultation": "Đặt lịch tư vấn",
+    "advantagesTitle": "Lợi ích của chăm sóc sức khỏe tại nhà",
+    "advantages": [
+      "Chúng tôi đảm nhận mọi nghĩa vụ của chủ lao động về bảng lương, thuế và tiền công",
+      "Tiết kiệm chi phí hơn so với nằm viện",
+      "Bệnh nhân hồi phục nhanh hơn",
+      "Bệnh nhân có quyền tham gia vào kế hoạch chăm sóc của mình",
+      "Dịch vụ được cung cấp tại nơi cư trú của bệnh nhân",
+      "Tránh nhiễm trùng bệnh viện",
+      "Chuyển tiếp chăm sóc, phòng ngừa té ngã và đào tạo sử dụng thiết bị y tế"
+    ],
+    "specialtyTitle": "Dịch vụ chuyên khoa",
+    "specialties": [
+      "Suy tim sung huyết (CHF)",
+      "Bệnh phổi tắc nghẽn mạn tính (COPD)",
+      "Trị liệu chỉnh hình sau phẫu thuật (thay khớp)",
+      "Chăm sóc vết thương",
+      "Truyền dịch tĩnh mạch (I.V.)",
+      "Vật lý trị liệu, hoạt động trị liệu và ngôn ngữ trị liệu",
+      "Quản lý thuốc",
+      "Chăm sóc ống thông",
+      "Giáo dục về chế độ ăn uống, tập thể dục và dinh dưỡng",
+      "Xét nghiệm (PT/INR, lấy máu)"
+    ],
+    "ctaTitle": "Bắt đầu chăm sóc sức khỏe tại nhà ngay hôm nay",
+    "ctaDescription": "Hãy để chúng tôi giúp quý vị hoặc người thân nhận được sự chăm sóc chất lượng xứng đáng ngay trong ngôi nhà thoải mái của mình.",
+    "ctaSchedule": "Đặt lịch hẹn",
+    "ctaBack": "Về trang chủ"
+  },
+  "faq": {
+    "title": "Câu hỏi thường gặp",
+    "items": [
+      {
+        "question": "Chăm sóc cuối đời cung cấp những gì?",
+        "answer": "Chăm sóc cuối đời cung cấp dịch vụ từ một đội ngũ gồm nhiều loại chuyên gia khác nhau cùng phối hợp để đáp ứng nhu cầu y tế, tâm lý và tâm linh của quý vị và gia đình."
+      },
+      {
+        "question": "Bệnh nhân còn có những quyền lợi nào khác khi được chăm sóc cuối đời?",
+        "answer": "Sau khi được nhận vào Chương trình Chăm sóc Cuối đời, quý vị sẽ được cung cấp thiết bị y tế, vật tư y tế và thuốc giảm triệu chứng và giảm đau."
+      },
+      {
+        "question": "Ai cung cấp dịch vụ chăm sóc?",
+        "answer": "Nền tảng của dịch vụ chúng tôi là đội ngũ chuyên gia có tay nghề cao và được đào tạo bài bản, mang đến sự chăm sóc tận tâm và cá nhân hóa, phù hợp với nhu cầu riêng của từng người. Chúng tôi có đội ngũ đa ngành gồm nhiều chuyên gia, bao gồm bác sĩ, y tá, nhân viên xã hội, tuyên úy và trợ lý chăm sóc cuối đời, nhằm cung cấp sự chăm sóc và hỗ trợ toàn diện cho bệnh nhân và gia đình họ. Ngoài ra, các chuyên viên vật lý trị liệu, hoạt động trị liệu và ngôn ngữ trị liệu, cũng như tình nguyện viên và chuyên gia hỗ trợ tang quyến, có thể tham gia tùy theo nhu cầu cụ thể của từng bệnh nhân và chỉ định của đơn vị chăm sóc cuối đời."
+      },
+      {
+        "question": "Quý vị có thể cần loại giúp đỡ nào?",
+        "answer": "Đến một lúc nào đó, quý vị có thể phải nằm liệt giường và không thể tự trở mình hoặc ăn uống mà không có sự giúp đỡ. Người chăm sóc có thể cần thay tã và ga trải giường cho quý vị, cũng như chăm sóc làn da để ngừa loét tỳ đè. Y tá chăm sóc cuối đời sẽ hướng dẫn người chăm sóc cách thực hiện những việc này."
+      },
+      {
+        "question": "Nếu xảy ra tình huống khó khăn thì sao?",
+        "answer": "Chúng tôi hiểu rằng người chăm sóc có thể gặp những tình huống khó khăn. Đường dây điện thoại hoạt động 24 giờ giúp người chăm sóc liên lạc với một y tá chuyên về chăm sóc cuối đời, người có thể tư vấn qua điện thoại hoặc đến thăm tại nhà nếu cần."
+      }
+    ]
+  },
+  "accountBenefits": {
+    "title": "Tại sao tôi nên tạo tài khoản?",
+    "items": [
+      {
+        "heading": "Đặt lịch hẹn chỉ trong vài giây!",
+        "description": "Dễ dàng điền đơn và đặt lịch hẹn đầu tiên với chúng tôi. Quý vị có thể xem các lịch hẹn đã đặt cùng thông tin về địa điểm, thời gian và nhiều hơn nữa."
+      },
+      {
+        "heading": "Đổi lịch dễ dàng",
+        "description": "Chỉ cần đăng nhập bằng thông tin tài khoản, quý vị có thể đổi ngày, giờ và địa điểm hẹn chỉ với vài cú nhấp chuột. Tất cả được lưu trong thông tin tài khoản của quý vị."
+      },
+      {
+        "heading": "Không bỏ lỡ lần thăm khám nào",
+        "description": "Nếu đăng ký và tạo tài khoản, quý vị có thể xem và chỉnh sửa mọi thông tin khi cần, đồng thời xem các chi tiết quan trọng cho lần thăm khám đầu tiên và các lần tiếp theo."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Không tìm thấy trang",
+    "message": "Rất tiếc, chúng tôi không tìm thấy trang quý vị đang tìm. Trang có thể đã bị di chuyển, đổi tên hoặc không tồn tại.",
+    "home": "Về trang chủ"
+  }
+}
