@@ -1,7 +1,9 @@
+/* DT-591: Replaced old variable names (--color1, --color3, --color4, --cooltone3) that no longer exist in global.css with the current shared variables */
+
 .account-benefits-section {
-  background: var(--color1, #e6e6e6);
+  background: var(--color-light-gray);
   padding: 5rem 1rem;
-  font-family: 'Lora', Georgia, serif;
+  font-family: var(--font-body);
 }
 
 .account-benefits-section__inner {
@@ -11,10 +13,10 @@
 }
 
 .account-benefits-section__title {
-  font-family: 'Crimson Text', serif;
+  font-family: var(--font-heading);
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  color: var(--color4, #262626);
+  color: var(--color-light-gray-text);
   margin-bottom: 2rem;
   letter-spacing: -0.02em;
 }
@@ -34,8 +36,10 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1.25rem 1.5rem;
-  background: #ffffff;
-  border-radius: 1rem;
+  background: var(--color-white);
+  color: var(--color-white-text);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
@@ -47,8 +51,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--cooltone3, #366454);
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-primary-text);
 }
 
 .account-benefits-section__text {
@@ -57,16 +61,16 @@
 
 .account-benefits-section__heading {
   margin: 0 0 0.25rem;
-  font-family: 'Crimson Text', serif;
+  font-family: var(--font-heading);
   font-size: 1.15rem;
   font-weight: 600;
-  color: var(--color4, #262626);
+  color: var(--color-white-text);
 }
 
 .account-benefits-section__description {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--color3, #595959);
+  color: var(--color-muted-text);
   line-height: 1.6;
 }
 
@@ -76,16 +80,16 @@
   gap: 0.5rem;
   margin-top: 2.5rem;
   padding: 0.65rem 1.4rem;
-  background: var(--cooltone3, #366454);
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-primary-text);
   font-weight: 700;
   font-size: 0.9rem;
-  border-radius: 2rem;
+  border-radius: var(--radius-md);
   letter-spacing: 0.04em;
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: background-color 0.2s;
 }
 
 .account-benefits-section__cta:hover {
-  opacity: 0.85;
+  background: var(--color-primary-hover);
 }
