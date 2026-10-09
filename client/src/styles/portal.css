@@ -1,6 +1,8 @@
+/* DT-591: Replaced hardcoded colors, borders, radius, and fonts with shared variables from global */
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f2ee;
+  font-family: var(--font-body);
+  background-color: var(--color-page-background);
   margin: 0;
   padding: 0;
 }
@@ -31,8 +33,8 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #93B48D;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
   font-weight: bold;
   font-size: 95%;
   display: flex;
@@ -45,7 +47,7 @@ body {
 }
 .navbar-subtitle {
   font-size: 75%;
-  color: gray;
+  color: var(--color-muted-text);
 }
 .navbar-right button {
   background: none;
@@ -67,10 +69,10 @@ body {
  
 /* WELCOME BANNER */
 .welcome-banner {
-  background-color: #93B48D;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
   padding: 28px 32px;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   margin-bottom: 24px;
 }
 .welcome-banner h1 {
@@ -88,15 +90,15 @@ body {
   gap: 16px;
 }
 .card {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);
   padding: 24px;
   flex: 1;
   cursor: pointer;
 }
 .card:hover {
-  border-color: #aaa;
+  border-color: var(--color-primary);
 }
 .card h3 {
   font-size: 95%;
@@ -104,36 +106,39 @@ body {
 }
 .card p {
   font-size: 90%;
-  color: gray;
+  color: var(--color-muted-text);
   margin: 0;
 }
 .visit-number {
   font-size: 200%;
   font-weight: bold;
-  color: #2d5a1b;
+  color: var(--color-primary-emphasis);
   margin: 4px 0;
 }
  
 /* SECTION BOX */
 .section-box {
   background-color: var(--color-page-background);
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);
   padding: 24px 28px;
   margin-bottom: 24px;
-  color: gray;
+  color: var(--color-white-text);
 }
 .section-box h2 {
   font-size: 120%;
   margin: 0 0 4px 0;
+  
 }
 .section-box .desc {
-  font-size: 90%;
+  font-size: 100%;
   margin: 0 0 18px 0;
+  text-align: center;
+  padding: 0;
 }
 
 .desc {
-  color: var(--color-gray);
+  color: var(--color-muted-text);
 }
 
 /* Table */
@@ -144,14 +149,14 @@ table {
 th {
   text-align:left;
   font-size: 90%;
-  color: gray;
+  color: var(--color-muted-text);
   padding: 8px 10px 12px 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-divider);
 }
 td {
   padding: 12px 10px;
   font-size: 90%;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-divider);
 }
 
 /* Status Badges */
@@ -173,28 +178,28 @@ td {
 /* ACTION BUTTONS */
 .btn-reschedule {
   background: none;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
   font-size: 75%;
   padding: 4px 10px;
   cursor: pointer;
   margin-right: 6px;
 }
 .btn-reschedule:hover {
-  background-color: #f0f2ee;
+  background-color: var(--color-page-background);
 }
 .btn-cancel-appt {
   background: none;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
   font-size: 75%;
   padding: 4px 10px;
   cursor: pointer;
-  color: red;
+  color: var(--color-danger);
 }
 .btn-cancel-appt:hover {
-  border-color: red;
-}
+  background-color: #fef2f2;}
  
 /* FORM FIELDS */
 .field {
@@ -202,9 +207,9 @@ td {
 }
 .field label {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
-  color: var(--color-gray);
+  color: var(--color-white-text);
   margin-bottom: 6px;
 }
 .field input,
@@ -212,19 +217,29 @@ td {
 .field textarea {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-md);
   font-size: 95%;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-body);
+  background-color: var(--color-white);
+  color: var(--color-white-text);
   box-sizing: border-box;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--color-primary);
+  outline: 2px solid rgba(54, 100, 84, 0.2);
 }
 .field textarea {
   resize: vertical;
   min-height: 80px;
 }
 
-.field input, textarea{
-  background-color: white;
+.modal .field input:not([type="checkbox"]),
+.modal .field select {
+  border: 1px solid var(--color-input-border);
+  background-color: var(--color-white);
 }
  
 /* BACK BUTTON */
@@ -232,41 +247,41 @@ td {
   background: none;
   border: none;
   font-size: 95%;
-  color: gray;
+  color: var(--color-muted-text);
   cursor: pointer;
   margin-bottom: 18px;
   padding: 0;
 }
 .back-btn:hover {
-  color: black;
+  color: var(--color-white-text);
 }
  
 /* BUTTONS */
 .btn-primary {
   padding: 10px 22px;
-  background-color: #93B48D;
-  color: white;
-  border: none;
-  border-radius: 6px;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
   font-size: 95%;
   font-weight: bold;
   cursor: pointer;
-  margin-right: 10px;
 }
 .btn-primary:hover {
-  background-color: #3a7a22;
+  background-color: var(--color-primary-hover);
 }
 .btn-secondary {
   padding: 10px 22px;
-  background-color: white;
-  color: black;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  background-color: var(--color-white);
+  color: var(--color-white-text);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-md);
   font-size: 95%;
+  font-weight: bold;
   cursor: pointer;
 }
 .btn-secondary:hover {
-  background-color: #f0f2ee;
+  background-color: var(--color-page-background);
 }
  
 /* SUCCESS MESSAGE */
@@ -274,10 +289,10 @@ td {
   display: none;
   background-color: #e6f9ee;
   border: 1px solid #9fe1cb;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 12px 16px;
   font-size: 13px;
-  color: #93B48D;
+  color: var(--color-success);
   margin-top: 16px;
 }
 
@@ -300,13 +315,14 @@ td {
   z-index: 1000;
 }
 .modal{
-  background-color:white;
-  border-radius:10px;
-  width:100%;
-  max-width:600px;
-  max-height:90vh;
-  overflow-y:auto;
-  padding:28px;
+  background-color: var(--color-white);
+  color: var(--color-white-text);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
 }
 /*Modal Header*/
 .modal-header{
@@ -316,13 +332,13 @@ td {
   margin-bottom: 20px;
 }
 .modal-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   margin: 0 0 4px 0;
 }
 .modal-subtitle {
   font-size: 13px;
-  color: gray;
+  color: var(--color-muted-text);
   margin: 0;
 }
 .modal-close {
@@ -330,11 +346,11 @@ td {
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: gray;
+  color: var(--color-muted-text);
   padding: 0;
 }
 .modal-close:hover {
-  color: black;
+  color: var(--color-white-text);
 }
  
 /* TABS */
@@ -342,7 +358,7 @@ td {
   display: flex;
   gap: 8px;
   margin-bottom: 24px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-divider);
   padding-bottom: 0;
 }
 .tab {
@@ -351,17 +367,17 @@ td {
   padding: 8px 16px;
   font-size: 13px;
   cursor: pointer;
-  color: gray;
+  color: var(--color-muted-text);
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
 .tab:hover {
-  color: black;
+  color: var(--color-white-text);
 }
 .active-tab {
-  color: #2d5a1b;
+  color: var(--color-primary-emphasis);
   font-weight: bold;
-  border-bottom: 2px solid #2d5a1b;
+  border-bottom: 2px solid var(--color-primary-emphasis);
 }
  
 /* MODAL BODY */
@@ -373,7 +389,7 @@ td {
   font-weight: bold;
   margin: 20px 0 12px 0;
   padding-bottom: 6px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-divider);
 }
  
 /* FORM ROWS INSIDE MODAL */
@@ -398,39 +414,15 @@ td {
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   font-size: 13px;
   font-weight: normal;
-  color: black;
+  color: var(--color-white-text);
   cursor: pointer;
 }
 .checkbox-label input {
   width: auto;
   margin: 0;
-}
- 
-/* SESSION ITEMS */
-.session-desc {
-  font-size: 13px;
-  color: gray;
-  margin: 0 0 12px 0;
-
-}
-.session-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-}
-.session-device {
-  font-size: 13px;
-  font-weight: bold;
-}
-.session-location {
-  font-size: 12px;
-  color: gray;
-  margin-top: 2px;
 }
  
 /* MODAL FOOTER */
@@ -439,7 +431,7 @@ td {
   justify-content: flex-end;
   gap: 12px;
   padding-top: 16px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-divider);
 }
 
 /* NOTIFICATION ICON */
@@ -456,8 +448,8 @@ td {
     position: absolute;
     bottom: -6px;
     right: -8px;
-    background: white;
-    color: #d32f2f;
+    background: var(--color-white);
+    color: var(--color-danger);
     font-size: 20px;
     font-weight: bold;
     width: 20px;
@@ -473,7 +465,7 @@ td {
 .card-icon {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -506,6 +498,20 @@ td .btn-cancel-appt {
 table td:last-child {
     white-space: nowrap;
 }
+
+/* DT-501: password form changes*/
+.password-error {
+    color: var(--color-danger);
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.password-success {
+    color: var(--color-success);
+    font-size: 14px;
+    margin: 8px 0;
+}
+
 .card-icon-blue { background-color: #dbeafe; color: #2563eb; }
 .card-icon-green { background-color: #dcfce7; color: #16a34a; }
 .card-icon-purple { background-color: #f3e8ff; color: #9333ea; }

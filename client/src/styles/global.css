@@ -39,6 +39,26 @@
     --color-green-text: #000000;
     --color-purple-text: #000000;
     --color-lavender-text: #000000;
+
+    /* DT-591: Shared UI tokens so pages use the same buttons, inputs, borders and text colors */
+    --color-primary: #366454; /* Primary color for buttons, links, and other interactive elements */
+    --color-primary-hover: #294f42; /* Hover state for primary color */
+    --color-primary-text: #ffffff;  /* Text color for primary buttons and links */ 
+    --color-primary-emphasis: #366454;
+    --color-danger: #dc2626;    /* Red color for error messages and destructive actions */
+    --color-danger-hover: #b91c1c;  /* Hover state for danger color */
+    --color-success: #15803d;   /* Green color for success messages and confirmations */
+    --color-link: #2563eb;  /* Blue color for hyperlinks */
+    --color-link-hover: #1d4ed8;    /* Hover state for hyperlinks */
+    --color-muted-text: #6b7280;    /* Gray color for secondary or less important text */
+    --color-input-border: #d1d5db;  /* Border color for input fields */
+    --color-divider: #e5e7eb;   /* Color for dividers and borders between sections */
+    --radius-sm: 6px;   /* Small border radius for buttons and inputs */
+    --radius-md: 8px;   /* Medium border radius for cards and containers */
+    --radius-lg: 12px;  /* Large border radius for modals and larger containers */
+    --font-body: Arial, sans-serif; /* Font family for body text */
+    --font-heading: 'Crimson Text', serif;  /* Font family for headings */
+ 
 }
 
 /* TODO: decide on dark mode colors. */
@@ -72,6 +92,15 @@
     --color-green-text: #000000;
     --color-purple-text: #000000;
     --color-lavender-text: #000000;
+
+    /* DT-591: Dark mode values for the shared UI variables */
+    --color-page-background: #222829;
+    --color-divider: #3a4244;
+    --color-input-border: #596467;
+    --color-muted-text: #a1a8b3;
+    --color-link: #60a5fa;
+    --color-link-hover: #93c5fd;    /* lighter shade of blue for dark mode */
+    --color-primary-emphasis: #7fbfa6; /* lighter shade of green for dark mode */ 
 }
 
 .app {

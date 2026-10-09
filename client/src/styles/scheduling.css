@@ -1,7 +1,8 @@
+/* DT-591: This file uses the same class names as portal.css (.content, .section-box, .field, .btn-primary, etc.) */
 /* RESET */
 body {
-  font-family: Arial, sans-serif;
-  background-color: var(--color-white);
+  font-family: var(--font-body);
+  background-color: var(--color-page-background);
   margin: 0;
   padding: 0;
 }
@@ -27,8 +28,8 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: var(--color-sage);
-  color: var(--color-sage-text);
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
   font-weight: bold;
   font-size: 95%;
   display: flex;
@@ -60,25 +61,28 @@ body {
 
 /* CONTENT */
 .content {
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 28px 20px;
 }
 
 /* SECTION */
 .section-box {
-  background-color: var(--color-light-green);
-  border: 1px solid var(--color-white);
-  border-radius: 10px;
+  background-color: var(--color-page-background);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);;
   padding: 24px 28px;
+  margin-bottom: 24px;
+  color: var(--color-white-text);
 }
 
 .section-box h2 {
+  font-size: 120%;
   margin: 0 0 4px;
 }
 
 .desc {
-  color: var(--color-light-green-text);
+  color: var(--color-muted-text);
   font-size: 90%;
   margin-bottom: 18px;
 }
@@ -89,10 +93,10 @@ body {
 }
 
 .field label {
-  font-size: 90%;
-  font-weight: bold;
-  color: var(--color-light-green-text);
   display: block;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--color-white-text);
   margin-bottom: 6px;
 }
 
@@ -100,40 +104,60 @@ body {
 .field select,
 .field textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid var(--color-white);
-  border-radius: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-md);
+  font-size: 95%;
+  font-family: var(--font-body);
+  background-color: var(--color-white);
+  color: var(--color-white-text);
+  box-sizing: border-box;
 }
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  outline: none;
-  border-color: var(--color-sage);
+  outline: 2px solid rgba(54, 100, 84, 0.2);;
+  border-color: var(--color-primary);
+
 }
 
 /* BUTTONS */
 .btn-primary {
-  background-color: var(--color-sage);
-  color: var(--color-white);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  border: 1px solid var(--color-primary);;
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   margin-top: 10px;
+  font-size: 95%;
+  font-weight: bold;
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
 }
 
 .btn-primary:disabled {
-  background-color: var(--color-gray);
+  background-color: var(--color-muted-text);
+  border-color: var(--color-muted-text);
+  cursor: not-allowed;
 }
 
 .btn-secondary {
-  margin-left: 10px;
+  margin-left: 10px 22px;
   background: var(--color-white);
-  border: 1px solid var(--color-border-gray);
+  color: var(--color-white-text);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-md);
   padding: 10px 20px;
-  border-radius: 6px;
+  font-size: 95%;
+  font-weight: bold;
   cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-page-background);
 }
 
 /* BACK BUTTON */
@@ -141,18 +165,37 @@ body {
   background: none;
   border: none;
   margin-bottom: 16px;
-  color: var(--color-gray);
+  color: var(--color-muted-text);
   cursor: pointer;
+  margin-bottom: 18px;
+  padding: 0;
+}
+
+.back-btn:hover {
+  color: var(--color-white-text);
+}
+
+/* DT-591: Schedule page only - narrower form and spacing between the two buttons */
+.schedule-page .content {
+  max-width: 800px;
+}
+ 
+.schedule-page .btn-primary {
+  margin-top: 10px;
+}
+ 
+.schedule-page .btn-secondary {
+  margin-left: 10px;
 }
 
 /* SUCCESS */
 .success-msg {
-  background: var(--color-white);
-  color: var(--color-white-text);
-  border: 1px solid var(--color-light-green);
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 6px;
+  background: #e6f9ee;
+  color: var(--color-success);
+  border: 1px solid #9fe1cb;
+  padding: 12px 16px;
+  margin-top: 16px;
+  border-radius: var(--radius-sm);
 }
 
 /* CALENDAR */
@@ -161,8 +204,8 @@ body {
   flex-wrap: wrap;
   gap: 6px;
   padding: 10px;
-  border: 1px solid var(--color-white);
-  border-radius: 6px;
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-sm);
 }
 
 .calendar-day {
@@ -172,24 +215,24 @@ body {
   align-items: center;
   justify-content: center;
   background: var(--color-white);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);;
   cursor: pointer;
 }
 
 .calendar-day.selected {
-  background: var(--color-light-green);
-  color: var(--color-light-green-text);
+  background: var(--color-primary);
+  color: var(--color-primary-text);
 }
 
 
 /* Appointment details and confirmation flow */
 .form-error {
-  background: #fff1f2;
-  border: 1px solid #fda4af;
-  color: #9f1239;
-  padding: 10px;
+  background: #fdecea;
+  border: 1px solid #f0b3ad;
+  color: var(--color-danger-hover);
+  padding: 10px 14px;
   margin: 0 0 12px;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 
 .appointment-page {
@@ -199,9 +242,9 @@ body {
 .appointment-details {
   margin: 18px 0;
   padding: 14px 18px;
-  background: #f8faf8;
-  border: 1px solid #e0e5df;
-  border-radius: 8px;
+  background: var(--color-white);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);;
 }
 
 .appointment-details p {
