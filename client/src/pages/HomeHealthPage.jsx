@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import "../styles/homehealth.css";
+import CardSection from "../components/modular/CardSection";
 
 const HeartIcon = () => (
     <svg
@@ -71,57 +72,7 @@ function HomeHealthPage() {
                 <h2 className="services-title">
                     {t('homeHealth.servicesHeading')}</h2>
 
-                <div className="services-container">
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.doctors')}</h3>
-                        <p>{t('homeHealth.services.doctorsDesc')}</p>
-                    </div>
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.pt')}</h3>
-                        <p>{t('homeHealth.services.ptDesc')}</p>
-                    </div>
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.ot')}</h3>
-                        <p>{t('homeHealth.services.otDesc')}</p>
-                    </div>
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.nurses')}</h3>
-                        <p>{t('homeHealth.services.nursesDesc')}</p>
-                    </div>
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.st')}</h3>
-                        <p>{t('homeHealth.services.stDesc')}</p>
-                    </div>
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.chha')}</h3>
-                        <p>{t('homeHealth.services.chhaDesc')}</p>
-                    </div>
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.msw')}</h3>
-                        <p>{t('homeHealth.services.mswDesc')}</p>
-                    </div>
-
-                    <div className="service-card">
-                        <div className="service-icon"><HeartIcon /></div>
-                        <h3>{t('homeHealth.services.multilingual')}</h3>
-                        <p>{t('homeHealth.services.multilingualDesc')}</p>
-                    </div>
-
-                </div>
+                <CardSection slug="homehealth-services" />
 
             </section>
 

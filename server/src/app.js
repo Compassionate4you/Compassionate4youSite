@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const authRoutes = require('./routes/authRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const sectionRoutes = require('./routes/sectionRoutes'); 
 const { attachUser } = require('./middleware/authMiddleware');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
@@ -29,6 +30,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/sections', sectionRoutes); 
 // app.use('/api/portal', portalRoutes);
 // app.use('/api/services', serviceRoutes);
 
