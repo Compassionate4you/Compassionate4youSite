@@ -104,24 +104,24 @@ function SchedulePage() {
 
     return (
         <div>
-            <div className="navbar">
-                <div className="navbar-left">
-                    <div className="avatar">CH</div>
-                    <div>
-                        <div className="navbar-title">{t('portal.title')}</div>
-                        <div className="navbar-subtitle">{t('portal.welcome')}</div>
-                    </div>
-                </div>
-                <div className="navbar-right">
-                    <button type="button" onClick={() => navigate('/')}>{t('nav.home')}</button>
-                    <button type="button" onClick={() => navigate('/login')}>{t('nav.logout')}</button>
-                </div>
-            </div>
+            {/*<div className="navbar">*/}
+            {/*    <div className="navbar-left">*/}
+            {/*        <div className="avatar">CH</div>*/}
+            {/*        <div>*/}
+            {/*            <div className="navbar-title">{t('portal.title')}</div>*/}
+            {/*            <div className="navbar-subtitle">{t('portal.welcome')}</div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*    <div className="navbar-right">*/}
+            {/*        <button type="button" onClick={() => navigate('/')}>{t('nav.home')}</button>*/}
+            {/*        <button type="button" onClick={() => navigate('/login')}>{t('nav.logout')}</button>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
             <div className="content">
-                <button type="button" className="back-btn" onClick={() => navigate('/portal')}>
-                    {t('schedule.backToDashboard')}
-                </button>
+                {/*<button type="button" className="back-btn" onClick={() => navigate('/portal')}>*/}
+                {/*    {t('schedule.backToDashboard')}*/}
+                {/*</button>*/}
 
                 <div className="section-box">
                     <h2>{t('schedule.title')}</h2>
