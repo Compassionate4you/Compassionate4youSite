@@ -27,6 +27,7 @@
     /* TODO: Decide on final text colors. */
     /* Primary Text Colors - These are the text colors for text within the base colors. */
     --color-white-text: #000000;
+    --color-black-text: #ffffff;
     --color-light-gray-text: #000000;
     --color-gray-text: #000000;
     --color-charcoal-text: #000000;
@@ -50,6 +51,7 @@
     --color-charcoal: #262626;
     --color-light-green: #dbe4c3;
     --color-sage: #9da191;
+    --color-black: #ffffff;
 
     /* Dark Mode Cool Tones - Cool tones in dark mode. */
     --color-teal: #000000;
@@ -60,6 +62,7 @@
 
     /* Dark Mode Primary Text Colors - Primary text colors in dark mode. */
     --color-white-text: #ffffff;
+    --color-black-text: #000000;
     --color-light-gray-text: #ffffff;
     --color-gray-text: #ffffff;
     --color-charcoal-text: #000000;
