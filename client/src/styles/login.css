@@ -34,7 +34,7 @@
     padding:12px 14px;
     border:none;
     border-radius:8px;
-    background:#f1f1f1;
+    background: var(--color-white);
     font-size:15px;
     box-sizing:border-box;
 }
@@ -108,11 +108,11 @@
     font-weight:700;
     margin: 0 0 8px 0;
     font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    color:#0a0a14
+    color: var(--color-white-text);
 }
 
 .login-header p{
     font-size:18px;
-    color:#555;
+    color: var(--color-white-text);
     margin:0;
 }

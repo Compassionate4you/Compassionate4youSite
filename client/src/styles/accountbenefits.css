@@ -1,5 +1,5 @@
 .account-benefits-section {
-  background: var(--color1, #e6e6e6);
+  /*background: var(--color1, #e6e6e6);*/
   padding: 5rem 1rem;
   font-family: 'Lora', Georgia, serif;
 }
@@ -14,7 +14,7 @@
   font-family: 'Crimson Text', serif;
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  color: var(--color4, #262626);
+  color: var(--color-white-text);
   margin-bottom: 2rem;
   letter-spacing: -0.02em;
 }
