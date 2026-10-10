@@ -6,19 +6,6 @@ body {
   padding: 0;
 }
 
-.avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: var(--color-sage);
-  color: var(--color-sage-text);
-  font-weight: bold;
-  font-size: 95%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* CONTENT */
 .content {
   max-width: 800px;
@@ -60,6 +47,8 @@ body {
 .field input,
 .field select,
 .field textarea {
+  background-color: var(--color-white);
+  color: var(--color-white-text);
   width: 100%;
   padding: 10px;
   border: 1px solid var(--color-white);
@@ -94,15 +83,6 @@ body {
   border: 1px solid var(--color-border-gray);
   padding: 10px 20px;
   border-radius: 6px;
-  cursor: pointer;
-}
-
-/* BACK BUTTON */
-.back-btn {
-  background: none;
-  border: none;
-  margin-bottom: 16px;
-  color: var(--color-gray);
   cursor: pointer;
 }
 
@@ -174,30 +154,6 @@ body {
   flex-wrap: wrap;
   gap: 10px;
 }
-
-/* The confirmation/details pages respond to the existing accessibility theme
-   without changing the site's existing text-size rules. */
-/*html[theme='dark'] .appointment-page .section-box {*/
-/*  background: #222829;*/
-/*  color: #f3f4f6;*/
-/*  border-color: #465052;*/
-/*}*/
-
-/*html[theme='dark'] .appointment-page .desc,*/
-/*html[theme='dark'] .appointment-page .appointment-details {*/
-/*  color: #f3f4f6;*/
-/*}*/
-
-/*html[theme='dark'] .appointment-page .appointment-details {*/
-/*  background: #1b2021;*/
-/*  border-color: #465052;*/
-/*}*/
-
-/*html[theme='dark'] .appointment-page .btn-secondary {*/
-/*  background: #15191a;*/
-/*  color: #f3f4f6;*/
-/*  border-color: #596467;*/
-/*}*/
 
 html.high-contrast .appointment-page .section-box,
 html.high-contrast .appointment-page .appointment-details,
