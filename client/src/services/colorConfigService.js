@@ -12,6 +12,25 @@ const INITIAL_COLORS = [
   { id: 'color-slate', lightModeColor: '#595959', darkModeColor: '#f1f5f9' }
 ]
 
+// DT-510 Sprint 7 - PBall: Utility to calculate relative luminance of a hex color (0 to 1)
+export function getLuminance (hex) {
+  if (!hex || typeof hex !== 'string') return 0
+  const cleanHex = hex.replace('#', '').trim()
+  if (cleanHex.length !== 3 && cleanHex.length !== 6) return 0
+  let r, g, b
+  if (cleanHex.length === 3) {
+    r = parseInt(cleanHex[0] + cleanHex[0], 16) / 255
+    g = parseInt(cleanHex[1] + cleanHex[1], 16) / 255
+    b = parseInt(cleanHex[2] + cleanHex[2], 16) / 255
+  } else {
+    r = parseInt(cleanHex.substring(0, 2), 16) / 255
+    g = parseInt(cleanHex.substring(2, 4), 16) / 255
+    b = parseInt(cleanHex.substring(4, 6), 16) / 255
+  }
+  const toLinear = (c) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4))
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b)
+}
+
 export const ColorConfigService = {
   data: (() => {
     try {

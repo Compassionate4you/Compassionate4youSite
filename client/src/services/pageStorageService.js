@@ -84,6 +84,62 @@ export const PageStorageService = {
     return newPage
   },
 
+  updatePage (id, pageUpdates) {
+    const index = this.data.findIndex(p => p.id === id)
+    if (index === -1) throw new Error(`Page with ID "${id}" not found`)
+
+    const updated = {
+      ...this.data[index],
+      ...pageUpdates,
+      id: pageUpdates.id ? String(pageUpdates.id).trim() : this.data[index].id,
+      content: {
+        ...this.data[index].content,
+        ...(pageUpdates.content || {})
+      }
+    }
+
+    this.data[index] = updated
+    this._persist()
+
+    /*
+     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
+     * async function dbUpdatePage (pageId, updates) {
+     *   const res = await fetch(`/api/admin/content/pages/${pageId}`, {
+     *     method: 'PUT',
+     *     headers: { 'Content-Type': 'application/json' },
+     *     body: JSON.stringify(updates)
+     *   })
+     *   if (!res.ok) throw new Error('Database page update failed')
+     *   return await res.json()
+     * }
+     * await dbUpdatePage(id, updated)
+     */
+
+    return updated
+  },
+
+  deletePage (id) {
+    const index = this.data.findIndex(p => p.id === id)
+    if (index === -1) throw new Error(`Page with ID "${id}" not found`)
+
+    const removed = this.data.splice(index, 1)[0]
+    this._persist()
+
+    /*
+     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
+     * async function dbDeletePage (pageId) {
+     *   const res = await fetch(`/api/admin/content/pages/${pageId}`, {
+     *     method: 'DELETE'
+     *   })
+     *   if (!res.ok) throw new Error('Database page deletion failed')
+     *   return await res.json()
+     * }
+     * await dbDeletePage(id)
+     */
+
+    return removed
+  },
+
   getAllocatedSectionIds () {
     const allocated = new Set()
     for (const page of this.data) {
