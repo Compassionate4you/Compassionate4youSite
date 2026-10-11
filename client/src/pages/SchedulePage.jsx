@@ -173,47 +173,49 @@ function SchedulePage () {
                     </form>
                 </div>
             </div>
-            <div className='field'>
-              <label htmlFor='date'>{t('schedule.preferredDate')}</label>
-              <input id='date' name='date' value={form.date} onChange={updateField} type='date' required />
-            </div>
-            <div className='field'>
-              <label htmlFor='timeSlot'>{t('schedule.time')}</label>
-              <select id='timeSlot' name='timeSlot' value={form.timeSlot} onChange={updateField} required>
-                <option value=''>{t('schedule.selectTime')}</option>
-                {[
-                  ['9:00 AM', 'schedule.times.9'],
-                  ['10:00 AM', 'schedule.times.10'],
-                  ['11:00 AM', 'schedule.times.11'],
-                  ['1:00 PM', 'schedule.times.1'],
-                  ['2:00 PM', 'schedule.times.2'],
-                  ['3:00 PM', 'schedule.times.3']
-                ].map(([value, labelKey]) => {
-                  const taken = takenSlots.includes(value)
-                  return (
-                    <option key={value} value={value} disabled={taken}>
-                      {t(labelKey)}
-                      {taken ? ` - ${t('schedule.slotTaken')}` : ''}
-                    </option>
-                  )
-                })}
-              </select>
-            </div>
-            <div className='field'>
-              <label htmlFor='notes'>{t('schedule.notes')}</label>
-              <textarea id='notes' name='notes' value={form.notes} onChange={updateField} placeholder={t('schedule.notesPlaceholder')} />
-            </div>
+            {/*            <div className='field'>*/}
+            {/*              <label htmlFor='date'>{t('schedule.preferredDate')}</label>*/}
+            {/*              <input id='date' name='date' value={form.date} onChange={updateField} type='date' required />*/}
+            {/*            </div>*/}
+            {/*            <div className='field'>*/}
+            {/*              <label htmlFor='timeSlot'>{t('schedule.time')}</label>*/}
+            {/*              <select id='timeSlot' name='timeSlot' value={form.timeSlot} onChange={updateField} required>*/}
+            {/*                <option value=''>{t('schedule.selectTime')}</option>*/}
+            {/*                {[*/}
+            {/*                  ['9:00 AM', 'schedule.times.9'],*/}
+            {/*                  ['10:00 AM', 'schedule.times.10'],*/}
+            {/*                  ['11:00 AM', 'schedule.times.11'],*/}
+            {/*                  ['1:00 PM', 'schedule.times.1'],*/}
+            {/*                  ['2:00 PM', 'schedule.times.2'],*/}
+            {/*                  ['3:00 PM', 'schedule.times.3']*/}
+            {/*                ].map(([value, labelKey]) => {*/}
+            {/*                  const taken = takenSlots.includes(value)*/}
+            {/*                  return (*/}
+            {/*                    <option key={value} value={value} disabled={taken}>*/}
+            {/*                      {t(labelKey)}*/}
+            {/*                      {taken ? ` - ${t('schedule.slotTaken')}` : ''}*/}
+            {/*                    </option>*/}
+            {/*                  )*/}
+            {/*                })}*/}
+            {/*              </select>*/}
+            {/*            </div>*/}
+            {/*            <div className='field'>*/}
+            {/*              <label htmlFor='notes'>{t('schedule.notes')}</label>*/}
+            {/*              <textarea id='notes' name='notes' value={form.notes} onChange={updateField} placeholder={t('schedule.notesPlaceholder')} />*/}
+            {/*            </div>*/}
 
-            {error && <div className='form-error' role='alert'>{error}</div>}
+            {/*            {error && <div className='form-error' role='alert'>{error}</div>}*/}
 
-            <button type='submit' className='btn-primary' disabled={isSubmitting}>
-              {isSubmitting ? t('schedule.submitting') : t('schedule.confirm')}
-            </button>
-            <button type='button' className='btn-secondary' onClick={() => navigate('/portal')}>{t('schedule.cancel')}</button>
-          </form>
+            {/*            <button type='submit' className='btn-primary' disabled={isSubmitting}>*/}
+            {/*              {isSubmitting ? t('schedule.submitting') : t('schedule.confirm')}*/}
+            {/*            </button>*/}
+            {/*            <button type='button' className='btn-secondary' onClick={() => navigate('/portal')}>{t('schedule.cancel')}</button>*/}
+            {/*          </form>*/}
+            {/*</div>*/}
         </div>
-      </div>
-    </div>
+
+
+
   )
 }
 
