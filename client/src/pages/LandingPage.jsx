@@ -43,6 +43,7 @@ function LandingPage() {
               <option value="en">English</option>
               <option value="es">Español</option>
               <option value="pa">ਪੰਜਾਬੀ</option>
+              <option value="ur">اردو</option>
             </select>
           </div>
         </div>
@@ -72,7 +73,7 @@ function LandingPage() {
           <div className="info-card-image">
             <img
               src={Puzzle}
-              alt="People working on a puzzle together"
+              alt="Two people working on a puzzle together."
             />
           </div>
 
@@ -91,7 +92,7 @@ function LandingPage() {
           <div className="info-card-image">
             <img
               src={Couple}
-              alt="Older couple smiling together"
+              alt="An older couple smiling together."
             />
           </div>
 
