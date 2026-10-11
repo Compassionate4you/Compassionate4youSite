@@ -1,6 +1,55 @@
 import { useTranslation } from "react-i18next";
 import "../styles/HospicePage.css"
 import CardSection from "../components/modular/CardSection";
+import useSection from "../hooks/useSection";
+import { pickText } from "../components/modular/cardText";
+
+function HospiceAboveAndBeyondItems() {
+    const { i18n } = useTranslation();
+    const { section, loading, error } = useSection("hospice-above-beyond-items");
+
+    if (error) console.error("HospiceAboveAndBeyondItems failed:", error);
+    if (loading || error || !section?.cards?.length) return null;
+
+    return (
+        <div className="HospiceAboveAndBeyondCards">
+            {section.cards.map((card) => (
+                <div className="HospiceAboveAndBeyondCard" key={card.id}>
+                    <svg className="HospiceCheckmark">
+                        <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
+                    </svg>
+                    <span className="HospiceAboveAndBeyondCardText">
+                        {pickText(card.header, i18n.language)}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function HospiceCareProcessSteps() {
+    const { i18n } = useTranslation();
+    const { section, loading, error } = useSection("hospice-care-process");
+
+    if (error) console.error("HospiceCareProcessSteps failed:", error);
+    if (loading || error || !section?.cards?.length) return null;
+
+    return (
+        <div className="HospiceProcessSteps">
+            {section.cards.map((card, index) => (
+                <div className="HospiceProcessStep" key={card.id}>
+                    <div className="HospiceProcessCircle">{card.symbol || index + 1}</div>
+                    <h3 className="HospiceProcessStepTitle">
+                        {pickText(card.header, i18n.language)}
+                    </h3>
+                    <p className="HospiceProcessStepText">
+                        {pickText(card.paragraph, i18n.language)}
+                    </p>
+                </div>
+            ))}
+        </div>
+    );
+}
 
 function HospicePage(){
     const { t } = useTranslation();
@@ -28,82 +77,13 @@ function HospicePage(){
                 <div className="HospiceAboveAndBeyondMiddle">
                     <h2 className="HospiceAboveAndBeyondTitle">{t('hospice.aboveAndBeyond.title')}</h2>
                     <p className="HospiceAboveAndBeyondText">{t('hospice.aboveAndBeyond.description')}</p>
-                    <div className="HospiceAboveAndBeyondCards">
-                        <div className="HospiceAboveAndBeyondCard">
-                            <svg className="HospiceCheckmark">
-                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
-                            </svg>
-                            <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card1')}</span>
-                        </div>
-                        <div className="HospiceAboveAndBeyondCard">
-                            <svg className="HospiceCheckmark">
-                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
-                            </svg>
-                            <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card2')}</span>
-                        </div>
-                        <div className="HospiceAboveAndBeyondCard">
-                            <svg className="HospiceCheckmark">
-                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
-                            </svg>
-                            <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card3')}</span>
-                        </div>
-                        <div className="HospiceAboveAndBeyondCard">
-                            <svg className="HospiceCheckmark">
-                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
-                            </svg>
-                            <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card4')}</span>
-                        </div>
-                        <div className="HospiceAboveAndBeyondCard">
-                            <svg className="HospiceCheckmark">
-                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
-                            </svg>
-                            <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card5')}</span>
-                        </div>
-                        <div className="HospiceAboveAndBeyondCard">
-                            <svg className="HospiceCheckmark">
-                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
-                            </svg>
-                            <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card6')}</span>
-                        </div>
-                        <div className="HospiceAboveAndBeyondCard">
-                            <svg className="HospiceCheckmark">
-                                <path fill="#366454" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z"></path>
-                            </svg>
-                            <span className="HospiceAboveAndBeyondCardText">{t('hospice.aboveAndBeyond.cards.card7')}</span>
-                        </div>
-                    </div>
+                    <HospiceAboveAndBeyondItems />
                 </div>
             </section>
             <section className="HospiceProcess">
                 <div className="HospiceProcessMiddle">
                     <h2 className="HospiceProcessTitle">{t('hospice.hospiceProcess.title')}</h2>
-                    <div className="HospiceProcessSteps">
-                        <div className="HospiceProcessStep">
-                            <div className="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card1.number')}</div>
-                            <h3 className="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card1.title')}</h3>
-                            <p className="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card1.description')}</p>
-                        </div>
-                        <div className="HospiceProcessStep">
-                            <div className="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card2.number')}</div>
-                            <h3 className="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card2.title')}</h3>
-                            <p className="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card2.description')}</p>
-                        </div>
-                        <div className="HospiceProcessStep">
-                            <div className="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card3.number')}</div>
-                            <h3 className="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card3.title')}</h3>
-                            <p className="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card3.description')}</p>
-                        </div>
-                        <div className="HospiceProcessStep">
-                            <div className="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card4.number')}</div>
-                            <h3 className="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card4.title')}</h3>
-                            <p className="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card4.description')}</p>
-                        </div>
-                        <div className="HospiceProcessStep">
-                            <div className="HospiceProcessCircle">{t('hospice.hospiceProcess.cards.card5.number')}</div>
-                            <h3 className="HospiceProcessStepTitle">{t('hospice.hospiceProcess.cards.card5.title')}</h3>
-                            <p className="HospiceProcessStepText">{t('hospice.hospiceProcess.cards.card5.description')}</p>
-                        </div>
-                    </div>
+                    <HospiceCareProcessSteps />
                 </div>
             </section>
             <section className="HospiceContact">
