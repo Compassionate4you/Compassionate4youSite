@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ChatWindow from '../components/ChatWindow';
 import { useChatbot } from '../hooks/useChatbot';
 import './styles/ChatbotWidget.css';
 
 export default function ChatbotWidget() {
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useTranslation();
 
     // DT-392: chat state lives here, not in ChatWindow. ChatWindow unmounts
     // when the window is closed, so keeping it there wiped the conversation.
@@ -16,8 +18,11 @@ export default function ChatbotWidget() {
             {!isOpen && (
                 <button
                     className="chatbot-toggle-btn"
+                    type="button"
                     onClick={() => setIsOpen(!isOpen)}
-                    title="Open chat"
+                    title={t("chatbot.title")}
+                    aria-label={t("chatbot.open", "Open chat")}
+                    aria-expanded={isOpen}
                 >
                     💬
                 </button>
