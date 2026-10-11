@@ -3,11 +3,13 @@ import { initReactI18next } from 'react-i18next';
 
 import en from './locales/en/translation.json';
 import es from './locales/es/translation.json';
+import pa from './locales/pa/translation.json'; //DT-145 : Punjabi language
 
 i18n.use(initReactI18next).init({
     resources: {
         en: { translation: en },
         es: { translation: es },
+        pa: { translation: pa },
     },
     lng: 'en',
     fallbackLng: 'en',

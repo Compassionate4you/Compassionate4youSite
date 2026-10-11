@@ -8,8 +8,10 @@ import LocationsPage from "../pages/LocationsPage";
 import PortalPage from "../pages/PortalPage";
 import SchedulePage from "../pages/SchedulePage";
 import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import Scheduling from "../pages/AcuityScheduling";
+import NotFoundPage from "../pages/NotFoundPage";
 
 import ContentEditor from "../pages/ContentEditor";
 import ClientSchedulingConfirmation from "../pages/ClientSchedulingConfirmation";
@@ -39,6 +41,7 @@ function AppRoutes() {
             <Route path="/portal" element={<PortalPage />} />
             <Route path="/schedule" element={<SchedulePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route
                 path="/AcuityScheduling"
@@ -49,6 +52,7 @@ function AppRoutes() {
             {/* Keep the existing confirmation URL working as well. */}
             <Route path="/confirmation" element={<ClientSchedulingConfirmation />} />
             <Route path="/appointment-details" element={<ViewAppointmentDetailsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
 }

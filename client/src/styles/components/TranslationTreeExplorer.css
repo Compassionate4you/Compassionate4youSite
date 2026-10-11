@@ -1,0 +1,84 @@
+ /* * Task: DT-508
+ * Author: PBall
+ * Sprint: Sprint 6 */
+ 
+/* //DT-492 Content Editor - Preston Ball: Container for the top-level tree explorer filters and controls, wrapping elements on smaller viewports */
+.tree-explorer-controls {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Individual control item container that flex-grows with a minimum width constraint */
+.tree-explorer-control-group {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Label styling for tree explorer dropdown selectors and input filters */
+.tree-explorer-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Standardized dropdown styling for selecting trees, namespaces, or content sections */
+.tree-explorer-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Vertical stack container for displaying dynamically resolved editable fields */
+.tree-explorer-fields-container {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Wrapper enclosing an individual key-path field and its associated input control */
+.tree-explorer-field-item {
+  margin-top: 0;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Header row for each field displaying the key path on the left and metadata on the right */
+.tree-explorer-field-label {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Monospace font treatment for the exact schema path key being edited */
+.tree-explorer-path-key {
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Character count counter display showing current field length */
+.tree-explorer-char-count {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Text input styling for single-line editable string values within the tree */
+.tree-explorer-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  box-sizing: border-box;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Textarea styling for multiline text or long-form copy fields within the tree */
+.tree-explorer-textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  box-sizing: border-box;
+}

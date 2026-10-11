@@ -2,6 +2,7 @@ import "../styles/LandingPage.css";
 import CareImage1 from "../assets/images/CareImage1.jpeg";
 import Puzzle from "../assets/images/working_a_puzzle_together.jpeg";
 import Couple from "../assets/images/older_couple_smiling.jpeg";
+import FAQ from "../components/FAQ";
 
 import { useTranslation } from "react-i18next";
 import "../styles/map.css";
@@ -22,6 +23,7 @@ function LandingPage() {
           <h1>{t("landing.heroTitle")}</h1>
           <p>{t("landing.heroSubtitle")}</p>
 
+          {/* Language selector */}
           <div className="language-selector">
             {/* Label */}
             <div className="section-label">
@@ -40,6 +42,7 @@ function LandingPage() {
             >
               <option value="en">English</option>
               <option value="es">Español</option>
+              <option value="pa">ਪੰਜਾਬੀ</option>
             </select>
           </div>
         </div>
@@ -221,6 +224,20 @@ function LandingPage() {
         </div>
       </section>
 
+      
+      {/* Task: DT-508
+      Author: PBall
+      Sprint: Sprint 6 */}
+      
+      {/* DYNAMIC SECTION INGESTION (COMMENTED OUT PER CODE CONSIDERATIONS)
+      Uncomment once dynamic publishing schema is finalized. */}
+      
+      {/* {modularSections.map((section) => (
+        <DynamicSectionRenderer key={section.id} config={section} />
+      ))} */}
+       
+
+ <FAQ />
     </div>
   );
 }

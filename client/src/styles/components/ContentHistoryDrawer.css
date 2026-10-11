@@ -1,0 +1,154 @@
+ /* * Task: DT-508
+ * Author: PBall
+ * Sprint: Sprint 6 */
+
+/* //DT-492 Content Editor - Preston Ball: Fullscreen backdrop overlay that dims the page and anchors the side drawer */
+.content-history-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 1050;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Slide-out drawer container anchored to the right viewport displaying audit history */
+.content-history-drawer {
+  width: 100%;
+  max-width: 460px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 28px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Header title styling for the audit history drawer */
+.content-history-drawer-title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Subheading text describing drawer contents and actions */
+.content-history-drawer-description {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Close icon button positioned in the drawer header */
+.content-history-drawer-close-button {
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Empty state placeholder message shown when no audit entries exist */
+.content-history-drawer-no-logs {
+  color: #94a3b8;
+  font-style: italic;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Scrollable vertical list container holding audit log cards */
+.content-history-drawer-logs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Card component presenting an individual content change audit record */
+.content-history-drawer-log-entry {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  background-color: #ffffff;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Background variation indicating an audit record that has been reverted */
+.content-history-drawer-log-entry--reverted {
+  background-color: #f8fafc;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Top metadata row within an audit card displaying author and timestamp */
+.content-history-drawer-log-entry-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Author label showing the user responsible for the recorded change */
+.content-history-drawer-log-entry-author {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Formatted date and time indicator for when the audit record was captured */
+.content-history-drawer-log-entry-timestamp {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Monospace indicator showing the exact content key or dot-notation path */
+.content-history-drawer-log-entry-keypath {
+  font-size: 0.8rem;
+  font-family: monospace;
+  color: #2563eb;
+  margin-bottom: 8px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Container grouping before-and-after value diff displays */
+.content-history-drawer-log-entry-values {
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Strikethrough diff styling for the previous value prior to the change */
+.content-history-drawer-log-entry-previous-value {
+  color: #dc2626;
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Highlighted text styling representing the newly applied value */
+.content-history-drawer-log-entry-new-value {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Bottom card row holding status badges and revert action controls */
+.content-history-drawer-log-entry-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Badge styling indicating an actively applied content state */
+.content-history-drawer-log-entry-status {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: #ecfdf5;
+  color: #166534;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Badge styling indicating that the recorded change has been reverted */
+.content-history-drawer-log-entry-status--reverted {
+  background-color: #fef3f2;
+  color: #b91c1c;
+}
+
+/* //DT-492 Content Editor - Preston Ball: Button to revert the specific change back to its previous state */
+.content-history-drawer-log-entry-revert-button {
+  padding: 4px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 75%;
+  cursor: pointer;
+}

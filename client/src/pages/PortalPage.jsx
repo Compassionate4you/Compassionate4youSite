@@ -38,12 +38,12 @@ function PortalPage() {
 
     // DT-144: mock appointments with a date near today so upcoming notification logic can trigger
   const [appointments, setAppointments] = useState([
-    { service: 'Home Health', date: 'September 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-    { service: 'Home Health', date: 'September 20, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Pending' },
+    { service: 'Home Health', date: 'September 29, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
+    { service: 'Home Health', date: 'September 30, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Confirmed' },
     // DT-66: mock past appointments for testing the Past tab
     { service: 'Home Health', date: 'August 15, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
     { service: 'Hospice', date: 'July 22, 2026', time: '2:00 PM - 3:00 PM', provider: 'Nurse Patel', status: 'Confirmed' },
-    { service: 'Home Health', date: 'June 30, 2026', time: '9:00 AM - 10:00 AM', provider: 'Nurse Johnson', status: 'Pending' },
+    { service: 'Home Health', date: 'June 30, 2026', time: '9:00 AM - 10:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
   ]);
  
   const navigate = useNavigate();

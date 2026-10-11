@@ -38,6 +38,6 @@
 }
 
 .chatbot-toggle-btn:focus-visible {
-    outline: 3px solid var(--color-linkHighlight, #00aec5);
+    outline: 3px solid var(--color-link-highlight, #00aec5);
     outline-offset: 3px;
 }
