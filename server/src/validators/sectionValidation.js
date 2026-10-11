@@ -2,7 +2,7 @@
 // Returns { ok: true, value } with cleaned data, or { ok: false, message, field }.
 
 const LAYOUTS = ['IMAGE_FULL_WIDTH', 'HEADER_PARAGRAPH', 'HEADER_SYMBOL'];
-const LANGUAGES = ['en', 'es', 'pa', 'zh', 'vi'];
+const LANGUAGES = ['en', 'es', 'pa', 'zh', 'vi', 'hi'];
 const ALIGNMENTS = ['left', 'center', 'right'];
 
 const LIMITS = {

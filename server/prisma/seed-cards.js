@@ -13,7 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const LANGUAGES = ['en', 'es', 'pa', 'zh', 'vi'];
+const LANGUAGES = ['en', 'es', 'pa', 'zh', 'vi', 'hi'];
 const LOCALES_DIR = path.resolve(__dirname, '../../client/src/locales');
 
 // The Welcome cards are typed directly into LandingPage.jsx (not in the
@@ -125,9 +125,49 @@ function hospiceCards(locales, base, count) {
 function buildSectionDefs(locales) {
     return [
         {
-            slug: 'welcome-info',
+            slug: 'welcome-philosophy',
             page: 'welcome',
             position: 0,
+            title: {},
+            rows: 1,
+            columns: 1,
+            cardCount: 1,
+            cards: [
+                {
+                    layoutType: 'HEADER_PARAGRAPH',
+                    header: perLanguage(locales, 'landing.philosophyTitle'),
+                    paragraph: perLanguage(locales, 'landing.philosophyText'),
+                    imageUrl: null,
+                    imageAlt: {},
+                    symbol: null,
+                    alignment: 'center',
+                },
+            ],
+        },
+        {
+            slug: 'welcome-caring-since',
+            page: 'welcome',
+            position: 1,
+            title: {},
+            rows: 1,
+            columns: 1,
+            cardCount: 1,
+            cards: [
+                {
+                    layoutType: 'HEADER_PARAGRAPH',
+                    header: perLanguage(locales, 'landing.caringSinceTitle'),
+                    paragraph: perLanguage(locales, 'landing.caringSinceText'),
+                    imageUrl: null,
+                    imageAlt: {},
+                    symbol: null,
+                    alignment: 'center',
+                },
+            ],
+        },
+        {
+            slug: 'welcome-info',
+            page: 'welcome',
+            position: 2,
             title: {},
             rows: 2,
             columns: 1,
@@ -141,6 +181,26 @@ function buildSectionDefs(locales) {
                 symbol: null,
                 alignment: card.alignment,
             })),
+        },
+        {
+            slug: 'welcome-about',
+            page: 'welcome',
+            position: 3,
+            title: {},
+            rows: 1,
+            columns: 1,
+            cardCount: 1,
+            cards: [
+                {
+                    layoutType: 'HEADER_PARAGRAPH',
+                    header: perLanguage(locales, 'landing.aboutTitle'),
+                    paragraph: perLanguage(locales, 'landing.aboutText'),
+                    imageUrl: null,
+                    imageAlt: {},
+                    symbol: null,
+                    alignment: 'center',
+                },
+            ],
         },
         {
             slug: 'homehealth-services',

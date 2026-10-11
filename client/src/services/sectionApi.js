@@ -1,8 +1,11 @@
-// Falls back to the local server so a fresh clone works without extra setup.
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+const API_ROOT =
+  (import.meta.env && import.meta.env.VITE_API_URL) || ''
+const API_BASE_URL = API_ROOT
+  ? `${API_ROOT.replace(/\/$/, '')}/api`
+  : '/api'
 
 async function request(path, options = {}) {
-  const res = await fetch(`${BASE}/api/sections${path}`, {
+  const res = await fetch(`${API_BASE_URL}/sections${path}`, {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     ...options,
