@@ -13,9 +13,10 @@
 .card--image .card__content { padding: 1.5rem; flex: 1; }
 .welcome-text-section { max-width: none; margin: 0; padding: 60px; text-align: center; background-color: var(--color-light-gray); }
 .welcome-text-section .card-grid { display: block; max-width: 1100px; margin: 0 auto; }
-.welcome-text-section .card { background: transparent; border-radius: 0; box-shadow: none; padding: 0; }
+.welcome-text-section .card { background: transparent; border: none; border-radius: 0; box-shadow: none; padding: 0; }
 .welcome-text-section .card h3 { font-size: 3rem; margin: 0 0 50px; }
 .welcome-text-section .card p { margin: 0 auto; max-width: 1100px; }
+.welcome-info-section .card { box-shadow: none; border: none; }
 .care .welcome-text-section { padding: 0 0 60px; }
 @media (max-width: 800px) {
   .card-grid { grid-template-columns: 1fr; }

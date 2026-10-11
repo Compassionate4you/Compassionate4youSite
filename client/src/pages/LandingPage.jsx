@@ -66,7 +66,7 @@ function LandingPage() {
       <section className="care">
         <CardSection slug="welcome-caring-since" className="welcome-text-section" />
 
-        <CardSection slug="welcome-info" />
+        <CardSection slug="welcome-info" className="welcome-info-section" />
       </section>
 
       {/* About */}
