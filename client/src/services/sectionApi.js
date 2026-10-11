@@ -1,4 +1,5 @@
-const BASE = import.meta.env.VITE_API_URL || '';
+// Falls back to the local server so a fresh clone works without extra setup.
+const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}/api/sections${path}`, {
