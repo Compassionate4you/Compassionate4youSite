@@ -1,36 +1,23 @@
-import { useState } from 'react'
+import { useTranslation } from 'react-i18next';
 
-
-//The language selector likely needs work regarding its core functionality, but for now it will switch the language variable to what was chosen.
-function LanguageSelector(){
-    const [isLanguageToolOpen, setLanguageTool] = useState(false);
-    function handleLanguageToggle(){
-        setLanguageTool(!isLanguageToolOpen);
-    }
-    const [selectedLanguage, setLanguage] = useState("English");
-    function handleLanguageChange(event){
-        setLanguage(event.target.value);
-    }
-    return(
-        <html className="LanguageSelector">
-            <button className="LanguageButton" onClick={handleLanguageToggle}>
-                Sample Text
-            </button>
-            {isLanguageToolOpen ? (
-                <html>
-                    <button className="LanguageOption" onClick={handleLanguageChange} value="English">
-                        English
-                    </button>
-                    <button className="LanguageOption" onClick={handleLanguageChange} value="Spanish">
-                        Spanish
-                    </button>
-                    <button className="LanguageOption" onClick={handleLanguageChange} value="Punjabi">
-                        Punjabi
-                    </button>
-                </html>
-            ) : ( <></> )}
-        </html>
-    )
+function LanguageSelector() {
+    const { t, i18n } = useTranslation();
+    return (
+        <label className="LanguageSelector">
+            <span>{t('accessibility.selectLanguage')}</span>
+            <select
+                className="LanguageButton"
+                value={i18n.language.split('-')[0]}
+                onChange={(event) => i18n.changeLanguage(event.target.value)}
+                aria-label={t('accessibility.selectLanguage')}
+            >
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="pa">ਪੰਜਾਬੀ</option>
+                <option value="ur">اردو</option>
+            </select>
+        </label>
+    );
 }
 
 export default LanguageSelector;
