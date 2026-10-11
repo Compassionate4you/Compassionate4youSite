@@ -828,7 +828,7 @@ const AdminDashboard = () => {
                     </div>
                 )}
 
-                //DT-492 Content Editor - Preston Ball: Removed the content items from the admin board, and simply directed the user to the content editor page. All editing options are now displayed in the main page.
+                {/*DT-492 Content Editor - Prestoon Ball: Removed the content items from the admin board, and simply directed the user to the content editor page. All editing options are now displayed in the main page.*/}
                 
                 {tab === "locations" && (
     <div>
