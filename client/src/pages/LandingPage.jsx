@@ -44,6 +44,7 @@ function LandingPage() {
               <option value="pa">ਪੰਜਾਬੀ</option>
               <option value="zh">普通话</option>
               <option value="vi">tiếng việt</option>
+                <option value='hi'>हिन्दी</option>
             </select>
           </div>
         </div>

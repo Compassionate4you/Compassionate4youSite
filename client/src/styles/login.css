@@ -1,10 +1,11 @@
 /* DT-511: Sign in page styling */
+/* DT-591: Replaced hardcoded colors, borders, radius, and fonts with shared variables from global */
 
 /* Customer/Admin toggle button styling */
 .account-type-toggle {
     display: flex;
-    background: #f1f1f1;
-    border-radius: 8px;
+    background: var(--color-page-background);
+    border-radius: var(--radius-md);
     padding: 4px;
     margin-bottom: 20px;
 }
@@ -14,43 +15,47 @@
     padding: 10px 16px;
     border:none;
     background: transparent;
-    border-radius:6px;
+    border-radius:var(--radius-sm);
     cursor:pointer;
     font-size:15px;
-    color:#555;
+    color: var(--color-muted-text);;
 }
 
 .toggle-btn-active{ /* Active button styling*/
-    background:#fff;
-    color:#111;
+    background: var(--color-white);;
+    color:var(--color-white-text);
     font-weight:600;
     box-shadow:0 1px 2px rgba(0,0,0,0.1);
 }
 
 /*DT-499: Preferences tab update*/
 /* Email/password input*/
+/* DT-591: now matches the bordered inputs in Profile settings */
 .login-page .field input{
     width:100%;
     padding:12px 14px;
-    border:none;
-    border-radius:8px;
-    background:#f1f1f1;
+    border: 1px solid var(--color-input-border);;
+    border-radius: var(--radius-md);
+    background:var(--color-white);
+    color: var(--color-white-text);
     font-size:15px;
+    font-family: var(--font-body);
     box-sizing:border-box;
 }
 
 .login-page .field input:focus{ /*focused input styling*/
-    outline:2px solid #999;
+    border-color: var(--color-primary);
+    outline:2px solid rgba(54, 100, 84, 0.2);
 }
 
 /* full width Sign in Button*/
 .btn-signin-full{
     width:100%;
-    padding:10px;
-    background:#579b4b;
-    color:#fff;
-    border:none;
-    border-radius:8px;
+    padding:12px;
+    background:var(--color-primary);
+    color:var(--color-primary-text);
+    border:1px solid var(--color-primary);;
+    border-radius:var(--radius-md);;
     font-size:16px;
     font-weight:600;
     display:flex;
@@ -62,20 +67,20 @@
 }
 
 .btn-signin-full:hover{
-    background:#18791f;
+    background:var(--color-primary-hover);
 }
 
 /*forgot password link*/
 .login-forgot-link{
     display:inline-block;
-    color:#2563eb;;
+    color:var(--color-link);
     text-decoration:none;
     font-size:14px;
     margin-top:4px;
 }
 
 .login-forgot-link:hover{
-    color:#1d4ed8;
+    color:var(--color-link-hover);
     text-decoration:underline;
 }
 
@@ -84,16 +89,16 @@
     text-align:center;
     margin-top:20px;
     font-size:14px;
-    color:#555
+    color:var(--color-muted-text);
 }
 
 .create-account-text a{
-    color: #2563eb;    
+    color: var(--color-link);
     font-weight: 600;
 }
 
 .create-account-text a:hover{
-    color: #1d4ed8;
+    color: var(--color-link-hover);
     text-decoration:underline;
 }
 
@@ -107,12 +112,12 @@
     font-size:48px;
     font-weight:700;
     margin: 0 0 8px 0;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    color:#0a0a14
+    font-family: var(--font-heading);
+    color:var(--color-white-text);
 }
 
 .login-header p{
     font-size:18px;
-    color:#555;
+    color:var(--color-muted-text);
     margin:0;
 }
