@@ -171,17 +171,20 @@ function AccessibilityPanel() {
                     <label className="sr-only" htmlFor="accessibility-language">
                         {t('accessibility.selectLanguage')}
                     </label>
+
+                    {/* DT-147: Added Hindi and Punjabi options to the language selector */}
                     <select
                         id="accessibility-language"
-                        value={['en', 'es', 'pa', 'zh', 'vi'].find((code) => i18n.language?.startsWith(code)) || 'en'}
+                        value={['en', 'es', 'pa', 'zh', 'vi', 'hi'].find((code) => i18n.language?.startsWith(code)) || 'en'}
                         onChange={handleLanguageChange}
                         aria-label={t('accessibility.selectLanguage')}
                     >
                         <option value="en">English</option>
                         <option value="es">Español</option>
-                        <option value="pa">Punjabi</option>
+                        <option value="pa">ਪੰਜਾਬੀ</option>
                         <option value="zh">Mandarin</option>
                         <option value="vi">Vietnamese</option>
+                        <option value="hi">हिन्दी</option>
                     </select>
                 </div>
 
