@@ -65,7 +65,7 @@ function AccessibilityPanel() {
                 ref={toggleRef}
                 type="button"
                 className="a11y-toggle"
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpen((open) => !open)}
                 aria-label={t('accessibility.openPanel')}
                 aria-expanded={isOpen}
                 aria-controls="accessibility-panel"
@@ -82,6 +82,7 @@ function AccessibilityPanel() {
                     className="a11y-overlay"
                     onClick={() => setIsOpen(false)}
                     aria-hidden="true"
+                    data-testid="accessibility-overlay"
                 />
             )}
 
@@ -90,10 +91,10 @@ function AccessibilityPanel() {
                 ref={panelRef}
                 className={`a11y-panel ${isOpen ? 'open' : ''}`}
                 role="dialog"
-                aria-modal="true"
+                aria-modal={isOpen ? 'true' : undefined}
                 aria-labelledby="accessibility-panel-title"
                 aria-hidden={!isOpen}
-                inert={!isOpen ? '' : undefined}
+                inert={!isOpen}
             >
                 <div className="panel-header">
                     <h2 id="accessibility-panel-title">{t('accessibility.title')}</h2>
@@ -173,12 +174,14 @@ function AccessibilityPanel() {
                     </label>
                     <select
                         id="accessibility-language"
-                        value={i18n.language.startsWith('es') ? 'es' : 'en'}
+                        value={['en', 'es', 'pa', 'ur'].includes(i18n.language.split('-')[0]) ? i18n.language.split('-')[0] : 'en'}
                         onChange={handleLanguageChange}
                         aria-label={t('accessibility.selectLanguage')}
                     >
                         <option value="en">English</option>
                         <option value="es">Español</option>
+                        <option value="pa">ਪੰਜਾਬੀ</option>
+                        <option value="ur">اردو</option>
                     </select>
                 </div>
 
