@@ -1,12 +1,15 @@
+/* DT-591: Replaced old variable names (--color1, --color3, --color4, --cooltone3) that no longer exist in global.css with the current shared variables */
 .notfound-section {
   min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5rem 1rem;
-  font-family: 'Lora', Georgia, serif;
+  font-family: var(--font-body);
   text-align: center;
-  background: var(--color1, #e6e6e6);
+  background: var(--color-light-gray);
+  color: var(--color-light-gray-text);
+
 }
 
 .notfound-section__inner {
@@ -15,25 +18,25 @@
 }
 
 .notfound-section__code {
-  font-family: 'Crimson Text', serif;
+  font-family: var(--font-heading);
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 700;
-  color: var(--cooltone3, #366454);
+  color: var(--color-primary);
   margin: 0;
   line-height: 1;
 }
 
 .notfound-section__title {
-  font-family: 'Crimson Text', serif;
+  font-family: var(--font-heading);
   font-size: clamp(1.5rem, 4vw, 2.25rem);
   font-weight: 600;
-  color: var(--color4, #262626);
+  color: var(--color-light-gray-text);
   margin: 1rem 0 0.75rem;
 }
 
 .notfound-section__message {
   font-size: 1.05rem;
-  color: var(--color3, #595959);
+  color: var(--color-light-gray-text);
   margin: 0 0 2rem;
   line-height: 1.6;
 }
@@ -43,16 +46,16 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 1.4rem;
-  background: var(--cooltone3, #366454);
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-primary-text);
   font-weight: 700;
   font-size: 0.9rem;
-  border-radius: 2rem;
+  border-radius: var(--radius-md);
   letter-spacing: 0.04em;
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: background-color 0.2s;
 }
 
 .notfound-section__home-link:hover {
-  opacity: 0.85;
+  background: var(--color-primary-hover);
 }

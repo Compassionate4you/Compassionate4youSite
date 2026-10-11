@@ -1,0 +1,500 @@
+{
+  "nav": {
+    "welcome": "欢迎",
+    "homeHealth": "居家医疗",
+    "hospice": "安宁疗护",
+    "locations": "地点",
+    "schedule": "预约",
+    "login": "登录",
+    "portal": "门户",
+    "admin": "管理员",
+    "logout": "退出登录",
+    "dashboard": "用户面板",
+    "home": "首页"
+  },
+  "landing": {
+    "heroTitle": "为您所爱之人提供充满关爱的照护",
+    "heroSubtitle": "专业的居家医疗与安宁疗护服务，致力于以尊严和尊重提供优质照护。",
+    "heroImageAlt": "充满关爱的照护服务",
+    "philosophyTitle": "我们的理念",
+    "philosophyText": "我们相信，应以尊严、尊重和同理心对待每一位患者。我们努力让您的生命末期旅程尽可能舒适而有意义。",
+    "caringSinceTitle": "自2021年起提供关爱照护",
+    "caringSinceText": "自2021年起，在您舒适的家中提供充满关爱的照护。",
+    "aboutTitle": "关于我们",
+    "aboutText": "Compassionate Home Health & Hospice 是一家由 Jane Smith（注册护士）创立并经营的家族企业。Jane 拥有超过15年的医疗行业经验，创办本公司的初衷是为患者在家中提供个性化、充满关爱的照护。我们敬业的专业团队致力于通过全面的居家医疗和安宁疗护服务，改善患者及其家人的生活质量。",
+    "contactTitle": "联系我们",
+    "contactPhoneLabel": "电话",
+    "contactPhone": "(925) 425-7104",
+    "contactEmailLabel": "电子邮箱",
+    "contactEmail": "compassionateforall@gmail.com",
+    "contactFaxLabel": "传真",
+    "contactFax": "(844) 361-1170",
+    "contactAddressLabel": "地址",
+    "contactAddressLine1": "1501 N Broadway, Ste 350A/B",
+    "contactAddressLine2": "Walnut Creek, CA 94596",
+    "contactFormName": "姓名",
+    "contactFormNamePlaceholder": "您的姓名",
+    "contactFormEmail": "电子邮箱",
+    "contactFormEmailPlaceholder": "name@example.com",
+    "contactFormMessage": "留言",
+    "contactFormMessagePlaceholder": "我们能为您做些什么？",
+    "contactFormButton": "发送留言"
+  },
+  "hospice": {
+    "blurb": {
+      "title": "安宁疗护",
+      "description": "在生命的最后旅程中，我们提供安慰、尊严和充满关爱的支持。我们陪伴患者及其家人走过每一步。",
+      "contactButton": "联系我们的团队"
+    },
+    "understanding": {
+      "title": "了解安宁疗护",
+      "cards": {
+        "card1": {
+          "title": "什么是安宁疗护？",
+          "description": "安宁疗护的重点是为临近生命终点的人提供舒适、生活质量和支持，而不是治愈疾病。由专业团队提供，负责控制疼痛和其他症状，并满足患者及其家人在情感、身体、精神和社交方面的需求，以关爱之心提供照护。这种照护可以在患者自己的家中或专门的安宁疗护机构中进行，目标是帮助患者有尊严、尽可能平静地度过余下的时光。"
+        },
+        "card2": {
+          "title": "谁符合资格？",
+          "description": "无论您的信仰如何，您和您的家人都可以从我们的照护团队获得精神和情感上的支持。"
+        },
+        "card3": {
+          "title": "安宁疗护有何不同？",
+          "description": "我们的团队为患者及其家人营造充满关爱的环境，让他们在生命末期照护中感到被支持、被理解。"
+        },
+        "card4": {
+          "title": "为什么选择我们？",
+          "description": "我们的安宁疗护团队在家人面对生命末期照护时，为他们提供情感和精神上的支持。"
+        },
+        "card5": {
+          "title": "谁来提供照护？",
+          "description": "我们服务的基石是一支技术精湛、训练有素的专业团队，他们提供充满关爱的个性化照护，以满足每个人的独特需求。我们拥有由多种专业人员组成的跨学科团队，包括医生、护士、社工、院牧和安宁疗护助理，为患者及其家人提供全面的照护和支持。此外，根据患者的个体化需求和安宁疗护机构的医嘱，物理治疗师、职业治疗师和言语治疗师，以及志愿者和哀伤辅导专家也可能参与其中。"
+        }
+      }
+    },
+    "careAndBenefits": {
+      "title": "安宁疗护团队与福利",
+      "cards": {
+        "card1": {
+          "title": "安宁疗护提供什么？",
+          "description": "安宁疗护由来自不同专业的团队提供照护，他们协同合作，满足您和您家人在医疗、心理和精神方面的需求。"
+        },
+        "card2": {
+          "title": "安宁疗护期间的可用时间……",
+          "description": "安宁疗护会为您提供一个全天24小时、每周7天均可拨打的电话号码，帮助您解答任何疑问。"
+        },
+        "card3": {
+          "title": "患者接受安宁疗护时还有哪些其他福利？",
+          "description": {
+            "top": " - 一旦您被纳入安宁疗护计划，将为您提供以下项目：",
+            "list1": " - 医疗器械",
+            "list2": " - 医疗用品",
+            "list3": " - 缓解症状和疼痛的药物"
+          }
+        },
+        "card4": {
+          "title": "医生",
+          "description": "在您参加安宁疗护计划期间，您的私人医生将继续为您提供照护。安宁疗护医生会与您的私人医生密切合作，并可向其咨询。"
+        },
+        "card5": {
+          "title": "护士",
+          "description": "护士会在每周期间上门访视，指导您的照护者并协调您的照护。护士会定期向安宁疗护医生汇报您的状况。"
+        },
+        "card6": {
+          "title": "社工",
+          "description": {
+            "top": " - 社工可以帮助您和您的照护者：",
+            "list1": " - 提供情感支持",
+            "list2": " - 协助处理实际事务，例如寻找额外的居家帮助"
+          }
+        }
+      }
+    },
+    "comprehensiveServices": {
+      "title": "全面支持服务",
+      "cards": {
+        "card1": {
+          "title": "安宁疗护助理与家务协助服务",
+          "description": "安宁疗护助理会根据需要在每周期间上门，协助您和您的照护者完成个人护理，例如更换床单、协助洗澡和穿衣。"
+        },
+        "card2": {
+          "title": "院牧",
+          "description": "院牧是致力于满足您和您家人精神需求的神职人员或辅导员，不论您信奉何种宗教。您和您的家人可以随时请求院牧到访。"
+        },
+        "card3": {
+          "title": "志愿者",
+          "description": "志愿者是经过我们安宁疗护计划培训的社区成员，可为您和您的家人提供帮助。志愿者在计划工作人员的指导下提供服务。"
+        },
+        "card4": {
+          "title": "医疗预约怎么办？",
+          "description": "即使您已被纳入我们的安宁疗护计划，您的私人医生仍然负责您的照护。安宁疗护医生将与您的私人医生合作，为您提供所需的照护。"
+        },
+        "card5": {
+          "title": "您可能需要哪些帮助？",
+          "description": "在某个阶段，您可能需要卧床，无法在没有帮助的情况下翻身或进食。您的照护者可能需要为您更换尿布和床单，并护理您的皮肤以预防压疮。安宁疗护护士会教照护者如何完成这些工作。"
+        },
+        "card6": {
+          "title": "如果出现困难情况怎么办？",
+          "description": "我们理解照护者可能会面临困难的情况。全天24小时开通的电话热线可让照护者联系到安宁疗护专业护士，护士可通过电话提供建议，必要时也可上门探访。"
+        }
+      }
+    },
+    "aboveAndBeyond": {
+      "title": "卓越的照护",
+      "description": "我们明白安宁疗护会影响整个家庭。我们的服务不止于医疗照护，还为所有相关人员提供情感、精神和实际方面的支持。从最初的咨询到哀伤期，我们都以理解和关怀陪伴在您身边。",
+      "cards": {
+        "card1": "疼痛与症状控制",
+        "card2": "情感与精神支持",
+        "card3": "照护者指导",
+        "card4": "志愿者与陪伴服务",
+        "card5": "院牧",
+        "card6": "哀伤与丧亲支持",
+        "card7": "安宁疗护助理服务"
+      }
+    },
+    "hospiceProcess": {
+      "title": "我们的照护流程",
+      "cards": {
+        "card1": { "number": "1", "title": "转介", "description": "由医生、医院或家人启动流程。" },
+        "card2": { "number": "2", "title": "评估", "description": "护士或治疗师评估健康状况、能力和家庭目标。" },
+        "card3": { "number": "3", "title": "照护计划", "description": "个性化计划，包括护理、治疗和支持服务。" },
+        "card4": { "number": "4", "title": "持续支持", "description": "定期访视、远程医疗随访和照护者指导。" },
+        "card5": { "number": "5", "title": "沟通", "description": "患者、家人与照护团队之间的开放交流。" }
+      }
+    },
+    "hospiceContact": {
+      "title": "我们随时为您提供帮助",
+      "description": "我们充满关爱的安宁疗护团队全天24小时、每周7天随时为您解答问题并提供支持。",
+      "contactButton": "立即联系我们",
+      "homeButton": "返回首页"
+    }
+  },
+  "homeHealth": {
+    "title": "居家医疗",
+    "subtitle": "在您舒适安全的家中提供专业医疗服务，促进独立生活并提高生活质量。",
+    "servicesHeading": "我们的居家医疗服务",
+    "services": {
+      "doctors": "医生",
+      "doctorsDesc": "我们的医生制定并审核照护计划，控制症状，并作为医疗资源提供支持。",
+      "pt": "物理治疗师（PT 和 PTA）",
+      "ptDesc": "帮助患者保持活动能力、控制疼痛并提高生活质量。",
+      "ot": "职业治疗师（OT）",
+      "otDesc": "协助患者在日常活动中保持独立。",
+      "nurses": "专科护士（RN、LVN）",
+      "nursesDesc": "与医生合作，在家中提供医疗护理。",
+      "st": "言语治疗师（ST）",
+      "stDesc": "帮助患者改善沟通、吞咽和认知功能。",
+      "chha": "认证居家健康助理（CHHA）",
+      "chhaDesc": "协助洗澡、穿衣和准备餐食等日常活动。",
+      "msw": "医务社工（MSW）",
+      "mswDesc": "提供情感支持，并帮助患者联系社区资源。",
+      "multilingual": "多语言服务",
+      "multilingualDesc": "提供多种语言服务，满足不同患者的需求。"
+    }
+  },
+  "locations": {
+    "title": "我们的地点",
+    "distanceLabel": "您与我们办公室的距离",
+    "calculating": "正在计算…",
+    "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+    "address2": "1501 N Broadway, Ste 350A/B",
+    "address3": "Walnut Creek, CA 94596",
+    "mapTitle": "Compassionate Home Health & Hospice 的位置",
+    "getDirections": "获取路线"
+  },
+  "portal": {
+    "title": "客户门户",
+    "welcome": "欢迎，John Doe",
+    "welcomeBanner": "欢迎回来，John Doe！",
+    "welcomeSubtitle": "管理您的预约和医疗信息",
+    "scheduleCard": "预约就诊",
+    "scheduleCardDesc": "预约新的居家医疗或安宁疗护服务",
+    "upcomingVisits": "即将到来的访视",
+    "confirmedAppointments": "已确认的预约"
+  },
+  "schedule": {
+    "backToDashboard": "← 返回面板",
+    "title": "预约就诊",
+    "subtitle": "请提供您的信息和希望的预约时间。",
+    "fullName": "全名",
+    "fullNamePlaceholder": "张伟",
+    "phone": "电话号码",
+    "phonePlaceholder": "(555) 123-4567",
+    "email": "电子邮箱",
+    "emailPlaceholder": "you@example.com",
+    "serviceType": "服务类型",
+    "selectService": "请选择服务",
+    "homeHealth": "居家医疗",
+    "hospiceCare": "安宁疗护",
+    "generalConsultation": "一般咨询",
+    "preferredDate": "首选日期",
+    "notes": "补充说明",
+    "notesPlaceholder": "任何症状、疑虑或需求……",
+    "confirm": "确认预约",
+    "cancel": "取消",
+    "successMsg": "预约请求已提交！我们将尽快确认您的访视。",
+    "time": "预约时间",
+    "selectTime": "请选择时间",
+    "times": {
+      "9": "上午9:00",
+      "10": "上午10:00",
+      "11": "上午11:00",
+      "1": "下午1:00",
+      "2": "下午2:00",
+      "3": "下午3:00"
+    },
+    "requiredError": "请填写所有必填的预约字段。",
+    "slotTaken": "已预订",
+    "submitting": "正在预订..."
+  },
+  "login": {
+    "title": "登录",
+    "subtitle": "请输入您的凭据以继续。",
+    "email": "电子邮箱",
+    "emailPlaceholder": "you@example.com",
+    "password": "密码",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "登录",
+    "signingIn": "正在登录...",
+    "forgotPassword": "忘记密码？",
+    "errors": {
+      "required": "请输入电子邮箱和密码。",
+      "invalidEmail": "这似乎不是有效的电子邮箱。",
+      "invalidCredentials": "电子邮箱或密码不正确，请重试。",
+      "network": "无法连接到服务器，请重试。"
+    },
+    "reset": {
+      "title": "重置密码",
+      "subtitle": "请输入您账户的电子邮箱或电话号码，我们将向您发送重置密码的链接。",
+      "emailOrPhone": "电子邮箱或电话号码",
+      "emailOrPhonePlaceholder": "you@example.com 或 (555) 123-4567",
+      "submit": "发送重置链接",
+      "sending": "正在发送…",
+      "backToLogin": "← 返回登录",
+      "confirmation": "如果该账户存在，我们已向您发送重置密码的链接。请查看您的邮箱或短信。",
+      "errors": {
+        "required": "请输入您的电子邮箱或电话号码。",
+        "invalid": "请输入有效的电子邮箱或电话号码。"
+      }
+    }
+  },
+  "admin": {
+    "title": "管理面板",
+    "welcome": "欢迎，管理员用户",
+    "tabs": {
+      "appointments": "预约",
+      "content": "内容",
+      "locations": "地点",
+      "accounts": "账户"
+    },
+    "table": {
+      "patient": "患者",
+      "service": "服务",
+      "date": "日期",
+      "status": "状态"
+    },
+    "comingSoon": {
+      "content": "内容页面（即将推出）",
+      "locations": "地点页面（即将推出）",
+      "accounts": "账户页面（即将推出）"
+    }
+  },
+  "footer": {
+    "tagline": "自2021年起，在您舒适的家中提供充满关爱的照护。",
+    "quickLinks": "快速链接",
+    "contactUs": "联系我们",
+    "phone": "(925) 425-7104",
+    "email": "info@compassionate4you.com",
+    "address1": "1501 N Broadway, Ste 350A/B",
+    "address2": "Walnut Creek, CA 94596",
+    "officeHours": "办公时间",
+    "weekdays": "周一至周五",
+    "weekdayHours": "上午8:00 – 下午6:00",
+    "saturday": "周六",
+    "saturdayHours": "上午9:00 – 下午2:00",
+    "sunday": "周日",
+    "sundayClosed": "休息",
+    "copyright": "Compassionate Home Health & Hospice。版权所有。"
+  },
+  "accessibility": {
+    "openPanel": "打开无障碍设置",
+    "closePanel": "关闭无障碍面板",
+    "title": "无障碍",
+    "tools": "无障碍工具",
+    "textSize": "文字大小",
+    "default": "默认",
+    "large": "大",
+    "extraLarge": "特大",
+    "theme": "主题",
+    "light": "浅色",
+    "dark": "深色",
+    "highContrast": "高对比度",
+    "enabled": "已开启",
+    "disabled": "已关闭",
+    "language": "语言",
+    "selectLanguage": "选择语言",
+    "screenReaderNotice": "本网站已针对屏幕阅读器进行优化。按 Tab 键可浏览交互元素。",
+    "aiAssistant": "AI 助手"
+  },
+  "chatbot": {
+    "title": "Compassionate4you 聊天",
+    "placeholder": "请在此输入您的问题...",
+    "send": "发送",
+    "close": "关闭聊天",
+    "emptyState": "您好！有什么问题尽管问我。我还可以帮您调整无障碍设置（文字大小、深色模式、高对比度）。",
+    "actions": {
+      "increaseTextSize": "增大文字",
+      "decreaseTextSize": "减小文字",
+      "toggleDarkMode": "切换到深色模式",
+      "toggleLightMode": "切换到浅色模式",
+      "toggleHighContrast": "切换高对比度"
+    },
+    "responses": {
+      "increaseTextSize": "点击下方按钮放大文字，可多次点击。",
+      "decreaseTextSize": "点击下方按钮缩小文字。",
+      "toggleDarkMode": "点击下方按钮切换到深色模式。",
+      "toggleLightMode": "点击下方按钮返回浅色模式。",
+      "toggleHighContrast": "点击下方按钮切换高对比度。",
+      "error": "无法连接到服务器，请稍后再试。"
+    },
+    "faqButton": "常见问题",
+    "faqIntro": "以下是一些我们经常被问到的问题：",
+    "faqLinks": {
+      "homeHealth": "前往居家医疗",
+      "hospice": "前往安宁疗护",
+      "locations": "前往地点",
+      "schedule": "前往预约"
+    }
+  },
+  "confirmation": {
+    "title": "预约已安排！",
+    "message": "我们已收到您的预约请求，将与您联系确认。",
+    "detailsLabel": "新预约详情",
+    "name": "姓名",
+    "phone": "电话",
+    "email": "电子邮箱",
+    "service": "服务",
+    "date": "日期",
+    "time": "时间",
+    "notes": "备注",
+    "viewDetails": "查看预约详情",
+    "returnHome": "返回首页",
+    "notFoundTitle": "未找到预约",
+    "notFoundMessage": "没有可查看的已成功安排的预约。请先预约。",
+    "scheduleAgain": "预约就诊"
+  },
+  "details": {
+    "title": "预约详情",
+    "subtitle": "以下是您刚刚安排的预约详情。",
+    "detailsLabel": "预约详情",
+    "name": "姓名",
+    "phone": "电话",
+    "email": "电子邮箱",
+    "service": "服务",
+    "date": "日期",
+    "time": "时间",
+    "notes": "备注",
+    "returnDashboard": "返回面板",
+    "notFoundTitle": "未找到预约",
+    "notFoundMessage": "没有可查看的已成功安排的预约。请先预约。",
+    "scheduleAppointment": "预约就诊"
+  },
+  "signup": {
+    "title": "创建账户",
+    "subtitle": "注册以管理您的预约。",
+    "email": "电子邮箱",
+    "emailPlaceholder": "you@example.com",
+    "password": "密码",
+    "passwordPlaceholder": "创建密码",
+    "passwordHint": "至少8个字符，包含一个大写字母、一个小写字母、一个数字和一个特殊字符。",
+    "confirmPassword": "确认密码",
+    "confirmPasswordPlaceholder": "再次输入密码",
+    "createAccount": "创建账户",
+    "creating": "正在创建账户...",
+    "haveAccount": "已有账户？",
+    "signInInstead": "登录",
+    "errors": {
+      "required": "请填写所有字段。",
+      "passwordMismatch": "两次输入的密码不一致。"
+    }
+  },
+  "layout": {
+    "skipToMain": "跳到主要内容"
+  },
+  "homeHealthPage": {
+    "scheduleConsultation": "预约咨询",
+    "advantagesTitle": "居家医疗的优势",
+    "advantages": [
+      "我们负责处理所有雇主在薪资、税务和薪酬方面的义务",
+      "比住院更具成本效益",
+      "患者康复速度更快",
+      "患者有权参与自己的照护计划",
+      "服务在患者的居住地提供",
+      "避免医院获得性感染",
+      "照护过渡、跌倒预防和医疗设备使用培训"
+    ],
+    "specialtyTitle": "专科服务",
+    "specialties": [
+      "充血性心力衰竭（CHF）",
+      "慢性阻塞性肺疾病（COPD）",
+      "骨科术后治疗（关节置换）",
+      "伤口护理",
+      "静脉输液（I.V.）",
+      "物理、职业和言语治疗",
+      "药物管理",
+      "导尿管护理",
+      "饮食、运动和营养教育",
+      "化验检查（PT/INR、抽血）"
+    ],
+    "ctaTitle": "今天就开始您的居家医疗照护",
+    "ctaDescription": "让我们帮助您或您的亲人在舒适的家中获得应有的优质照护。",
+    "ctaSchedule": "预约就诊",
+    "ctaBack": "返回首页"
+  },
+  "faq": {
+    "title": "常见问题",
+    "items": [
+      {
+        "question": "安宁疗护提供什么？",
+        "answer": "安宁疗护由来自不同专业的团队提供照护，他们协同合作，满足您和您家人在医疗、心理和精神方面的需求。"
+      },
+      {
+        "question": "患者接受安宁疗护时还有哪些其他福利？",
+        "answer": "一旦您被纳入安宁疗护计划，我们将为您提供医疗器械、医疗用品以及缓解症状和疼痛的药物。"
+      },
+      {
+        "question": "谁来提供照护？",
+        "answer": "我们服务的基石是一支技术精湛、训练有素的专业团队，他们提供充满关爱的个性化照护，以满足每个人的独特需求。我们拥有由多种专业人员组成的跨学科团队，包括医生、护士、社工、院牧和安宁疗护助理，为患者及其家人提供全面的照护和支持。此外，根据患者的个体化需求和安宁疗护机构的医嘱，物理治疗师、职业治疗师、言语治疗师，以及志愿者和哀伤辅导专家也可能参与其中。"
+      },
+      {
+        "question": "您可能需要哪些帮助？",
+        "answer": "在某个阶段，您可能需要卧床，无法在没有帮助的情况下翻身或进食。您的照护者可能需要为您更换尿布和床单，并护理您的皮肤以预防压疮。安宁疗护护士会教照护者如何完成这些工作。"
+      },
+      {
+        "question": "如果出现困难情况怎么办？",
+        "answer": "我们理解照护者可能会面临困难的情况。全天24小时开通的电话热线可让照护者联系到安宁疗护专业护士，护士可通过电话提供建议，必要时也可上门探访。"
+      }
+    ]
+  },
+  "accountBenefits": {
+    "title": "为什么要创建账户？",
+    "items": [
+      {
+        "heading": "几秒钟即可预约！",
+        "description": "轻松填写申请表，预约您的首次就诊。您可以查看已安排的预约，以及地点、时间等相关信息。"
+      },
+      {
+        "heading": "轻松改期",
+        "description": "只需使用您的账户信息登录，点击几下即可更改预约的日期、时间和地点。所有信息都保存在您的账户中。"
+      },
+      {
+        "heading": "不错过任何一次访视",
+        "description": "注册并创建账户后，您可以根据需要查看和修改所有信息，并查看首次及后续访视的重要详情。"
+      }
+    ]
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "message": "抱歉，我们找不到您要查找的页面。该页面可能已被移动、重命名或不存在。",
+    "home": "返回首页"
+  }
+}
