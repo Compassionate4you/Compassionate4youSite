@@ -352,7 +352,8 @@
       "hospice": "Go to Hospice",
       "locations": "Go to Locations",
       "schedule": "Go to Scheduling"
-    }
+    },
+    "open": "Open chat"
   },
   "login": {
     "title": "Sign In",
