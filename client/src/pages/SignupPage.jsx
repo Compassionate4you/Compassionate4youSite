@@ -61,6 +61,7 @@ function SignupPage () {
 
   return (
     <div className='login-page'>
+
       <div className='content'>
         <div className='login-header'>
           <h1>{t('signup.title')}</h1>

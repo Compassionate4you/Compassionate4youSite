@@ -1,0 +1,441 @@
+{
+  "nav": {
+    "welcome": "خوش آمدید",
+    "homeHealth": "گھریلو صحت کی خدمات",
+    "hospice": "ہاسپس کیئر",
+    "locations": "مقامات",
+    "schedule": "وقت مقرر کریں",
+    "login": "لاگ اِن",
+    "portal": "پورٹل",
+    "admin": "منتظم",
+    "logout": "لاگ آؤٹ",
+    "dashboard": "صارف کا ڈیش بورڈ",
+    "home": "ہوم"
+  },
+  "landing": {
+    "heroTitle": "آپ کے پیاروں کے لیے ہمدردانہ نگہداشت",
+    "heroSubtitle": "پیشہ ورانہ گھریلو صحت اور ہاسپس خدمات، جو عزت اور احترام کے ساتھ معیاری نگہداشت فراہم کرنے کے لیے وقف ہیں۔",
+    "heroImageAlt": "ہمدردانہ نگہداشت کی خدمات",
+    "philosophyTitle": "ہمارا نظریہ",
+    "philosophyText": "ہم اپنے مریضوں کے ساتھ عزت، احترام اور ہمدردی سے پیش آنے پر یقین رکھتے ہیں۔ ہم زندگی کے آخری سفر کو ممکن حد تک آرام دہ اور بامعنی بنانے کی کوشش کرتے ہیں۔",
+    "caringSinceTitle": "2021 سے نگہداشت",
+    "caringSinceText": "2021 سے آپ کے گھر کے آرام میں ہمدردانہ نگہداشت فراہم کر رہے ہیں۔",
+    "aboutTitle": "ہمارے بارے میں",
+    "aboutText": "Compassionate Home Health & Hospice is a family-owned and operated business founded by Jane Smith, RN. With over 15 years of experience in healthcare, Jane started this company to provide personalized, compassionate care to patients in their homes. Our team of dedicated professionals is committed to enhancing the quality of life for our patients and their families through comprehensive home health and hospice services.",
+    "contactTitle": "رابطہ",
+    "contactPhoneLabel": "فون",
+    "contactPhone": "(925) 425-7104",
+    "contactEmailLabel": "ای میل",
+    "contactEmail": "compassionateforall@gmail.com",
+    "contactFaxLabel": "فیکس",
+    "contactFax": "(844) 361-1170",
+    "contactAddressLabel": "پتہ",
+    "contactAddressLine1": "1501 N Broadway, Ste 350A/B",
+    "contactAddressLine2": "Walnut Creek, CA 94596",
+    "contactFormName": "نام",
+    "contactFormNamePlaceholder": "آپ کا نام",
+    "contactFormEmail": "ای میل",
+    "contactFormEmailPlaceholder": "your.email@example.com",
+    "contactFormMessage": "پیغام",
+    "contactFormMessagePlaceholder": "ہم آپ کی کیا مدد کر سکتے ہیں؟",
+    "contactFormButton": "پیغام بھیجیں"
+  },
+  "homeHealth": {
+    "title": "گھریلو صحت کی خدمات",
+    "subtitle": "آپ کے گھر کے آرام اور حفاظت میں فراہم کی جانے والی پیشہ ورانہ صحت کی خدمات، جو خودمختاری اور معیارِ زندگی کو بہتر بناتی ہیں۔",
+    "servicesHeading": "ہماری گھریلو صحت کی خدمات",
+    "services": {
+      "doctors": "Medical Doctors",
+      "doctorsDesc": "Our MDs develop and review care plans, manage symptoms, and act as a medical resource.",
+      "pt": "Physical Therapists (PT & PTA)",
+      "ptDesc": "Help patients maintain mobility, manage pain, and improve quality of life.",
+      "ot": "Occupational Therapists (OT)",
+      "otDesc": "Assist patients in maintaining independence in daily activities.",
+      "nurses": "Skilled Nurses (RN, LVN)",
+      "nursesDesc": "Collaborate with physicians and provide medical care at home.",
+      "st": "Speech Therapists (ST)",
+      "stDesc": "Help patients improve communication, swallowing, and cognitive function.",
+      "chha": "Certified Home Health Aide (CHHA)",
+      "chhaDesc": "Assist with daily activities like bathing, dressing, and meal prep.",
+      "msw": "Medical Social Workers (MSW)",
+      "mswDesc": "Provide emotional support and connect patients with community resources.",
+      "multilingual": "Multi-Lingual",
+      "multilingualDesc": "Services available in multiple languages to support diverse patient needs."
+    }
+  },
+  "hospice": {
+    "blurb": {
+      "title": "ہاسپس کیئر",
+      "description": "زندگی کے آخری سفر میں آرام، وقار اور ہمدردانہ مدد فراہم کرنا۔ ہم ہر قدم پر مریضوں اور ان کے خاندانوں کے ساتھ ہیں۔",
+      "contactButton": "ہماری ٹیم سے رابطہ کریں"
+    },
+    "understanding": {
+      "title": "ہاسپس کیئر کو سمجھنا",
+      "cards": {
+        "card1": {
+          "title": "What is Hospice",
+          "description": "Hospice care focuses on providing comfort, quality of life, and support for people nearing the end of life, rather than curing the illness. It is provided by a team of professionals who manage pain and other symptoms, and address emotional, physical, spiritual, and social needs of both the patient and their family through passion. Hospice care can be provided in a person's home, a dedicated hospice facility, and the goal is to help the person live their remaining time with dignity and as peacefully as possible."
+        },
+        "card2": {
+          "title": "Who is eligible",
+          "description": "No matter your faith or beliefs, you and your family can receive spiritual and emotional support from our care team."
+        },
+        "card3": {
+          "title": "How is hospice different?",
+          "description": "Our team provides a compassionate environment for patients and families, so they can feel supported and understood during end-of-life care"
+        },
+        "card4": {
+          "title": "Why might I choose?",
+          "description": "Our hospice team provides emotional and spiritual support to families as they navigate end-of-life care."
+        },
+        "card5": {
+          "title": "Who provides the care?",
+          "description": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
+        }
+      }
+    },
+    "careAndBenefits": {
+      "title": "ہاسپس کیئر ٹیم اور فوائد",
+      "cards": {
+        "card1": {
+          "title": "What does hospice provide?",
+          "description": "Hospice offers care from a team of different types of practioners who work together to meet the medical, psychological and spiritual needs of you and your family."
+        },
+        "card2": {
+          "title": "Hours avail when in hospice care...",
+          "description": "Hospice provides you a phone number to call 24 hours a day, 7 days a week, to help answer any questions you may have."
+        },
+        "card3": {
+          "title": "What other benefits do patients have when they are under hospicecare",
+          "description": {
+            "top": "Once you are admitted into the Hospice Program, you will be provided with:",
+            "list1": " - medical appliances",
+            "list2": " - medical supplies",
+            "list3": " - medications for symptoms and pain relief"
+          }
+        },
+        "card4": {
+          "title": "Physician",
+          "description": "Your personal physician continues to provide your care while you're in the Hospice Program. A hospice physician works closely with your personal physician and can consult with you."
+        },
+        "card5": {
+          "title": "Nurse",
+          "description": "A nurse visits during the week to instruct your caregiver and to coordinate your care. A nurse informs the hospice physician of your condition on a regular basis."
+        },
+        "card6": {
+          "title": "Social worker",
+          "description": {
+            "top": " - A social worker helps you and your caregiver by:",
+            "list1": " - offering emotional support",
+            "list2": " - assisting with practical matters, such as finding additional help in the home"
+          }
+        }
+      }
+    },
+    "comprehensiveServices": {
+      "title": "جامع معاون خدمات",
+      "cards": {
+        "card1": {
+          "title": "Hospiceaide/homemaker services",
+          "description": "A hospice aide visits during the week as needed to help you and your caregiver with personal care such as changing linens, giving you a bath and helping you get dressed."
+        },
+        "card2": {
+          "title": "Chaplain",
+          "description": "A chaplain is a minister or counselor dedicated to meeting the spiritual needs of you and your family, no matter your religion. You and your family can ask for the chaplain anytime."
+        },
+        "card3": {
+          "title": "Volunteer",
+          "description": "A volunteer is someone from the community who has been trained by our Hospice Program to help you and your family. Volunteers provide services under the direction of a hospice staff member."
+        },
+        "card4": {
+          "title": "What about medical appointments?",
+          "description": "Your personal physician is in charge of your care, even after you're admitted to our Hospice Program. A hospice physician will work with your personal physician to provide the care your need."
+        },
+        "card5": {
+          "title": "What kind of help might I need?",
+          "description": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
+        },
+        "card6": {
+          "title": "What if a difficult situation arises?",
+          "description": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
+        }
+      }
+    },
+    "aboveAndBeyond": {
+      "title": "معمول سے بڑھ کر نگہداشت",
+      "description": "We understand that hospice care affects the entire family. Our approach goes beyond medical care to provide emotional, spiritual, and practical support for everyone involved. From the initial consultation through bereavement, we walk alongside you with understanding and care.",
+      "cards": {
+        "card1": "Pain and Symptom Control",
+        "card2": "Emotional and Spiritual Support",
+        "card3": "Caregiver Guidance",
+        "card4": "Volunteer & Companionship Services",
+        "card5": "Chaplain",
+        "card6": "Grief & Bereavement Support",
+        "card7": "Hospice Aide Services"
+      }
+    },
+    "hospiceProcess": {
+      "title": "ہماری نگہداشت کا طریقہ",
+      "cards": {
+        "card1": {
+          "number": "1",
+          "title": "Referral",
+          "description": "Doctor, Hospital, or family starts the process."
+        },
+        "card2": {
+          "number": "2",
+          "title": "Assessment",
+          "description": "Nurse or therapist evaluates health, abilities, and family goals."
+        },
+        "card3": {
+          "number": "3",
+          "title": "Care Plan",
+          "description": "Customized plan including nursing, therapy, and supporting services."
+        },
+        "card4": {
+          "number": "4",
+          "title": "Ongoing Support",
+          "description": "Regular visits, telehealth check-ins, and caregiver guidance."
+        },
+        "card5": {
+          "number": "5",
+          "title": "Communication",
+          "description": "Open dialogue between patient, family, and care team."
+        }
+      }
+    },
+    "hospiceContact": {
+      "title": "ہم مدد کے لیے موجود ہیں",
+      "description": "Our compassionate hospice team is available 24/7 to answer your questions and provide support.",
+      "contactButton": "آج ہی رابطہ کریں",
+      "homeButton": "ہوم پر واپس جائیں"
+    }
+  },
+  "locations": {
+    "title": "ہمارا مقام",
+    "distanceLabel": "ہمارے دفتر تک آپ کا فاصلہ",
+    "calculating": "حساب لگایا جا رہا ہے…",
+    "address1": "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
+    "address2": "1501 N Broadway, Ste 350A/B",
+    "address3": "Walnut Creek, CA 94596",
+    "mapTitle": "کمپیشنیٹ ہوم ہیلتھ اور ہاسپس کا مقام",
+    "getDirections": "راستہ دیکھیں"
+  },
+  "portal": {
+    "title": "کسٹمر پورٹل",
+    "welcome": "خوش آمدید، جان ڈو",
+    "welcomeBanner": "واپس خوش آمدید، جان ڈو!",
+    "welcomeSubtitle": "اپنی ملاقاتوں اور صحت کی معلومات کا انتظام کریں",
+    "scheduleCard": "ملاقات کا وقت مقرر کریں",
+    "scheduleCardDesc": "گھریلو صحت یا ہاسپس کی نئی ملاقات بک کریں",
+    "upcomingVisits": "آئندہ ملاقاتیں",
+    "confirmedAppointments": "تصدیق شدہ ملاقاتیں"
+  },
+  "schedule": {
+    "backToDashboard": "← ڈیش بورڈ پر واپس جائیں",
+    "title": "ملاقات کا وقت مقرر کریں",
+    "subtitle": "براہِ کرم اپنی تفصیلات اور پسندیدہ وقت درج کریں۔",
+    "fullName": "پورا نام",
+    "fullNamePlaceholder": "جان ڈو",
+    "phone": "فون نمبر",
+    "phonePlaceholder": "(555) 123-4567",
+    "email": "ای میل پتہ",
+    "emailPlaceholder": "you@example.com",
+    "serviceType": "خدمت کی قسم",
+    "selectService": "خدمت منتخب کریں",
+    "homeHealth": "گھریلو صحت کی خدمات",
+    "hospiceCare": "ہاسپس کیئر",
+    "generalConsultation": "عمومی مشاورت",
+    "preferredDate": "پسندیدہ تاریخ",
+    "notes": "اضافی نوٹس",
+    "notesPlaceholder": "علامات، خدشات یا درخواستیں...",
+    "confirm": "ملاقات کی تصدیق کریں",
+    "cancel": "منسوخ کریں",
+    "successMsg": "ملاقات کی درخواست موصول ہو گئی ہے! ہم جلد آپ کی ملاقات کی تصدیق کریں گے۔",
+    "time": "ملاقات کا وقت",
+    "selectTime": "وقت منتخب کریں",
+    "times": {
+      "1": "1:00 PM",
+      "2": "2:00 PM",
+      "3": "3:00 PM",
+      "9": "9:00 AM",
+      "10": "10:00 AM",
+      "11": "11:00 AM"
+    },
+    "requiredError": "براہِ کرم ملاقات کے تمام ضروری خانے پُر کریں۔",
+    "slotTaken": "بک ہو چکا ہے",
+    "submitting": "بکنگ جاری ہے..."
+  },
+  "admin": {
+    "title": "منتظم کا ڈیش بورڈ",
+    "welcome": "خوش آمدید، منتظم",
+    "tabs": {
+      "appointments": "ملاقاتیں",
+      "content": "مواد",
+      "locations": "مقامات",
+      "accounts": "اکاؤنٹس"
+    },
+    "table": {
+      "patient": "مریض",
+      "service": "خدمت",
+      "date": "تاریخ",
+      "status": "حیثیت"
+    },
+    "comingSoon": {
+      "content": "Content Page (coming soon)",
+      "locations": "Locations Page (coming soon)",
+      "accounts": "Accounts Page (coming soon)"
+    }
+  },
+  "footer": {
+    "tagline": "2021 سے آپ کے گھر کے آرام میں ہمدردانہ نگہداشت فراہم کر رہے ہیں۔",
+    "quickLinks": "فوری روابط",
+    "contactUs": "رابطہ کریں",
+    "phone": "(925) 425-7104",
+    "email": "info@compassionate4you.com",
+    "address1": "1501 N Broadway, Ste 350A/B",
+    "address2": "Walnut Creek, CA 94596",
+    "officeHours": "دفتری اوقات",
+    "weekdays": "پیر تا جمعہ",
+    "weekdayHours": "8:00 AM – 6:00 PM",
+    "saturday": "ہفتہ",
+    "saturdayHours": "9:00 AM – 2:00 PM",
+    "sunday": "اتوار",
+    "sundayClosed": "بند",
+    "copyright": "کمپیشنیٹ ہوم ہیلتھ اور ہاسپس۔ جملہ حقوق محفوظ ہیں۔"
+  },
+  "accessibility": {
+    "openPanel": "رسائی کی ترتیبات کھولیں",
+    "closePanel": "رسائی کا پینل بند کریں",
+    "title": "رسائی کی سہولتیں",
+    "tools": "رسائی کی سہولتیں",
+    "textSize": "متن کا سائز",
+    "default": "معمول",
+    "large": "بڑا",
+    "extraLarge": "بہت بڑا",
+    "theme": "تھیم",
+    "light": "روشن",
+    "dark": "گہرا",
+    "highContrast": "زیادہ تضاد",
+    "enabled": "فعال",
+    "disabled": "غیر فعال",
+    "language": "زبان",
+    "selectLanguage": "زبان منتخب کریں",
+    "screenReaderNotice": "یہ ویب سائٹ اسکرین ریڈرز کے ساتھ استعمال کے لیے بنائی گئی ہے۔ قابلِ تعامل عناصر پر جانے کے لیے Tab دبائیں۔",
+    "aiAssistant": "مصنوعی ذہانت کا معاون"
+  },
+  "chatbot": {
+    "title": "Compassionate4you چیٹ",
+    "placeholder": "اپنا سوال یہاں لکھیں...",
+    "send": "بھیجیں",
+    "close": "چیٹ بند کریں",
+    "emptyState": "السلام علیکم! مجھ سے کچھ بھی پوچھیں۔ میں رسائی کی ترتیبات میں بھی مدد کر سکتا ہوں۔",
+    "actions": {
+      "increaseTextSize": "Increase text size",
+      "decreaseTextSize": "Decrease text size",
+      "toggleDarkMode": "Switch to dark mode",
+      "toggleLightMode": "Switch to light mode",
+      "toggleHighContrast": "Toggle high contrast"
+    },
+    "responses": {
+      "increaseTextSize": "Click below to make the text larger. You can click multiple times.",
+      "decreaseTextSize": "Click below to make the text smaller.",
+      "toggleDarkMode": "Click below to switch to dark mode.",
+      "toggleLightMode": "Click below to switch back to light mode.",
+      "toggleHighContrast": "Click below to toggle high contrast.",
+      "error": "Couldn't reach the server. Try again in a moment."
+    },
+    "faqButton": "عام سوالات",
+    "faqIntro": "یہاں کچھ عام سوالات ہیں:",
+    "faqLinks": {
+      "homeHealth": "Go to Home Health",
+      "hospice": "Go to Hospice",
+      "locations": "Go to Locations",
+      "schedule": "Go to Scheduling"
+    },
+    "open": "چیٹ کھولیں"
+  },
+  "login": {
+    "title": "سائن اِن",
+    "subtitle": "ملاقاتوں اور نگہداشت کے انتظام کے لیے اپنے اکاؤنٹ میں داخل ہوں",
+    "email": "ای میل پتہ",
+    "emailPlaceholder": "you@example.com",
+    "password": "پاس ورڈ",
+    "passwordPlaceholder": "••••••••",
+    "signIn": "سائن اِن",
+    "signingIn": "سائن اِن ہو رہا ہے...",
+    "forgotPassword": "پاس ورڈ بھول گئے؟",
+    "errors": {
+      "required": "براہِ کرم ای میل اور پاس ورڈ دونوں درج کریں۔",
+      "invalidEmail": "یہ درست ای میل پتہ معلوم نہیں ہوتا۔",
+      "invalidCredentials": "ای میل یا پاس ورڈ غلط ہے۔ دوبارہ کوشش کریں۔",
+      "network": "سرور سے رابطہ نہیں ہو سکا۔ دوبارہ کوشش کریں۔"
+    },
+    "reset": {
+      "title": "Reset your password",
+      "subtitle": "Enter the email address or phone number on your account and we'll send a reset link.",
+      "emailOrPhone": "Email address or phone number",
+      "emailOrPhonePlaceholder": "you@example.com or (555) 123-4567",
+      "submit": "Send reset link",
+      "sending": "Sending…",
+      "backToLogin": "← Back to sign in",
+      "confirmation": "If that account exists, we sent a reset link. Check your email or messages.",
+      "errors": {
+        "required": "Please enter your email or phone number.",
+        "invalid": "Please enter a valid email address or phone number."
+      }
+    }
+  },
+  "confirmation": {
+    "title": "ملاقات مقرر ہو گئی!",
+    "message": "آپ کی ملاقات کی درخواست موصول ہو گئی ہے۔ تصدیق کے لیے ہم جلد رابطہ کریں گے۔",
+    "detailsLabel": "نئی ملاقات کی تفصیلات",
+    "name": "نام",
+    "phone": "فون",
+    "email": "ای میل",
+    "service": "خدمت",
+    "date": "تاریخ",
+    "time": "وقت",
+    "notes": "نوٹس",
+    "viewDetails": "ملاقات کی تفصیلات دیکھیں",
+    "returnHome": "ہوم پر واپس جائیں",
+    "notFoundTitle": "ملاقات نہیں ملی",
+    "notFoundMessage": "دیکھنے کے لیے کوئی تصدیق شدہ ملاقات موجود نہیں۔ پہلے ملاقات مقرر کریں۔",
+    "scheduleAgain": "ملاقات کا وقت مقرر کریں"
+  },
+  "details": {
+    "title": "ملاقات کی تفصیلات",
+    "subtitle": "یہاں آپ کی ابھی مقرر کردہ ملاقات کی تفصیلات ہیں۔",
+    "detailsLabel": "ملاقات کی تفصیلات",
+    "name": "نام",
+    "phone": "فون",
+    "email": "ای میل",
+    "service": "خدمت",
+    "date": "تاریخ",
+    "time": "وقت",
+    "notes": "نوٹس",
+    "returnDashboard": "ڈیش بورڈ پر واپس جائیں",
+    "notFoundTitle": "ملاقات نہیں ملی",
+    "notFoundMessage": "دیکھنے کے لیے کوئی تصدیق شدہ ملاقات موجود نہیں۔ پہلے ملاقات مقرر کریں۔",
+    "scheduleAppointment": "ملاقات کا وقت مقرر کریں"
+  },
+  "signup": {
+    "title": "اکاؤنٹ بنائیں",
+    "subtitle": "اپنی ملاقاتوں کا انتظام کرنے کے لیے سائن اپ کریں۔",
+    "email": "ای میل",
+    "emailPlaceholder": "you@example.com",
+    "password": "پاس ورڈ",
+    "passwordPlaceholder": "پاس ورڈ بنائیں",
+    "passwordHint": "At least 8 characters, with an uppercase letter, a lowercase letter, a number, and a special character.",
+    "confirmPassword": "پاس ورڈ کی تصدیق کریں",
+    "confirmPasswordPlaceholder": "پاس ورڈ دوبارہ درج کریں",
+    "createAccount": "اکاؤنٹ بنائیں",
+    "creating": "اکاؤنٹ بنایا جا رہا ہے...",
+    "haveAccount": "کیا آپ کا پہلے سے اکاؤنٹ ہے؟",
+    "signInInstead": "سائن اِن",
+    "errors": {
+      "required": "براہِ کرم تمام خانے پُر کریں۔",
+      "passwordMismatch": "پاس ورڈ ایک جیسے نہیں ہیں۔"
+    }
+  }
+}

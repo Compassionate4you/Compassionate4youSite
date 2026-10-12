@@ -7,21 +7,20 @@ import AccessibilityPanel from './components/accessibility/AccessibilityPanel'
 import './styles/global.css'
 import './styles/responsive.css'
 
-function App () {
-  return (
-    <Router>
-      <div className='app'>
-        <a className='skip-link' href='#main-content'>Skip to main content</a>
-        <Navbar />
-        <main id='main-content' tabIndex='-1'>
-          <AppRoutes />
-        </main>
-        <Footer />
-        <ChatbotWidget />
-        <AccessibilityPanel />
-      </div>
-    </Router>
-  )
+function App() {
+    return (
+        <Router>
+            <div className="app">
+                <Navbar />
+                <main id="main-content" tabIndex="-1">
+                    <AppRoutes />
+                </main>
+                <Footer />
+                <ChatbotWidget />
+                <AccessibilityPanel />
+            </div>
+        </Router>
+    );
 }
 
 export default App

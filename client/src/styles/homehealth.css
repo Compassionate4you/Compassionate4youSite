@@ -172,7 +172,8 @@
 }
 
 .adv-number{
-    background: #dfe7c9;
+    background: var(--color-light-green);
+    color: var(--color-light-green-text);
     width: 30px;
     height: 30px;
     border-radius: 50%;

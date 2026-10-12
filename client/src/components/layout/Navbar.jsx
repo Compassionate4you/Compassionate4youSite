@@ -8,7 +8,12 @@ function Navbar () {
   const navigate = useNavigate()
 
   // DT-37: re render Navbar on route change so login check stays updated
-  const location = useLocation()
+  const location = useLocation();
+  // DT-586: Remove NavBar from Admin Dashboard
+  const isAdminPage = location.pathname.startsWith("/admin");
+  if (isAdminPage) {
+    return null;
+  }
   // Check if user is logged in
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
   // Log user out and send them back to login
@@ -18,10 +23,10 @@ function Navbar () {
   }
 
   return (
-    <nav className='navbar' aria-label={i18n.language.startsWith('es') ? 'Navegación principal' : 'Main navigation'}>
-      <div className='logo'>
-        <Link to='/'>
-          <img src={logo} alt='CompassionateLogo' className='logo-img' />
+    <nav className="navbar" aria-label={i18n.language.startsWith("es") ? "Navegación principal" : i18n.language.startsWith("ur") ? "مرکزی نیویگیشن" : i18n.language.startsWith("pa") ? "ਮੁੱਖ ਨੈਵੀਗੇਸ਼ਨ" : "Main navigation"}>
+      <div className="logo">
+        <Link to="/">
+          <img src={logo} alt="Compassionate Home Health and Hospice logo" className="logo-img"/>
         </Link>
       </div>
 

@@ -11,7 +11,8 @@
     "style:fix": "standard --fix \"src/**/*.{js,jsx}\"",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "generate:translations": "node ../scripts/generate-translations.cjs"
   },
   "standard": {
     "env": ["browser", "jest"],
