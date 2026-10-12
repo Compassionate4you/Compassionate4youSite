@@ -1,8 +1,7 @@
 import "../styles/LandingPage.css";
 import CareImage1 from "../assets/images/CareImage1.jpeg";
-import Puzzle from "../assets/images/working_a_puzzle_together.jpeg";
-import Couple from "../assets/images/older_couple_smiling.jpeg";
 import FAQ from "../components/FAQ";
+import CardSection from "../components/modular/CardSection";
 
 import { useTranslation } from "react-i18next";
 import "../styles/map.css";
@@ -43,6 +42,9 @@ function LandingPage() {
               <option value="en">English</option>
               <option value="es">Español</option>
               <option value="pa">ਪੰਜਾਬੀ</option>
+              <option value="zh">普通话</option>
+              <option value="vi">tiếng việt</option>
+                <option value='hi'>हिन्दी</option>
             </select>
           </div>
         </div>
@@ -58,64 +60,17 @@ function LandingPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="philosophy">
-        <h2 className="section-title title-philosophy">{t("landing.philosophyTitle")}</h2>
-        <p>{t("landing.philosophyText")}</p>
-      </section>
+      <CardSection slug="welcome-philosophy" className="welcome-text-section philosophy" />
 
       {/* Caring Since 2021 */}
       <section className="care">
-        <h2 className="section-title title-care">{t("landing.caringSinceTitle")}</h2>
-        <p>{t("landing.caringSinceText")}</p>
+        <CardSection slug="welcome-caring-since" className="welcome-text-section" />
 
-        <div className="info-card">
-          <div className="info-card-image">
-            <img
-              src={Puzzle}
-              alt="People working on a puzzle together"
-            />
-          </div>
-
-          <div className="info-card-content">
-            <h3>Medicare Home Health Criteria</h3>
-            <p>
-              To qualify for Medicare home health services, a patient must be
-              confined to the home and be under physician care who is a doctor of
-              medicine, a doctor of osteopathy, or a doctor of podiatric medicine,
-              and enrolled in the Medicare Program.
-            </p>
-          </div>
-        </div>
-
-        <div className="info-card reverse">
-          <div className="info-card-image">
-            <img
-              src={Couple}
-              alt="Older couple smiling together"
-            />
-          </div>
-
-          <div className="info-card-content">
-            <h3>Specialty Services</h3>
-            <p>
-              To provide comprehensive, high quality home-care services to our
-              patients by creating strong partnerships with their families, case
-              managers, discharge planners and physicians.
-            </p>
-
-            <p>
-              We believe in creating a team of caring professionals whose goal is
-              the care and support of our patients.
-            </p>
-          </div>
-        </div>
+        <CardSection slug="welcome-info" className="welcome-info-section" />
       </section>
 
       {/* About */}
-      <section className="about">
-        <h2 className="section-title title-about">{t("landing.aboutTitle")}</h2>
-        <p>{t("landing.aboutText")}</p>
-      </section>
+      <CardSection slug="welcome-about" className="welcome-text-section about" />
 
       {/* Contact */}
       <section className="contact-section">
