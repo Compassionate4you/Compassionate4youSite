@@ -1,44 +1,45 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import '../styles/portal.css'
-import { Plus, Calendar, Settings, Pencil, Trash2 } from 'lucide-react'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import '../styles/portal.css';
+import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react';
 
-function PortalPage () {
-  const { t } = useTranslation()
-  const [visitCount, setVisitCount] = useState(1)
-  const saved = JSON.parse(localStorage.getItem('profileSettings') || '{}')
+function PortalPage() {
+    const { t } = useTranslation();
+    const [visitCount, setVisitCount] = useState(1);
+    const saved = JSON.parse(localStorage.getItem('profileSettings') || '{}');
 
-  // Profile Settings modal open and close state
-  const [showProfile, setShowProfile] = useState(false)
-  // Active tab inside profile settings
-  const [activeTab, setActiveTab] = useState('personal')
-  // Personal information Tab
-  const [fullName, setFullName] = useState(saved.fullName || 'John Doe')
-  const [email, setEmail] = useState(saved.email || 'customer@example.com')
-  const [phone, setPhone] = useState(saved.phone || '(555) 123-4567')
-  const [address, setAddress] = useState(saved.address || '123 Main St')
-  const [city, setCity] = useState(saved.city || 'Sacramento')
-  const [state, setState] = useState(saved.state || 'California')
-  const [zip, setZip] = useState(saved.zip || '95819')
-  const [emergencyName, setEmergencyName] = useState(saved.emergencyName || 'Jane Doe')
-  const [emergencyPhone, setEmergencyPhone] = useState(saved.emergencyPhone || '(555) 987-6543')
-  // Preferences Tab
-  const [emailNotif, setEmailNotif] = useState(saved.emailNotif ?? true)
-  const [smsNotif, setSmsNotif] = useState(saved.smsNotif ?? false)
-  const [preferredContact, setPreferredContact] = useState(saved.preferredContact || 'email')
-  // Security Tab
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  // Security Tab Update DT-501
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [passwordError, setPasswordError] = useState('')
-  const [passwordSuccess, setPasswordSuccess] = useState('')
 
-  // DT-66: track which appointment tab is active (upcoming or past)
-  const [apptTab, setApptTab] = useState('upcoming')
+    // Profile Settings modal open and close state
+    const[showProfile, setShowProfile]=useState(false);
+    //Active tab inside profile settings
+    const[activeTab,setActiveTab]=useState('personal');
+    //Personal information Tab
+    const[fullName, setFullName]=useState(saved.fullName || 'John Doe');
+    const[email,setEmail]=useState(saved.email || 'customer@example.com');
+    const[phone,setPhone]=useState(saved.phone || '(555) 123-4567');
+    const[address,setAddress]=useState(saved.address || '123 Main St');
+    const[city,setCity]=useState(saved.city || 'Sacramento');
+    const[state,setState]=useState(saved.state || 'California');
+    const[zip,setZip]=useState(saved.zip || '95819');
+    const[emergencyName,setEmergencyName]=useState(saved.emergencyName || 'Jane Doe');
+    const[emergencyPhone,setEmergencyPhone]=useState(saved.emergencyPhone || '(555) 987-6543');
+    //Preferences Tab
+    const[emailNotif,setEmailNotif]=useState(saved.emailNotif ?? true);
+    const[smsNotif,setSmsNotif]=useState(saved.smsNotif ?? false);
+    const[preferredContact,setPreferredContact]=useState(saved.preferredContact || 'email');
+    //Security Tab
+    const[currentPassword,setCurrentPassword]=useState('');
+    const[newPassword,setNewPassword]=useState('');
+    const[twoFactor,setTwoFactor]=useState(saved.twoFactor ?? false);
+    //DT-66: track which appointment tab is active (upcoming or past)
+    const[apptTab, setApptTab]=useState('upcoming');
+    // DT-67 User can message provider/support team
+    const [showContactForm, setShowContactForm] = useState(false);
+    const [messageSent, setMessageSent] = useState(false);
+    const [contactForm, setContactForm] = useState({ fullName: "", reason: "", message: "", });
 
-  // DT-144: mock appointments with a date near today so upcoming notification logic can trigger
+    // DT-144: mock appointments with a date near today so upcoming notification logic can trigger
   const [appointments, setAppointments] = useState([
     { service: 'Home Health', date: 'October 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
     { service: 'Home Health', date: 'October 15, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Confirmed' },
@@ -102,21 +103,183 @@ function PortalPage () {
       return
     }
 
-    // TODO: send to backend once the change-password route is ready
-    setPasswordSuccess('Password updated.')
-    setCurrentPassword('')
-    setNewPassword('')
-    setConfirmPassword('')
-  }
+    const upcomingAppt=getUpcomingAppointments();
 
-  // DT-144 (361): determine which appointments fall within the next 48 hours
-  function getUpcomingAppointments () {
-    const now = new Date()
-    return appointments.find((appt) => {
-      if (appt.status !== 'Confirmed') return false
-      // appt.time looks like "10:00 AM - 11:00 AM"; we only need the start time
-      const startTime = appt.time.split(' - ')[0] //
-      const apptDateTime = new Date(`${appt.date} ${startTime}`) // Combine date and time into a single Date object
+    // DT-67: User can message provider/support team, handlers below
+    function handleOpenContactForm() {
+        setContactForm({ fullName, reason: "", message: "", });
+        setMessageSent(false);
+        setShowContactForm(true);
+    }
+
+        // Updates a field in the Contact Provider form.
+    function handleContactFormChange(event) {
+        const { name, value } = event.target;
+        setContactForm((currentForm) => ({
+            ...currentForm,
+            [name]: value,
+        }));
+    }
+
+    // Closes the form without submitting it.
+    function handleCancelContactForm() {
+        setShowContactForm(false);
+        setContactForm({ fullName: "", reason: "", message: "", });
+    }
+
+    // Simulates sending the message and returns to the portal.
+    function handleSubmitContactForm(event) {
+        event.preventDefault();
+        const submittedName = contactForm.fullName.trim();
+        const submittedReason = contactForm.reason.trim();
+        const submittedMessage = contactForm.message.trim();
+        if (
+            !submittedName || !submittedReason || !submittedMessage
+        ) {
+            return;
+        }
+        // No API, so no message is permanently saved.
+        setContactForm({
+            fullName: "", reason: "", message: "",
+        });
+        setShowContactForm(false);
+        setMessageSent(true);
+    }
+
+    return (
+        <div>
+            {/* DT-59: User Dashboard / Welcome page */}
+            <div className="navbar">
+                <div className="navbar-left">
+                    <div className="avatar">CH</div>
+                    <div>
+                        <div className="navbar-title">{t('portal.title')}</div>
+                        <div className="navbar-subtitle">Welcome, {fullName}
+                        {/* DT-144: show upcoming appointment notification*/}
+                        {upcomingAppt && (
+                            <span className="notification-icon"
+                                title={`Upcoming: ${upcomingAppt.service} — ${upcomingAppt.date} at ${upcomingAppt.time.split(' - ')[0]}`}
+                            >
+                                🔔
+                                <span className="notification-badge">!</span>
+                        </span>
+                    )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* Message Provider form */}
+            <div className="content">
+                {showContactForm ? (
+                    <section className="portal-contact-form-card">
+                        <div className="portal-contact-form-heading">
+                            <h1>Contact Your Provider</h1>
+                             <p>
+                                Complete the form below and a member of your care team
+                                will follow up with you.
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSubmitContactForm}>
+                            <div className="field">
+                                <label htmlFor="contact-full-name">
+                                    Full Name *
+                                </label>
+
+                            <input
+                                id="contact-full-name"
+                                type="text"
+                                name="fullName"
+                                value={contactForm.fullName}
+                                onChange={handleContactFormChange}
+                                placeholder="Enter your full name"
+                                required
+                            />
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="contact-reason">
+                                Reason for Message *
+                            </label>
+
+                            <select
+                                id="contact-reason"
+                                name="reason"
+                                value={contactForm.reason}
+                                onChange={handleContactFormChange}
+                                required
+                            >   {/* Easy dropdown menu for reason of message */}
+                                <option value="">Select a reason</option>
+                                <option value="Appointment question">
+                                    Appointment question
+                                </option>
+                                <option value="Home health question">
+                                    Home health question
+                                </option>
+                                <option value="Hospice question">
+                                    Hospice question
+                                </option>
+                                <option value="Billing question">
+                                    Billing question
+                                </option>
+                                <option value="General question">
+                                    General question
+                                </option>
+                                <option value="Other">
+                                    Other
+                                </option>
+                            </select>
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="contact-message">
+                                Message *
+                            </label>
+
+                            <textarea
+                                id="contact-message"
+                                name="message"
+                                value={contactForm.message}
+                                onChange={handleContactFormChange}
+                                placeholder="Describe your question in more detail"
+                                rows="7"
+                                required
+                            />
+                        </div>
+
+                        <div className="portal-contact-form-actions">
+                            <button
+                                type="button"
+                                className="btn-secondary"
+                                onClick={handleCancelContactForm}
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="btn-primary"
+                            >
+                                Submit Message
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            ) : (
+                <>  {/* Will show temporary confirmation message after submition */}
+                    {messageSent && (
+                        <div
+                            className="portal-message-success"
+                            role="status"
+                        >
+                            Your message was successfully sent. A member of your
+                            care team will follow up with you.
+                        </div>
+                    )}
+                <div className="welcome-banner">
+                    <h1>{t('portal.welcomeBanner')}</h1>
+                    <p>{t('portal.welcomeSubtitle')}</p>
+                </div>
 
       const hoursUntil = (apptDateTime - now) / (1000 * 60 * 60)
       return hoursUntil > 0 && hoursUntil <= 48
@@ -127,13 +290,28 @@ function PortalPage () {
   function isPastAppt (appt) {
     if (appt.status === 'Cancelled') return true // Cancelled appointments are considered past
 
-    const apptDate = new Date(appt.date)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0) // Set to midnight for accurate comparison
-    return apptDate < today
-  }
+                {/*Profile Settings Card - opens modal*/}
+                <div className="card" onClick={()=>setShowProfile(true)}>
+                    <div className="card-icon card-icon-purple">
+                        <Settings size={20}/>
+                    </div>
+                    <h3>Profile Settings</h3>
+                    <p>Update your contact information and preferences</p>
+                </div>
+                
+                {/* Button to message provider */}
+                <button
+                    type="button"
+                    className="card portal-contact-card"
+                    onClick={handleOpenContactForm}
+                >
+                    <div className="card-icon card-icon-contact">
+                    <MessageCircle size={20} />
+                    </div>
 
-  const upcomingAppt = getUpcomingAppointments()
+                    <h3>Contact Your Provider</h3>
+                    <p>Send a question or message to your care team</p>
+                </button>
 
   return (
     <div>
@@ -191,10 +369,8 @@ function PortalPage () {
             <div className='card-icon card-icon-purple'>
               <Settings size={20} />
             </div>
-            <h3>Profile Settings</h3>
-            <p>Update your contact information and preferences</p>
-          </div>
-
+        </>
+        )}
         </div>
 
         {/* DT-62: My Appointments Table */}
