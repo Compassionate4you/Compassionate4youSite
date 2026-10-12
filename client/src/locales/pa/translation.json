@@ -38,7 +38,18 @@
     "contactFormEmailPlaceholder": "tuhada.email@example.com",
     "contactFormMessage": "ਸੁਨੇਹਾ",
     "contactFormMessagePlaceholder": "ਅਸੀਂ ਤੁਹਾਡੀ ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦੇ ਹਾਂ?",
-    "contactFormButton": "ਸੁਨੇਹਾ ਭੇਜੋ"
+    "contactFormButton": "ਸੁਨੇਹਾ ਭੇਜੋ",
+    "contactFormRequiredNote": "ਸਾਰੇ ਖਾਨੇ ਲਾਜ਼ਮੀ ਹਨ।",
+    "contactFormSending": "ਭੇਜਿਆ ਜਾ ਰਿਹਾ ਹੈ...",
+    "contactFormSuccess": "ਸੰਪਰਕ ਕਰਨ ਲਈ ਧੰਨਵਾਦ। ਅਸੀਂ ਜਲਦੀ ਤੁਹਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰਾਂਗੇ।",
+    "contactFormError": "ਅਸੀਂ ਤੁਹਾਡਾ ਸੁਨੇਹਾ ਨਹੀਂ ਭੇਜ ਸਕੇ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜਾਂ ਸਾਡੇ ਦਫ਼ਤਰ ਨੂੰ ਕਾਲ ਕਰੋ।",
+    "contactFormErrors": {
+      "nameRequired": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਨਾਮ ਲਿਖੋ।",
+      "emailRequired": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਈਮੇਲ ਪਤਾ ਲਿਖੋ।",
+      "emailInvalid": "ਕਿਰਪਾ ਕਰਕੇ ਸਹੀ ਈਮੇਲ ਪਤਾ ਲਿਖੋ।",
+      "messageRequired": "ਕਿਰਪਾ ਕਰਕੇ ਸੁਨੇਹਾ ਲਿਖੋ।",
+      "messageTooShort": "ਕਿਰਪਾ ਕਰਕੇ ਸਾਨੂੰ ਥੋੜ੍ਹਾ ਹੋਰ ਦੱਸੋ ਤਾਂ ਜੋ ਅਸੀਂ ਮਦਦ ਕਰ ਸਕੀਏ।"
+    }
   },
   "homeHealth": {
     "title": "ਘਰੇਲੂ ਸਿਹਤ ਸੇਵਾ",

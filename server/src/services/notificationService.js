@@ -46,7 +46,7 @@ function toE164(phone) {
     return null;
 }
 
-async function sendEmail({ to, subject, body }) {
+async function sendEmail({ to, subject, body, html, replyTo }) {
     if (!emailConfigured) {
         // eslint-disable-next-line no-console
         console.log(`[email skipped - no SendGrid credentials] to=${to} subject="${subject}"`);
@@ -54,12 +54,18 @@ async function sendEmail({ to, subject, body }) {
     }
 
     try {
-        await sgMail.send({
+        const payload = {
             to,
             from: SENDGRID_FROM_EMAIL,
             subject,
             text: body,
-        });
+        };
+        // DT-629: HTML body when a template supplied one.
+        if (html) payload.html = html;
+        // Lets staff reply straight to the person who wrote in.
+        if (replyTo) payload.replyTo = replyTo;
+
+        await sgMail.send(payload);
         return { delivered: true, channel: 'email', to };
     } catch (err) {
         // SendGrid puts the useful detail in response.body.

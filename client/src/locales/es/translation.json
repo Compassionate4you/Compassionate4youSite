@@ -38,7 +38,18 @@
     "contactFormEmailPlaceholder": "tu.correo@ejemplo.com",
     "contactFormMessage": "Mensaje",
     "contactFormMessagePlaceholder": "¿Cómo podemos ayudarte?",
-    "contactFormButton": "Enviar mensaje"
+    "contactFormButton": "Enviar mensaje",
+    "contactFormRequiredNote": "Todos los campos son obligatorios.",
+    "contactFormSending": "Enviando...",
+    "contactFormSuccess": "Gracias por comunicarse con nosotros. Le responderemos pronto.",
+    "contactFormError": "No pudimos enviar su mensaje. Inténtelo de nuevo o llame a nuestra oficina.",
+    "contactFormErrors": {
+      "nameRequired": "Por favor, escriba su nombre.",
+      "emailRequired": "Por favor, escriba su correo electrónico.",
+      "emailInvalid": "Por favor, escriba un correo electrónico válido.",
+      "messageRequired": "Por favor, escriba un mensaje.",
+      "messageTooShort": "Por favor, cuéntenos un poco más para poder ayudarle."
+    }
   },
   "hospice": {
     "blurb": {
