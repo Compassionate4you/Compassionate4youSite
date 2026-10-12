@@ -23,10 +23,10 @@ function Navbar () {
   }
 
   return (
-    <nav className='navbar' aria-label={i18n.language.startsWith('es') ? 'Navegación principal' : 'Main navigation'}>
-      <div className='logo'>
-        <Link to='/'>
-          <img src={logo} alt='CompassionateLogo' className='logo-img' />
+    <nav className="navbar" aria-label={i18n.language.startsWith("es") ? "Navegación principal" : i18n.language.startsWith("ur") ? "مرکزی نیویگیشن" : i18n.language.startsWith("pa") ? "ਮੁੱਖ ਨੈਵੀਗੇਸ਼ਨ" : "Main navigation"}>
+      <div className="logo">
+        <Link to="/">
+          <img src={logo} alt="Compassionate Home Health and Hospice logo" className="logo-img"/>
         </Link>
       </div>
 

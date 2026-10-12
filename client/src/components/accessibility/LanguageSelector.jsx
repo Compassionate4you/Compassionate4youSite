@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useTranslation } from 'react-i18next';
 
 
 //The language selector likely needs work regarding its core functionality, but for now it will switch the language variable to what was chosen.
@@ -32,6 +32,9 @@ function LanguageSelector(){
                     </button>
                     <button className="LanguageOption" onClick={handleLanguageChange} value="Vietnamese">
                         Vietnamese
+                    </button>
+                    <button className="LanguageOption" onClick={handleLanguageChange} value="ur">
+                        اردو
                     </button>
                 </html>
             ) : ( <></> )}
