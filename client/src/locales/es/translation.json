@@ -436,5 +436,85 @@
       "required": "Complete todos los campos.",
       "passwordMismatch": "Las contraseñas no coinciden."
     }
+  },
+  "layout": {
+    "skipToMain": "Saltar al contenido principal"
+  },
+  "homeHealthPage": {
+    "scheduleConsultation": "Programar una consulta",
+    "advantagesTitle": "Ventajas de la Salud en Casa",
+    "advantages": [
+      "Nos encargamos de todas las obligaciones del empleador en nómina, impuestos y compensación",
+      "Más rentable que la hospitalización",
+      "Recuperación más rápida de los pacientes",
+      "Los pacientes tienen derecho a participar en su plan de atención",
+      "Los servicios se prestan en el lugar de residencia del paciente",
+      "Prevención de infecciones adquiridas en el hospital",
+      "Transición de cuidados, prevención de caídas y capacitación en el uso de equipo médico"
+    ],
+    "specialtyTitle": "Servicios Especializados",
+    "specialties": [
+      "Insuficiencia cardíaca congestiva (ICC)",
+      "EPOC (enfermedad pulmonar obstructiva crónica)",
+      "Terapia ortopédica posquirúrgica (reemplazo de articulaciones)",
+      "Cuidado de heridas",
+      "Infusión intravenosa (I.V.)",
+      "Terapia física, ocupacional y del habla",
+      "Manejo de medicamentos",
+      "Cuidado de catéteres",
+      "Educación sobre dieta, ejercicio y nutrición",
+      "Análisis de laboratorio (PT/INR, extracción de sangre)"
+    ],
+    "ctaTitle": "Comience hoy su atención de salud en casa",
+    "ctaDescription": "Permítanos ayudarle a usted o a su ser querido a recibir la atención de calidad que merece en la comodidad de su hogar.",
+    "ctaSchedule": "Programar una cita",
+    "ctaBack": "Volver al inicio"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "items": [
+      {
+        "question": "¿Qué ofrece el cuidado de hospicio?",
+        "answer": "El hospicio ofrece atención por parte de un equipo de profesionales de diversas especialidades que trabajan juntos para satisfacer las necesidades médicas, psicológicas y espirituales de usted y de su familia."
+      },
+      {
+        "question": "¿Qué otros beneficios tienen los pacientes bajo cuidado de hospicio?",
+        "answer": "Una vez que sea admitido en el Programa de Hospicio, se le proporcionarán dispositivos médicos, suministros médicos y medicamentos para el alivio de los síntomas y el dolor."
+      },
+      {
+        "question": "¿Quién brinda la atención?",
+        "answer": "El pilar de nuestro servicio es un equipo de profesionales altamente cualificados y capacitados que brindan una atención compasiva y personalizada, adaptada a las necesidades únicas de cada individuo. Contamos con un equipo multidisciplinario compuesto por diversos profesionales, incluyendo médicos, enfermeros, trabajadores sociales, capellanes y auxiliares de cuidados paliativos, para ofrecer atención y apoyo integral a los pacientes y sus familias. Otras disciplinas, como fisioterapeutas, terapeutas ocupacionales y terapeutas del habla, así como voluntarios y especialistas en duelo, también pueden participar, según las necesidades específicas e individualizadas del paciente y las indicaciones del proveedor de cuidados paliativos."
+      },
+      {
+        "question": "¿Qué tipo de ayuda podría necesitar?",
+        "answer": "En algún momento, es posible que deba permanecer en cama y no pueda darse la vuelta ni comer sin ayuda. Es posible que su cuidador deba cambiarle los pañales y la ropa de cama, así como cuidar su piel para prevenir las úlceras por presión. Los enfermeros de cuidados paliativos enseñarán a los cuidadores cómo realizar estas tareas."
+      },
+      {
+        "question": "¿Qué pasa si surge una situación difícil?",
+        "answer": "Comprendemos que los cuidadores pueden enfrentar situaciones difíciles. Una línea telefónica disponible las 24 horas pone al cuidador en contacto con un enfermero especializado en cuidados paliativos, quien puede ofrecer asesoramiento telefónico o realizar una visita domiciliaria si es necesario."
+      }
+    ]
+  },
+  "accountBenefits": {
+    "title": "¿Por qué debería crear una cuenta?",
+    "items": [
+      {
+        "heading": "¡Reserve citas en segundos!",
+        "description": "Complete fácilmente la solicitud y reserve su primera cita con nosotros. Podrá ver sus citas programadas y la información sobre la ubicación, la hora y más."
+      },
+      {
+        "heading": "Reprograme con facilidad",
+        "description": "Simplemente inicie sesión con la información de su cuenta y, con unos pocos clics, podrá cambiar la fecha, la hora y el lugar de su cita. Todo se guarda en la información de su cuenta."
+      },
+      {
+        "heading": "No se pierda ninguna visita",
+        "description": "Si se registra y crea una cuenta, podrá ver y modificar toda su información según sea necesario, y consultar los detalles importantes de su primera visita y de las siguientes."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "message": "Lo sentimos, no pudimos encontrar la página que busca. Es posible que se haya movido, cambiado de nombre o que no exista.",
+    "home": "Volver a la página principal"
   }
 }

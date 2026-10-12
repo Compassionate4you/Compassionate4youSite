@@ -69,7 +69,7 @@
   padding: 8px 16px;
   border: 2px solid #000;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: var(--color-white);
   color: #dc2626;
   font-weight: 600;
   text-align: center;
@@ -94,13 +94,14 @@
   padding: 12px 18px;
   border: 2px solid #000;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: var(--color-white);
   font-weight: 600;
   text-align: center;
 }
 
 .admin-tabs button:hover {
-  background-color: #f2f5f2;
+  background-color: var(--color-black);
+  color: var(--color-black-text);
 }
 
 .admin-tabs button.active {
