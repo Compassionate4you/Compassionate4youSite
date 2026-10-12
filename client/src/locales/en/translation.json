@@ -38,7 +38,18 @@
     "contactFormEmailPlaceholder": "your.email@example.com",
     "contactFormMessage": "Message",
     "contactFormMessagePlaceholder": "How can we help you?",
-    "contactFormButton": "Send Message"
+    "contactFormButton": "Send Message",
+    "contactFormRequiredNote": "All fields are required.",
+    "contactFormSending": "Sending...",
+    "contactFormSuccess": "Thank you for reaching out. We will get back to you soon.",
+    "contactFormError": "We couldn't send your message. Please try again or call our office.",
+    "contactFormErrors": {
+      "nameRequired": "Please enter your name.",
+      "emailRequired": "Please enter your email address.",
+      "emailInvalid": "Please enter a valid email address.",
+      "messageRequired": "Please enter a message.",
+      "messageTooShort": "Please tell us a little more so we can help."
+    }
   },
   "homeHealth": {
     "title": "Home Health",

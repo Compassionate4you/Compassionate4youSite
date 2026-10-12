@@ -3,6 +3,7 @@ import CareImage1 from '../assets/images/CareImage1.jpeg'
 import Puzzle from '../assets/images/working_a_puzzle_together.jpeg'
 import Couple from '../assets/images/older_couple_smiling.jpeg'
 import Faq from '../components/FAQ'
+import ContactForm from '../components/ContactForm'
 
 import { useTranslation } from 'react-i18next'
 import '../styles/map.css'
@@ -160,35 +161,9 @@ function LandingPage () {
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className='contact-form-card'>
-            <form className='contact-form'>
-              <label htmlFor='name'>{t('landing.contactFormName')}</label>
-              <input
-                id='name'
-                type='text'
-                placeholder={t('landing.contactFormNamePlaceholder')}
-              />
+          {/* Contact Form (DT-567) */}
+          <ContactForm />
 
-              <label htmlFor='email'>{t('landing.contactFormEmail')}</label>
-              <input
-                id='email'
-                type='email'
-                placeholder={t('landing.contactFormEmailPlaceholder')}
-              />
-
-              <label htmlFor='message'>{t('landing.contactFormMessage')}</label>
-              <textarea
-                id='message'
-                rows='6'
-                placeholder={t('landing.contactFormMessagePlaceholder')}
-              />
-
-              <button type='submit' className='contact-btn'>
-                {t('landing.contactFormButton')}
-              </button>
-            </form>
-          </div>
         </div>
         {/* DT-352 Map Adjustments */}
       </section>

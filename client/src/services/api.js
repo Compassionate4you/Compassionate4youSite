@@ -82,8 +82,14 @@ export function apiGetMyAppointments () {
   return request('/appointments/mine')
 }
 
+// DT-567: contact form.
+export function apiSubmitContactForm (payload) {
+  return request('/contact', { method: 'POST', body: payload })
+}
+
 export default {
   sendChatMessage,
+  apiSubmitContactForm,
   apiSignup,
   apiLogin,
   apiLogout,

@@ -1,0 +1,263 @@
+# Sprint Summary — Gandhar Tare
+
+Two sprints of work on Compassionate4You. 59 files changed, ~4,700 lines
+added, 31 subtasks across 7 Jira tickets, 36 automated tests passing.
+
+---
+
+# SPRINT 1 — Chatbot
+
+Commit c1d9809 · September 12, 2026 · PR #46
+24 files changed, +1,630 / −719
+Tickets: DT-169, DT-170, DT-172, DT-387
+
+## Theme
+
+Made the chatbot usable: closeable without losing your conversation,
+history that survives page reloads, and an FAQ bank that answers common
+questions and links to the right page.
+
+## Files changed
+
+### Chatbot UI (client/src/components/chatbot/)
+
+ChatbotWidget.jsx  (+14)
+    The key fix. Moved chat state up from ChatWindow into this component.
+    ChatWindow unmounts when the window is closed, so state living there
+    was destroyed every time. This is why conversations vanished.
+
+ChatWindow.jsx  (+43)
+    Replaced the minus glyph with an SVG X. Added the "Common questions"
+    toggle. Now receives messages as props instead of owning them.
+
+FaqPanel.jsx  (+31, new file)
+    The FAQ question list. Clicking a question sends it through the normal
+    message flow, so it is answered identically to typing it.
+
+ActionButton.jsx  (+17)
+    Added a navigate action so buttons can route to pages, alongside the
+    existing accessibility actions.
+
+MessageBubble.jsx  (+1)
+    One-line bug fix. It was not passing the "to" prop through, so every
+    page-link button silently did nothing.
+
+styles/ChatWindow.css  (+89)
+    FAQ panel styling. Close button sized in em units so it scales with
+    the accessibility text-size controls.
+
+data/faq.js  (+130, new file)
+    12 FAQ entries. Each has a question, keywords, an answer, and an
+    optional page link.
+
+engine/matcher.js  (+46)
+    Added keyword scoring for FAQs. Longest match wins. Accessibility
+    commands still take priority.
+
+engine/responseBuilder.js  (+18)
+    Builds FAQ replies along with their page-link buttons.
+
+hooks/useChatbot.js  (+25)
+    Now mirrors every message to the backend.
+
+hooks/useChatHistory.js  (+89, new file)
+    Session id kept in localStorage. Loads history on mount. Fails
+    silently if the API is unreachable.
+
+services/chatHistoryApi.js  (+37, new file)
+    loadHistory() and saveMessage().
+
+### Backend (server/)
+
+src/config/db.js  (+19, new file)
+    Was an empty file. Prisma client over the pg adapter. This is the
+    Supabase connection (DT-387).
+
+src/controllers/chatHistoryController.js  (+81, new file)
+    GET and POST history. Capped at 50 messages, trimmed server-side.
+
+src/middleware/errorMiddleware.js  (+22, new file)
+    Was an empty file. Central error handler.
+
+src/routes/chatbotRoutes.js  (+8)
+    Added the two history routes.
+
+src/app.js  (+4)
+    Wired in the error middleware.
+
+prisma/schema.prisma  (+64)
+    ChatSession and ChatMessage models.
+
+.env.example, prisma.config.ts, package.json  (+15)
+    Supabase connection strings documented. pg adapter added.
+
+### Internationalisation
+
+locales/en/translation.json, locales/es/translation.json
+    FAQ button, intro text, and link labels in both languages.
+
+## How it works
+
+Conversation survives closing
+    ChatbotWidget is rendered in App.jsx outside the router, so it never
+    unmounts. Moving state there means closing the window unmounts only
+    the view, not the data.
+
+History survives refresh
+    Each browser gets a UUID stored in localStorage. Messages POST to
+    /api/chatbot/history. On load the page GETs them back. Capped at 50
+    so sessions cannot grow forever.
+
+FAQ matching
+    Each entry has keywords. An incoming message scores against all 12 by
+    total matched keyword length, so longer and more specific phrases beat
+    short generic ones. Below threshold, the message falls through to the
+    backend.
+
+---
+
+# SPRINT 2 — Auth, Scheduling, Testing
+
+Commits e4743e4 and 049f438 · September 25, 2026 · PR #64
+35 files changed, +3,112 / −139
+Tickets: DT-491, DT-521, DT-357
+
+## Theme
+
+Real authentication with persistent sessions, appointments saved to the
+database with double-booking prevention, and the project's first
+automated test suite.
+
+## Files changed
+
+### Authentication
+
+server/src/utils/token.js  (+49, new file)
+    JWT signing and verification. httpOnly cookie helpers.
+
+server/src/middleware/authMiddleware.js  (+24, new file)
+    Was an empty file. attachUser reads the session cookie on every
+    request. requireAuth gates protected routes.
+
+server/src/controllers/authController.js  (+32)
+    Added session issuance on login and signup, plus logout and me.
+
+server/src/routes/authRoutes.js  (+15)
+    Added /logout and /me.
+
+server/src/app.js  (+17)
+    Mounted /api/auth. It had been commented out, so the existing auth
+    code was unreachable. Also added cookie parsing and credentialed CORS.
+
+client/src/context/AuthContext.jsx  (+179)
+    Rewritten to call the real backend. Restores the session on load.
+    Test accounts kept as a fallback.
+
+client/src/pages/SignupPage.jsx  (+136, new file)
+    Signup form with password confirmation.
+
+client/src/pages/LoginPage.jsx  (+44)
+    Async submit, server error display, disabled while submitting.
+
+client/src/services/api.js  (+74)
+    credentials: 'include' so session cookies flow. Typed ApiError that
+    carries the server's field name for form highlighting.
+
+### Scheduling
+
+server/src/controllers/appointmentController.js  (+143, new file)
+    Booking, availability lookup, and a user's own appointments.
+
+server/src/routes/appointmentRoutes.js  (+18, new file)
+    Three endpoints.
+
+server/src/services/notificationService.js  (+57, then +105)
+    SendGrid for email, Twilio for SMS. Skips cleanly when credentials
+    are absent. E.164 phone number normalisation.
+
+server/prisma/schema.prisma  (+42)
+    Appointment model with a unique constraint on date and time slot.
+
+client/src/pages/SchedulePage.jsx  (+92)
+    Loads real availability, disables booked slots, saves to the API.
+
+client/src/routes/AppRoutes.jsx  (+2)
+    Added the /signup route.
+
+### Database migrations
+
+20260925000000_add_appointments/
+    The appointments table.
+
+20260912000000_add_chat_history/
+    Documented the chat tables, which had been created with db push and
+    had no migration file.
+
+20260911172150_placeholder/
+    Recreated a deleted file that was blocking all migrations.
+
+Why this mattered: Prisma refused to run and wanted a full database
+reset, which would have destroyed a teammate's user data and 18 chat
+messages. Resolved without any data loss.
+
+### Testing
+
+client/src/pages/__tests__/SchedulePage.test.jsx  (+337, new file)
+    24 tests covering rendering, the happy path, validation, and edge
+    cases.
+
+client/src/pages/__tests__/SchedulingConfirmation.test.jsx  (+84, new)
+    6 tests on the confirmation and details screens.
+
+client/vitest.config.js, client/src/test/setup.js  (+30, new files)
+    First test infrastructure in the client.
+
+server/jest.setup.js  (+3, new file)
+    Test-only JWT secret.
+
+docs/test-plan.md  (+99, new file)
+    30 cases planned before any test code was written.
+
+docs/test-report.md  (+111, new file)
+    Results, including how many attempts each case needed.
+
+## How it works
+
+Sessions
+    Login causes the server to sign a JWT, stored in an httpOnly cookie
+    with a 7-day expiry. The browser sends it automatically because the
+    fetch client uses credentials: 'include'. On page load,
+    GET /api/auth/me restores the session. JavaScript can never read the
+    token, so an XSS bug cannot steal it.
+
+Double-booking blocked twice
+    First by an explicit check, then by a database unique constraint on
+    (date, time slot). The second matters: two simultaneous submissions
+    can both pass the check, but the database rejects the loser, who gets
+    a clean "that time has just been booked" message rather than a crash.
+
+Notifications never block a booking
+    The send is wrapped in a try/catch. A bounced email does not lose the
+    appointment.
+
+---
+
+# Worth highlighting
+
+The tests found a real bug.
+    Eight cases failed on the first run. The scheduling form had required
+    attributes but no noValidate, so the browser's native validation popup
+    fired before our code ran. The translated error message was
+    unreachable in a real browser, not just in tests, and users saw an
+    English browser tooltip instead of the proper message in their own
+    language. One-line fix, documented in the test report.
+
+Two bugs caught before merge.
+    That one, plus the MessageBubble prop that silently broke every
+    chatbot page link.
+
+Totals
+    59 files changed
+    ~4,700 lines added
+    31 subtasks across 7 tickets
+    36 tests passing (30 client, 6 server)

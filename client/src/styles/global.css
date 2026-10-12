@@ -118,6 +118,14 @@ html {
 }
 :root[data-theme="dark"] {
     color-scheme: dark;
+
+    /* DT-628: dark surface tokens, so components can theme from one place
+       instead of each hard-coding its own dark palette. */
+    --color-dark-surface: #1f2422;
+    --color-dark-surface-raised: #2a302d;
+    --color-dark-text: #f0f2ee;
+    --color-dark-muted-text: #a8b0ab;
+    --color-dark-divider: #3a423e;
 }
 :root.high-contrast {
     filter: contrast(1.4);
