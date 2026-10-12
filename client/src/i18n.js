@@ -3,26 +3,22 @@ import { initReactI18next } from 'react-i18next';
 
 import en from './locales/en/translation.json';
 import es from './locales/es/translation.json';
-import pa from './locales/pa/translation.json';
-import ur from './locales/ur/translation.json';
-
-const resources = {
-    en: { translation: en },
-    es: { translation: es },
-    pa: { translation: pa },
-    ur: { translation: ur },
-};
-
-/*  Adjust page format so urdu can be read from right to left easily  */
-function applyDocumentLanguage(language) {
-    if (typeof document === 'undefined') return;
-    const locale = String(language || 'en').split('-')[0];
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === 'ur' ? 'rtl' : 'ltr';
-}
+import pa from './locales/pa/translation.json'; //DT-145 : Punjabi language
+import zh from './locales/zh/translation.json'; //DT-146
+import vi from './locales/vi/translation.json';
+import ur from './locales/ur/translation.json';//DT-143
+import hi from './locales/hi/translation.json' // DT-147 : Hindi language
 
 i18n.use(initReactI18next).init({
-    resources,
+    resources: {
+        en: { translation: en },
+        es: { translation: es },
+        pa: { translation: pa },
+        zh: { translation: zh },
+        vi: { translation: vi },
+        hi: { translation: hi },
+        ur: { translation: ur }
+    },
     lng: 'en',
     fallbackLng: 'en',
     supportedLngs: ['en', 'es', 'pa', 'ur'],
