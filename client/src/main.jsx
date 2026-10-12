@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-
+import './styles/card-sections.css';
 import './i18n';
 import './styles/reset.css';
 

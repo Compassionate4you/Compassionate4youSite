@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
 
 :root {
+    --theme-transition: background-color 0.75s ease, color 0.75s ease, border-color 0.75s ease, box-shadow 0.75s ease;
+
     /* Base Site Colors */
     --color-white: #ffffff;
     --color-light-gray: #D9D9D9;
@@ -27,6 +29,7 @@
     /* TODO: Decide on final text colors. */
     /* Primary Text Colors - These are the text colors for text within the base colors. */
     --color-white-text: #000000;
+    --color-black-text: #ffffff;
     --color-light-gray-text: #000000;
     --color-gray-text: #000000;
     --color-charcoal-text: #000000;
@@ -39,6 +42,26 @@
     --color-green-text: #000000;
     --color-purple-text: #000000;
     --color-lavender-text: #000000;
+
+    /* DT-591: Shared UI tokens so pages use the same buttons, inputs, borders and text colors */
+    --color-primary: #366454; /* Primary color for buttons, links, and other interactive elements */
+    --color-primary-hover: #294f42; /* Hover state for primary color */
+    --color-primary-text: #ffffff;  /* Text color for primary buttons and links */ 
+    --color-primary-emphasis: #366454;
+    --color-danger: #dc2626;    /* Red color for error messages and destructive actions */
+    --color-danger-hover: #b91c1c;  /* Hover state for danger color */
+    --color-success: #15803d;   /* Green color for success messages and confirmations */
+    --color-link: #2563eb;  /* Blue color for hyperlinks */
+    --color-link-hover: #1d4ed8;    /* Hover state for hyperlinks */
+    --color-muted-text: #6b7280;    /* Gray color for secondary or less important text */
+    --color-input-border: #d1d5db;  /* Border color for input fields */
+    --color-divider: #e5e7eb;   /* Color for dividers and borders between sections */
+    --radius-sm: 6px;   /* Small border radius for buttons and inputs */
+    --radius-md: 8px;   /* Medium border radius for cards and containers */
+    --radius-lg: 12px;  /* Large border radius for modals and larger containers */
+    --font-body: Arial, sans-serif; /* Font family for body text */
+    --font-heading: 'Crimson Text', serif;  /* Font family for headings */
+ 
 }
 
 /* TODO: decide on dark mode colors. */
@@ -50,6 +73,7 @@
     --color-charcoal: #262626;
     --color-light-green: #dbe4c3;
     --color-sage: #9da191;
+    --color-black: #ffffff;
 
     /* Dark Mode Cool Tones - Cool tones in dark mode. */
     --color-teal: #000000;
@@ -60,6 +84,7 @@
 
     /* Dark Mode Primary Text Colors - Primary text colors in dark mode. */
     --color-white-text: #ffffff;
+    --color-black-text: #000000;
     --color-light-gray-text: #ffffff;
     --color-gray-text: #ffffff;
     --color-charcoal-text: #000000;
@@ -72,11 +97,53 @@
     --color-green-text: #000000;
     --color-purple-text: #000000;
     --color-lavender-text: #000000;
+
+    /* DT-591: Dark mode values for the shared UI variables */
+    --color-page-background: #222829;
+    --color-divider: #3a4244;
+    --color-input-border: #596467;
+    --color-muted-text: #a1a8b3;
+    --color-link: #60a5fa;
+    --color-link-hover: #93c5fd;    /* lighter shade of blue for dark mode */
+    --color-primary-emphasis: #7fbfa6; /* lighter shade of green for dark mode */ 
 }
 
 .app {
     background-color: var(--color-white);
     color: var(--color-white-text);
+    transition: var(--theme-transition);
+}
+
+body,
+main,
+section,
+article,
+header,
+footer,
+nav,
+aside,
+div,
+button,
+a,
+input,
+textarea,
+select,
+table,
+thead,
+tbody,
+tr,
+th,
+td,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+li {
+    transition: var(--theme-transition);
 }
 
 h1, h2, h3 {
@@ -84,9 +151,9 @@ h1, h2, h3 {
 }
 
 /* Accessibility consumer rules (DT-335). */
-html {
-    font-size: calc(16px * var(--text-scale, 1));
-}
+/*html {*/
+/*    font-size: calc(16px * var(--text-scale, 1));*/
+/*}*/
 :root[data-theme="dark"] {
     color-scheme: dark;
 }

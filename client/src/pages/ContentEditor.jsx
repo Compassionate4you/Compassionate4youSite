@@ -1,179 +1,87 @@
-//  * Task: DT-508
-//  * Author: PBall
-//  * Sprint: Sprint 6
+// DT-517 Sprint 7
+// PBall
+// Content Editor page incorporating tool switchers for Colors, Text, Sections, Cards, and Audit History
 
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import TranslationTreeExplorer from "../components/admin/content/TranslationTreeExplorer";
-import ContentHistoryDrawer from "../components/admin/content/ContentHistoryDrawer";
-import ModularContentBuilder from "../components/admin/content/ModularContentBuilder";
-import DynamicSectionRenderer from "../components/modular/DynamicSectionRenderer";
-import { saveEnglishText } from "../services/contentStorageService";
-import { AuditHistoryService } from "../services/auditHistoryService";
-import { syncKeyToLocales } from "../services/translationSyncService";
-import "../styles/contenteditor.css";
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import ColorConfigTool from '../components/admin/content/ColorConfigTool'
+import TextConfigTool from '../components/admin/content/TextConfigTool'
+import SectionManager from '../components/admin/content/SectionManager'
+import CardManager from '../components/admin/content/CardManager'
+import AuditHistoryTool from '../components/admin/content/AuditHistoryTool'
+import '../styles/contenteditor.css'
 
-const ContentEditor = () => {
-  const navigate = useNavigate();
-  const [dirtyNodes, setDirtyNodes] = useState({});
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [notification, setNotification] = useState("");
-  const [sections, setSections] = useState([]);
-  const [previewDraftId, setPreviewDraftId] = useState(`draft-${Date.now()}`);
+export default function ContentEditor () {
+  const navigate = useNavigate()
+  const [activeTool, setActiveTool] = useState('text')
+  const [notification, setNotification] = useState('')
 
-  //DT-492 Content Editor - Preston Ball: Handles changes from the TranslationTreeExplorer component, updating the dirtyNodes state with the modified keypath and its new value.
-  const handleNodeChange = (change) => {
-    const pathStr = change.keyPath.join(".");
-    setDirtyNodes((prev) => ({
-      ...prev,
-      [pathStr]: {
-        keyPath: change.keyPath,
-        currentValue: change.currentValue,
-        originalValue: prev[pathStr]?.originalValue ?? change.currentValue,
-      },
-    }));
-  };
-
-  //DT-492 Content Editor - Preston Ball: Handles the addition of a new modular section, updating the sections state and preview draft ID.
-  const handleAddSection = (newSection) => {
-    setSections((prev) => [...prev, newSection]);
-    setPreviewDraftId(`draft-${Date.now()}`);
-    setNotification(`Appended modular section: "${newSection.title}"`);
-    setTimeout(() => setNotification(""), 3000);
-  };
-
-  //DT-492 Content Editor - Preston Ball: Handles the "Save All" action, persisting all dirty nodes and staged modular sections, synchronizing translations, and recording audit history entries.
-  const handleSaveAll = async () => {
-    const keys = Object.keys(dirtyNodes);
-    if (keys.length === 0 && sections.length === 0) {
-      setNotification("No changes detected to save.");
-      setTimeout(() => setNotification(""), 3000);
-      return;
-    }
-
-    //DT-492 Content Editor - Preston Ball: Persist all staged modular sections to the backend or local storage (not implemented here, placeholder for future integration).
-    for (const key of keys) {
-      const item = dirtyNodes[key];
-      await saveEnglishText(item.keyPath, item.currentValue);
-      syncKeyToLocales(item.keyPath, item.currentValue);
-
-      AuditHistoryService.recordChange({
-        keyPath: item.keyPath,
-        previousValue: item.originalValue,
-        newValue: item.currentValue,
-        author: "Admin User",
-        status: "applied",
-      });
-    }
-
-    setDirtyNodes({});
-    setNotification("All changes and modular sections staged successfully!");
-    setTimeout(() => setNotification(""), 3000);
-  };
-
-  //DT-492 Content Editor - Preston Ball: Handles the revert action for a specific audit log entry, restoring the previous value and updating the audit history accordingly.
-  const handleRevert = async (log) => {
-    await saveEnglishText(log.keyPath.split("."), log.previousValue);
-    syncKeyToLocales(log.keyPath.split("."), log.previousValue);
-
-    AuditHistoryService.recordChange({
-      keyPath: log.keyPath,
-      previousValue: log.newValue,
-      newValue: log.previousValue,
-      author: "Admin User",
-      status: "reverted",
-    });
-    AuditHistoryService.markStatus(log.id, "reverted");
-    setNotification(`Reverted ${log.keyPath}`);
-    setTimeout(() => setNotification(""), 3000);
-    setIsDrawerOpen(false);
-  };
+  const handleNotify = (msg) => {
+    setNotification(msg)
+    setTimeout(() => setNotification(''), 4000)
+  }
 
   return (
     <div className="content-editor-page">
       <div className="content-editor-header-bar">
         <Link to="/admin" className="content-editor-back-link">
-          Back to Dashboard
+          &larr; Back to Dashboard
         </Link>
-        <button
-          type="button"
-          onClick={() => setIsDrawerOpen(true)}
-          className="content-editor-changelog-button"
-        >
-          View Audit Changelog ({AuditHistoryService.getLogs().length})
-        </button>
+        <span style={{ fontSize: '0.9rem', color: '#64748b' }}>
+          Admin User UUID: <code>a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d</code>
+        </span>
       </div>
 
-      <h1 className="content-editor-title">Content Editor</h1>
+      <h1 className="content-editor-title">Content Editor Suite</h1>
       <p className="content-editor-subtitle">
-        Site Translation, Copy &amp; Modular Section Management
+        Manage site colors, cascading text hierarchy, section blocks, card elements, and applied audit history.
       </p>
 
       {notification && (
-        <div className="content-editor-notification">
+        <div className="content-editor-notification" style={{ marginTop: '16px', padding: '12px 16px', background: '#dcfce7', color: '#166534', borderRadius: '8px', fontWeight: '600' }}>
           {notification}
         </div>
       )}
 
-      <div className="content-editor-workspace">
-        <TranslationTreeExplorer onNodeChange={handleNodeChange} />
-
-        {/* DT-508: Modular Content Builder */}
-        <ModularContentBuilder onAddSection={handleAddSection} />
-
-        {/* DT-508: Section Previews */}
-        {sections.length > 0 && (
-          <section className="content-editor-card">
-            <h2>Staged Modular Sections ({sections.length})</h2>
-            <div className="content-editor-staged-sections">
-              {sections.map((sec) => (
-                <DynamicSectionRenderer key={sec.id} config={sec} theme="light" />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* DT-508: Dynamic Isolated Iframe Preview */}
-        <section className="content-editor-card">
-          <h2>Runtime Iframe Preview</h2>
-          <p className="content-editor-card-description">
-            Viewport isolation check at <code>/?preview=true&amp;draftId={previewDraftId}</code>
-          </p>
-          <div className="content-editor-iframe-container">
-            <iframe
-              src={`/?preview=true&draftId=${previewDraftId}`}
-              title="Site Live Preview"
-              className="content-editor-preview-iframe"
-            />
-          </div>
-        </section>
-
-        <div className="content-editor-actions">
+      {/* Tool Switcher Tabs */}
+      <div className="content-editor-tabs" style={{ display: 'flex', gap: '8px', marginTop: '24px', flexWrap: 'wrap' }}>
+        {[
+          { id: 'text', label: '📝 Text Config' },
+          { id: 'colors', label: '🎨 Color Config' },
+          { id: 'sections', label: '📐 Section Manager' },
+          { id: 'cards', label: '🃏 Card Manager' },
+          { id: 'history', label: '📜 Audit History' }
+        ].map((tab) => (
           <button
+            key={tab.id}
             type="button"
-            className="content-editor-save-button"
-            onClick={handleSaveAll}
+            className={`content-editor-tab ${activeTool === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTool(tab.id)}
+            style={{
+              flex: 1,
+              minWidth: '140px',
+              padding: '12px 16px',
+              borderRadius: '10px',
+              border: activeTool === tab.id ? '2px solid #0f172a' : '1px solid #cbd5e1',
+              background: activeTool === tab.id ? '#0f172a' : '#ffffff',
+              color: activeTool === tab.id ? '#ffffff' : '#0f172a',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
           >
-            Save Changes ({Object.keys(dirtyNodes).length + sections.length})
+            {tab.label}
           </button>
-          <button
-            type="button"
-            className="content-editor-cancel-button"
-            onClick={() => navigate("/admin")}
-          >
-            Cancel
-          </button>
-        </div>
+        ))}
       </div>
-        {/* //DT-492 Content Editor - Preston Ball:Display the history component. */}
-      <ContentHistoryDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        logs={AuditHistoryService.getLogs()}
-        onRevert={handleRevert}
-      />
-    </div>
-  );
-};
 
-export default ContentEditor;
+      {/* Active Tool Workspace */}
+      <div className="content-editor-workspace" style={{ marginTop: '24px' }}>
+        {activeTool === 'text' && <TextConfigTool onNotification={handleNotify} />}
+        {activeTool === 'colors' && <ColorConfigTool onNotification={handleNotify} />}
+        {activeTool === 'sections' && <SectionManager onNotification={handleNotify} />}
+        {activeTool === 'cards' && <CardManager onNotification={handleNotify} />}
+        {activeTool === 'history' && <AuditHistoryTool onNotification={handleNotify} />}
+      </div>
+    </div>
+  )
+}

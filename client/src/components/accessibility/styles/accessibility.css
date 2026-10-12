@@ -31,7 +31,7 @@
   flex-shrink: 0;
 }
 .a11y-overlay {
-  display: none;
+  display: block;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.3);
@@ -271,4 +271,96 @@ html[theme='dark'] .notice {
   .opt-btn {
     min-height: 44px;
   }
+}
+
+
+/* Responsive floating controls: keep both controls inside the visual viewport. */
+.a11y-toggle {
+  max-width: min(250px, calc(100vw - 32px));
+  min-height: 44px;
+  box-sizing: border-box;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+
+.a11y-panel {
+  box-sizing: border-box;
+  max-width: 100vw;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 900px) {
+  .a11y-toggle {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    left: max(0px, env(safe-area-inset-left));
+    bottom: max(20px, env(safe-area-inset-bottom));
+    z-index: 1101;
+  }
+}
+
+@media (max-width: 480px) {
+  .a11y-toggle {
+    font-size: 14px;
+    gap: 6px;
+    padding: 10px 11px;
+  }
+
+  .a11y-panel {
+    width: min(340px, 100vw);
+    height: 100dvh;
+    height: 100vh;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+/* Urdu uses RTL reading order without blindly mirroring the entire site. */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+  font-family: "Noto Naskh Arabic", "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] .navbar,
+html[dir="rtl"] .nav-links,
+html[dir="rtl"] .footer__grid,
+html[dir="rtl"] .footer__links,
+html[dir="rtl"] .footer__contact-list {
+  direction: rtl;
+}
+
+html[dir="rtl"] .nav-links {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .a11y-toggle {
+  left: auto;
+  right: 0;
+  border-left: 2px solid #000;
+  border-right: none;
+  border-radius: 11px 0 0 11px;
+}
+
+html[dir="rtl"] .a11y-panel {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+
+html[dir="rtl"] .a11y-panel.open {
+  transform: translateX(0);
+}
+
+html[dir="rtl"] .opt-btn {
+  text-align: right;
+}
+
+html[dir="rtl"] .section-label {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+html[dir="rtl"] .a11y-toggle svg {
+  flex-shrink: 0;
 }

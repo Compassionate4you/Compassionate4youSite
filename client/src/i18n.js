@@ -1,21 +1,43 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
 
-import en from './locales/en/translation.json';
-import es from './locales/es/translation.json';
-import pa from './locales/pa/translation.json'; //DT-145 : Punjabi language
+import en from './locales/en/translation.json'
+import es from './locales/es/translation.json'
+import pa from './locales/pa/translation.json' // DT-145 : Punjabi language
+import zh from './locales/zh/translation.json' // DT-146
+import vi from './locales/vi/translation.json'
+import ur from './locales/ur/translation.json' // DT-143
+import hi from './locales/hi/translation.json' // DT-147 : Hindi language
+
+const supportedLanguages = ['en', 'es', 'pa', 'zh', 'vi', 'hi', 'ur']
+const rtlLanguages = ['ur']
+
+function applyDocumentLanguage (language) {
+  const languageCode = supportedLanguages.find((code) => language?.startsWith(code)) || 'en'
+
+  document.documentElement.lang = languageCode
+  document.documentElement.dir = rtlLanguages.includes(languageCode) ? 'rtl' : 'ltr'
+}
 
 i18n.use(initReactI18next).init({
-    resources: {
-        en: { translation: en },
-        es: { translation: es },
-        pa: { translation: pa },
-    },
-    lng: 'en',
-    fallbackLng: 'en',
-    interpolation: {
-        escapeValue: false,
-    },
-});
+  resources: {
+    en: { translation: en },
+    es: { translation: es },
+    pa: { translation: pa },
+    zh: { translation: zh },
+    vi: { translation: vi },
+    hi: { translation: hi },
+    ur: { translation: ur }
+  },
+  lng: 'en',
+  fallbackLng: 'en',
+  supportedLngs: supportedLanguages,
+  interpolation: {
+    escapeValue: false
+  }
+})
 
-export default i18n;
+i18n.on('languageChanged', applyDocumentLanguage)
+applyDocumentLanguage(i18n.language)
+
+export default i18n

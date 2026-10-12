@@ -65,7 +65,7 @@ function AccessibilityPanel() {
                 ref={toggleRef}
                 type="button"
                 className="a11y-toggle"
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpen((open) => !open)}
                 aria-label={t('accessibility.openPanel')}
                 aria-expanded={isOpen}
                 aria-controls="accessibility-panel"
@@ -82,6 +82,7 @@ function AccessibilityPanel() {
                     className="a11y-overlay"
                     onClick={() => setIsOpen(false)}
                     aria-hidden="true"
+                    data-testid="accessibility-overlay"
                 />
             )}
 
@@ -90,10 +91,10 @@ function AccessibilityPanel() {
                 ref={panelRef}
                 className={`a11y-panel ${isOpen ? 'open' : ''}`}
                 role="dialog"
-                aria-modal="true"
+                aria-modal={isOpen ? 'true' : undefined}
                 aria-labelledby="accessibility-panel-title"
                 aria-hidden={!isOpen}
-                inert={!isOpen ? '' : undefined}
+                inert={!isOpen}
             >
                 <div className="panel-header">
                     <h2 id="accessibility-panel-title">{t('accessibility.title')}</h2>
@@ -171,14 +172,21 @@ function AccessibilityPanel() {
                     <label className="sr-only" htmlFor="accessibility-language">
                         {t('accessibility.selectLanguage')}
                     </label>
+
+                    {/* DT-147: Added Hindi and Punjabi options to the language selector */}
                     <select
                         id="accessibility-language"
-                        value={i18n.language.startsWith('es') ? 'es' : 'en'}
+                        value={['en', 'es', 'pa', 'zh', 'vi', 'hi', 'ur'].find((code) => i18n.language?.startsWith(code)) || 'en'}
                         onChange={handleLanguageChange}
                         aria-label={t('accessibility.selectLanguage')}
                     >
                         <option value="en">English</option>
                         <option value="es">Español</option>
+                        <option value="pa">ਪੰਜਾਬੀ</option>
+                        <option value="zh">Mandarin</option>
+                        <option value="vi">Vietnamese</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="ur">اردو</option>
                     </select>
                 </div>
 
