@@ -101,6 +101,24 @@ model ChatMessage {
   @@index([sessionId, createdAt])
   @@map("chat_messages")
 }
+
+
+
+// DT-602: Locations database schema
+
+model Location {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  streetAddress String   @map("street_address")
+  city          String
+  state         String
+  zipCode       String   @map("zip_code")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("locations")
+
+//card layout (accepted bot changes, troubleshoot)
 enum CardLayout {
   IMAGE_FULL_WIDTH
   HEADER_PARAGRAPH

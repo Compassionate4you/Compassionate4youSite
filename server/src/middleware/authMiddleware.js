@@ -21,6 +21,7 @@ function requireAuth(req, res, next) {
     }
     return next();
 }
+
 async function requireAdmin(req, res, next) {
     if (!req.user) {
         return res.status(401).json({
@@ -29,21 +30,26 @@ async function requireAdmin(req, res, next) {
         });
     }
 
-    try {
-        const account = await prisma.user.findUnique({
+    try { 
+        const user = await prisma.user.findUnique({
             where: { id: req.user.id },
-            select: { role: true },
+            select: { role: true, accountStatus: true }, 
         });
 
-        if (!account || String(account.role).toLowerCase() !== 'admin') {
+
+// DT-610 Only allow users with the admin role to access protected routes.
+        if (!user || user.role !== 'admin' || user.accountStatus !== 'active') { //Original conflict:  String(account.role).toLowerCase() !== 'admin'
+      //if (!user || String(user.role).toLowerCase() !== 'admin' || String(user.accountStatus).toLowerCase() !== 'active' ) { //not sure if better (from merge)
             return res.status(403).json({
                 success: false,
-                error: { message: 'You do not have permission to do that.', field: null },
+                error: { message: 'Admin access required.', field: null },
             });
         }
+
         return next();
     } catch (err) {
         return next(err);
     }
 }
+
 module.exports = { attachUser, requireAuth, requireAdmin };
