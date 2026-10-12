@@ -60,24 +60,17 @@ function LandingPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="philosophy">
-        <h2 className="section-title title-philosophy">{t("landing.philosophyTitle")}</h2>
-        <p>{t("landing.philosophyText")}</p>
-      </section>
+      <CardSection slug="welcome-philosophy" className="welcome-text-section philosophy" />
 
       {/* Caring Since 2021 */}
       <section className="care">
-        <h2 className="section-title title-care">{t("landing.caringSinceTitle")}</h2>
-        <p>{t("landing.caringSinceText")}</p>
+        <CardSection slug="welcome-caring-since" className="welcome-text-section" />
 
-        <CardSection slug="welcome-info" />
+        <CardSection slug="welcome-info" className="welcome-info-section" />
       </section>
 
       {/* About */}
-      <section className="about">
-        <h2 className="section-title title-about">{t("landing.aboutTitle")}</h2>
-        <p>{t("landing.aboutText")}</p>
-      </section>
+      <CardSection slug="welcome-about" className="welcome-text-section about" />
 
       {/* Contact */}
       <section className="contact-section">

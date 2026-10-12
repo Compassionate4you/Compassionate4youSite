@@ -13,7 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const LANGUAGES = ['en', 'es', 'pa', 'zh', 'vi'];
+const LANGUAGES = ['en', 'es', 'pa', 'zh', 'vi', 'hi'];
 const LOCALES_DIR = path.resolve(__dirname, '../../client/src/locales');
 
 // The Welcome cards are typed directly into LandingPage.jsx (not in the
@@ -67,6 +67,8 @@ const WELCOME_CARDS = [
 ];
 
 const SERVICE_KEYS = ['doctors', 'pt', 'ot', 'nurses', 'st', 'chha', 'msw', 'multilingual'];
+const ABOVE_AND_BEYOND_KEYS = ['card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7'];
+const HOSPICE_PROCESS_KEYS = ['card1', 'card2', 'card3', 'card4', 'card5'];
 
 function get(object, keyPath) {
     return keyPath
@@ -122,12 +124,76 @@ function hospiceCards(locales, base, count) {
     });
 }
 
+function aboveAndBeyondCards(locales) {
+    return ABOVE_AND_BEYOND_KEYS.map((key) => ({
+        layoutType: 'HEADER_SYMBOL',
+        header: perLanguage(locales, `hospice.aboveAndBeyond.cards.${key}`),
+        paragraph: {},
+        imageUrl: null,
+        imageAlt: {},
+        symbol: 'check',
+        alignment: 'left',
+    }));
+}
+
+function hospiceProcessCards(locales) {
+    return HOSPICE_PROCESS_KEYS.map((key) => ({
+        layoutType: 'HEADER_PARAGRAPH',
+        header: perLanguage(locales, `hospice.hospiceProcess.cards.${key}.title`),
+        paragraph: perLanguage(locales, `hospice.hospiceProcess.cards.${key}.description`),
+        imageUrl: null,
+        imageAlt: {},
+        symbol: get(locales.en, `hospice.hospiceProcess.cards.${key}.number`) || '',
+        alignment: 'center',
+    }));
+}
+
 function buildSectionDefs(locales) {
     return [
         {
-            slug: 'welcome-info',
+            slug: 'welcome-philosophy',
             page: 'welcome',
             position: 0,
+            title: {},
+            rows: 1,
+            columns: 1,
+            cardCount: 1,
+            cards: [
+                {
+                    layoutType: 'HEADER_PARAGRAPH',
+                    header: perLanguage(locales, 'landing.philosophyTitle'),
+                    paragraph: perLanguage(locales, 'landing.philosophyText'),
+                    imageUrl: null,
+                    imageAlt: {},
+                    symbol: null,
+                    alignment: 'center',
+                },
+            ],
+        },
+        {
+            slug: 'welcome-caring-since',
+            page: 'welcome',
+            position: 1,
+            title: {},
+            rows: 1,
+            columns: 1,
+            cardCount: 1,
+            cards: [
+                {
+                    layoutType: 'HEADER_PARAGRAPH',
+                    header: perLanguage(locales, 'landing.caringSinceTitle'),
+                    paragraph: perLanguage(locales, 'landing.caringSinceText'),
+                    imageUrl: null,
+                    imageAlt: {},
+                    symbol: null,
+                    alignment: 'center',
+                },
+            ],
+        },
+        {
+            slug: 'welcome-info',
+            page: 'welcome',
+            position: 2,
             title: {},
             rows: 2,
             columns: 1,
@@ -141,6 +207,26 @@ function buildSectionDefs(locales) {
                 symbol: null,
                 alignment: card.alignment,
             })),
+        },
+        {
+            slug: 'welcome-about',
+            page: 'welcome',
+            position: 3,
+            title: {},
+            rows: 1,
+            columns: 1,
+            cardCount: 1,
+            cards: [
+                {
+                    layoutType: 'HEADER_PARAGRAPH',
+                    header: perLanguage(locales, 'landing.aboutTitle'),
+                    paragraph: perLanguage(locales, 'landing.aboutText'),
+                    imageUrl: null,
+                    imageAlt: {},
+                    symbol: null,
+                    alignment: 'center',
+                },
+            ],
         },
         {
             slug: 'homehealth-services',
@@ -189,6 +275,26 @@ function buildSectionDefs(locales) {
             columns: 3,
             cardCount: 6,
             cards: hospiceCards(locales, 'hospice.comprehensiveServices', 6),
+        },
+        {
+            slug: 'hospice-above-beyond-items',
+            page: 'hospice',
+            position: 3,
+            title: perLanguage(locales, 'hospice.aboveAndBeyond.title'),
+            rows: 7,
+            columns: 1,
+            cardCount: ABOVE_AND_BEYOND_KEYS.length,
+            cards: aboveAndBeyondCards(locales),
+        },
+        {
+            slug: 'hospice-care-process',
+            page: 'hospice',
+            position: 4,
+            title: perLanguage(locales, 'hospice.hospiceProcess.title'),
+            rows: 2,
+            columns: 3,
+            cardCount: HOSPICE_PROCESS_KEYS.length,
+            cards: hospiceProcessCards(locales),
         },
     ];
 }
