@@ -13,56 +13,20 @@
 const fs = require('fs');
 const path = require('path');
 
-const LANGUAGES = ['en', 'es', 'pa', 'zh', 'vi', 'hi'];
+const LANGUAGES = ['en', 'es', 'pa', 'ur', 'zh', 'vi', 'hi'];
 const LOCALES_DIR = path.resolve(__dirname, '../../client/src/locales');
 
-// The Welcome cards are typed directly into LandingPage.jsx (not in the
-// translation files), so their copy lives here. Languages without an entry
-// fall back to English on the page.
+// Welcome card copy lives in the translation files; only card metadata lives here.
 const WELCOME_CARDS = [
     {
         imageUrl: '/images/working_a_puzzle_together.jpeg',
         alignment: 'left',
-        imageAlt: {
-            en: 'People working on a puzzle together',
-            es: 'Personas armando un rompecabezas juntas',
-            zh: '大家一起拼拼图',
-            vi: 'Mọi người cùng nhau xếp hình',
-        },
-        header: {
-            en: 'Medicare Home Health Criteria',
-            es: 'Criterios de Medicare para la atención médica en el hogar',
-            zh: 'Medicare 居家医疗资格标准',
-            vi: 'Tiêu chí Medicare về chăm sóc sức khỏe tại nhà',
-        },
-        paragraph: {
-            en: 'To qualify for Medicare home health services, a patient must be confined to the home and be under physician care who is a doctor of medicine, a doctor of osteopathy, or a doctor of podiatric medicine, and enrolled in the Medicare Program.',
-            es: 'Para calificar para los servicios de salud en el hogar de Medicare, el paciente debe estar confinado en su hogar, estar bajo el cuidado de un médico (doctor en medicina, doctor en osteopatía o doctor en medicina podiátrica) y estar inscrito en el Programa Medicare.',
-            zh: '要获得 Medicare 居家医疗服务资格，患者必须居家受限（因病难以外出），接受医学博士、整骨医学博士或足病医学博士的诊疗，并已参加 Medicare 计划。',
-            vi: 'Để đủ điều kiện nhận dịch vụ chăm sóc sức khỏe tại nhà của Medicare, bệnh nhân phải bị hạn chế trong nhà, đang được bác sĩ (bác sĩ y khoa, bác sĩ nắn xương hoặc bác sĩ chuyên khoa bàn chân) chăm sóc và đã tham gia chương trình Medicare.',
-        },
+        baseKey: 'landing.infoCards.card1',
     },
     {
         imageUrl: '/images/older_couple_smiling.jpeg',
         alignment: 'right',
-        imageAlt: {
-            en: 'Older couple smiling together',
-            es: 'Pareja de personas mayores sonriendo juntas',
-            zh: '一对老年夫妇微笑着依偎在一起',
-            vi: 'Cặp vợ chồng lớn tuổi mỉm cười bên nhau',
-        },
-        header: {
-            en: 'Specialty Services',
-            es: 'Servicios Especializados',
-            zh: '专科服务',
-            vi: 'Dịch vụ chuyên khoa',
-        },
-        paragraph: {
-            en: 'To provide comprehensive, high quality home-care services to our patients by creating strong partnerships with their families, case managers, discharge planners and physicians.\n\nWe believe in creating a team of caring professionals whose goal is the care and support of our patients.',
-            es: 'Brindar servicios integrales y de alta calidad de atención en el hogar a nuestros pacientes, creando alianzas sólidas con sus familias, gestores de casos, planificadores de altas médicas y médicos.\n\nCreemos en formar un equipo de profesionales atentos cuyo objetivo es el cuidado y apoyo de nuestros pacientes.',
-            zh: '通过与患者家属、个案管理师、出院规划师和医生建立牢固的合作关系，为患者提供全面、高质量的居家照护服务。\n\n我们相信，要组建一支充满关爱的专业团队，以照护和支持患者为己任。',
-            vi: 'Cung cấp dịch vụ chăm sóc tại nhà toàn diện, chất lượng cao cho bệnh nhân bằng cách xây dựng mối quan hệ hợp tác chặt chẽ với gia đình, nhân viên quản lý ca bệnh, người lập kế hoạch xuất viện và bác sĩ của họ.\n\nChúng tôi tin vào việc xây dựng một đội ngũ chuyên gia tận tâm với mục tiêu chăm sóc và hỗ trợ bệnh nhân của chúng tôi.',
-        },
+        baseKey: 'landing.infoCards.card2',
     },
 ];
 
@@ -200,10 +164,10 @@ function buildSectionDefs(locales) {
             cardCount: WELCOME_CARDS.length,
             cards: WELCOME_CARDS.map((card) => ({
                 layoutType: 'IMAGE_FULL_WIDTH',
-                header: card.header,
-                paragraph: card.paragraph,
+                header: perLanguage(locales, `${card.baseKey}.header`),
+                paragraph: perLanguage(locales, `${card.baseKey}.paragraph`),
                 imageUrl: card.imageUrl,
-                imageAlt: card.imageAlt,
+                imageAlt: perLanguage(locales, `${card.baseKey}.imageAlt`),
                 symbol: null,
                 alignment: card.alignment,
             })),
