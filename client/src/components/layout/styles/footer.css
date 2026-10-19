@@ -100,6 +100,15 @@
   padding-left: 0.5rem;
 }
 
+.footer__location-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer__location-link:hover .footer__location-address {
+  text-decoration: underline;
+}
+
 .footer__hours-list { display: flex; flex-direction: column; gap: 0.5rem; }
 
 .footer__hours-item {

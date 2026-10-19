@@ -57,10 +57,22 @@ function Footer() {
                 <svg className='footer__contact-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
                   <path d='M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z' /><circle cx='12' cy='10' r='3' />
                 </svg>
-                <address className='footer__location-address' style={{ fontStyle: 'normal' }}>
-                  {t('footer.address1')}<br />
-                  {t('footer.address2')}
-                </address>
+                {/* DT-73: User can click on address to open navigations to that location*/}
+                <a
+                  href='https://www.google.com/maps/dir/?api=1&destination=1501+N+Broadway+Ste+350,+Walnut+Creek,+CA+94596'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='footer__location-link'
+                  aria-label='Open office address in Google Maps'
+                >
+                  <address
+                    className='footer__location-address'
+                    style={{ fontStyle: 'normal' }}
+                  >
+                    {t('footer.address1')}<br />
+                    {t('footer.address2')}
+                  </address>
+                </a>
               </li>
             </ul>
           </div>
