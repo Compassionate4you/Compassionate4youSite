@@ -83,6 +83,14 @@
   line-height: 1.5;
 }
 
+.footer__phone-link {
+  text-decoration: none;
+}
+
+.footer__phone-link:hover {
+  text-decoration: underline;
+}
+
 /* DT-160: Location address highlighted for discoverability */
 .footer__location-address {
   color: var(--footer-muted);
