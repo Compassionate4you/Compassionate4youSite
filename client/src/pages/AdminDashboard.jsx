@@ -28,6 +28,12 @@ const AdminDashboard = () => {
         appointmentPendingDelete,
         appointments,
         appointmentForm,
+        appointmentsLoading,
+        appointmentsError,
+        appointmentSubmitting,
+        appointmentSubmitError,
+        appointmentDeleting,
+        appointmentDeleteError,
         handleAppointmentInputChange,
         formatAppointmentDate,
         handleOpenAddAppointment,
@@ -93,6 +99,10 @@ const AdminDashboard = () => {
                         editingAppointmentId={editingAppointmentId}
                         appointmentForm={appointmentForm}
                         appointments={appointments}
+                        appointmentsLoading={appointmentsLoading}
+                        appointmentsError={appointmentsError}
+                        appointmentSubmitting={appointmentSubmitting}
+                        appointmentSubmitError={appointmentSubmitError}
                         onOpenAddAppointment={handleOpenAddAppointment}
                         onAppointmentInputChange={handleAppointmentInputChange}
                         onSubmitAppointment={handleAddAppointment}
@@ -160,10 +170,24 @@ const AdminDashboard = () => {
                 title="Delete Appointment"
                 message={
                     <>
-                        Are you sure you want to delete the appointment for{" "}
-                        <strong>{appointmentPendingDelete?.name}</strong>?
+                        Are you sure you want to permanently delete the appointment for{" "}
+                        <strong>
+                            {appointmentPendingDelete?.name}
+                        </strong>
+                        ?
+
+                        {appointmentDeleteError && (
+                            <span className="admin-modal-error" role="alert">
+                                {appointmentDeleteError}
+                            </span>
+                        )}
                     </>
                 }
+                confirmText={
+                    appointmentDeleting ? "Deleting..." : "Delete"
+                }
+                cancelText="Cancel"
+                isConfirming={appointmentDeleting}
                 onCancel={handleCancelDeleteAppointment}
                 onConfirm={handleConfirmDeleteAppointment}
             />

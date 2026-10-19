@@ -82,6 +82,34 @@ export function apiGetMyAppointments () {
   return request('/appointments/mine')
 }
 
+// Retrieve every appointment
+export function apiGetAllAppointments() {
+  return request('/appointments')
+}
+
+// Admin: create an appointment
+export function apiCreateAdminAppointment(appointment) {
+  return request('/appointments/admin', {
+    method: 'POST',
+    body: appointment
+  })
+}
+
+// Admin: update an existing appointment.
+export function apiUpdateAdminAppointment(id, appointment) {
+  return request(`/appointments/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    body: appointment
+  })
+}
+
+// Admin: permanently delete an appointment.
+export function apiDeleteAdminAppointment(id) {
+  return request(`/appointments/${encodeURIComponent(id)}`, {
+    method: 'DELETE'
+  })
+}
+
 // DT-567: contact form.
 export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
@@ -90,6 +118,9 @@ export function apiSubmitContactForm (payload) {
 export default {
   sendChatMessage,
   apiSubmitContactForm,
+  apiCreateAdminAppointment,
+  apiUpdateAdminAppointment,
+  apiDeleteAdminAppointment,
   apiSignup,
   apiLogin,
   apiLogout,
