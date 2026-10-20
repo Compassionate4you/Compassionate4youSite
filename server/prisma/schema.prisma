@@ -117,7 +117,7 @@ model Location {
   updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
 
   @@map("locations")
-
+}
 //card layout (accepted bot changes, troubleshoot)
 enum CardLayout {
   IMAGE_FULL_WIDTH
