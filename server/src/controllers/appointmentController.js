@@ -6,6 +6,8 @@ const { isValidEmail } = require('../validators/authValidation');
 
 const SERVICE_TYPES = ['Home Health', 'Hospice Care', 'Consultation'];
 
+const APPOINTMENT_STATUSES = ['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED', ];
+
 // Slots the scheduling page offers. Kept here so availability and booking
 // agree on one list.
 // Must match the options in client/src/pages/SchedulePage.jsx.
@@ -139,10 +141,366 @@ async function getMyAppointments(req, res, next) {
     }
 }
 
+// Returns every appointment for the Admin Dashboard.
+async function getAllAppointments(req, res, next) {
+    try {
+        const appointments = await prisma.appointment.findMany({
+            orderBy: [
+                { date: 'asc' },
+                { timeSlot: 'asc' },
+            ],
+        });
+
+        return res.status(200).json({ appointments });
+    } catch (err) {
+        return next(err);
+    }
+}
+
+// POST /api/appointments/admin
+// Allows an administrator to create an appointment
+async function createAdminAppointment(req, res, next) {
+    try {
+        const {
+            fullName,
+            email,
+            phone,
+            serviceType,
+            date,
+            timeSlot,
+            status,
+            notes,
+        } = req.body || {};
+
+        if (typeof fullName !== 'string' || fullName.trim() === '') {
+            return sendValidationError(
+                res,
+                'Please enter the patient name.',
+                'fullName'
+            );
+        }
+
+        if (!isValidEmail(email)) {
+            return sendValidationError(
+                res,
+                'Please enter a valid email address.',
+                'email'
+            );
+        }
+
+        if (!SERVICE_TYPES.includes(serviceType)) {
+            return sendValidationError(
+                res,
+                'Please choose a valid service.',
+                'serviceType'
+            );
+        }
+
+        if (!DATE_RE.test(String(date || ''))) {
+            return sendValidationError(
+                res,
+                'Please choose a valid date.',
+                'date'
+            );
+        }
+
+        if (isPastDate(date)) {
+            return sendValidationError(
+                res,
+                'Please choose a date in the future.',
+                'date'
+            );
+        }
+
+        if (!TIME_SLOTS.includes(timeSlot)) {
+            return sendValidationError(
+                res,
+                'Please choose a valid appointment time.',
+                'timeSlot'
+            );
+        }
+
+        const normalizedStatus = String(status || '').toUpperCase();
+
+        if (!APPOINTMENT_STATUSES.includes(normalizedStatus)) {
+            return sendValidationError(
+                res,
+                'Please choose a valid appointment status.',
+                'status'
+            );
+        }
+
+        const clash = await prisma.appointment.findFirst({
+            where: {
+                date,
+                timeSlot,
+                status: { not: 'CANCELLED' },
+            },
+        });
+
+        if (clash) {
+            return sendValidationError(
+                res,
+                'An appointment already exists at that date and time.',
+                'timeSlot'
+            );
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const matchingUser = await prisma.user.findUnique({
+            where: { email: normalizedEmail },
+            select: { id: true },
+        });
+
+        const appointment = await prisma.appointment.create({
+            data: {
+                fullName: fullName.trim(),
+                email: normalizedEmail,
+                phone:
+                    typeof phone === 'string' && phone.trim() !== ''
+                        ? phone.trim()
+                        : null,
+                serviceType,
+                date,
+                timeSlot,
+                status: normalizedStatus,
+                notes:
+                    typeof notes === 'string' && notes.trim() !== ''
+                        ? notes.trim()
+                        : null,
+
+                // An Admin-created appointment may not belong to an
+                // existing customer account.
+                userId: matchingUser?.id ?? null,
+            },
+        });
+
+        return res.status(201).json({
+            success: true,
+            appointment,
+        });
+    } catch (err) {
+        if (err.code === 'P2002') {
+            return sendValidationError(
+                res,
+                'An appointment already exists at that date and time.',
+                'timeSlot'
+            );
+        }
+
+        return next(err);
+    }
+}
+
+// PATCH /api/appointments/:id
+// Allows an administrator to update an appointment
+async function updateAdminAppointment(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        const {
+            fullName,
+            email,
+            phone,
+            serviceType,
+            date,
+            timeSlot,
+            status,
+            notes,
+        } = req.body || {};
+
+        const existingAppointment =
+            await prisma.appointment.findUnique({
+                where: { id },
+            });
+
+        if (!existingAppointment) {
+            return res.status(404).json({
+                success: false,
+                error: {
+                    message: 'Appointment not found.',
+                    field: null,
+                },
+            });
+        }
+
+        if (
+            typeof fullName !== 'string' ||
+            fullName.trim() === ''
+        ) {
+            return sendValidationError(
+                res,
+                'Please enter the patient name.',
+                'fullName'
+            );
+        }
+
+        if (!isValidEmail(email)) {
+            return sendValidationError(
+                res,
+                'Please enter a valid email address.',
+                'email'
+            );
+        }
+
+        if (!SERVICE_TYPES.includes(serviceType)) {
+            return sendValidationError(
+                res,
+                'Please choose a valid service.',
+                'serviceType'
+            );
+        }
+
+        if (!DATE_RE.test(String(date || ''))) {
+            return sendValidationError(
+                res,
+                'Please choose a valid date.',
+                'date'
+            );
+        }
+
+        if (!TIME_SLOTS.includes(timeSlot)) {
+            return sendValidationError(
+                res,
+                'Please choose a valid appointment time.',
+                'timeSlot'
+            );
+        }
+
+        const normalizedStatus =
+            String(status || '').toUpperCase();
+
+        if (!APPOINTMENT_STATUSES.includes(normalizedStatus)) {
+            return sendValidationError(
+                res,
+                'Please choose a valid appointment status.',
+                'status'
+            );
+        }
+
+        // Exclude the appointment currently being edited when
+        // checking for another appointment at the same date and time.
+        const clash = await prisma.appointment.findFirst({
+            where: {
+                id: { not: id },
+                date,
+                timeSlot,
+                status: { not: 'CANCELLED' },
+            },
+        });
+
+        if (clash) {
+            return sendValidationError(
+                res,
+                'Another appointment already exists at that date and time.',
+                'timeSlot'
+            );
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        // Link the appointment to an existing customer when possible.
+        const matchingUser = await prisma.user.findUnique({
+            where: { email: normalizedEmail },
+            select: { id: true },
+        });
+
+        const updatedAppointment =
+            await prisma.appointment.update({
+                where: { id },
+                data: {
+                    fullName: fullName.trim(),
+                    email: normalizedEmail,
+                    phone:
+                        typeof phone === 'string' &&
+                        phone.trim() !== ''
+                            ? phone.trim()
+                            : null,
+                    serviceType,
+                    date,
+                    timeSlot,
+                    status: normalizedStatus,
+                    notes:
+                        typeof notes === 'string' &&
+                        notes.trim() !== ''
+                            ? notes.trim()
+                            : null,
+                    userId: matchingUser?.id ?? null,
+                },
+            });
+
+        return res.status(200).json({
+            success: true,
+            appointment: updatedAppointment,
+        });
+    } catch (err) {
+        if (err.code === 'P2002') {
+            return sendValidationError(
+                res,
+                'Another appointment already exists at that date and time.',
+                'timeSlot'
+            );
+        }
+
+        return next(err);
+    }
+}
+
+// DELETE /api/appointments/:id
+// Permanently deletes an appointment.
+async function deleteAdminAppointment(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        const existingAppointment =
+            await prisma.appointment.findUnique({
+                where: { id },
+            });
+
+        if (!existingAppointment) {
+            return res.status(404).json({
+                success: false,
+                error: {
+                    message: 'Appointment not found.',
+                    field: null,
+                },
+            });
+        }
+
+        await prisma.appointment.delete({
+            where: { id },
+        });
+
+        return res.status(200).json({
+            success: true,
+            appointmentId: id,
+        });
+    } catch (err) {
+        // The appointment may have been deleted by another request
+        // after the initial existence check.
+        if (err.code === 'P2025') {
+            return res.status(404).json({
+                success: false,
+                error: {
+                    message: 'Appointment not found.',
+                    field: null,
+                },
+            });
+        }
+
+        return next(err);
+    }
+}
+
 module.exports = {
     createAppointment,
+    createAdminAppointment,
     getAvailability,
     getMyAppointments,
+    getAllAppointments,
+    updateAdminAppointment,
+    deleteAdminAppointment,
     TIME_SLOTS,
     SERVICE_TYPES,
 };
