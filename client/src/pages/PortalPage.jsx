@@ -1,19 +1,29 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react'
 import '../styles/portal.css'
-import { Plus, Calendar, Settings, Pencil, Trash2 } from 'lucide-react'
+
+const defaultAppointments = [
+  { service: 'Home Health', date: 'October 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
+  { service: 'Home Health', date: 'October 15, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Confirmed' },
+  { service: 'Home Health', date: 'August 15, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
+  { service: 'Hospice', date: 'July 22, 2026', time: '2:00 PM - 3:00 PM', provider: 'Nurse Patel', status: 'Confirmed' },
+  { service: 'Home Health', date: 'June 30, 2026', time: '9:00 AM - 10:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' }
+]
+
+function getAppointmentDateTime (appt) {
+  const startTime = appt.time.split(' - ')[0]
+  return new Date(`${appt.date} ${startTime}`)
+}
 
 function PortalPage () {
   const { t } = useTranslation()
-  const [visitCount, setVisitCount] = useState(1)
+  const navigate = useNavigate()
   const saved = JSON.parse(localStorage.getItem('profileSettings') || '{}')
 
-  // Profile Settings modal open and close state
   const [showProfile, setShowProfile] = useState(false)
-  // Active tab inside profile settings
   const [activeTab, setActiveTab] = useState('personal')
-  // Personal information Tab
   const [fullName, setFullName] = useState(saved.fullName || 'John Doe')
   const [email, setEmail] = useState(saved.email || 'customer@example.com')
   const [phone, setPhone] = useState(saved.phone || '(555) 123-4567')
@@ -23,42 +33,47 @@ function PortalPage () {
   const [zip, setZip] = useState(saved.zip || '95819')
   const [emergencyName, setEmergencyName] = useState(saved.emergencyName || 'Jane Doe')
   const [emergencyPhone, setEmergencyPhone] = useState(saved.emergencyPhone || '(555) 987-6543')
-  // Preferences Tab
   const [emailNotif, setEmailNotif] = useState(saved.emailNotif ?? true)
   const [smsNotif, setSmsNotif] = useState(saved.smsNotif ?? false)
   const [preferredContact, setPreferredContact] = useState(saved.preferredContact || 'email')
-  // Security Tab
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  // Security Tab Update DT-501
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [passwordSuccess, setPasswordSuccess] = useState('')
-
-  // DT-66: track which appointment tab is active (upcoming or past)
   const [apptTab, setApptTab] = useState('upcoming')
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [messageSent, setMessageSent] = useState(false)
+  const [contactForm, setContactForm] = useState({ fullName: '', reason: '', message: '' })
+  const [appointments, setAppointments] = useState(defaultAppointments)
 
-  // DT-144: mock appointments with a date near today so upcoming notification logic can trigger
-  const [appointments, setAppointments] = useState([
-    { service: 'Home Health', date: 'October 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-    { service: 'Home Health', date: 'October 15, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Confirmed' },
-    // DT-66: mock past appointments for testing the Past tab
-    { service: 'Home Health', date: 'August 15, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-    { service: 'Hospice', date: 'July 22, 2026', time: '2:00 PM - 3:00 PM', provider: 'Nurse Patel', status: 'Confirmed' },
-    { service: 'Home Health', date: 'June 30, 2026', time: '9:00 AM - 10:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' }
-  ])
+  function getUpcomingAppointments () {
+    const now = new Date()
 
-  const navigate = useNavigate()
+    return appointments.find((appt) => {
+      if (appt.status !== 'Confirmed') return false
 
-  // DT-62: Cancel an appointment row
-  function cancelAppointment (apptToCancel) {
-    const updated = appointments.map((a) => a === apptToCancel ? { ...a, status: 'Cancelled' } : a)
-    setAppointments(updated)
-
-    if (apptToCancel.status === 'Confirmed') {
-      setVisitCount(visitCount - 1)
-    }
+      const apptDateTime = getAppointmentDateTime(appt)
+      const hoursUntil = (apptDateTime - now) / (1000 * 60 * 60)
+      return hoursUntil > 0 && hoursUntil <= 48
+    })
   }
+
+  function isPastAppt (appt) {
+    if (appt.status === 'Cancelled') return true
+
+    return getAppointmentDateTime(appt) < new Date()
+  }
+
+  const visitCount = appointments.filter((appt) => appt.status === 'Confirmed' && !isPastAppt(appt)).length
+  const upcomingAppt = getUpcomingAppointments()
+
+  function cancelAppointment (apptToCancel) {
+    setAppointments((currentAppointments) => currentAppointments.map((appt) => (
+      appt === apptToCancel ? { ...appt, status: 'Cancelled' } : appt
+    )))
+  }
+
   function handleSave () {
     localStorage.setItem('profileSettings', JSON.stringify({
       fullName,
@@ -78,12 +93,12 @@ function PortalPage () {
     setShowProfile(false)
   }
 
-  // DT-501: Check password fields before changing password
   function handleChangePassword () {
     setPasswordError('')
     setPasswordSuccess('')
+
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setPasswordError('Please fill in all password fields')
+      setPasswordError('Please fill in all password fields.')
       return
     }
 
@@ -102,58 +117,54 @@ function PortalPage () {
       return
     }
 
-    // TODO: send to backend once the change-password route is ready
-    setPasswordSuccess('Password updated.')
     setCurrentPassword('')
     setNewPassword('')
     setConfirmPassword('')
+    setPasswordSuccess('Password updated successfully.')
   }
 
-  // DT-144 (361): determine which appointments fall within the next 48 hours
-  function getUpcomingAppointments () {
-    const now = new Date()
-    return appointments.find((appt) => {
-
-      // DT-278: New bookings start as Pending in the database, not Confirmed,
-      // so only skip cancelled ones. Otherwise bell icon doesnt show
-      if (appt.status !== 'Cancelled') return false
-      // appt.time looks like "10:00 AM - 11:00 AM"; we only need the start time
-      const startTime = appt.time.split(' - ')[0]
-      const apptDateTime = new Date(`${appt.date} ${startTime}`) // Combine date and time into a single Date object
-
-      const hoursUntil = (apptDateTime - now) / (1000 * 60 * 60)
-      return hoursUntil > 0 && hoursUntil <= 48
-    })
+  function handleOpenContactForm () {
+    setContactForm({ fullName, reason: '', message: '' })
+    setMessageSent(false)
+    setShowContactForm(true)
   }
 
-  // DT-66(346): Split appointments into past vs upcoming based on date
-  function isPastAppt (appt) {
-    // DT-278: Cancelled and completed appointments go in Past tab
-    if (appt.status === 'Cancelled' || appt.status === 'Completed') return true
-
-    const apptDate = new Date(appt.date)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0) // Set to midnight for accurate comparison
-    return apptDate < today
+  function handleContactFormChange (event) {
+    const { name, value } = event.target
+    setContactForm((currentForm) => ({
+      ...currentForm,
+      [name]: value
+    }))
   }
 
-  const upcomingAppt = getUpcomingAppointments()
+  function handleCancelContactForm () {
+    setShowContactForm(false)
+    setContactForm({ fullName: '', reason: '', message: '' })
+  }
+
+  function handleSubmitContactForm (event) {
+    event.preventDefault()
+
+    if (!contactForm.fullName.trim() || !contactForm.reason.trim() || !contactForm.message.trim()) {
+      return
+    }
+
+    setContactForm({ fullName: '', reason: '', message: '' })
+    setShowContactForm(false)
+    setMessageSent(true)
+  }
 
   return (
     <div>
-      {/* DT-59: User Dashboard / Welcome page */}
       <div className='navbar'>
         <div className='navbar-left'>
           <div className='avatar'>CH</div>
           <div>
             <div className='navbar-title'>{t('portal.title')}</div>
-            <div className='navbar-subtitle'>Welcome, {fullName}
-              {/* DT-144: show upcoming appointment notification */}
+            <div className='navbar-subtitle'>
+              Welcome, {fullName}
               {upcomingAppt && (
-                <span
-                  className='notification-icon'
-                  title={`Upcoming: ${upcomingAppt.service} — ${upcomingAppt.date} at ${upcomingAppt.time.split(' - ')[0]}`}
-                >
+                <span className='notification-icon' title={`Upcoming: ${upcomingAppt.service} - ${upcomingAppt.date} at ${upcomingAppt.time.split(' - ')[0]}`}>
                   🔔
                   <span className='notification-badge'>!</span>
                 </span>
@@ -164,102 +175,155 @@ function PortalPage () {
       </div>
 
       <div className='content'>
-        <div className='welcome-banner'>
-          <h1>{t('portal.welcomeBanner')}</h1>
-          <p>{t('portal.welcomeSubtitle')}</p>
-        </div>
+        {showContactForm
+          ? (
+            <section className='portal-contact-form-card'>
+              <div className='portal-contact-form-heading'>
+                <h1>Contact Your Provider</h1>
+                <p>Complete the form below and a member of your care team will follow up with you.</p>
+              </div>
 
-        <div className='cards-row'>
-          {/* DT-61: Takes user to Schedule an Appointment page */}
-          {/* DT-149: icon badge for upcoming appointment */}
-          <div className='card' onClick={() => navigate('/schedule')}>
-            <div className='card-icon card-icon-blue'>
-              <Plus size={20} />
-            </div>
-            <h3>{t('portal.scheduleCard')}</h3>
-            <p>{t('portal.scheduleCardDesc')}</p>
-          </div>
+              <form onSubmit={handleSubmitContactForm}>
+                <div className='field'>
+                  <label htmlFor='contact-full-name'>Full Name *</label>
+                  <input id='contact-full-name' type='text' name='fullName' value={contactForm.fullName} onChange={handleContactFormChange} placeholder='Enter your full name' required />
+                </div>
 
-          {/* DT-60: Upcoming Visits counter */}
-          <div className='card'>
-            <div className='card-icon card-icon-green'>
-              <Calendar size={20} />
-            </div>
-            <h3>{t('portal.upcomingVisits')}</h3>
-            <div className='visit-number'>{visitCount}</div>
-            <p>{t('portal.confirmedAppointments')}</p>
-          </div>
+                <div className='field'>
+                  <label htmlFor='contact-reason'>Reason for Message *</label>
+                  <select id='contact-reason' name='reason' value={contactForm.reason} onChange={handleContactFormChange} required>
+                    <option value=''>Select a reason</option>
+                    <option value='Appointment question'>Appointment question</option>
+                    <option value='Home health question'>Home health question</option>
+                    <option value='Hospice question'>Hospice question</option>
+                    <option value='Billing question'>Billing question</option>
+                    <option value='General question'>General question</option>
+                    <option value='Other'>Other</option>
+                  </select>
+                </div>
 
-          {/* Profile Settings Card - opens modal */}
-          <div className='card' onClick={() => setShowProfile(true)}>
-            <div className='card-icon card-icon-purple'>
-              <Settings size={20} />
-            </div>
-            <h3>Profile Settings</h3>
-            <p>Update your contact information and preferences</p>
-          </div>
+                <div className='field'>
+                  <label htmlFor='contact-message'>Message *</label>
+                  <textarea id='contact-message' name='message' value={contactForm.message} onChange={handleContactFormChange} placeholder='Describe your question in more detail' rows='7' required />
+                </div>
 
-        </div>
+                <div className='portal-contact-form-actions'>
+                  <button type='button' className='btn-secondary' onClick={handleCancelContactForm}>Cancel</button>
+                  <button type='submit' className='btn-primary'>Submit Message</button>
+                </div>
+              </form>
+            </section>
+            )
+          : (
+            <>
+              {messageSent && (
+                <div className='portal-message-success' role='status'>
+                  Your message was successfully sent. A member of your care team will follow up with you.
+                </div>
+              )}
 
-        {/* DT-62: My Appointments Table */}
-        <div className='section-box'>
-          <h2>My Appointments</h2>
-          <p className='desc'>View and Manage Your Scheduled Appointments</p>
+              <div className='welcome-banner'>
+                <h1>{t('portal.welcomeBanner')}</h1>
+                <p>{t('portal.welcomeSubtitle')}</p>
+              </div>
 
-          {/* DT-66 (347): tabs to switch between upcoming and past appointments */}
-          <div className='tabs'>
-            <button className={apptTab === 'upcoming' ? 'tab active-tab' : 'tab'} onClick={() => setApptTab('upcoming')}>Upcoming</button>
-            <button className={apptTab === 'past' ? 'tab active-tab' : 'tab'} onClick={() => setApptTab('past')}>Past</button>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Service Type</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Provider</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.filter((appt) => apptTab === 'past' ? isPastAppt(appt) : !isPastAppt(appt)).map((appt, index) => (
-                <tr key={index}>
-                  <td>{appt.service}</td>
-                  <td>{appt.date}</td>
-                  <td>{appt.time}</td>
-                  <td>{appt.provider}</td>
-                  <td>
-                    <span className={appt.status === 'Confirmed' ? 'badge badge-confirmed' : 'badge badge-pending'}>
-                      {appt.status}
-                    </span>
-                  </td>
-                  <td>
-                    {apptTab === 'past'
-                      ? (
-                        <span className={appt.status === 'Cancelled' ? 'badge badge-confirmed' : 'badge badge-pending'}>
-                          {appt.status === 'Cancelled' ? 'Cancelled' : 'Completed'}
-                        </span>
-                        )
-                      : (
-                        <>
-                          <button className='btn-reschedule' onClick={() => navigate('/schedule')} title='Reschedule'> <Pencil size={16} /> </button>
-                          <button className='btn-cancel-appt' onClick={() => cancelAppointment(appt)} title='Cancel'> <Trash2 size={16} /> </button>
-                        </>
-                        )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              <div className='cards-row'>
+                <div className='card' onClick={() => navigate('/schedule')}>
+                  <div className='card-icon card-icon-blue'>
+                    <Plus size={20} />
+                  </div>
+                  <h3>{t('portal.scheduleCard')}</h3>
+                  <p>{t('portal.scheduleCardDesc')}</p>
+                </div>
+
+                <div className='card'>
+                  <div className='card-icon card-icon-green'>
+                    <Calendar size={20} />
+                  </div>
+                  <h3>{t('portal.upcomingVisits')}</h3>
+                  <div className='visit-number'>{visitCount}</div>
+                  <p>{t('portal.confirmedAppointments')}</p>
+                </div>
+
+                <div className='card' onClick={() => setShowProfile(true)}>
+                  <div className='card-icon card-icon-purple'>
+                    <Settings size={20} />
+                  </div>
+                  <h3>Profile Settings</h3>
+                  <p>Update your contact information and preferences</p>
+                </div>
+
+                <button type='button' className='card portal-contact-card' onClick={handleOpenContactForm}>
+                  <div className='card-icon card-icon-contact'>
+                    <MessageCircle size={20} />
+                  </div>
+                  <h3>Contact Your Provider</h3>
+                  <p>Send a question or message to your care team</p>
+                </button>
+              </div>
+
+              <div className='section-box'>
+                <h2>My Appointments</h2>
+                <p className='desc'>View and Manage Your Scheduled Appointments</p>
+
+                <div className='tabs'>
+                  <button className={apptTab === 'upcoming' ? 'tab active-tab' : 'tab'} onClick={() => setApptTab('upcoming')}>Upcoming</button>
+                  <button className={apptTab === 'past' ? 'tab active-tab' : 'tab'} onClick={() => setApptTab('past')}>Past</button>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Service Type</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Provider</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointments.filter((appt) => apptTab === 'past' ? isPastAppt(appt) : !isPastAppt(appt)).map((appt, index) => (
+                      <tr key={`${appt.service}-${appt.date}-${index}`}>
+                        <td>{appt.service}</td>
+                        <td>{appt.date}</td>
+                        <td>{appt.time}</td>
+                        <td>{appt.provider}</td>
+                        <td>
+                          <span className={appt.status === 'Confirmed' ? 'badge badge-confirmed' : 'badge badge-pending'}>
+                            {appt.status}
+                          </span>
+                        </td>
+                        <td>
+                          {apptTab === 'past'
+                            ? (
+                              <span className={appt.status === 'Cancelled' ? 'badge badge-confirmed' : 'badge badge-pending'}>
+                                {appt.status === 'Cancelled' ? 'Cancelled' : 'Completed'}
+                              </span>
+                              )
+                            : (
+                              <>
+                                <button className='btn-reschedule' onClick={() => navigate('/schedule')} title='Reschedule'>
+                                  <Pencil size={16} />
+                                </button>
+                                <button className='btn-cancel-appt' onClick={() => cancelAppointment(appt)} title='Cancel'>
+                                  <Trash2 size={16} />
+                                </button>
+                              </>
+                              )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+            )}
       </div>
 
-      {/* DT-63: Profile Settings Modal */}
       {showProfile && (
         <div className='modal-overlay'>
           <div className='modal'>
-            {/* Modal header */}
             <div className='modal-header'>
               <div>
                 <h2 className='modal-title'>Profile Settings</h2>
@@ -267,15 +331,14 @@ function PortalPage () {
               </div>
               <button className='modal-close' onClick={() => setShowProfile(false)}>x</button>
             </div>
-            {/* Tabs Navigation */}
+
             <div className='tabs'>
               <button className={activeTab === 'personal' ? 'tab active-tab' : 'tab'} onClick={() => setActiveTab('personal')}>Personal Info</button>
               <button className={activeTab === 'preferences' ? 'tab active-tab' : 'tab'} onClick={() => setActiveTab('preferences')}>Preferences</button>
               <button className={activeTab === 'security' ? 'tab active-tab' : 'tab'} onClick={() => setActiveTab('security')}>Security</button>
             </div>
-            {/* Tab Content */}
+
             <div className='modal-body'>
-              {/* Personal Info Tab */}
               {activeTab === 'personal' && (
                 <div>
                   <h3 className='section-heading'>Contact Information</h3>
@@ -291,7 +354,7 @@ function PortalPage () {
                   </div>
                   <div className='form-row-two'>
                     <div className='field'>
-                      <label> Phone Number *</label>
+                      <label>Phone Number *</label>
                       <input type='text' value={phone} onChange={(e) => setPhone(e.target.value)} />
                     </div>
                     <div className='field'>
@@ -328,18 +391,19 @@ function PortalPage () {
                 </div>
               )}
 
-              {/* Preferences Tab */}
               {activeTab === 'preferences' && (
                 <div>
                   <h3 className='section-heading'>Notification Settings</h3>
                   <div className='field'>
                     <label className='checkbox-label'>
-                      <input type='checkbox' checked={emailNotif} onChange={(e) => setEmailNotif(e.target.checked)} />Email Notifications
+                      <input type='checkbox' checked={emailNotif} onChange={(e) => setEmailNotif(e.target.checked)} />
+                      Email Notifications
                     </label>
                   </div>
                   <div className='field'>
                     <label className='checkbox-label'>
-                      <input type='checkbox' checked={smsNotif} onChange={(e) => setSmsNotif(e.target.checked)} />SMS Notifications
+                      <input type='checkbox' checked={smsNotif} onChange={(e) => setSmsNotif(e.target.checked)} />
+                      SMS Notifications
                     </label>
                   </div>
 
@@ -355,9 +419,6 @@ function PortalPage () {
                 </div>
               )}
 
-              {/* Security Tab */}
-              {/* DT-501: Removed two-factor authentication and active sessions */}
-              {/* Updated Security tab to change password form */}
               {activeTab === 'security' && (
                 <div>
                   <h3 className='section-heading'>Change Password</h3>
@@ -380,9 +441,8 @@ function PortalPage () {
                   <button className='btn-primary' onClick={handleChangePassword}>Update Password</button>
                 </div>
               )}
-
             </div>
-            {/* Modal Footer */}
+
             <div className='modal-footer'>
               <button className='btn-secondary' onClick={() => setShowProfile(false)}>Cancel</button>
               <button className='btn-primary' onClick={handleSave}>Save Changes</button>

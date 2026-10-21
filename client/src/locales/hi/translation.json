@@ -38,7 +38,18 @@
     "contactFormEmailPlaceholder": "your.email@example.com",
     "contactFormMessage": "संदेश",
     "contactFormMessagePlaceholder": "हम आपकी कैसे मदद कर सकते हैं?",
-    "contactFormButton": "संदेश भेजें"
+    "contactFormButton": "संदेश भेजें",
+    "contactFormRequiredNote": "सभी फ़ील्ड आवश्यक हैं।",
+    "contactFormSending": "भेजा जा रहा है...",
+    "contactFormSuccess": "संपर्क करने के लिए धन्यवाद। हम जल्द ही आपसे संपर्क करेंगे।",
+    "contactFormError": "हम आपका संदेश नहीं भेज सके। कृपया पुनः प्रयास करें या हमारे कार्यालय को कॉल करें।",
+    "contactFormErrors": {
+      "nameRequired": "कृपया अपना नाम दर्ज करें।",
+      "emailRequired": "कृपया अपना ईमेल पता दर्ज करें।",
+      "emailInvalid": "कृपया एक वैध ईमेल पता दर्ज करें।",
+      "messageRequired": "कृपया एक संदेश दर्ज करें।",
+      "messageTooShort": "कृपया हमें थोड़ा और बताएं ताकि हम मदद कर सकें।"
+    }
   },
   "homeHealth": {
     "title": "होम हेल्थ",
