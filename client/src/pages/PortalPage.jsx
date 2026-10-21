@@ -113,9 +113,12 @@ function PortalPage () {
   function getUpcomingAppointments () {
     const now = new Date()
     return appointments.find((appt) => {
-      if (appt.status !== 'Confirmed') return false
+
+      // DT-278: New bookings start as Pending in the database, not Confirmed,
+      // so only skip cancelled ones. Otherwise bell icon doesnt show
+      if (appt.status !== 'Cancelled') return false
       // appt.time looks like "10:00 AM - 11:00 AM"; we only need the start time
-      const startTime = appt.time.split(' - ')[0] //
+      const startTime = appt.time.split(' - ')[0]
       const apptDateTime = new Date(`${appt.date} ${startTime}`) // Combine date and time into a single Date object
 
       const hoursUntil = (apptDateTime - now) / (1000 * 60 * 60)
@@ -125,7 +128,8 @@ function PortalPage () {
 
   // DT-66(346): Split appointments into past vs upcoming based on date
   function isPastAppt (appt) {
-    if (appt.status === 'Cancelled') return true // Cancelled appointments are considered past
+    // DT-278: Cancelled and completed appointments go in Past tab
+    if (appt.status === 'Cancelled' || appt.status === 'Completed') return true
 
     const apptDate = new Date(appt.date)
     const today = new Date()
