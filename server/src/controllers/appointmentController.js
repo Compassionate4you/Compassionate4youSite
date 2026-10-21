@@ -139,10 +139,53 @@ async function getMyAppointments(req, res, next) {
     }
 }
 
+// DT-278 (721): PATCH /api/appointments/:id/cancel
+// Cancels one of the signed in user's appointments.
+async function cancelAppointment(req,res,next){
+    try{
+        // Find the appointment using the id from the URL
+        const appointment=await prisma.appointment.findUnique({
+            where: { id:req.params.id },
+        });
+
+        // DT-278 (723): Only the person who booked it can cancel it.
+        // Sends "not found" instead of "not allowed" so people can't tell
+        // whether someone else's appointment id exists.
+        if(!appointment || appointment.userId !== req.user.id){
+            return res.status(404).json({
+                success: false,
+                error: { message: 'Appointment not found', field:null },
+            });
+        }
+
+        // Already cancelled, so there's nothing to change
+        if(appointment === 'CANCELLED'){
+            return res.status(200).json({ success: true, appointment });
+        }
+
+        // Can't cancel an appointment that already happened
+        if(appointment.status === 'COMPLETED' || isPastDate(appointment.date)){
+            return sendValidationError(res, 'This appointment has already happened.', null);
+        }
+
+        // Mark is as cancelled instead of deleting it,
+        // so it still shows in the Past tab on customer portal
+        const updated = await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { status: 'CANCELED' }
+        });
+        return res.status(200).json({ success: true, appointment: updated });
+    } catch (err) {
+        return next(err);
+    }
+}
+
 module.exports = {
     createAppointment,
     getAvailability,
     getMyAppointments,
+    //DT-278: cancel route
+    cancelAppointment,
     TIME_SLOTS,
     SERVICE_TYPES,
 };
