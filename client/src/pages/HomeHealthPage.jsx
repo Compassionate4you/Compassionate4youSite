@@ -72,7 +72,7 @@ function HomeHealthPage() {
                 <h2 className="services-title">
                     {t('homeHealth.servicesHeading')}</h2>
 
-                <CardSection slug="homehealth-services" />
+                <CardSection slug="homehealth-services" className="card-section--hover" />
 
             </section>
 
@@ -82,7 +82,7 @@ function HomeHealthPage() {
 
                 <div className="advantages-grid">
                     {advantages.map((text, index) => (
-                        <div key={index} className="adv-card">
+                        <div key={index} className="card-surface card-hover adv-card">
                             <div className="adv-number">{index + 1}</div>
                             <p className="adv-text">{text}</p>
                         </div>
@@ -96,7 +96,7 @@ function HomeHealthPage() {
 
                 <div className="specialty-grid">
                     {specialties.map((text, index) => (
-                        <div key={index} className="specialty-card">
+                        <div key={index} className="card-surface card-hover specialty-card">
                             <div className="specialty-icon"><HeartIcon /></div>
                             <p className="specialty-text">{text}</p>
                         </div>
