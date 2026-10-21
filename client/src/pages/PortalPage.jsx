@@ -1,8 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react'
+
+// DT-278: gets the signed in user appointment from backend
+import { apiGetMyAppointments } from '../services/api'
 import '../styles/portal.css'
+
+// DT-278: The database sends appointments in a different shape than the table uses
+// (serviceType, date as 2026-10-13, timeSlot, status as PENDING).
+// This changes each one into the shape the table expects.
+function toDisplayAppt (appt) {
+  // Status comes in all caps (PENDING), so change it to Pending
+  const status = appt.status ? appt.status.charAt(0) + appt.status.slice(1).toLowerCase() : 'Pending'
+  return {
+    id: appt.id,
+    service: appt.serviceType,
+    // Change 2026-10-13 into October 13, 2026
+    date: new Date(`${appt.date}T00:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+    time: appt.timeSlot,
+    // The database doesn't have a provider column yet
+    provider: 'TBD',
+    status
+  }
+}
 
 const defaultAppointments = [
   { service: 'Home Health', date: 'October 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
@@ -45,13 +66,29 @@ function PortalPage () {
   const [showContactForm, setShowContactForm] = useState(false)
   const [messageSent, setMessageSent] = useState(false)
   const [contactForm, setContactForm] = useState({ fullName: '', reason: '', message: '' })
-  const [appointments, setAppointments] = useState(defaultAppointments)
+
+  // DT-278: Removed mock appointments The list starts empty and gets filled from the backend
+  const [appointments, setAppointments] = useState([])
+  // DT-278: Message to show if the appointments can't be loaded
+  const [loadError, setLoadError] = useState('')
+
+  // DT-278: When the page opens, get the signed-in user's appointments.
+  // The empty [] at the end means this only runs once when the page loads.
+  useEffect(() => {
+    apiGetMyAppointments()
+      // Change each appointment into the table's shape and save them
+      .then((data) => setAppointments((data.appointments || []).map(toDisplayAppt)))
+      // If it fails (usually because the user isn't signed in), show a message
+      .catch(() => setLoadError('Could not load your appointments. Please sign in and try again.'))
+  }, [])
 
   function getUpcomingAppointments () {
     const now = new Date()
 
     return appointments.find((appt) => {
-      if (appt.status !== 'Confirmed') return false
+      // DT-278: New bookings start as Pending, so only skip cancelled ones.
+      // Otherwise the bell would never show.
+      if (appt.status === 'Cancelled') return false
 
       const apptDateTime = getAppointmentDateTime(appt)
       const hoursUntil = (apptDateTime - now) / (1000 * 60 * 60)
@@ -60,17 +97,22 @@ function PortalPage () {
   }
 
   function isPastAppt (appt) {
-    if (appt.status === 'Cancelled') return true
+    // DT-278: Cancelled and completed appointments go in the Past tab
+    if (appt.status === 'Cancelled' || appt.status === 'Completed') return true
 
     return getAppointmentDateTime(appt) < new Date()
   }
 
-  const visitCount = appointments.filter((appt) => appt.status === 'Confirmed' && !isPastAppt(appt)).length
+  // DT-278: Count every upcoming appointment, not just Confirmed ones,
+  // since new bookings start as Pending
+  const visitCount = appointments.filter((appt) => !isPastAppt(appt)).length
   const upcomingAppt = getUpcomingAppointments()
 
+  // DT-278: Still only changes the page for now. Next step saves it to the backend.
   function cancelAppointment (apptToCancel) {
     setAppointments((currentAppointments) => currentAppointments.map((appt) => (
-      appt === apptToCancel ? { ...appt, status: 'Cancelled' } : appt
+      // Match by the appointment's id from the database
+      appt === apptToCancel.id ? { ...appt, status: 'Cancelled' } : appt
     )))
   }
 
@@ -283,8 +325,8 @@ function PortalPage () {
                     </tr>
                   </thead>
                   <tbody>
-                    {appointments.filter((appt) => apptTab === 'past' ? isPastAppt(appt) : !isPastAppt(appt)).map((appt, index) => (
-                      <tr key={`${appt.service}-${appt.date}-${index}`}>
+                    {appointments.filter((appt) => apptTab === 'past' ? isPastAppt(appt) : !isPastAppt(appt)).map((appt) => (
+                      <tr key={appt.id}>
                         <td>{appt.service}</td>
                         <td>{appt.date}</td>
                         <td>{appt.time}</td>
@@ -316,6 +358,10 @@ function PortalPage () {
                     ))}
                   </tbody>
                 </table>
+
+                {/* DT-278: Show an error if the appointments couldn't be loaded */}
+                {loadError && <p className='password-error'>{loadError}</p>}
+
               </div>
             </>
             )}
