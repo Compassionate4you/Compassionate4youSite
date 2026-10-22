@@ -536,6 +536,84 @@ async function cancelAppointment(req, res, next) {
     }
 }
 
+// DT-278 (722): PATCH /api/appointments/:id/reshedule
+// Moves one of the signed in user's appointments to a new date and time.
+// Body: { date: 'YYYY-MM-DD', timeSlot: '10:00 AM' }
+async function rescheduleAppointment(req,res,next){
+    try{
+        const { date, timeSlot } = req.body || {};
+
+        // find the appointment using the id from the URL
+        const appointment = await prisma.appointment.findUnique({
+            where: { id: req.params.id },
+        });
+
+        // DT-278 (723): Only the person who booked it can reschedule it.
+        // Same "not found" message as cancel so other users' ids stay hidden.
+        if(!appointment || appointment.userId !== req.user.id){
+            return res.status(404).json({
+                success: false,
+                error: { message: 'Appointment not found.', field: null },
+            });
+        }
+
+        // Can't reschedule one appt that is cancelled or already happened
+        if(appointment === 'CANCELLED'){
+            return sendValidationError(res, 'This appointment was cancelled. Please book a new one.', null);
+        }
+        if(appointment.status === 'COMPLETED' || isPastDate(appointment.date)){
+            return sendValidationError(res, 'This appointment has already happened.', null);
+        }
+
+        // DT-278 (722): Same date and time checks as booking (createAppointment)
+        if (!DATE_RE.test(String(date || ''))){
+            return sendValidationError(res, 'Please choose a date.', 'date');
+        }
+        if(isPastDate(date)){
+            return sendValidationError(res, 'Please choose a date in the future.', 'date');
+        }
+        if (!TIME_SLOTS.includes(timeSlot)){
+            return sendValidationError(res, 'Please choose an available time.', 'timeSlot');
+        }
+
+        // Nothing to change if they picked the same date and time
+        if (appointment.date === date && appointment.timeSlot === timeSlot){
+            return res.status(200).json({ success: true, appointment });
+        }
+
+        // DT-278 (722): Make sure the new slot isn't taken.
+        // Leaves out this appointment itself and cancelled ones.
+        const clash = await prisma.appointment.findFirst({
+            where: {
+                id: { not: appointment.id },
+                date,
+                timeSlot,
+                status: { not: 'CANCELLED' },
+            },
+        });
+        if(clash){
+            return sendValidationError(res,'That time is already booked. Please choose another time slot.', 'timeSlot');
+        }
+
+        // Save the new date and time. Status goes back to PENDING
+        // so staff/admin can confirm the new time.
+        const updated=await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { data, timeSlot, status: 'PENDING' },
+        });
+
+        // Send back the updated appointment so the portal can show the new date and time
+        return res.status(200).json({ success: true, appointment: updated });
+    } catch (err) {
+        // Unique rule on (date, timeSlot). This also happens when a cancelled
+        // appointment still holds the slot (DT-724).
+        if (err.code === 'P2002') {
+            return sendValidationError(res, 'That time is already booked. Please choose another slot.', 'timeSlot');
+        }
+        return next(err);
+    }   
+}
+
 module.exports = {
     createAppointment,
     createAdminAppointment,
@@ -546,6 +624,8 @@ module.exports = {
     deleteAdminAppointment,
     // DT-278 (721): cancel route
     cancelAppointment,
+    // DT-278 (722): reschedule route
+    rescheduleAppointment,
     TIME_SLOTS,
     SERVICE_TYPES,
 };

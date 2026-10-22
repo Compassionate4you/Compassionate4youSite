@@ -11,6 +11,8 @@ const {
     cancelAppointment,
     // DT-720: Admin Dashboard list of all appointments
     getAllAppointments,
+    // DT-278 (722): reschedule route for the Customer Portal
+    rescheduleAppointment,
 } = require('../controllers/appointmentController');
 
 const { 
@@ -37,5 +39,8 @@ router.get('/mine', requireAuth, getMyAppointments);
 
 // DT-278: cancel one of the signed in user's appointments
 router.patch('/:id/cancel', requireAuth, cancelAppointment);
+
+// DT-278 (722): move one of the signed in user appointments to a new date/time
+router.patch('/:id/reschedule', requireAuth, rescheduleAppointment);
 
 module.exports = router;
