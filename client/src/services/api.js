@@ -115,6 +115,12 @@ export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
 }
 
+// DT-278 (725): cancel one of the signed in user's appointments
+export function apiCancelAppointment(id){
+    return request(`/appointments/${encodeURIComponent(id)}/cancel`, { method: 'PATCH' })
+
+}
+
 export default {
   sendChatMessage,
   apiSubmitContactForm,
@@ -127,5 +133,6 @@ export default {
   apiMe,
   apiGetAvailability,
   apiCreateAppointment,
-  apiGetMyAppointments
+  apiGetMyAppointments,
+  apiCancelAppointment
 }

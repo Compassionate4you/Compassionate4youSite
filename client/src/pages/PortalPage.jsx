@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react'
 
-// DT-278: gets the signed in user appointment from backend
-import { apiGetMyAppointments } from '../services/api'
+// DT-278: gets the signed in user's appointments and cancels them through the backend
+import { apiGetMyAppointments, apiCancelAppointment } from '../services/api'
 import '../styles/portal.css'
 
 // DT-278: The database sends appointments in a different shape than the table uses
@@ -24,14 +24,6 @@ function toDisplayAppt (appt) {
     status
   }
 }
-
-const defaultAppointments = [
-  { service: 'Home Health', date: 'October 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-  { service: 'Home Health', date: 'October 15, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Confirmed' },
-  { service: 'Home Health', date: 'August 15, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-  { service: 'Hospice', date: 'July 22, 2026', time: '2:00 PM - 3:00 PM', provider: 'Nurse Patel', status: 'Confirmed' },
-  { service: 'Home Health', date: 'June 30, 2026', time: '9:00 AM - 10:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' }
-]
 
 function getAppointmentDateTime (appt) {
   const startTime = appt.time.split(' - ')[0]
@@ -72,6 +64,9 @@ function PortalPage () {
   // DT-278: Message to show if the appointments can't be loaded
   const [loadError, setLoadError] = useState('')
 
+  // DT-278 (725): Message to show if cancelling fails
+  const [actionError, setActionError] = useState('')
+
   // DT-278: When the page opens, get the signed-in user's appointments.
   // The empty [] at the end means this only runs once when the page loads.
   useEffect(() => {
@@ -108,12 +103,25 @@ function PortalPage () {
   const visitCount = appointments.filter((appt) => !isPastAppt(appt)).length
   const upcomingAppt = getUpcomingAppointments()
 
-  // DT-278: Still only changes the page for now. Next step saves it to the backend.
-  function cancelAppointment (apptToCancel) {
-    setAppointments((currentAppointments) => currentAppointments.map((appt) => (
+  // DT-278 (725): Cancel an appointment and save it to the backend
+  async function cancelAppointment (apptToCancel) {
+    // ask first so nobody cancels by accident
+    if (!window.confirm('Are you sure you want to cancel this appointment?')) return
+    setActionError('')
+    try {
+      // Tell the backend to cancel this appointment
+      const data = await apiCancelAppointment(apptToCancel.id)
+
+      // Swap the old appointment for the updated one the backend sent back,
+      // so it moves to the Past tab as Cancelled
+      setAppointments((currentAppointments) => currentAppointments.map((appt) => (
       // Match by the appointment's id from the database
-      appt === apptToCancel.id ? { ...appt, status: 'Cancelled' } : appt
-    )))
+      appt.id === apptToCancel.id ? toDisplayAppt(data.appointment) : appt
+      )))
+    } catch (err) {
+    // Show the server's message, like "This appointment has already happened."
+      setActionError(err.message || 'Could not cancel the appointment. Please try again.')
+    }
   }
 
   function handleSave () {
@@ -361,6 +369,9 @@ function PortalPage () {
 
                 {/* DT-278: Show an error if the appointments couldn't be loaded */}
                 {loadError && <p className='password-error'>{loadError}</p>}
+
+                {/* DT-278 (725): Show an error if cancelling didn't work */}
+                {actionError && <p className='password-error'>{actionError}</p>}
 
               </div>
             </>
