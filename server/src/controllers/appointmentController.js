@@ -536,7 +536,7 @@ async function cancelAppointment(req, res, next) {
     }
 }
 
-// DT-278 (722): PATCH /api/appointments/:id/reshedule
+// DT-278 (722): PATCH /api/appointments/:id/reschedule
 // Moves one of the signed in user's appointments to a new date and time.
 // Body: { date: 'YYYY-MM-DD', timeSlot: '10:00 AM' }
 async function rescheduleAppointment(req,res,next){
@@ -558,7 +558,7 @@ async function rescheduleAppointment(req,res,next){
         }
 
         // Can't reschedule one appt that is cancelled or already happened
-        if(appointment === 'CANCELLED'){
+        if(appointment.status === 'CANCELLED'){
             return sendValidationError(res, 'This appointment was cancelled. Please book a new one.', null);
         }
         if(appointment.status === 'COMPLETED' || isPastDate(appointment.date)){
@@ -599,7 +599,7 @@ async function rescheduleAppointment(req,res,next){
         // so staff/admin can confirm the new time.
         const updated=await prisma.appointment.update({
             where: { id: appointment.id },
-            data: { data, timeSlot, status: 'PENDING' },
+            data: { date, timeSlot, status: 'PENDING' },
         });
 
         // Send back the updated appointment so the portal can show the new date and time
