@@ -28,6 +28,20 @@ function isPastDate(date) {
     return new Date(`${date}T00:00:00`) < today;
 }
 
+// DT-278 (724): The database only allows one appointment per date and time,
+// even a cancelled one. Before booking or rescheduling into a slot, delete any
+// cancelled appointment still holding it so the slot can be used again.
+async function freeCancelledSlot(date, timeSlot, excludeId){
+    await prisma.appointment.deleteMany({
+        where: {
+            date,
+            timeSlot,
+            status: 'CANCELLED',
+            ...(excludeId ? { id: { not: excludeId } } : {}),
+        },
+    });
+}
+
 // GET /api/appointments/availability?date=YYYY-MM-DD
 async function getAvailability(req, res, next) {
     try {
@@ -91,6 +105,9 @@ async function createAppointment(req, res, next) {
                 'timeSlot'
             );
         }
+
+        // DT-278 (724): Free the slot if a cancelled appointment is still holding it
+        await freeCancelledSlot(date, timeSlot);
 
         const appointment = await prisma.appointment.create({
             data: {
@@ -594,6 +611,9 @@ async function rescheduleAppointment(req,res,next){
         if(clash){
             return sendValidationError(res,'That time is already booked. Please choose another time slot.', 'timeSlot');
         }
+
+        // DT-278 (724): Free the slot if a cancelled appointment is still holding it
+        await freeCancelledSlot(date, timeSlot, appointment.id);
 
         // Save the new date and time. Status goes back to PENDING
         // so staff/admin can confirm the new time.
