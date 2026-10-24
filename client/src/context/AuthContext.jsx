@@ -1,10 +1,16 @@
-// AuthContext (DT-336 / DT-556). Talks to the backend auth endpoints and
+// AuthContext (DT-336 / DT-556 / DT-755). Talks to the backend auth endpoints and
 // keeps the session alive across reloads via the server's session cookie.
+// The user's role (admin or customer) always comes from the database.
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { apiLogin, apiLogout, apiMe, apiSignup, ApiError } from '../services/api'
 
-// Test accounts, kept so the UI can be exercised without a seeded database.
+// Test accounts, so the UI and the role redirects (DT-755) can be exercised
+// without a seeded database. They only work in local development and tests,
+// never in a production build, unless VITE_ENABLE_TEST_ACCOUNTS=true is set.
+const TEST_ACCOUNTS_ENABLED =
+  import.meta.env.DEV || import.meta.env.VITE_ENABLE_TEST_ACCOUNTS === 'true'
+
 const HARDCODED_ADMIN = {
   email: 'admin@compassionate4you.com',
   password: 'admin123',
@@ -19,7 +25,52 @@ const HARDCODED_CUSTOMER = {
   displayName: 'Customer User'
 }
 
+const TEST_USER_KEY = 'c4y-test-user'
+
+function matchTestAccount (email, password) {
+  if (!TEST_ACCOUNTS_ENABLED) return null
+  for (const account of [HARDCODED_ADMIN, HARDCODED_CUSTOMER]) {
+    if (email === account.email && password === account.password) {
+      return account
+    }
+  }
+  return null
+}
+
+function readTestUser () {
+  if (!TEST_ACCOUNTS_ENABLED) return null
+  try {
+    const raw = sessionStorage.getItem(TEST_USER_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
+function writeTestUser (user) {
+  try {
+    if (user) sessionStorage.setItem(TEST_USER_KEY, JSON.stringify(user))
+    else sessionStorage.removeItem(TEST_USER_KEY)
+  } catch {
+    // Storage can be unavailable; the test login then lasts until a reload.
+  }
+}
+
 const AuthContext = createContext(null)
+
+// The server stores the role as text. Anything that is not "admin" is a customer.
+function normalizeRole (role) {
+  return String(role || '').toLowerCase() === 'admin' ? 'admin' : 'customer'
+}
+
+function buildUser (apiUser, fallbackEmail) {
+  return {
+    id: apiUser?.id,
+    email: apiUser?.email ?? fallbackEmail,
+    role: normalizeRole(apiUser?.role),
+    displayName: apiUser?.email ?? fallbackEmail
+  }
+}
 
 export function AuthProvider ({ children }) {
   const [user, setUser] = useState(null)
@@ -32,13 +83,14 @@ export function AuthProvider ({ children }) {
 
     apiMe()
       .then((data) => {
-        if (cancelled || !data?.user) return
-        setUser({
-          id: data.user.id,
-          email: data.user.email,
-          role: 'customer',
-          displayName: data.user.email
-        })
+        if (cancelled) return
+        if (data?.user) {
+          setUser(buildUser(data.user))
+          return
+        }
+        // No server session: bring back a test login made earlier in this tab.
+        const testUser = readTestUser()
+        if (testUser) setUser(testUser)
       })
       .catch(() => {
         // Not signed in, or the API is unreachable.
@@ -52,56 +104,46 @@ export function AuthProvider ({ children }) {
     }
   }, [])
 
-  const matchTestAccount = useCallback((email, password) => {
-    for (const account of [HARDCODED_ADMIN, HARDCODED_CUSTOMER]) {
-      if (email === account.email && password === account.password) {
-        return account
-      }
+  const login = useCallback(async (email, password) => {
+    const normalizedEmail = String(email || '').trim().toLowerCase()
+    const normalizedPassword = String(password || '')
+
+    if (!normalizedEmail || !normalizedPassword) {
+      return { ok: false, errorKey: 'login.errors.required' }
     }
-    return null
+
+    if (!/.+@.+\..+/.test(normalizedEmail)) {
+      return { ok: false, errorKey: 'login.errors.invalidEmail' }
+    }
+
+    const testAccount = matchTestAccount(normalizedEmail, normalizedPassword)
+    if (testAccount) {
+      const testUser = {
+        email: testAccount.email,
+        role: testAccount.role,
+        displayName: testAccount.displayName
+      }
+      writeTestUser(testUser)
+      setUser(testUser)
+      return { ok: true, role: testAccount.role }
+    }
+
+    try {
+      const data = await apiLogin(normalizedEmail, normalizedPassword)
+      const nextUser = buildUser(
+        { ...data.user, id: data.user?.id ?? data.userId },
+        normalizedEmail
+      )
+      writeTestUser(null)
+      setUser(nextUser)
+      return { ok: true, role: nextUser.role }
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 400) {
+        return { ok: false, error: err.message, field: err.field }
+      }
+      return { ok: false, errorKey: 'login.errors.network' }
+    }
   }, [])
-
-  const login = useCallback(
-    async (email, password) => {
-      const normalizedEmail = String(email || '').trim().toLowerCase()
-      const normalizedPassword = String(password || '')
-
-      if (!normalizedEmail || !normalizedPassword) {
-        return { ok: false, errorKey: 'login.errors.required' }
-      }
-
-      if (!/.+@.+\..+/.test(normalizedEmail)) {
-        return { ok: false, errorKey: 'login.errors.invalidEmail' }
-      }
-
-      const testAccount = matchTestAccount(normalizedEmail, normalizedPassword)
-      if (testAccount) {
-        setUser({
-          email: testAccount.email,
-          role: testAccount.role,
-          displayName: testAccount.displayName
-        })
-        return { ok: true, role: testAccount.role }
-      }
-
-      try {
-        const data = await apiLogin(normalizedEmail, normalizedPassword)
-        setUser({
-          id: data.user?.id ?? data.userId,
-          email: data.user?.email ?? normalizedEmail,
-          role: 'customer',
-          displayName: data.user?.email ?? normalizedEmail
-        })
-        return { ok: true, role: 'customer' }
-      } catch (err) {
-        if (err instanceof ApiError && err.status === 400) {
-          return { ok: false, error: err.message, field: err.field }
-        }
-        return { ok: false, errorKey: 'login.errors.network' }
-      }
-    },
-    [matchTestAccount]
-  )
 
   const signup = useCallback(async (email, password) => {
     const normalizedEmail = String(email || '').trim().toLowerCase()
@@ -117,13 +159,12 @@ export function AuthProvider ({ children }) {
 
     try {
       const data = await apiSignup(normalizedEmail, normalizedPassword)
-      setUser({
-        id: data.user?.id ?? data.userId,
-        email: data.user?.email ?? normalizedEmail,
-        role: 'customer',
-        displayName: data.user?.email ?? normalizedEmail
-      })
-      return { ok: true, role: 'customer' }
+      const nextUser = buildUser(
+        { ...data.user, id: data.user?.id ?? data.userId },
+        normalizedEmail
+      )
+      setUser(nextUser)
+      return { ok: true, role: nextUser.role }
     } catch (err) {
       if (err instanceof ApiError && err.status === 400) {
         return { ok: false, error: err.message, field: err.field }
@@ -138,6 +179,7 @@ export function AuthProvider ({ children }) {
     } catch {
       // Clear locally even if the request fails.
     }
+    writeTestUser(null)
     setUser(null)
   }, [])
 

@@ -12,7 +12,7 @@ import SignupPage from '../pages/SignupPage'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import Scheduling from '../pages/AcuityScheduling'
 import NotFoundPage from '../pages/NotFoundPage'
-
+import RequireRole from '../components/RequireRole'
 import ContentEditor from '../pages/ContentEditor'
 import ClientSchedulingConfirmation from '../pages/ClientSchedulingConfirmation'
 import ViewAppointmentDetailsPage from '../pages/ViewAppointmentDetailsPage'
@@ -34,11 +34,11 @@ function AppRoutes () {
   return (
     <Routes>
       <Route path='/' element={<LandingPage />} />
-      <Route path='/admin' element={<AdminDashboard />} />
+      <Route path='/admin' element={<RequireRole role='admin'><AdminDashboard /></RequireRole>} />
       <Route path='/home-health' element={<HomeHealthPage />} />
       <Route path='/hospice' element={<HospicePage />} />
       <Route path='/locations' element={<LocationsPage />} />
-      <Route path='/portal' element={<PortalPage />} />
+            <Route path='/portal' element={<RequireRole role='customer'><PortalPage /></RequireRole>} />
       <Route path='/schedule' element={<SchedulePage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
@@ -47,7 +47,7 @@ function AppRoutes () {
         path='/AcuityScheduling'
         element={<Scheduling />}
       />
-      <Route path='/admin/content-editor' element={<ContentEditor />} />
+      <Route path='/admin/content-editor' element={<RequireRole role='admin'><ContentEditor /></RequireRole>} />
       <Route path='/schedule/confirmation' element={<ClientSchedulingConfirmation />} />
       {/* Keep the existing confirmation URL working as well. */}
       <Route path='/confirmation' element={<ClientSchedulingConfirmation />} />

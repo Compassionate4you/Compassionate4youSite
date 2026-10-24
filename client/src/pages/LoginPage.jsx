@@ -2,7 +2,7 @@ import { LogIn } from 'lucide-react'
 
 // Login page (DT-336).
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
@@ -11,9 +11,14 @@ import '../styles/portal.css' // used for the navbar and content styling
 import '../styles/login.css' // used for the login form styling
 function LoginPage () {
   const { t } = useTranslation()
-  const { login } = useAuth()
+  const { login, user, isLoading } = useAuth()
   const navigate = useNavigate()
-
+  // Already signed in: go straight to the right home page.
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate(user.role === 'admin' ? '/admin' : '/portal', { replace: true })
+    }
+  }, [isLoading, user, navigate])
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorKey, setErrorKey] = useState(null)

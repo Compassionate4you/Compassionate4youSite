@@ -12,10 +12,12 @@ import LocationsTab from "../components/admin/LocationsTab";
 import useAppointments from "../hooks/admin/useAppointments";
 import useAccounts from "../hooks/admin/useAccounts";
 import useLocations from "../hooks/admin/useLocations";
+import { useAuth } from "../context/AuthContext";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+        const { logout } = useAuth();
     
     //General Dashboard state
     const [tab, setTab] = useState("appointments");
@@ -73,7 +75,13 @@ const AdminDashboard = () => {
         handleCancelAddLocation,
         handleAddLocation,
     } = useLocations();
-    
+        // DT-755: really sign out (user, test login and server session), then leave the dashboard.
+    const handleConfirmLogout = () => {
+        localStorage.removeItem("isLoggedIn");
+        setShowLogoutConfirm(false);
+        navigate("/");
+        logout();
+    };
     return (
         <div className="admin-dashboard-page">
             <AdminHeader
@@ -151,7 +159,7 @@ const AdminDashboard = () => {
                 title="Confirm Logout"
                 message="Are you sure you want to log out?"
                 onCancel={() => setShowLogoutConfirm(false)}
-                onConfirm={() => navigate("/")}
+                onConfirm={handleConfirmLogout}
             />
 
             {/* Appointment Deletion Confirmation */}
