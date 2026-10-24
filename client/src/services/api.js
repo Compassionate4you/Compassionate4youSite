@@ -82,6 +82,34 @@ export function apiGetMyAppointments () {
   return request('/appointments/mine')
 }
 
+// Retrieve every appointment
+export function apiGetAllAppointments() {
+  return request('/appointments')
+}
+
+// Admin: create an appointment
+export function apiCreateAdminAppointment(appointment) {
+  return request('/appointments/admin', {
+    method: 'POST',
+    body: appointment
+  })
+}
+
+// Admin: update an existing appointment.
+export function apiUpdateAdminAppointment(id, appointment) {
+  return request(`/appointments/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    body: appointment
+  })
+}
+
+// Admin: permanently delete an appointment.
+export function apiDeleteAdminAppointment(id) {
+  return request(`/appointments/${encodeURIComponent(id)}`, {
+    method: 'DELETE'
+  })
+}
+
 // DT-567: contact form.
 export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
@@ -111,10 +139,21 @@ export function apiDeleteLocation(id) //Deletes a location from the database
 }
 
 
+// DT-278 (725): cancel one of the signed in user's appointments
+export function apiCancelAppointment(id){
+    return request(`/appointments/${encodeURIComponent(id)}/cancel`, { method: 'PATCH' })
+}
+
+// DT-278 (726): move one of the signed in user's appointments to a new date and time
+export function apiRescheduleAppointment(id, date, timeSlot){
+  return request(`/appointments/${encodeURIComponent(id)}/reschedule`, { method: 'PATCH', body: { date, timeSlot } })}
 
 export default {
   sendChatMessage,
   apiSubmitContactForm,
+  apiCreateAdminAppointment,
+  apiUpdateAdminAppointment,
+  apiDeleteAdminAppointment,
   apiSignup,
   apiLogin,
   apiLogout,
@@ -122,8 +161,13 @@ export default {
   apiGetAvailability,
   apiCreateAppointment,
   apiGetMyAppointments,
+<<<<<<< HEAD
   apiGetLocations,
   apiCreateLocation,
   apiUpdateLocation,
   apiDeleteLocation
+=======
+  apiCancelAppointment,
+  apiRescheduleAppointment
+>>>>>>> origin/dev
 }
