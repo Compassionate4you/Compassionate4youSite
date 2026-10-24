@@ -1,16 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react'
+
+// DT-278: loads, cancels, and reschedules the signed in user's appointments through the backend
+import { apiGetMyAppointments, apiCancelAppointment, apiRescheduleAppointment, apiGetAvailability } from '../services/api'
 import '../styles/portal.css'
 
-const defaultAppointments = [
-  { service: 'Home Health', date: 'October 13, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-  { service: 'Home Health', date: 'October 15, 2026', time: '2:00 PM - 3:00 PM', provider: 'TBD', status: 'Confirmed' },
-  { service: 'Home Health', date: 'August 15, 2026', time: '10:00 AM - 11:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' },
-  { service: 'Hospice', date: 'July 22, 2026', time: '2:00 PM - 3:00 PM', provider: 'Nurse Patel', status: 'Confirmed' },
-  { service: 'Home Health', date: 'June 30, 2026', time: '9:00 AM - 10:00 AM', provider: 'Nurse Johnson', status: 'Confirmed' }
-]
+// DT-278 (726): Times a user can pick when rescheduling.
+// Must match TIME_SLOTS in server/src/controllers/appointmentController.js
+const TIME_SLOTS = ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM']
+
+// DT-278 (726): Today's date as YYYY-MM-DD, so the date picker can't pick past days
+function todayString () {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+// DT-278: The database sends appointments in a different shape than the table uses
+// (serviceType, date as 2026-10-13, timeSlot, status as PENDING).
+// This changes each one into the shape the table expects.
+function toDisplayAppt (appt) {
+  // Status comes in all caps (PENDING), so change it to Pending
+  const status = appt.status ? appt.status.charAt(0) + appt.status.slice(1).toLowerCase() : 'Pending'
+  return {
+    id: appt.id,
+
+    // DT-278 (726): keep the original date (YYYY-MM-DD) for the reschedule date picker
+    rawDate: appt.date,
+    service: appt.serviceType,
+    // Change 2026-10-13 into October 13, 2026
+    date: new Date(`${appt.date}T00:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+    time: appt.timeSlot,
+    // The database doesn't have a provider column yet
+    provider: 'TBD',
+    status
+  }
+}
 
 function getAppointmentDateTime (appt) {
   const startTime = appt.time.split(' - ')[0]
@@ -45,13 +71,45 @@ function PortalPage () {
   const [showContactForm, setShowContactForm] = useState(false)
   const [messageSent, setMessageSent] = useState(false)
   const [contactForm, setContactForm] = useState({ fullName: '', reason: '', message: '' })
-  const [appointments, setAppointments] = useState(defaultAppointments)
+
+  // DT-278: Removed mock appointments The list starts empty and gets filled from the backend
+  const [appointments, setAppointments] = useState([])
+  // DT-278: Message to show if the appointments can't be loaded
+  const [loadError, setLoadError] = useState('')
+
+  // DT-278 (725): Message to show if cancelling fails
+  const [actionError, setActionError] = useState('')
+
+  // DT-278 (726): Reschedule window. Holds the appointment being moved, or null when closed
+  const [rescheduleAppt, setRescheduleAppt] = useState(null)
+  const [newDate, setNewDate] = useState('')
+  const [newTimeSlot, setNewTimeSlot] = useState('')
+
+  // times already booked on the picked date
+  const [takenSlots, setTakenSlots] = useState([])
+  const [rescheduleError, setRescheduleError] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
+
+
+
+
+  // DT-278: When the page opens, get the signed-in user's appointments.
+  // The empty [] at the end means this only runs once when the page loads.
+  useEffect(() => {
+    apiGetMyAppointments()
+      // Change each appointment into the table's shape and save them
+      .then((data) => setAppointments((data.appointments || []).map(toDisplayAppt)))
+      // If it fails (usually because the user isn't signed in), show a message
+      .catch(() => setLoadError('Could not load your appointments. Please sign in and try again.'))
+  }, [])
 
   function getUpcomingAppointments () {
     const now = new Date()
 
     return appointments.find((appt) => {
-      if (appt.status !== 'Confirmed') return false
+      // DT-278: New bookings start as Pending, so only skip cancelled ones.
+      // Otherwise the bell would never show.
+      if (appt.status === 'Cancelled') return false
 
       const apptDateTime = getAppointmentDateTime(appt)
       const hoursUntil = (apptDateTime - now) / (1000 * 60 * 60)
@@ -59,19 +117,106 @@ function PortalPage () {
     })
   }
 
+  // DT-278 (726): When a new date is picked, check which times are already taken
+  useEffect(() => {
+    if (!rescheduleAppt || !newDate) {
+      setTakenSlots([])
+      return undefined
+    }
+    let cancelled=false
+    apiGetAvailability(newDate)
+      .then((data) => {
+        if (cancelled) return
+        const taken=(data.slots || []).filter((slot) => !slot.available).map((slot) => slot.timeSlot)
+        // This appointments own time shows as taken on its current day, so leave it out
+        setTakenSlots(newDate === rescheduleAppt.rawDate ? taken.filter((slot) => slot !== rescheduleAppt.time) : taken)
+      })
+      .catch(() => {
+        // The server still rejects a taken slot when saving
+        if(!cancelled) setTakenSlots([])
+      })
+
+      // ignore old results if the date changes again before this one finishes
+      return () => { cancelled = true }
+  }, [newDate, rescheduleAppt])
+
+
   function isPastAppt (appt) {
-    if (appt.status === 'Cancelled') return true
+    // DT-278: Cancelled and completed appointments go in the Past tab
+    if (appt.status === 'Cancelled' || appt.status === 'Completed') return true
 
     return getAppointmentDateTime(appt) < new Date()
   }
 
-  const visitCount = appointments.filter((appt) => appt.status === 'Confirmed' && !isPastAppt(appt)).length
+  // DT-278: Count every upcoming appointment, not just Confirmed ones,
+  // since new bookings start as Pending
+  const visitCount = appointments.filter((appt) => !isPastAppt(appt)).length
   const upcomingAppt = getUpcomingAppointments()
 
-  function cancelAppointment (apptToCancel) {
-    setAppointments((currentAppointments) => currentAppointments.map((appt) => (
-      appt === apptToCancel ? { ...appt, status: 'Cancelled' } : appt
+  // DT-278 (725): Cancel an appointment and save it to the backend
+  async function cancelAppointment (apptToCancel) {
+    // ask first so nobody cancels by accident
+    if (!window.confirm('Are you sure you want to cancel this appointment?')) return
+    setActionError('')
+    try {
+      // Tell the backend to cancel this appointment
+      const data = await apiCancelAppointment(apptToCancel.id)
+
+      // Swap the old appointment for the updated one the backend sent back,
+      // so it moves to the Past tab as Cancelled
+      setAppointments((currentAppointments) => currentAppointments.map((appt) => (
+      // Match by the appointment's id from the database
+      appt.id === apptToCancel.id ? toDisplayAppt(data.appointment) : appt
+      )))
+    } catch (err) {
+    // Show the server's message, like "This appointment has already happened."
+      setActionError(err.message || 'Could not cancel the appointment. Please try again.')
+    }
+  }
+
+  // DT-278 (726): Open the reschedule window for one appointment
+  function openReschedule(appt){
+    setRescheduleAppt(appt)
+    // Start with current date and time filled
+    setNewDate(appt.rawDate)
+    setNewTimeSlot(appt.time)
+    setRescheduleError('')
+  }
+
+  // DT-278 (726): close the reschedule window
+  function closeReschedule(){
+    setRescheduleAppt(null)
+    setRescheduleError('')
+  }
+
+  // DT-278 (726): Changing the date clears the time, since it may be taken on new day
+  function handleNewDateChange(event){
+    setNewDate(event.target.value)
+    setNewTimeSlot('')
+  }
+
+  // DT-278 (726): Save the new date and time to the backend
+  async function saveReschedule () {
+    if (!newDate || !newTimeSlot) {
+      setRescheduleError('Please choose a new date and time.')
+      return
+    }
+
+    setIsSaving(true)
+    setRescheduleError('')
+    try{
+      const data=await apiRescheduleAppointment(rescheduleAppt.id, newDate, newTimeSlot)
+      // Swap in the updated appointment the backend sent back
+      setAppointments((currentAppointments) => currentAppointments.map((appt) => (
+        appt.id === rescheduleAppt.id ? toDisplayAppt(data.appointment) : appt
     )))
+    closeReschedule()
+    } catch (err) {
+      // show the server message : "That time is already booked."
+      setRescheduleError(err.message || 'Could not reschedule. Please try again.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   function handleSave () {
@@ -283,8 +428,8 @@ function PortalPage () {
                     </tr>
                   </thead>
                   <tbody>
-                    {appointments.filter((appt) => apptTab === 'past' ? isPastAppt(appt) : !isPastAppt(appt)).map((appt, index) => (
-                      <tr key={`${appt.service}-${appt.date}-${index}`}>
+                    {appointments.filter((appt) => apptTab === 'past' ? isPastAppt(appt) : !isPastAppt(appt)).map((appt) => (
+                      <tr key={appt.id}>
                         <td>{appt.service}</td>
                         <td>{appt.date}</td>
                         <td>{appt.time}</td>
@@ -303,7 +448,7 @@ function PortalPage () {
                               )
                             : (
                               <>
-                                <button className='btn-reschedule' onClick={() => navigate('/schedule')} title='Reschedule'>
+                                <button className='btn-reschedule' onClick={() => openReschedule(appt)}>
                                   <Pencil size={16} />
                                 </button>
                                 <button className='btn-cancel-appt' onClick={() => cancelAppointment(appt)} title='Cancel'>
@@ -316,6 +461,13 @@ function PortalPage () {
                     ))}
                   </tbody>
                 </table>
+
+                {/* DT-278: Show an error if the appointments couldn't be loaded */}
+                {loadError && <p className='password-error'>{loadError}</p>}
+
+                {/* DT-278 (725): Show an error if cancelling didn't work */}
+                {actionError && <p className='password-error'>{actionError}</p>}
+
               </div>
             </>
             )}
@@ -446,6 +598,52 @@ function PortalPage () {
             <div className='modal-footer'>
               <button className='btn-secondary' onClick={() => setShowProfile(false)}>Cancel</button>
               <button className='btn-primary' onClick={handleSave}>Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* DT-278 (726): Reschedule window, opens from the pencil button */}
+      {rescheduleAppt && (
+        <div className='modal-overlay'>
+          <div className='modal'>
+            <div className='modal-header'>
+              <div>
+                <h2 className='modal-title'>Reschedule Appointment</h2>
+                <p className='modal-subtitle'>{rescheduleAppt.service}, currently {rescheduleAppt.date} at {rescheduleAppt.time}</p>
+              </div>
+              <button className='modal-close' onClick={closeReschedule}>x</button>
+            </div>
+
+            <div className='modal-body'>
+              <div className='field'>
+                <label htmlFor='reschedule-date'>New Date</label>
+                <input id='reschedule-date' type='date' min={todayString()} value={newDate} onChange={handleNewDateChange} />
+              </div>
+              <div className='field'>
+                <label htmlFor='reschedule-time'>New Time</label>
+                <select id='reschedule-time' value={newTimeSlot} onChange={(e) => setNewTimeSlot(e.target.value)}>
+                  <option value=''>Select a time</option>
+
+                  {/* Taken times are grayed out */}
+                  {TIME_SLOTS.map((slot) => {
+                    const taken = takenSlots.includes(slot)
+                    return (
+                      <option key={slot} value={slot} disabled={taken}>
+                        {slot}{taken ? ' - Taken' : ''}
+                      </option>
+                    )
+                  })}
+                </select>
+              </div>
+
+              {rescheduleError && <p className='password-error'>{rescheduleError}</p>}
+            </div>
+
+            <div className='modal-footer'>
+              <button className='btn-secondary' onClick={closeReschedule}>Cancel</button>
+              <button className='btn-primary' onClick={saveReschedule} disabled={isSaving}>
+                {isSaving ? 'Saving...' : 'Save New Time'}
+              </button>
             </div>
           </div>
         </div>

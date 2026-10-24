@@ -28,6 +28,20 @@ function isPastDate(date) {
     return new Date(`${date}T00:00:00`) < today;
 }
 
+// DT-278 (724): The database only allows one appointment per date and time,
+// even a cancelled one. Before booking or rescheduling into a slot, delete any
+// cancelled appointment still holding it so the slot can be used again.
+async function freeCancelledSlot(date, timeSlot, excludeId){
+    await prisma.appointment.deleteMany({
+        where: {
+            date,
+            timeSlot,
+            status: 'CANCELLED',
+            ...(excludeId ? { id: { not: excludeId } } : {}),
+        },
+    });
+}
+
 // GET /api/appointments/availability?date=YYYY-MM-DD
 async function getAvailability(req, res, next) {
     try {
@@ -91,6 +105,9 @@ async function createAppointment(req, res, next) {
                 'timeSlot'
             );
         }
+
+        // DT-278 (724): Free the slot if a cancelled appointment is still holding it
+        await freeCancelledSlot(date, timeSlot);
 
         const appointment = await prisma.appointment.create({
             data: {
@@ -493,6 +510,130 @@ async function deleteAdminAppointment(req, res, next) {
     }
 }
 
+// DT-278 (721): PATCH /api/appointments/:id/cancel
+// Cancels one of the signed in user's appointments from the Customer Portal.
+async function cancelAppointment(req, res, next) {
+    try {
+        // Find the appointment using the id from the URL
+        const appointment = await prisma.appointment.findUnique({
+            where: { id: req.params.id },
+        });
+
+        // DT-278 (723): Only the person who booked it can cancel it.
+        // Sends "not found" instead of "not allowed" so people can't tell
+        // whether someone else's appointment id exists.
+        if (!appointment || appointment.userId !== req.user.id) {
+            return res.status(404).json({
+                success: false,
+                error: { message: 'Appointment not found.', field: null },
+            });
+        }
+
+        // Already cancelled, so there's nothing to change
+        if (appointment.status === 'CANCELLED') {
+            return res.status(200).json({ success: true, appointment });
+        }
+
+        // Can't cancel an appointment that already happened
+        if (appointment.status === 'COMPLETED' || isPastDate(appointment.date)) {
+            return sendValidationError(res, 'This appointment has already happened.', null);
+        }
+
+        // Mark it as cancelled instead of deleting it,
+        // so it still shows in the Past tab on the customer portal
+        const updated = await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { status: 'CANCELLED' },
+        });
+
+        // Send back the updated appointment so the portal can show the new status
+        return res.status(200).json({ success: true, appointment: updated });
+    } catch (err) {
+        return next(err);
+    }
+}
+
+// DT-278 (722): PATCH /api/appointments/:id/reschedule
+// Moves one of the signed in user's appointments to a new date and time.
+// Body: { date: 'YYYY-MM-DD', timeSlot: '10:00 AM' }
+async function rescheduleAppointment(req,res,next){
+    try{
+        const { date, timeSlot } = req.body || {};
+
+        // find the appointment using the id from the URL
+        const appointment = await prisma.appointment.findUnique({
+            where: { id: req.params.id },
+        });
+
+        // DT-278 (723): Only the person who booked it can reschedule it.
+        // Same "not found" message as cancel so other users' ids stay hidden.
+        if(!appointment || appointment.userId !== req.user.id){
+            return res.status(404).json({
+                success: false,
+                error: { message: 'Appointment not found.', field: null },
+            });
+        }
+
+        // Can't reschedule one appt that is cancelled or already happened
+        if(appointment.status === 'CANCELLED'){
+            return sendValidationError(res, 'This appointment was cancelled. Please book a new one.', null);
+        }
+        if(appointment.status === 'COMPLETED' || isPastDate(appointment.date)){
+            return sendValidationError(res, 'This appointment has already happened.', null);
+        }
+
+        // DT-278 (722): Same date and time checks as booking (createAppointment)
+        if (!DATE_RE.test(String(date || ''))){
+            return sendValidationError(res, 'Please choose a date.', 'date');
+        }
+        if(isPastDate(date)){
+            return sendValidationError(res, 'Please choose a date in the future.', 'date');
+        }
+        if (!TIME_SLOTS.includes(timeSlot)){
+            return sendValidationError(res, 'Please choose an available time.', 'timeSlot');
+        }
+
+        // Nothing to change if they picked the same date and time
+        if (appointment.date === date && appointment.timeSlot === timeSlot){
+            return res.status(200).json({ success: true, appointment });
+        }
+
+        // DT-278 (722): Make sure the new slot isn't taken.
+        // Leaves out this appointment itself and cancelled ones.
+        const clash = await prisma.appointment.findFirst({
+            where: {
+                id: { not: appointment.id },
+                date,
+                timeSlot,
+                status: { not: 'CANCELLED' },
+            },
+        });
+        if(clash){
+            return sendValidationError(res,'That time is already booked. Please choose another time slot.', 'timeSlot');
+        }
+
+        // DT-278 (724): Free the slot if a cancelled appointment is still holding it
+        await freeCancelledSlot(date, timeSlot, appointment.id);
+
+        // Save the new date and time. Status goes back to PENDING
+        // so staff/admin can confirm the new time.
+        const updated=await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { date, timeSlot, status: 'PENDING' },
+        });
+
+        // Send back the updated appointment so the portal can show the new date and time
+        return res.status(200).json({ success: true, appointment: updated });
+    } catch (err) {
+        // Unique rule on (date, timeSlot). This also happens when a cancelled
+        // appointment still holds the slot (DT-724).
+        if (err.code === 'P2002') {
+            return sendValidationError(res, 'That time is already booked. Please choose another slot.', 'timeSlot');
+        }
+        return next(err);
+    }   
+}
+
 module.exports = {
     createAppointment,
     createAdminAppointment,
@@ -501,6 +642,10 @@ module.exports = {
     getAllAppointments,
     updateAdminAppointment,
     deleteAdminAppointment,
+    // DT-278 (721): cancel route
+    cancelAppointment,
+    // DT-278 (722): reschedule route
+    rescheduleAppointment,
     TIME_SLOTS,
     SERVICE_TYPES,
 };
