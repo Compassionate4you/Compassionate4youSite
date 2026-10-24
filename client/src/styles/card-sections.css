@@ -16,38 +16,17 @@
   grid-template-columns: repeat(var(--card-columns, 3), minmax(0, 1fr));
 }
 
-.card,
-.card-surface {
-  background-color: var(--card-background, var(--color-white));
-  border: 1px solid var(--card-border-color, var(--color-divider));
-  border-radius: var(--radius-lg);
-  padding: var(--card-padding, 24px);
-}
-
 .card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);
+  padding: 24px;
   flex: 1;
-  cursor: default;
-}
-
-/* Portal cards retain their existing border-only hover behavior. */
-.portals-section .card {
   cursor: pointer;
 }
 
-.portals-section .card:hover {
+.card:hover {
   border-color: var(--color-primary);
-}
-
-/* Service/information cards explicitly opt in to the shared hover effect. */
-.card-section--hover .card,
-.card-hover {
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.card-section--hover .card:hover,
-.card-hover:hover {
-  border-color: var(--color-primary);
-  transform: translateY(-5px);
 }
 
 .card h3 {
@@ -125,6 +104,7 @@
 .welcome-text-section .card {
   background: transparent;
   border: none;
+  border-radius: 0;
   box-shadow: none;
   padding: 0;
 }
@@ -154,7 +134,7 @@
   padding: 48px 56px;
   background: var(--color-white);
   border: 3px solid var(--color-white-text);
-  border-radius: var(--radius-lg);
+  border-radius: 42px;
   color: var(--color-white-text);
   display: flex;
   align-items: center;
@@ -269,23 +249,20 @@
 }
 
 /* Home Health cards */
-.services-section .card,
-.advantages-section .adv-card {
-  --card-padding: 20px;
-}
-
-.services-section .card,
-.advantages-section .adv-card,
-.specialty-section .specialty-card {
-  --card-border-color: var(--color-gray);
-}
-
 .services-section .card {
-  --card-background: var(--color-light-gray);
+  background-color: var(--color-light-gray);
   color: var(--color-white-text);
+  border: 1px solid var(--color-gray);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.services-section .card:hover {
+  transform: translateY(-5px);
 }
 
 .services-section .card h3,
@@ -315,8 +292,17 @@
 }
 
 .advantages-section .adv-card {
+  background: var(--color-white);
+  transition: transform 0.2s ease;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--color-gray);
   text-align: left;
   box-shadow: 0 2px 6px rgba(0,0,0,0,0.1);
+}
+
+.advantages-section .adv-card:hover {
+  transform: translateY(-5px);
 }
 
 .advantages-section .adv-number {
@@ -338,11 +324,19 @@
 }
 
 .specialty-section .specialty-card {
-  --card-background: var(--color-light-gray);
-  --card-padding: 18px;
+  background: var(--color-light-gray);
+  padding: 18px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 12px;
+  border: 1px solid var(--color-gray);
+  transition: all 0.3s ease;
+}
+
+.specialty-section .specialty-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
 .specialty-section .specialty-icon {
@@ -362,21 +356,18 @@
 }
 
 /* Hospice cards */
-.HospiceInformationCard {
+.HospiceAboveAndBeyond .HospiceAboveAndBeyondCard {
   background-color: var(--color-light-gray);
   color: var(--color-light-gray-text);
-  border-radius: var(--radius-lg);
+  border-radius: 10px;
   padding: 15px;
-  width: 30%;
-}
-
-.HospiceAboveAndBeyond .HospiceAboveAndBeyondCard {
-  --card-background: var(--color-light-gray);
-  --card-padding: 15px;
-  color: var(--color-light-gray-text);
-  border: none;
   width: 50%;
   margin: 15px auto;
+}
+
+.HospiceAboveAndBeyond .HospiceAboveAndBeyondCard:hover {
+  background-color: var(--color-white);
+  color: var(--color-white-text);
 }
 
 .HospiceAboveAndBeyond .HospiceCheckmark {
