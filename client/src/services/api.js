@@ -115,6 +115,30 @@ export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
 }
 
+//DT- 710: Locations API
+export function apiGetLocations()  //Gets all locations from the database through the backend
+{
+  return request('/locations')  //Sends a get request to locations
+}
+
+export function apiCreateLocation(location) // Addd a new location to the database
+{
+  return request ('/locations', { method: 'POST', body: location }) //Sends the location information to the backend
+}
+
+
+export function apiUpdateLocation (id, location) //Updates an existing location in the database
+{
+  return request(`/locations/${encodeURIComponent(id)}`, {method: 'PUT', body: location}) //Uses the location ID to find the correct location
+}
+
+
+export function apiDeleteLocation(id) //Deletes a location from the database
+{
+  return request(`/locations/${encodeURIComponent(id)}`, {method: 'DELETE'}) //uses the location ID to identify which location to delete
+}
+
+
 // DT-278 (725): cancel one of the signed in user's appointments
 export function apiCancelAppointment(id){
     return request(`/appointments/${encodeURIComponent(id)}/cancel`, { method: 'PATCH' })
@@ -137,6 +161,13 @@ export default {
   apiGetAvailability,
   apiCreateAppointment,
   apiGetMyAppointments,
+<<<<<<< HEAD
+  apiGetLocations,
+  apiCreateLocation,
+  apiUpdateLocation,
+  apiDeleteLocation
+=======
   apiCancelAppointment,
   apiRescheduleAppointment
+>>>>>>> origin/dev
 }
