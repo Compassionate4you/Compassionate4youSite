@@ -1,6 +1,8 @@
-// DT-511 Sprint 7
-// PBall
-// Service handling text entries and unique ID validation with in-memory persistence and database integration placeholders
+// DT-622 Sprint 8
+// Preston Ball
+// Service handling text entries and unique ID validation with database persistence and fallback cache
+
+import { API_BASE_URL } from './api'
 
 const STORAGE_KEY = 'cms_text_entries_store'
 
@@ -22,6 +24,27 @@ export const TextEntryService = {
   })(),
 
   getTextEntries () {
+    return [...this.data]
+  },
+
+  // DT-622 Sprint 8 - Preston Ball: Load text entries from backend database
+  async loadFromDatabase () {
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/content/text-entries`)
+      if (res.ok) {
+        const remoteEntries = await res.json()
+        if (Array.isArray(remoteEntries) && remoteEntries.length > 0) {
+          this.data = remoteEntries.map(e => ({
+            id: e.id,
+            translationJsonPath: e.jsonPath || e.id,
+            englishText: e.englishText
+          }))
+          this._persist()
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load text entries from database:', err)
+    }
     return [...this.data]
   },
 
@@ -61,19 +84,21 @@ export const TextEntryService = {
 
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbSaveTextEntry (entryData) {
-     *   const res = await fetch('/api/admin/content/text-entries', {
-     *     method: 'POST',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(entryData)
-     *   })
-     *   if (!res.ok) throw new Error('Database text entry save failed')
-     *   return await res.json()
-     * }
-     * await dbSaveTextEntry({ id: trimmedNewId, translationJsonPath, englishText })
-     */
+    // DT-622 Sprint 8 - Preston Ball: Persist text entry to the database
+    async function dbSaveTextEntry (entryData) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/text-entries`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(entryData)
+        })
+        if (!res.ok) throw new Error('Database text entry save failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database text entry save error:', err)
+      }
+    }
+    dbSaveTextEntry({ id: trimmedNewId, translationJsonPath, englishText })
 
     return { success: true, id: trimmedNewId, englishText }
   },

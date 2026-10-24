@@ -1,6 +1,8 @@
-// DT-512 Sprint 7
-// PBall
-// Service handling user-created sections with in-memory persistence and database integration placeholders
+// DT-622 Sprint 8
+// Preston Ball
+// Service handling user-created sections with database persistence and fallback cache
+
+import { API_BASE_URL } from './api'
 
 const STORAGE_KEY = 'cms_user_sections_store'
 
@@ -66,6 +68,23 @@ export const SectionStorageService = {
     return [...this.data]
   },
 
+  // DT-622 Sprint 8 - Preston Ball: Load sections from backend database
+  async loadFromDatabase () {
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/content/sections`)
+      if (res.ok) {
+        const remoteSections = await res.json()
+        if (Array.isArray(remoteSections) && remoteSections.length > 0) {
+          this.data = remoteSections
+          this._persist()
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load user sections from database:', err)
+    }
+    return [...this.data]
+  },
+
   getSectionById (id) {
     return this.data.find(s => s.id === id) || null
   },
@@ -95,19 +114,21 @@ export const SectionStorageService = {
     this.data.push(newSection)
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbCreateSection (sectionData) {
-     *   const res = await fetch('/api/admin/content/sections', {
-     *     method: 'POST',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(sectionData)
-     *   })
-     *   if (!res.ok) throw new Error('Database section creation failed')
-     *   return await res.json()
-     * }
-     * await dbCreateSection(newSection)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Persist section to the database
+    async function dbCreateSection (sectionData) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/sections`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sectionData)
+        })
+        if (!res.ok) throw new Error('Database section creation failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database section creation error:', err)
+      }
+    }
+    dbCreateSection(newSection)
 
     return newSection
   },
@@ -127,19 +148,21 @@ export const SectionStorageService = {
     this.data[index] = updated
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbUpdateSection (sectionId, updates) {
-     *   const res = await fetch(`/api/admin/content/sections/${sectionId}`, {
-     *     method: 'PUT',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(updates)
-     *   })
-     *   if (!res.ok) throw new Error('Database section update failed')
-     *   return await res.json()
-     * }
-     * await dbUpdateSection(id, updated)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Update section in the database
+    async function dbUpdateSection (sectionId, updates) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/sections/${sectionId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        })
+        if (!res.ok) throw new Error('Database section update failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database section update error:', err)
+      }
+    }
+    dbUpdateSection(id, updated)
 
     return updated
   },
@@ -151,17 +174,19 @@ export const SectionStorageService = {
     const removed = this.data.splice(index, 1)[0]
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbDeleteSection (sectionId) {
-     *   const res = await fetch(`/api/admin/content/sections/${sectionId}`, {
-     *     method: 'DELETE'
-     *   })
-     *   if (!res.ok) throw new Error('Database section deletion failed')
-     *   return await res.json()
-     * }
-     * await dbDeleteSection(id)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Delete section from the database
+    async function dbDeleteSection (sectionId) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/sections/${sectionId}`, {
+          method: 'DELETE'
+        })
+        if (!res.ok) throw new Error('Database section deletion failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database section deletion error:', err)
+      }
+    }
+    dbDeleteSection(id)
 
     return removed
   },

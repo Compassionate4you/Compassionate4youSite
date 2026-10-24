@@ -1,9 +1,11 @@
+// DT-622 Sprint 8
+// Preston Ball
+// Application routes directing content pages dynamically to ContentPage
+
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
-import LandingPage from '../pages/LandingPage'
+import ContentPage from '../pages/ContentPage'
 import AdminDashboard from '../pages/AdminDashboard'
-import HomeHealthPage from '../pages/HomeHealthPage'
-import HospicePage from '../pages/HospicePage'
 import LocationsPage from '../pages/LocationsPage'
 import PortalPage from '../pages/PortalPage'
 import SchedulePage from '../pages/SchedulePage'
@@ -12,10 +14,10 @@ import SignupPage from '../pages/SignupPage'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import Scheduling from '../pages/AcuityScheduling'
 import NotFoundPage from '../pages/NotFoundPage'
-
 import ContentEditor from '../pages/ContentEditor'
 import ClientSchedulingConfirmation from '../pages/ClientSchedulingConfirmation'
 import ViewAppointmentDetailsPage from '../pages/ViewAppointmentDetailsPage'
+
 function AppRoutes () {
   const location = useLocation()
   const firstRender = useRef(true)
@@ -33,25 +35,29 @@ function AppRoutes () {
 
   return (
     <Routes>
-      <Route path='/' element={<LandingPage />} />
+      {/* DT-622 Sprint 8 - Preston Ball: Root content route loads default landing page from database */}
+      <Route path='/' element={<ContentPage defaultPageId='landing' />} />
+
+      {/* Static Admin & Auth Routes */}
       <Route path='/admin' element={<AdminDashboard />} />
-      <Route path='/home-health' element={<HomeHealthPage />} />
-      <Route path='/hospice' element={<HospicePage />} />
-      <Route path='/locations' element={<LocationsPage />} />
+      <Route path='/admin/content-editor' element={<ContentEditor />} />
       <Route path='/portal' element={<PortalPage />} />
-      <Route path='/schedule' element={<SchedulePage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-      <Route
-        path='/AcuityScheduling'
-        element={<Scheduling />}
-      />
-      <Route path='/admin/content-editor' element={<ContentEditor />} />
+
+      {/* Static Scheduling & Locations Routes */}
+      <Route path='/schedule' element={<SchedulePage />} />
+      <Route path='/locations' element={<LocationsPage />} />
+      <Route path='/AcuityScheduling' element={<Scheduling />} />
       <Route path='/schedule/confirmation' element={<ClientSchedulingConfirmation />} />
-      {/* Keep the existing confirmation URL working as well. */}
       <Route path='/confirmation' element={<ClientSchedulingConfirmation />} />
       <Route path='/appointment-details' element={<ViewAppointmentDetailsPage />} />
+
+      {/* DT-622 Sprint 8 - Preston Ball: Explicit and dynamic root content routes */}
+      <Route path='/content/:pageId' element={<ContentPage />} />
+      <Route path='/:pageId' element={<ContentPage />} />
+
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   )

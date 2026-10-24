@@ -97,3 +97,57 @@ model ChatMessage {
   @@index([sessionId, createdAt])
   @@map("chat_messages")
 }
+
+// DT-622 DT-618 Sprint 8
+// Preston Ball
+// Content management and audit history models
+
+model TextEntry {
+  id          String @id
+  jsonPath    String @map("json_path")
+  englishText String @map("english_text")
+
+  @@map("text_entries")
+}
+
+model Color {
+  id             String @id
+  lightModeColor String @map("light_mode_color")
+  darkModeColor  String @map("dark_mode_color")
+
+  @@map("colors")
+}
+
+model UserCreatedPage {
+  id      String @id
+  content Json
+
+  @@map("user_created_pages")
+}
+
+model UserCreatedSection {
+  id      String @id
+  layout  String
+  content Json
+
+  @@map("user_created_sections")
+}
+
+model UserCreatedCard {
+  id      String @id
+  layout  String
+  content Json
+
+  @@map("user_created_cards")
+}
+
+model AppliedChange {
+  id            String   @id
+  user          String
+  time          DateTime @default(now())
+  changeContent Json     @map("change_content")
+  status        String   @default("applied")
+
+  @@map("applied_changes")
+}
+

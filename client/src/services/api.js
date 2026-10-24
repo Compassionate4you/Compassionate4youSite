@@ -3,7 +3,7 @@
 
 const API_ROOT =
     (import.meta.env && import.meta.env.VITE_API_URL) || ''
-const API_BASE_URL = API_ROOT
+export const API_BASE_URL = API_ROOT
   ? `${API_ROOT.replace(/\/$/, '')}/api`
   : '/api'
 

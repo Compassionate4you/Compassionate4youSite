@@ -38,5 +38,11 @@
     "setupFiles": [
       "<rootDir>/jest.setup.js"
     ]
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "@prisma/engines": true,
+    "prisma": true,
+    "unrs-resolver@1.12.2": true
   }
 }

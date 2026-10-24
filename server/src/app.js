@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const authRoutes = require('./routes/authRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const contentRoutes = require('./routes/contentRoutes');
 const { attachUser } = require('./middleware/authMiddleware');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
@@ -29,6 +30,9 @@ app.get('/api/health', (req, res) => {
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
+// DT-622 DT-618: Content editor and dynamic content routes
+app.use('/api/admin/content', contentRoutes);
+app.use('/api/content', contentRoutes);
 // app.use('/api/portal', portalRoutes);
 // app.use('/api/services', serviceRoutes);
 

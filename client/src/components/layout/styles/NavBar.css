@@ -40,3 +40,60 @@
     color: var(--color-link-highlight); 
     background-color: var(--color-light-gray);
   }
+
+/* DT-622 Sprint 8 - Preston Ball: Dynamic content pages dropdown styles */
+.nav-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-dropdown-toggle {
+  background: none;
+  border: none;
+  color: var(--color-white-text);
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-dropdown-toggle:hover,
+.nav-dropdown-toggle:focus {
+  color: var(--color-link-highlight);
+  background-color: var(--color-light-gray);
+  outline: none;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  color: #1e293b;
+  min-width: 200px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  padding: 8px 0;
+  list-style: none;
+  margin-top: 8px;
+  z-index: 1001;
+}
+
+.nav-dropdown-item a {
+  display: block;
+  padding: 8px 16px;
+  color: #334155 !important;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.nav-dropdown-item a:hover {
+  background-color: #f1f5f9;
+  color: #0f172a !important;
+}

@@ -1,9 +1,10 @@
-// DT-517 Sprint 7
-// PBall
-// Content Editor page incorporating tool switchers for Colors, Text, Sections, Cards, and Audit History
+// DT-622 DT-618 Sprint 8
+// Preston Ball
+// Content Editor page incorporating tool switchers for Pages, Colors, Text, Sections, Cards, and Audit History
 
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import PageManager from '../components/admin/content/PageManager'
 import ColorConfigTool from '../components/admin/content/ColorConfigTool'
 import TextConfigTool from '../components/admin/content/TextConfigTool'
 import SectionManager from '../components/admin/content/SectionManager'
@@ -13,7 +14,7 @@ import '../styles/contenteditor.css'
 
 export default function ContentEditor () {
   const navigate = useNavigate()
-  const [activeTool, setActiveTool] = useState('text')
+  const [activeTool, setActiveTool] = useState('pages')
   const [notification, setNotification] = useState('')
 
   const handleNotify = (msg) => {
@@ -34,7 +35,7 @@ export default function ContentEditor () {
 
       <h1 className="content-editor-title">Content Editor Suite</h1>
       <p className="content-editor-subtitle">
-        Manage site colors, cascading text hierarchy, section blocks, card elements, and applied audit history.
+        Manage site pages, theme colors, cascading text hierarchy, section blocks, card elements, and applied audit history.
       </p>
 
       {notification && (
@@ -46,6 +47,7 @@ export default function ContentEditor () {
       {/* Tool Switcher Tabs */}
       <div className="content-editor-tabs" style={{ display: 'flex', gap: '8px', marginTop: '24px', flexWrap: 'wrap' }}>
         {[
+          { id: 'pages', label: '📄 Page Manager' },
           { id: 'text', label: '📝 Text Config' },
           { id: 'colors', label: '🎨 Color Config' },
           { id: 'sections', label: '📐 Section Manager' },
@@ -76,6 +78,7 @@ export default function ContentEditor () {
 
       {/* Active Tool Workspace */}
       <div className="content-editor-workspace" style={{ marginTop: '24px' }}>
+        {activeTool === 'pages' && <PageManager onNotification={handleNotify} />}
         {activeTool === 'text' && <TextConfigTool onNotification={handleNotify} />}
         {activeTool === 'colors' && <ColorConfigTool onNotification={handleNotify} />}
         {activeTool === 'sections' && <SectionManager onNotification={handleNotify} />}
