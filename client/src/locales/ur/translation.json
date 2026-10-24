@@ -20,6 +20,18 @@
     "philosophyText": "ہم اپنے مریضوں کے ساتھ عزت، احترام اور ہمدردی سے پیش آنے پر یقین رکھتے ہیں۔ ہم زندگی کے آخری سفر کو ممکن حد تک آرام دہ اور بامعنی بنانے کی کوشش کرتے ہیں۔",
     "caringSinceTitle": "2021 سے نگہداشت",
     "caringSinceText": "2021 سے آپ کے گھر کے آرام میں ہمدردانہ نگہداشت فراہم کر رہے ہیں۔",
+    "infoCards": {
+      "card1": {
+        "imageAlt": "لوگ مل کر ایک پہیلی حل کر رہے ہیں",
+        "header": "میڈیکیئر کی گھریلو صحت کی دیکھ بھال کے معیار",
+        "paragraph": "میڈیکیئر کی گھریلو صحت کی خدمات کے لیے اہل ہونے کے لیے ضروری ہے کہ مریض گھر تک محدود ہو اور کسی ایسے معالج کی نگرانی میں ہو جو ڈاکٹر آف میڈیسن، ڈاکٹر آف آسٹیوپیتھی یا پیروں کے امراض کا ماہر ڈاکٹر ہو اور میڈیکیئر پروگرام میں رجسٹرڈ ہو۔"
+      },
+      "card2": {
+        "imageAlt": "ایک بزرگ جوڑا ایک ساتھ مسکرا رہا ہے",
+        "header": "خصوصی خدمات",
+        "paragraph": "اپنے مریضوں کو جامع اور اعلیٰ معیار کی گھریلو نگہداشت کی خدمات فراہم کرنے کے لیے، ہم ان کے خاندانوں، کیس مینیجرز، ہسپتال سے رخصتی کی منصوبہ بندی کرنے والوں اور معالجین کے ساتھ مضبوط شراکت داری قائم کرتے ہیں۔\n\nہم ایسے ہمدرد پیشہ ور افراد کی ٹیم بنانے پر یقین رکھتے ہیں جن کا مقصد ہمارے مریضوں کی دیکھ بھال اور ان کی مدد کرنا ہے۔"
+      }
+    },
     "aboutTitle": "ہمارے بارے میں",
     "aboutText": "Compassionate Home Health & Hospice is a family-owned and operated business founded by Jane Smith, RN. With over 15 years of experience in healthcare, Jane started this company to provide personalized, compassionate care to patients in their homes. Our team of dedicated professionals is committed to enhancing the quality of life for our patients and their families through comprehensive home health and hospice services.",
     "contactTitle": "رابطہ",
