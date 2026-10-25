@@ -53,10 +53,17 @@ export default function CardSection ({
 
   const columns = Number(data.gridCols || data.columns || 3)
   const sectionClassName = ['card-section', className].filter(Boolean).join(' ')
+  const headerTypo = data.typography?.header || {}
+  const headerStyle = {
+    textAlign: headerTypo.align || undefined,
+    fontFamily: headerTypo.fontFamily && headerTypo.fontFamily !== 'inherit' ? headerTypo.fontFamily : undefined,
+    fontWeight: headerTypo.bold ? 'bold' : undefined,
+    fontStyle: headerTypo.italic ? 'italic' : undefined
+  }
 
   return (
     <section className={sectionClassName} style={style} aria-label={title || undefined}>
-      {title && <h2 className="card-section__title">{title}</h2>}
+      {title && <h2 className="card-section__title" style={headerStyle}>{title}</h2>}
       <div className="card-grid" style={{ '--card-columns': Math.min(Math.max(columns, 1), 4) }}>
         {resolvedCards.map((card, index) => (
           <ModularCard

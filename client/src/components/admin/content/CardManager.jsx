@@ -1,20 +1,35 @@
-// DT-622 DT-618 Sprint 8
+// DT-622 DT-618 DT-625 Sprint 8
 // Preston Ball
-// Card Element Manager component supporting layout-specific dynamic fields, content/color tabs, and live preview
+// Card Element Manager component supporting layout-specific dynamic fields, custom typography, element renaming, custom selects, custom modals, and live preview
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { CardStorageService } from '../../../services/cardStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 import { ColorConfigService } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import ModularCard from '../../modular/cards/ModularCard'
+import CustomModal from './CustomModal'
+import CustomSelect from './CustomSelect'
+import TypographyControls from './TypographyControls'
 
 const SYMBOL_OPTIONS = [
   'Heart', 'Check', 'Home', 'Stethoscope', 'Users', 'Phone',
   'Pill', 'Activity', 'Star', 'Shield', 'ShieldCheck', 'Award', 'Smile'
 ]
 
-export default function CardManager ({ onNotification }) {
+const CARD_LAYOUT_OPTIONS = [
+  { value: 'HEADER_PARAGRAPH', label: 'HEADER_PARAGRAPH (Title & bullet text)' },
+  { value: 'IMAGE_FULL_WIDTH', label: 'IMAGE_FULL_WIDTH (Split image and content)' },
+  { value: 'HEADER_SYMBOL', label: 'HEADER_SYMBOL (Icon badge & title)' }
+]
+
+const ALIGNMENT_OPTIONS = [
+  { value: 'left', label: 'Left Aligned' },
+  { value: 'center', label: 'Centered' },
+  { value: 'right', label: 'Right Aligned' }
+]
+
+export default function CardManager ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [cards, setCards] = useState(CardStorageService.getCards())
   const colors = ColorConfigService.getColors()
   const sections = SectionStorageService.getSections()
@@ -28,6 +43,8 @@ export default function CardManager ({ onNotification }) {
   const [layout, setLayout] = useState('HEADER_PARAGRAPH')
   const [header, setHeader] = useState('')
   const [paragraph, setParagraph] = useState('')
+  const [headerTypography, setHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [paragraphTypography, setParagraphTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
   const [imageUrl, setImageUrl] = useState('')
   const [imageAlt, setImageAlt] = useState('')
   const [symbol, setSymbol] = useState('Heart')
@@ -39,9 +56,12 @@ export default function CardManager ({ onNotification }) {
   // Manage Mode state
   const [locationFilter, setLocationFilter] = useState('all')
   const [manageCardId, setManageCardId] = useState('')
+  const [editCardId, setEditCardId] = useState('')
   const [editLayout, setEditLayout] = useState('HEADER_PARAGRAPH')
   const [editHeader, setEditHeader] = useState('')
   const [editParagraph, setEditParagraph] = useState('')
+  const [editHeaderTypography, setEditHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [editParagraphTypography, setEditParagraphTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
   const [editImageUrl, setEditImageUrl] = useState('')
   const [editImageAlt, setEditImageAlt] = useState('')
   const [editSymbol, setEditSymbol] = useState('Heart')
@@ -50,15 +70,51 @@ export default function CardManager ({ onNotification }) {
   const [editHeaderColor, setEditHeaderColor] = useState('')
   const [editTextColor, setEditTextColor] = useState('')
 
+  // Custom modal dialog state
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'confirm',
+    confirmText: 'Confirm',
+    onConfirm: null
+  })
+
+  const markDirty = () => {
+    if (setIsDirty) setIsDirty(true)
+  }
+
+  const markClean = () => {
+    if (setIsDirty) setIsDirty(false)
+  }
+
+  // Register save handler for unsaved changes leave interception
+  useEffect(() => {
+    if (registerSaveHandler) {
+      registerSaveHandler(() => {
+        if (mode === 'create') {
+          return executeCreate()
+        } else {
+          return executeSaveManage()
+        }
+      })
+    }
+  }, [mode, cardId, layout, header, paragraph, headerTypography, paragraphTypography, imageUrl, imageAlt, symbol, alignment, bgColor, headerColor, textColor, manageCardId, editCardId, editLayout, editHeader, editParagraph, editHeaderTypography, editParagraphTypography, editImageUrl, editImageAlt, editSymbol, editAlignment, editBgColor, editHeaderColor, editTextColor])
+
   const handleSelectManage = (id) => {
     setManageCardId(id)
+    setEditCardId(id)
+    markClean()
     if (id) {
       const c = CardStorageService.getCardById(id)
       const data = c.content || {}
       const col = data.colors || c.colors || {}
+      const typo = data.typography || {}
       setEditLayout(c.layout || c.layoutType || 'HEADER_PARAGRAPH')
       setEditHeader(data.header || '')
       setEditParagraph(data.paragraph || data.text || '')
+      setEditHeaderTypography(typo.header || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+      setEditParagraphTypography(typo.paragraph || typo.text || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
       setEditImageUrl(data.imageUrl || '')
       setEditImageAlt(data.imageAlt || '')
       setEditSymbol(data.symbol || data.iconName || 'Heart')
@@ -69,18 +125,46 @@ export default function CardManager ({ onNotification }) {
     }
   }
 
+  // DT-625 Sprint 8 - Preston Ball: Save confirmation before creating card
   const handleCreate = (e) => {
     e.preventDefault()
     const trimmedId = cardId.trim()
     if (!trimmedId) {
-      alert('Please enter a Card ID.')
+      setModalState({
+        isOpen: true,
+        title: 'Validation Error',
+        message: 'Please enter a Card ID.',
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
       return
     }
 
+    setModalState({
+      isOpen: true,
+      title: 'Confirm Card Creation',
+      message: `Are you sure you want to create card "${trimmedId}"?`,
+      type: 'confirm',
+      confirmText: 'Create Card',
+      onConfirm: () => {
+        executeCreate()
+        setModalState((prev) => ({ ...prev, isOpen: false }))
+      }
+    })
+  }
+
+  const executeCreate = () => {
+    const trimmedId = cardId.trim()
+    if (!trimmedId) return
     try {
       const cardContent = {
         header,
         paragraph,
+        typography: {
+          header: headerTypography,
+          paragraph: paragraphTypography
+        },
         imageUrl,
         imageAlt,
         symbol,
@@ -104,21 +188,58 @@ export default function CardManager ({ onNotification }) {
       setCardId('')
       setHeader('')
       setParagraph('')
+      markClean()
       onNotification(`Created card "${created.id}"`)
     } catch (err) {
-      alert(err.message)
+      setModalState({
+        isOpen: true,
+        title: 'Error Creating Card',
+        message: err.message,
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
     }
   }
 
+  // DT-625 Sprint 8 - Preston Ball: Save confirmation before updating card
   const handleSaveManage = (e) => {
     e.preventDefault()
     if (!manageCardId) return
+
+    setModalState({
+      isOpen: true,
+      title: 'Confirm Save Changes',
+      message: `Are you sure you want to save changes to card "${manageCardId}"?`,
+      type: 'confirm',
+      confirmText: 'Save Card Changes',
+      onConfirm: () => {
+        executeSaveManage()
+        setModalState((prev) => ({ ...prev, isOpen: false }))
+      }
+    })
+  }
+
+  const executeSaveManage = async () => {
+    if (!manageCardId) return
     try {
       const oldCard = CardStorageService.getCardById(manageCardId)
+      let activeId = manageCardId
+
+      // DT-625 Sprint 8 - Preston Ball: Handle card ID rename if modified
+      if (editCardId && editCardId !== manageCardId) {
+        await CardStorageService.renameCard(manageCardId, editCardId)
+        activeId = editCardId
+      }
+
       const updatedContent = {
         ...oldCard.content,
         header: editHeader,
         paragraph: editParagraph,
+        typography: {
+          header: editHeaderTypography,
+          paragraph: editParagraphTypography
+        },
         imageUrl: editImageUrl,
         imageAlt: editImageAlt,
         symbol: editSymbol,
@@ -130,33 +251,59 @@ export default function CardManager ({ onNotification }) {
         }
       }
 
-      const updated = CardStorageService.updateCard(manageCardId, {
+      const updated = CardStorageService.updateCard(activeId, {
         layout: editLayout,
         content: updatedContent
       })
       setCards(CardStorageService.getCards())
+      setManageCardId(activeId)
       AuditHistoryService.recordAppliedChange({
-        edits: { [`card.${manageCardId}`]: { before: oldCard, after: updated } }
+        edits: { [`card.${activeId}`]: { before: oldCard, after: updated } }
       })
-      onNotification(`Updated card "${manageCardId}"`)
+      markClean()
+      onNotification(`Updated card "${activeId}"`)
     } catch (err) {
-      alert(err.message)
+      setModalState({
+        isOpen: true,
+        title: 'Error Updating Card',
+        message: err.message,
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
     }
   }
 
   const handleDelete = (id) => {
-    if (!window.confirm(`Delete card "${id}"?`)) return
-    try {
-      const removed = CardStorageService.deleteCard(id)
-      setCards(CardStorageService.getCards())
-      AuditHistoryService.recordAppliedChange({
-        deletions: [{ type: 'card', id, data: removed }]
-      })
-      onNotification(`Deleted card "${id}"`)
-      if (manageCardId === id) setManageCardId('')
-    } catch (err) {
-      alert(err.message)
-    }
+    setModalState({
+      isOpen: true,
+      title: 'Delete Card',
+      message: `Are you sure you want to permanently delete card "${id}"? This action cannot be undone.`,
+      type: 'delete',
+      confirmText: 'Delete Card',
+      onConfirm: () => {
+        try {
+          const removed = CardStorageService.deleteCard(id)
+          setCards(CardStorageService.getCards())
+          AuditHistoryService.recordAppliedChange({
+            deletions: [{ type: 'card', id, data: removed }]
+          })
+          onNotification(`Deleted card "${id}"`)
+          if (manageCardId === id) setManageCardId('')
+          markClean()
+        } catch (err) {
+          setModalState({
+            isOpen: true,
+            title: 'Error Deleting Card',
+            message: err.message,
+            type: 'alert',
+            confirmText: 'OK',
+            onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+          })
+        }
+        setModalState((prev) => ({ ...prev, isOpen: false }))
+      }
+    })
   }
 
   const filteredCards = cards.filter(c => {
@@ -173,6 +320,7 @@ export default function CardManager ({ onNotification }) {
   const activeContent = mode === 'create' ? {
     header: header || 'Card Header Preview',
     paragraph: paragraph || 'Descriptive card paragraph or bullet points...',
+    typography: { header: headerTypography, paragraph: paragraphTypography },
     imageUrl: imageUrl || '/assets/images/CareImage1.jpeg',
     imageAlt: imageAlt || 'Card image preview',
     symbol,
@@ -181,6 +329,7 @@ export default function CardManager ({ onNotification }) {
   } : {
     header: editHeader || 'Card Header',
     paragraph: editParagraph || 'Card paragraph',
+    typography: { header: editHeaderTypography, paragraph: editParagraphTypography },
     imageUrl: editImageUrl,
     imageAlt: editImageAlt,
     symbol: editSymbol,
@@ -193,6 +342,19 @@ export default function CardManager ({ onNotification }) {
     layout: activeLayout,
     content: activeContent
   }
+
+  const colorOptions = [
+    { value: '', label: 'Default Theme Color' },
+    ...colors.map(c => ({ value: c.id, label: c.id, color: c.lightModeColor }))
+  ]
+
+  const locationFilterOptions = [
+    { value: 'all', label: 'All Cards' },
+    { value: 'unallocated', label: 'Unallocated Cards' },
+    ...sections.map(s => ({ value: s.id, label: `Section: ${s.id}` }))
+  ]
+
+  const symbolDropdownOptions = SYMBOL_OPTIONS.map(s => ({ value: s, label: s }))
 
   return (
     <div className="content-editor-card">
@@ -280,7 +442,7 @@ export default function CardManager ({ onNotification }) {
               <input
                 type="text"
                 value={cardId}
-                onChange={(e) => setCardId(e.target.value)}
+                onChange={(e) => { setCardId(e.target.value); markDirty() }}
                 placeholder="e.g. card-specialty-service"
                 required
                 style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
@@ -288,15 +450,12 @@ export default function CardManager ({ onNotification }) {
             </div>
             <div>
               <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Layout</label>
-              <select
+              <CustomSelect
                 value={layout}
-                onChange={(e) => setLayout(e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-              >
-                <option value="HEADER_PARAGRAPH">HEADER_PARAGRAPH (Title & bullet text)</option>
-                <option value="IMAGE_FULL_WIDTH">IMAGE_FULL_WIDTH (Split image and content)</option>
-                <option value="HEADER_SYMBOL">HEADER_SYMBOL (Icon badge & title)</option>
-              </select>
+                onChange={(val) => { setLayout(val); markDirty() }}
+                options={CARD_LAYOUT_OPTIONS}
+                ariaLabel="Select Card Layout"
+              />
             </div>
           </div>
 
@@ -307,9 +466,14 @@ export default function CardManager ({ onNotification }) {
                 <input
                   type="text"
                   value={header}
-                  onChange={(e) => setHeader(e.target.value)}
+                  onChange={(e) => { setHeader(e.target.value); markDirty() }}
                   placeholder="Card title"
                   style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                />
+                <TypographyControls
+                  label="Card Header Typography"
+                  value={headerTypography}
+                  onChange={(val) => { setHeaderTypography(val); markDirty() }}
                 />
               </div>
 
@@ -321,9 +485,14 @@ export default function CardManager ({ onNotification }) {
                   <textarea
                     rows={4}
                     value={paragraph}
-                    onChange={(e) => setParagraph(e.target.value)}
+                    onChange={(e) => { setParagraph(e.target.value); markDirty() }}
                     placeholder="Enter card description..."
                     style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                  />
+                  <TypographyControls
+                    label="Paragraph Body Typography"
+                    value={paragraphTypography}
+                    onChange={(val) => { setParagraphTypography(val); markDirty() }}
                   />
                 </div>
               )}
@@ -335,7 +504,7 @@ export default function CardManager ({ onNotification }) {
                     <input
                       type="text"
                       value={imageUrl}
-                      onChange={(e) => setImageUrl(e.target.value)}
+                      onChange={(e) => { setImageUrl(e.target.value); markDirty() }}
                       placeholder="/images/older_couple_smiling.jpeg"
                       style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
                     />
@@ -345,21 +514,22 @@ export default function CardManager ({ onNotification }) {
                     <input
                       type="text"
                       value={imageAlt}
-                      onChange={(e) => setImageAlt(e.target.value)}
+                      onChange={(e) => { setImageAlt(e.target.value); markDirty() }}
                       placeholder="Image description"
                       style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
                     />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alignment</label>
-                    <select
+                    <CustomSelect
                       value={alignment}
-                      onChange={(e) => setAlignment(e.target.value)}
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    >
-                      <option value="left">Image on Left</option>
-                      <option value="right">Image on Right</option>
-                    </select>
+                      onChange={(val) => { setAlignment(val); markDirty() }}
+                      options={[
+                        { value: 'left', label: 'Image on Left' },
+                        { value: 'right', label: 'Image on Right' }
+                      ]}
+                      ariaLabel="Image Alignment"
+                    />
                   </div>
                 </div>
               )}
@@ -368,25 +538,21 @@ export default function CardManager ({ onNotification }) {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Symbol Icon</label>
-                    <select
+                    <CustomSelect
                       value={symbol}
-                      onChange={(e) => setSymbol(e.target.value)}
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    >
-                      {SYMBOL_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
+                      onChange={(val) => { setSymbol(val); markDirty() }}
+                      options={symbolDropdownOptions}
+                      ariaLabel="Select Icon Symbol"
+                    />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Alignment</label>
-                    <select
+                    <CustomSelect
                       value={alignment}
-                      onChange={(e) => setAlignment(e.target.value)}
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    >
-                      <option value="center">Center</option>
-                      <option value="left">Left</option>
-                      <option value="right">Right</option>
-                    </select>
+                      onChange={(val) => { setAlignment(val); markDirty() }}
+                      options={ALIGNMENT_OPTIONS}
+                      ariaLabel="Select Icon Alignment"
+                    />
                   </div>
                 </div>
               )}
@@ -394,15 +560,13 @@ export default function CardManager ({ onNotification }) {
               {layout === 'HEADER_PARAGRAPH' && (
                 <div>
                   <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Alignment</label>
-                  <select
+                  <CustomSelect
                     value={alignment}
-                    onChange={(e) => setAlignment(e.target.value)}
-                    style={{ width: '160px', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                  >
-                    <option value="left">Left Aligned</option>
-                    <option value="center">Centered</option>
-                    <option value="right">Right Aligned</option>
-                  </select>
+                    onChange={(val) => { setAlignment(val); markDirty() }}
+                    options={ALIGNMENT_OPTIONS}
+                    style={{ width: '180px' }}
+                    ariaLabel="Select Card Alignment"
+                  />
                 </div>
               )}
             </div>
@@ -412,24 +576,15 @@ export default function CardManager ({ onNotification }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
               <div>
                 <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Background Color</label>
-                <select value={bgColor} onChange={(e) => setBgColor(e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                  <option value="">Default Theme</option>
-                  {colors.map(c => <option key={c.id} value={c.id}>{c.id}</option>)}
-                </select>
+                <CustomSelect value={bgColor} onChange={(val) => { setBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Background Color" />
               </div>
               <div>
                 <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                <select value={headerColor} onChange={(e) => setHeaderColor(e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                  <option value="">Default Theme</option>
-                  {colors.map(c => <option key={c.id} value={c.id}>{c.id}</option>)}
-                </select>
+                <CustomSelect value={headerColor} onChange={(val) => { setHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Header Color" />
               </div>
               <div>
                 <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                <select value={textColor} onChange={(e) => setTextColor(e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                  <option value="">Default Theme</option>
-                  {colors.map(c => <option key={c.id} value={c.id}>{c.id}</option>)}
-                </select>
+                <CustomSelect value={textColor} onChange={(val) => { setTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Text Color" />
               </div>
             </div>
           )}
@@ -451,18 +606,22 @@ export default function CardManager ({ onNotification }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
             <div>
               <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Filter by Location</label>
-              <select value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                <option value="all">All Cards</option>
-                <option value="unallocated">Unallocated Cards</option>
-                {sections.map(s => <option key={s.id} value={s.id}>Section: {s.id}</option>)}
-              </select>
+              <CustomSelect
+                value={locationFilter}
+                onChange={(val) => setLocationFilter(val)}
+                options={locationFilterOptions}
+                ariaLabel="Filter cards by section"
+              />
             </div>
             <div>
               <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Select Card to Edit</label>
-              <select value={manageCardId} onChange={(e) => handleSelectManage(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                <option value="">Select a Card...</option>
-                {filteredCards.map(c => <option key={c.id} value={c.id}>{c.id} ({c.layout})</option>)}
-              </select>
+              <CustomSelect
+                value={manageCardId}
+                onChange={(val) => handleSelectManage(val)}
+                options={filteredCards.map(c => ({ value: c.id, label: `${c.id} (${c.layout})` }))}
+                placeholder="Select a Card..."
+                ariaLabel="Select Card to Edit"
+              />
             </div>
           </div>
 
@@ -479,17 +638,28 @@ export default function CardManager ({ onNotification }) {
                 </button>
               </div>
 
+              {/* DT-625 Sprint 8 - Preston Ball: Allow renaming card ID */}
+              <div style={{ marginBottom: '14px' }}>
+                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>
+                  Card ID (Rename)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editCardId}
+                  onChange={(e) => { setEditCardId(e.target.value); markDirty() }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                />
+              </div>
+
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Layout</label>
-                <select
+                <CustomSelect
                   value={editLayout}
-                  onChange={(e) => setEditLayout(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                >
-                  <option value="HEADER_PARAGRAPH">HEADER_PARAGRAPH</option>
-                  <option value="IMAGE_FULL_WIDTH">IMAGE_FULL_WIDTH</option>
-                  <option value="HEADER_SYMBOL">HEADER_SYMBOL</option>
-                </select>
+                  onChange={(val) => { setEditLayout(val); markDirty() }}
+                  options={CARD_LAYOUT_OPTIONS}
+                  ariaLabel="Card Layout"
+                />
               </div>
 
               {activeTab === 'content' && (
@@ -499,9 +669,14 @@ export default function CardManager ({ onNotification }) {
                     <input
                       type="text"
                       value={editHeader}
-                      onChange={(e) => setEditHeader(e.target.value)}
+                      onChange={(e) => { setEditHeader(e.target.value); markDirty() }}
                       placeholder="Card title"
                       style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                    />
+                    <TypographyControls
+                      label="Card Header Typography"
+                      value={editHeaderTypography}
+                      onChange={(val) => { setEditHeaderTypography(val); markDirty() }}
                     />
                   </div>
 
@@ -513,9 +688,14 @@ export default function CardManager ({ onNotification }) {
                       <textarea
                         rows={4}
                         value={editParagraph}
-                        onChange={(e) => setEditParagraph(e.target.value)}
+                        onChange={(e) => { setEditParagraph(e.target.value); markDirty() }}
                         placeholder="Enter card description..."
                         style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                      />
+                      <TypographyControls
+                        label="Paragraph Body Typography"
+                        value={editParagraphTypography}
+                        onChange={(val) => { setEditParagraphTypography(val); markDirty() }}
                       />
                     </div>
                   )}
@@ -527,8 +707,8 @@ export default function CardManager ({ onNotification }) {
                         <input
                           type="text"
                           value={editImageUrl}
-                          onChange={(e) => setEditImageUrl(e.target.value)}
-                          placeholder="/images/older_couple_smiling.jpeg"
+                          onChange={(e) => { setEditImageUrl(e.target.value); markDirty() }}
+                          placeholder="/assets/images/CareImage1.jpeg"
                           style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
                         />
                       </div>
@@ -537,21 +717,22 @@ export default function CardManager ({ onNotification }) {
                         <input
                           type="text"
                           value={editImageAlt}
-                          onChange={(e) => setEditImageAlt(e.target.value)}
+                          onChange={(e) => { setEditImageAlt(e.target.value); markDirty() }}
                           placeholder="Image description"
                           style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
                         />
                       </div>
                       <div>
                         <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alignment</label>
-                        <select
+                        <CustomSelect
                           value={editAlignment}
-                          onChange={(e) => setEditAlignment(e.target.value)}
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        >
-                          <option value="left">Image on Left</option>
-                          <option value="right">Image on Right</option>
-                        </select>
+                          onChange={(val) => { setEditAlignment(val); markDirty() }}
+                          options={[
+                            { value: 'left', label: 'Image on Left' },
+                            { value: 'right', label: 'Image on Right' }
+                          ]}
+                          ariaLabel="Image Alignment"
+                        />
                       </div>
                     </div>
                   )}
@@ -559,42 +740,36 @@ export default function CardManager ({ onNotification }) {
                   {editLayout === 'HEADER_SYMBOL' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                       <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Symbol Icon</label>
-                        <select
+                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Icon Symbol</label>
+                        <CustomSelect
                           value={editSymbol}
-                          onChange={(e) => setEditSymbol(e.target.value)}
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        >
-                          {SYMBOL_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                        </select>
+                          onChange={(val) => { setEditSymbol(val); markDirty() }}
+                          options={symbolDropdownOptions}
+                          ariaLabel="Icon Symbol"
+                        />
                       </div>
                       <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Alignment</label>
-                        <select
+                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Icon Alignment</label>
+                        <CustomSelect
                           value={editAlignment}
-                          onChange={(e) => setEditAlignment(e.target.value)}
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        >
-                          <option value="center">Center</option>
-                          <option value="left">Left</option>
-                          <option value="right">Right</option>
-                        </select>
+                          onChange={(val) => { setEditAlignment(val); markDirty() }}
+                          options={ALIGNMENT_OPTIONS}
+                          ariaLabel="Icon Alignment"
+                        />
                       </div>
                     </div>
                   )}
 
                   {editLayout === 'HEADER_PARAGRAPH' && (
                     <div>
-                      <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Alignment</label>
-                      <select
+                      <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Alignment</label>
+                      <CustomSelect
                         value={editAlignment}
-                        onChange={(e) => setEditAlignment(e.target.value)}
-                        style={{ width: '160px', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                      >
-                        <option value="left">Left Aligned</option>
-                        <option value="center">Centered</option>
-                        <option value="right">Right Aligned</option>
-                      </select>
+                        onChange={(val) => { setEditAlignment(val); markDirty() }}
+                        options={ALIGNMENT_OPTIONS}
+                        style={{ width: '180px' }}
+                        ariaLabel="Card Alignment"
+                      />
                     </div>
                   )}
                 </div>
@@ -604,24 +779,15 @@ export default function CardManager ({ onNotification }) {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Background Color</label>
-                    <select value={editBgColor} onChange={(e) => setEditBgColor(e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                      <option value="">Default Theme</option>
-                      {colors.map(c => <option key={c.id} value={c.id}>{c.id}</option>)}
-                    </select>
+                    <CustomSelect value={editBgColor} onChange={(val) => { setEditBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Background Color" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                    <select value={editHeaderColor} onChange={(e) => setEditHeaderColor(e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                      <option value="">Default Theme</option>
-                      {colors.map(c => <option key={c.id} value={c.id}>{c.id}</option>)}
-                    </select>
+                    <CustomSelect value={editHeaderColor} onChange={(val) => { setEditHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Header Color" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                    <select value={editTextColor} onChange={(e) => setEditTextColor(e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
-                      <option value="">Default Theme</option>
-                      {colors.map(c => <option key={c.id} value={c.id}>{c.id}</option>)}
-                    </select>
+                    <CustomSelect value={editTextColor} onChange={(val) => { setEditTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Text Color" />
                   </div>
                 </div>
               )}
@@ -655,6 +821,17 @@ export default function CardManager ({ onNotification }) {
           <ModularCard card={draftCard} theme={themeMode} />
         </div>
       </div>
+
+      {/* DT-625 Sprint 8 - Preston Ball: Reusable custom modal dialog */}
+      <CustomModal
+        isOpen={modalState.isOpen}
+        title={modalState.title}
+        message={modalState.message}
+        type={modalState.type}
+        confirmText={modalState.confirmText}
+        onConfirm={modalState.onConfirm}
+        onCancel={() => setModalState((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   )
 }

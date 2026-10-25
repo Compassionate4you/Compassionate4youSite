@@ -1,7 +1,7 @@
 /*
-DT-622 Sprint 8
+DT-622 DT-625 Sprint 8
 Preston Ball
-Modular image header text section stylesheet
+Modular image header text section stylesheet supporting left/right image positioning
 */
 
 .modular-image-header-text-section {
@@ -17,6 +17,11 @@ Modular image header text section stylesheet
   display: flex;
   align-items: center;
   gap: 3rem;
+}
+
+/* DT-625 Sprint 8 - Preston Ball: Reverse row layout for image on right */
+.modular-image-header-text-section__inner--reverse {
+  flex-direction: row-reverse;
 }
 
 .modular-image-header-text-section__image-col {

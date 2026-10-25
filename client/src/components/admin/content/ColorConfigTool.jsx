@@ -1,12 +1,14 @@
-// DT-622 DT-618 Sprint 8
+// DT-622 DT-618 DT-625 Sprint 8
 // Preston Ball
-// Color configuration management tool component supporting visual color wheel pickers, expanded edit modal, general color search, and sort direction toggles
+// Color configuration management tool component supporting visual color wheel pickers, custom modal confirmations, custom selects, and general color search
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { ColorConfigService, getGeneralColor } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
+import CustomModal from './CustomModal'
+import CustomSelect from './CustomSelect'
 
-export default function ColorConfigTool ({ onNotification }) {
+export default function ColorConfigTool ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [colors, setColors] = useState(ColorConfigService.getColors())
   // DT-510 Sprint 7 - PBall: Start with blank creation fields (no prefilled defaults)
   const [newId, setNewId] = useState('')
@@ -24,6 +26,37 @@ export default function ColorConfigTool ({ onNotification }) {
   const [sortBy, setSortBy] = useState('id')
   const [sortDirection, setSortDirection] = useState('asc')
 
+  // Custom modal dialog state
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'confirm',
+    confirmText: 'Confirm',
+    onConfirm: null
+  })
+
+  const markDirty = () => {
+    if (setIsDirty) setIsDirty(true)
+  }
+
+  const markClean = () => {
+    if (setIsDirty) setIsDirty(false)
+  }
+
+  // Register save handler for unsaved changes prompt
+  useEffect(() => {
+    if (registerSaveHandler) {
+      registerSaveHandler(() => {
+        if (editingColor) {
+          executeSaveEdit()
+        } else if (newId.trim()) {
+          executeCreate()
+        }
+      })
+    }
+  }, [newId, lightMode, darkMode, editingColor, editLight, editDark])
+
   const handleCreate = (e) => {
     e.preventDefault()
     const trimmedId = newId.trim()
@@ -31,13 +64,46 @@ export default function ColorConfigTool ({ onNotification }) {
     const trimmedDark = darkMode.trim()
 
     if (!trimmedId) {
-      alert('Please enter a Color ID.')
+      setModalState({
+        isOpen: true,
+        title: 'Validation Error',
+        message: 'Please enter a Color ID.',
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
       return
     }
     if (!trimmedLight || !trimmedDark) {
-      alert('Please select or enter both Light Mode and Dark Mode colors.')
+      setModalState({
+        isOpen: true,
+        title: 'Validation Error',
+        message: 'Please select or enter both Light Mode and Dark Mode colors.',
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
       return
     }
+
+    setModalState({
+      isOpen: true,
+      title: 'Confirm Color Creation',
+      message: `Are you sure you want to create color "${trimmedId}"?`,
+      type: 'confirm',
+      confirmText: 'Create Color',
+      onConfirm: () => {
+        executeCreate()
+        setModalState((prev) => ({ ...prev, isOpen: false }))
+      }
+    })
+  }
+
+  const executeCreate = () => {
+    const trimmedId = newId.trim()
+    const trimmedLight = lightMode.trim()
+    const trimmedDark = darkMode.trim()
+    if (!trimmedId || !trimmedLight || !trimmedDark) return
 
     try {
       const created = ColorConfigService.createColor({
@@ -52,9 +118,17 @@ export default function ColorConfigTool ({ onNotification }) {
       setNewId('')
       setLightMode('')
       setDarkMode('')
+      markClean()
       onNotification(`Created color "${created.id}"`)
     } catch (err) {
-      alert(err.message)
+      setModalState({
+        isOpen: true,
+        title: 'Error Creating Color',
+        message: err.message,
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
     }
   }
 
@@ -77,10 +151,34 @@ export default function ColorConfigTool ({ onNotification }) {
     const trimmedDark = editDark.trim()
 
     if (!trimmedLight || !trimmedDark) {
-      alert('Light and Dark mode colors cannot be empty.')
+      setModalState({
+        isOpen: true,
+        title: 'Validation Error',
+        message: 'Light and Dark mode colors cannot be empty.',
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
       return
     }
 
+    setModalState({
+      isOpen: true,
+      title: 'Confirm Save Color',
+      message: `Are you sure you want to save changes to color "${editingColor.id}"?`,
+      type: 'confirm',
+      confirmText: 'Save Changes',
+      onConfirm: () => {
+        executeSaveEdit()
+        setModalState((prev) => ({ ...prev, isOpen: false }))
+      }
+    })
+  }
+
+  const executeSaveEdit = () => {
+    if (!editingColor) return
+    const trimmedLight = editLight.trim()
+    const trimmedDark = editDark.trim()
     try {
       const oldColor = colors.find(c => c.id === editingColor.id)
       const updated = ColorConfigService.updateColor(editingColor.id, {
@@ -94,27 +192,52 @@ export default function ColorConfigTool ({ onNotification }) {
         }
       })
       handleCloseEdit()
+      markClean()
       onNotification(`Updated color "${editingColor.id}"`)
     } catch (err) {
-      alert(err.message)
+      setModalState({
+        isOpen: true,
+        title: 'Error Updating Color',
+        message: err.message,
+        type: 'alert',
+        confirmText: 'OK',
+        onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+      })
     }
   }
 
   const handleDelete = (id) => {
-    if (!window.confirm(`Delete color "${id}"?`)) return
-    try {
-      const removed = ColorConfigService.deleteColor(id)
-      setColors(ColorConfigService.getColors())
-      AuditHistoryService.recordAppliedChange({
-        deletions: [{ type: 'color', id, data: removed }]
-      })
-      onNotification(`Deleted color "${id}"`)
-      if (editingColor?.id === id) {
-        handleCloseEdit()
+    setModalState({
+      isOpen: true,
+      title: 'Delete Color',
+      message: `Are you sure you want to delete color "${id}"? This action cannot be undone.`,
+      type: 'delete',
+      confirmText: 'Delete Color',
+      onConfirm: () => {
+        try {
+          const removed = ColorConfigService.deleteColor(id)
+          setColors(ColorConfigService.getColors())
+          AuditHistoryService.recordAppliedChange({
+            deletions: [{ type: 'color', id, data: removed }]
+          })
+          onNotification(`Deleted color "${id}"`)
+          if (editingColor?.id === id) {
+            handleCloseEdit()
+          }
+          markClean()
+        } catch (err) {
+          setModalState({
+            isOpen: true,
+            title: 'Error Deleting Color',
+            message: err.message,
+            type: 'alert',
+            confirmText: 'OK',
+            onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+          })
+        }
+        setModalState((prev) => ({ ...prev, isOpen: false }))
       }
-    } catch (err) {
-      alert(err.message)
-    }
+    })
   }
 
   // DT-622 Sprint 8 - Preston Ball: Filter by ID or general color, sort by property and direction
@@ -388,45 +511,50 @@ export default function ColorConfigTool ({ onNotification }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', marginRight: '6px' }}>Color Family:</span>
-              <select
+            <div style={{ minWidth: '160px' }}>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Color Family:</span>
+              <CustomSelect
                 value={generalColorFilter}
-                onChange={(e) => setGeneralColorFilter(e.target.value)}
-                style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '14px' }}
-              >
-                <option value="all">All Colors</option>
-                <option value="green">Green</option>
-                <option value="blue">Blue</option>
-                <option value="red">Red</option>
-                <option value="yellow">Yellow</option>
-                <option value="orange">Orange</option>
-                <option value="purple">Purple</option>
-                <option value="pink">Pink</option>
-                <option value="cyan">Cyan / Teal</option>
-                <option value="gray">Gray</option>
-                <option value="black">Black</option>
-                <option value="white">White</option>
-              </select>
+                onChange={(val) => setGeneralColorFilter(val)}
+                options={[
+                  { value: 'all', label: 'All Colors' },
+                  { value: 'green', label: 'Green' },
+                  { value: 'blue', label: 'Blue' },
+                  { value: 'red', label: 'Red' },
+                  { value: 'yellow', label: 'Yellow' },
+                  { value: 'orange', label: 'Orange' },
+                  { value: 'purple', label: 'Purple' },
+                  { value: 'pink', label: 'Pink' },
+                  { value: 'cyan', label: 'Cyan / Teal' },
+                  { value: 'gray', label: 'Gray' },
+                  { value: 'black', label: 'Black' },
+                  { value: 'white', label: 'White' }
+                ]}
+                ariaLabel="Filter by Color Family"
+              />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b' }}>Sort:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '14px' }}
-              >
-                <option value="id">Name / ID</option>
-                <option value="light">Light Hex</option>
-                <option value="dark">Dark Hex</option>
-              </select>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+              <div style={{ minWidth: '140px' }}>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Sort By:</span>
+                <CustomSelect
+                  value={sortBy}
+                  onChange={(val) => setSortBy(val)}
+                  options={[
+                    { value: 'id', label: 'Name / ID' },
+                    { value: 'light', label: 'Light Hex' },
+                    { value: 'dark', label: 'Dark Hex' }
+                  ]}
+                  ariaLabel="Sort Colors By"
+                />
+              </div>
 
               <button
                 type="button"
                 onClick={() => setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))}
                 title="Toggle sort direction"
                 style={{
+                  height: '38px',
                   padding: '8px 12px',
                   borderRadius: '6px',
                   border: '1px solid #cbd5e1',

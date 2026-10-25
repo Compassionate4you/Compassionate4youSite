@@ -1,16 +1,25 @@
-// DT-618 Sprint 8
+// DT-618 DT-625 Sprint 8
 // Preston Ball
-// Audit History Tool displaying database applied changes with human-readable diffs and expandable dropdowns
+// Audit History Tool displaying database applied changes with human-readable diffs, custom modal confirmations, and expandable dropdowns
 
 import React, { useState, useEffect } from 'react'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import { ChevronDown, ChevronRight, RotateCcw, Clock, User, CheckCircle2, AlertCircle } from 'lucide-react'
+import CustomModal from './CustomModal'
 
 export default function AuditHistoryTool ({ onNotification }) {
   const [logs, setLogs] = useState(AuditHistoryService.getLogs())
   const [expandedLogIds, setExpandedLogIds] = useState(new Set())
   const [loading, setLoading] = useState(false)
   const [showRawJson, setShowRawJson] = useState({})
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'confirm',
+    confirmText: 'Confirm',
+    onConfirm: null
+  })
 
   // DT-791 Sprint 8 - Preston Ball: Load applied changes from database on mount
   useEffect(() => {
@@ -41,17 +50,33 @@ export default function AuditHistoryTool ({ onNotification }) {
     })
   }
 
-  // DT-791 Sprint 8 - Preston Ball: Handle undoing a change through the database API
-  const handleUndo = async (logId) => {
-    if (!window.confirm('Are you sure you want to undo this change? Previous values will be restored.')) return
-    try {
-      await AuditHistoryService.undoAppliedChange(logId)
-      const refreshed = await AuditHistoryService.loadFromDatabase()
-      setLogs(refreshed)
-      onNotification(`Successfully undid change ${logId}`)
-    } catch (err) {
-      alert(err.message)
-    }
+  // DT-791 DT-625 Sprint 8 - Preston Ball: Handle undoing a change through the database API with CustomModal
+  const handleUndo = (logId) => {
+    setModalState({
+      isOpen: true,
+      title: 'Confirm Undo Change',
+      message: `Are you sure you want to undo change #${logId.substring(0, 10)}? Previous values will be restored.`,
+      type: 'confirm',
+      confirmText: 'Undo Change',
+      onConfirm: async () => {
+        setModalState((prev) => ({ ...prev, isOpen: false }))
+        try {
+          await AuditHistoryService.undoAppliedChange(logId)
+          const refreshed = await AuditHistoryService.loadFromDatabase()
+          setLogs(refreshed)
+          onNotification(`Successfully undid change ${logId}`)
+        } catch (err) {
+          setModalState({
+            isOpen: true,
+            title: 'Error Undoing Change',
+            message: err.message || 'Failed to undo change.',
+            type: 'alert',
+            confirmText: 'OK',
+            onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+          })
+        }
+      }
+    })
   }
 
   const toggleRaw = (logId) => {
@@ -493,6 +518,17 @@ export default function AuditHistoryTool ({ onNotification }) {
           })}
         </div>
       )}
+
+      {/* DT-625 Sprint 8 - Preston Ball: Accessible custom confirmation and alert modal */}
+      <CustomModal
+        isOpen={modalState.isOpen}
+        title={modalState.title}
+        message={modalState.message}
+        type={modalState.type}
+        confirmText={modalState.confirmText}
+        onConfirm={modalState.onConfirm}
+        onCancel={() => setModalState((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   )
 }

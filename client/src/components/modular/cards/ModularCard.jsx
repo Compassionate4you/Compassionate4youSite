@@ -38,6 +38,8 @@ export default function ModularCard ({ card, theme = 'light' }) {
     imageAlt: pickText(content.imageAlt, lang),
     symbol: content.symbol || content.iconName,
     alignment: content.alignment || content.facing || 'left',
+    // DT-625 Sprint 8 - Preston Ball: Forward typography configuration to cards
+    typography: content.typography || {},
     style: customStyles
   }
 

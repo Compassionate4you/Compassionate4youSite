@@ -99,11 +99,13 @@ export const SectionStorageService = {
     const newSection = {
       id: trimmedId,
       layout: section.layout || 'HEADER_TEXT',
-      colors: section.colors || { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' },
+      colors: section.colors || section.content?.colors || { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' },
       content: {
+        ...(section.content || {}),
         header: section.content?.header || '',
         text: section.content?.text || '',
         imageUrl: section.content?.imageUrl || '',
+        imagePosition: section.content?.imagePosition || 'left',
         gridCols: Number(section.content?.gridCols || 3),
         cardIds: section.content?.cardIds || [],
         faqItems: section.content?.faqItems || [],
@@ -189,6 +191,57 @@ export const SectionStorageService = {
     dbDeleteSection(id)
 
     return removed
+  },
+
+  // DT-625 Sprint 8 - Preston Ball: Rename section ID and cascade references across pages
+  async renameSection (oldId, newId) {
+    const trimmedOldId = String(oldId || '').trim()
+    const trimmedNewId = String(newId || '').trim()
+    if (!trimmedOldId || !trimmedNewId) throw new Error('Both old and new section IDs are required')
+    if (trimmedOldId === trimmedNewId) return this.getSectionById(trimmedOldId)
+
+    if (this.data.some(s => s.id === trimmedNewId)) {
+      throw new Error(`Section ID "${trimmedNewId}" already exists`)
+    }
+
+    const index = this.data.findIndex(s => s.id === trimmedOldId)
+    if (index === -1) throw new Error(`Section with ID "${trimmedOldId}" not found`)
+
+    const updated = {
+      ...this.data[index],
+      id: trimmedNewId
+    }
+    this.data[index] = updated
+    this._persist()
+
+    // Cascade to PageStorageService
+    try {
+      const { PageStorageService } = await import('./pageStorageService')
+      const pages = PageStorageService.getPages()
+      pages.forEach(p => {
+        if (Array.isArray(p.content?.sectionIds) && p.content.sectionIds.includes(trimmedOldId)) {
+          const updatedSectionIds = p.content.sectionIds.map(sid => sid === trimmedOldId ? trimmedNewId : sid)
+          PageStorageService.updatePage(p.id, {
+            content: { ...p.content, sectionIds: updatedSectionIds }
+          })
+        }
+      })
+    } catch (e) {
+      console.warn('Could not cascade section rename to pages locally:', e)
+    }
+
+    // Persist to database
+    try {
+      await fetch(`${API_BASE_URL}/admin/content/sections/rename`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldId: trimmedOldId, newId: trimmedNewId })
+      })
+    } catch (err) {
+      console.error('Database section rename error:', err)
+    }
+
+    return updated
   },
 
   _persist () {

@@ -42,17 +42,25 @@ export default function HeaderSymbolCard ({
   header,
   symbol,
   alignment = 'center',
+  typography = {},
   style = {}
 }) {
   const Icon = typeof symbol === 'string' ? ICONS[symbol.toLowerCase()] : null
   const alignClass = `card--align-${alignment || 'center'}`
+  const headerTypo = typography.header || {}
+  const headerStyle = {
+    textAlign: headerTypo.align || undefined,
+    fontFamily: headerTypo.fontFamily && headerTypo.fontFamily !== 'inherit' ? headerTypo.fontFamily : undefined,
+    fontWeight: headerTypo.bold ? 'bold' : undefined,
+    fontStyle: headerTypo.italic ? 'italic' : undefined
+  }
 
   return (
     <article className={`card--symbol ${alignClass}`} style={style}>
       <div className="card__symbol" aria-hidden="true">
         {Icon ? <Icon size={32} /> : <span>{symbol || '✦'}</span>}
       </div>
-      {header && <h3>{header}</h3>}
+      {header && <h3 style={headerStyle}>{header}</h3>}
     </article>
   )
 }

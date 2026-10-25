@@ -181,6 +181,71 @@ export const PageStorageService = {
     return removed
   },
 
+  // DT-625 Sprint 8 - Preston Ball: Reorder pages
+  reorderPages (newOrderedPages) {
+    if (!Array.isArray(newOrderedPages)) return
+    this.data = newOrderedPages.map((page, index) => ({
+      ...page,
+      content: {
+        ...(page.content || {}),
+        order: index
+      }
+    }))
+    this._persist()
+    this._notify()
+
+    async function dbReorder (orderedIds) {
+      try {
+        await fetch(`${API_BASE_URL}/admin/content/pages/reorder`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderedPageIds: orderedIds })
+        })
+      } catch (err) {
+        console.error('Database page reorder error:', err)
+      }
+    }
+    dbReorder(this.data.map(p => p.id))
+  },
+
+  // DT-625 Sprint 8 - Preston Ball: Rename page ID
+  renamePage (oldId, newId) {
+    const trimmedOldId = String(oldId || '').trim()
+    const trimmedNewId = String(newId || '').trim()
+    if (!trimmedOldId || !trimmedNewId) throw new Error('Both old and new page IDs are required')
+    if (trimmedOldId === trimmedNewId) return this.getPageById(trimmedOldId)
+
+    if (this.data.some(p => p.id === trimmedNewId)) {
+      throw new Error(`Page ID "${trimmedNewId}" already exists`)
+    }
+
+    const index = this.data.findIndex(p => p.id === trimmedOldId)
+    if (index === -1) throw new Error(`Page with ID "${trimmedOldId}" not found`)
+
+    const updated = {
+      ...this.data[index],
+      id: trimmedNewId
+    }
+    this.data[index] = updated
+    this._persist()
+    this._notify()
+
+    async function dbRename (oldKey, newKey) {
+      try {
+        await fetch(`${API_BASE_URL}/admin/content/pages/rename`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ oldId: oldKey, newId: newKey })
+        })
+      } catch (err) {
+        console.error('Database page rename error:', err)
+      }
+    }
+    dbRename(trimmedOldId, trimmedNewId)
+
+    return updated
+  },
+
   getAllocatedSectionIds () {
     const allocated = new Set()
     for (const page of this.data) {

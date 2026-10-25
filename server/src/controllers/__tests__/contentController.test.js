@@ -10,6 +10,7 @@ jest.mock('../../config/db', () => ({
   userCreatedPage: {
     findMany: jest.fn(),
     findUnique: jest.fn(),
+    create: jest.fn(),
     upsert: jest.fn(),
     update: jest.fn(),
     delete: jest.fn()
@@ -17,6 +18,7 @@ jest.mock('../../config/db', () => ({
   userCreatedSection: {
     findMany: jest.fn(),
     findUnique: jest.fn(),
+    create: jest.fn(),
     upsert: jest.fn(),
     update: jest.fn(),
     delete: jest.fn()
@@ -24,6 +26,7 @@ jest.mock('../../config/db', () => ({
   userCreatedCard: {
     findMany: jest.fn(),
     findUnique: jest.fn(),
+    create: jest.fn(),
     upsert: jest.fn(),
     update: jest.fn(),
     delete: jest.fn()
@@ -228,6 +231,152 @@ describe('Content & Audit History API Endpoints', () => {
       expect(res.status).toBe(200)
       expect(res.body.success).toBe(true)
       expect(res.body.undoneId).toBe('log456')
+    })
+  })
+
+  // DT-625: Reordering, Renaming, Image Position, and Typography
+  describe('Reordering, Cascading Rename, & Typography API (DT-625)', () => {
+    test('PUT /api/admin/content/pages/reorder persists updated page ordering', async () => {
+      prisma.userCreatedPage.findUnique
+        .mockResolvedValueOnce({ id: 'hospice', content: { title: 'Hospice', sectionIds: [] } })
+        .mockResolvedValueOnce({ id: 'homeHealth', content: { title: 'Home Health', sectionIds: [] } })
+      prisma.userCreatedPage.update
+        .mockImplementation(({ where, data }) => Promise.resolve({ id: where.id, content: data.content }))
+
+      const res = await request(app)
+        .put('/api/admin/content/pages/reorder')
+        .send({ orderedPageIds: ['hospice', 'homeHealth'] })
+
+      expect(res.status).toBe(200)
+      expect(res.body.success).toBe(true)
+      expect(res.body.pages[0]).toEqual({ id: 'hospice', content: { title: 'Hospice', sectionIds: [], order: 0 } })
+      expect(res.body.pages[1]).toEqual({ id: 'homeHealth', content: { title: 'Home Health', sectionIds: [], order: 1 } })
+    })
+
+    test('POST /api/admin/content/pages/rename renames page ID', async () => {
+      prisma.userCreatedPage.findUnique
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({ id: 'old-page', content: { title: 'My Page', sectionIds: ['sec-1'] } })
+      prisma.userCreatedPage.create.mockResolvedValue({
+        id: 'new-page',
+        content: { title: 'My Page', sectionIds: ['sec-1'] }
+      })
+      prisma.userCreatedPage.delete.mockResolvedValue({ id: 'old-page' })
+
+      const res = await request(app)
+        .post('/api/admin/content/pages/rename')
+        .send({ oldId: 'old-page', newId: 'new-page' })
+
+      expect(res.status).toBe(200)
+      expect(res.body.success).toBe(true)
+      expect(res.body.newId).toBe('new-page')
+      expect(prisma.userCreatedPage.delete).toHaveBeenCalledWith({ where: { id: 'old-page' } })
+    })
+
+    test('POST /api/admin/content/sections/rename renames section ID and cascades across referencing pages', async () => {
+      prisma.userCreatedSection.findUnique
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({ id: 'sec-old', layout: 'HEADER_TEXT', content: { header: 'Title' } })
+      prisma.userCreatedSection.create.mockResolvedValue({
+        id: 'sec-new',
+        layout: 'HEADER_TEXT',
+        content: { header: 'Title' }
+      })
+      prisma.userCreatedSection.delete.mockResolvedValue({ id: 'sec-old' })
+      prisma.userCreatedPage.findMany.mockResolvedValue([
+        { id: 'landing', content: { title: 'Landing', sectionIds: ['sec-old', 'sec-other'] } }
+      ])
+      prisma.userCreatedPage.update.mockResolvedValue({})
+
+      const res = await request(app)
+        .post('/api/admin/content/sections/rename')
+        .send({ oldId: 'sec-old', newId: 'sec-new' })
+
+      expect(res.status).toBe(200)
+      expect(res.body.success).toBe(true)
+      expect(res.body.newId).toBe('sec-new')
+      expect(prisma.userCreatedPage.update).toHaveBeenCalledWith({
+        where: { id: 'landing' },
+        data: {
+          content: {
+            title: 'Landing',
+            sectionIds: ['sec-new', 'sec-other']
+          }
+        }
+      })
+    })
+
+    test('POST /api/admin/content/cards/rename renames card ID and cascades across referencing sections', async () => {
+      prisma.userCreatedCard.findUnique
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({ id: 'card-old', layout: 'HEADER_PARAGRAPH', content: { header: 'Card' } })
+      prisma.userCreatedCard.create.mockResolvedValue({
+        id: 'card-new',
+        layout: 'HEADER_PARAGRAPH',
+        content: { header: 'Card' }
+      })
+      prisma.userCreatedCard.delete.mockResolvedValue({ id: 'card-old' })
+      prisma.userCreatedSection.findMany.mockResolvedValue([
+        { id: 'sec-grid', layout: 'CARD_GRID', content: { cardIds: ['card-old', 'card-2'] } }
+      ])
+      prisma.userCreatedSection.update.mockResolvedValue({})
+
+      const res = await request(app)
+        .post('/api/admin/content/cards/rename')
+        .send({ oldId: 'card-old', newId: 'card-new' })
+
+      expect(res.status).toBe(200)
+      expect(res.body.success).toBe(true)
+      expect(res.body.newId).toBe('card-new')
+      expect(prisma.userCreatedSection.update).toHaveBeenCalledWith({
+        where: { id: 'sec-grid' },
+        data: {
+          content: {
+            cardIds: ['card-new', 'card-2']
+          }
+        }
+      })
+    })
+
+    test('POST and PUT /api/admin/content/sections preserve imagePosition and typography', async () => {
+      const sectionPayload = {
+        id: 'sec-hero-right',
+        layout: 'IMAGE_HEADER_TEXT',
+        content: {
+          header: 'Right Image Hero',
+          text: 'Formatted description',
+          imagePosition: 'right',
+          typography: {
+            header: { align: 'center', fontFamily: 'Georgia, Cambria, serif', bold: true, italic: false },
+            text: { align: 'justify', fontFamily: 'inherit', bold: false, italic: true }
+          }
+        }
+      }
+      prisma.userCreatedSection.upsert.mockImplementation(({ create }) => Promise.resolve(create))
+
+      const createRes = await request(app).post('/api/admin/content/sections').send(sectionPayload)
+      expect(createRes.status).toBe(201)
+      expect(createRes.body.content.imagePosition).toBe('right')
+      expect(createRes.body.content.typography.header.align).toBe('center')
+      expect(createRes.body.content.typography.text.italic).toBe(true)
+
+      prisma.userCreatedSection.findUnique.mockResolvedValue({
+        id: 'sec-hero-right',
+        layout: 'IMAGE_HEADER_TEXT',
+        content: createRes.body.content
+      })
+      prisma.userCreatedSection.update.mockImplementation(({ where, data }) => Promise.resolve({
+        id: where.id,
+        layout: data.layout,
+        content: data.content
+      }))
+
+      const updateRes = await request(app)
+        .put('/api/admin/content/sections/sec-hero-right')
+        .send({ content: { imagePosition: 'left' } })
+      expect(updateRes.status).toBe(200)
+      expect(updateRes.body.content.imagePosition).toBe('left')
+      expect(updateRes.body.content.typography.header.bold).toBe(true)
     })
   })
 })

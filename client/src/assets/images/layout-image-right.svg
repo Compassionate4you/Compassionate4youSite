@@ -1,0 +1,14 @@
+<svg width="120" height="70" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Container -->
+  <rect x="1" y="1" width="118" height="68" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <!-- Text on Left -->
+  <rect x="10" y="14" width="48" height="8" rx="3" fill="#1E293B"/>
+  <rect x="10" y="27" width="50" height="4" rx="2" fill="#94A3B8"/>
+  <rect x="10" y="35" width="42" height="4" rx="2" fill="#94A3B8"/>
+  <!-- CTA Button -->
+  <rect x="10" y="45" width="32" height="12" rx="4" fill="#366454"/>
+  <!-- Image on Right -->
+  <rect x="66" y="8" width="46" height="54" rx="6" fill="#93C5FD"/>
+  <circle cx="78" cy="22" r="5" fill="#3B82F6"/>
+  <path d="M70 52L84 36L96 48L104 40L110 46V56H70V52Z" fill="#2563EB"/>
+</svg>

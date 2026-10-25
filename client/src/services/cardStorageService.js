@@ -162,6 +162,57 @@ export const CardStorageService = {
     return removed
   },
 
+  // DT-625 Sprint 8 - Preston Ball: Rename card ID and cascade references across sections
+  async renameCard (oldId, newId) {
+    const trimmedOldId = String(oldId || '').trim()
+    const trimmedNewId = String(newId || '').trim()
+    if (!trimmedOldId || !trimmedNewId) throw new Error('Both old and new card IDs are required')
+    if (trimmedOldId === trimmedNewId) return this.getCardById(trimmedOldId)
+
+    if (this.data.some(c => c.id === trimmedNewId)) {
+      throw new Error(`Card ID "${trimmedNewId}" already exists`)
+    }
+
+    const index = this.data.findIndex(c => c.id === trimmedOldId)
+    if (index === -1) throw new Error(`Card with ID "${trimmedOldId}" not found`)
+
+    const updated = {
+      ...this.data[index],
+      id: trimmedNewId
+    }
+    this.data[index] = updated
+    this._persist()
+
+    // Cascade to SectionStorageService
+    try {
+      const { SectionStorageService } = await import('./sectionStorageService')
+      const sections = SectionStorageService.getSections()
+      sections.forEach(s => {
+        if (Array.isArray(s.content?.cardIds) && s.content.cardIds.includes(trimmedOldId)) {
+          const updatedCardIds = s.content.cardIds.map(cid => cid === trimmedOldId ? trimmedNewId : cid)
+          SectionStorageService.updateSection(s.id, {
+            content: { ...s.content, cardIds: updatedCardIds }
+          })
+        }
+      })
+    } catch (e) {
+      console.warn('Could not cascade card rename to sections locally:', e)
+    }
+
+    // Persist to database
+    try {
+      await fetch(`${API_BASE_URL}/admin/content/cards/rename`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldId: trimmedOldId, newId: trimmedNewId })
+      })
+    } catch (err) {
+      console.error('Database card rename error:', err)
+    }
+
+    return updated
+  },
+
   _persist () {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data))

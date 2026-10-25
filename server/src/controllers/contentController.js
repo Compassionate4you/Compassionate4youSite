@@ -9,11 +9,18 @@ const { sendValidationError } = require('../utils/errorResponse')
 // Pages (DT-622)
 // ==========================================
 
-// DT-622 Sprint 8 - Preston Ball: Retrieve all user-created pages
+// DT-622 DT-625 Sprint 8
+// Preston Ball
+// Retrieve all user-created pages sorted by display order
 async function getPages (req, res, next) {
   try {
     const pages = await prisma.userCreatedPage.findMany()
-    return res.status(200).json(pages)
+    const sorted = pages.sort((a, b) => {
+      const orderA = typeof a.content?.order === 'number' ? a.content.order : 999
+      const orderB = typeof b.content?.order === 'number' ? b.content.order : 999
+      return orderA - orderB
+    })
+    return res.status(200).json(sorted)
   } catch (err) {
     return next(err)
   }
@@ -623,22 +630,196 @@ async function undoAppliedChange (req, res, next) {
   }
 }
 
+// ==========================================
+// Reorder & Rename Handlers (DT-625)
+// ==========================================
+
+// DT-625 Sprint 8 - Preston Ball: Reorder user-created pages
+async function reorderPages (req, res, next) {
+  try {
+    const { orderedPageIds } = req.body || {}
+    if (!Array.isArray(orderedPageIds)) {
+      return sendValidationError(res, 'orderedPageIds must be an array of page IDs', 'orderedPageIds')
+    }
+
+    const updatedPages = []
+    for (let index = 0; index < orderedPageIds.length; index++) {
+      const pageId = orderedPageIds[index]
+      const existing = await prisma.userCreatedPage.findUnique({ where: { id: pageId } })
+      if (existing) {
+        const content = typeof existing.content === 'object' && existing.content !== null ? existing.content : {}
+        const updated = await prisma.userCreatedPage.update({
+          where: { id: pageId },
+          data: { content: { ...content, order: index } }
+        })
+        updatedPages.push(updated)
+      }
+    }
+    return res.status(200).json({ success: true, pages: updatedPages })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+// DT-625 Sprint 8 - Preston Ball: Rename a page ID
+async function renamePage (req, res, next) {
+  try {
+    const { oldId, newId } = req.body || {}
+    const trimmedOldId = String(oldId || '').trim()
+    const trimmedNewId = String(newId || '').trim()
+    if (!trimmedOldId || !trimmedNewId) {
+      return sendValidationError(res, 'Both oldId and newId are required', 'newId')
+    }
+    if (trimmedOldId === trimmedNewId) {
+      return res.status(200).json({ success: true, id: trimmedNewId })
+    }
+
+    const existingTarget = await prisma.userCreatedPage.findUnique({ where: { id: trimmedNewId } })
+    if (existingTarget) {
+      return res.status(400).json({ success: false, error: { message: `Page with ID "${trimmedNewId}" already exists` } })
+    }
+
+    const source = await prisma.userCreatedPage.findUnique({ where: { id: trimmedOldId } })
+    if (!source) {
+      return res.status(404).json({ success: false, error: { message: `Page with ID "${trimmedOldId}" not found` } })
+    }
+
+    const created = await prisma.userCreatedPage.create({
+      data: {
+        id: trimmedNewId,
+        content: source.content || {}
+      }
+    })
+    await prisma.userCreatedPage.delete({ where: { id: trimmedOldId } })
+
+    return res.status(200).json({ success: true, oldId: trimmedOldId, newId: trimmedNewId, page: created })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+// DT-625 Sprint 8 - Preston Ball: Rename a section ID and cascade references across pages
+async function renameSection (req, res, next) {
+  try {
+    const { oldId, newId } = req.body || {}
+    const trimmedOldId = String(oldId || '').trim()
+    const trimmedNewId = String(newId || '').trim()
+    if (!trimmedOldId || !trimmedNewId) {
+      return sendValidationError(res, 'Both oldId and newId are required', 'newId')
+    }
+    if (trimmedOldId === trimmedNewId) {
+      return res.status(200).json({ success: true, id: trimmedNewId })
+    }
+
+    const existingTarget = await prisma.userCreatedSection.findUnique({ where: { id: trimmedNewId } })
+    if (existingTarget) {
+      return res.status(400).json({ success: false, error: { message: `Section with ID "${trimmedNewId}" already exists` } })
+    }
+
+    const source = await prisma.userCreatedSection.findUnique({ where: { id: trimmedOldId } })
+    if (!source) {
+      return res.status(404).json({ success: false, error: { message: `Section with ID "${trimmedOldId}" not found` } })
+    }
+
+    const created = await prisma.userCreatedSection.create({
+      data: {
+        id: trimmedNewId,
+        layout: source.layout,
+        content: source.content || {}
+      }
+    })
+    await prisma.userCreatedSection.delete({ where: { id: trimmedOldId } })
+
+    // Cascade references across all pages containing oldId in content.sectionIds
+    const allPages = await prisma.userCreatedPage.findMany()
+    for (const page of allPages) {
+      const content = typeof page.content === 'object' && page.content !== null ? page.content : {}
+      if (Array.isArray(content.sectionIds) && content.sectionIds.includes(trimmedOldId)) {
+        const updatedIds = content.sectionIds.map((sid) => (sid === trimmedOldId ? trimmedNewId : sid))
+        await prisma.userCreatedPage.update({
+          where: { id: page.id },
+          data: { content: { ...content, sectionIds: updatedIds } }
+        })
+      }
+    }
+
+    return res.status(200).json({ success: true, oldId: trimmedOldId, newId: trimmedNewId, section: created })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+// DT-625 Sprint 8 - Preston Ball: Rename a card ID and cascade references across sections
+async function renameCard (req, res, next) {
+  try {
+    const { oldId, newId } = req.body || {}
+    const trimmedOldId = String(oldId || '').trim()
+    const trimmedNewId = String(newId || '').trim()
+    if (!trimmedOldId || !trimmedNewId) {
+      return sendValidationError(res, 'Both oldId and newId are required', 'newId')
+    }
+    if (trimmedOldId === trimmedNewId) {
+      return res.status(200).json({ success: true, id: trimmedNewId })
+    }
+
+    const existingTarget = await prisma.userCreatedCard.findUnique({ where: { id: trimmedNewId } })
+    if (existingTarget) {
+      return res.status(400).json({ success: false, error: { message: `Card with ID "${trimmedNewId}" already exists` } })
+    }
+
+    const source = await prisma.userCreatedCard.findUnique({ where: { id: trimmedOldId } })
+    if (!source) {
+      return res.status(404).json({ success: false, error: { message: `Card with ID "${trimmedOldId}" not found` } })
+    }
+
+    const created = await prisma.userCreatedCard.create({
+      data: {
+        id: trimmedNewId,
+        layout: source.layout,
+        content: source.content || {}
+      }
+    })
+    await prisma.userCreatedCard.delete({ where: { id: trimmedOldId } })
+
+    // Cascade references across all sections containing oldId in content.cardIds
+    const allSections = await prisma.userCreatedSection.findMany()
+    for (const sec of allSections) {
+      const content = typeof sec.content === 'object' && sec.content !== null ? sec.content : {}
+      if (Array.isArray(content.cardIds) && content.cardIds.includes(trimmedOldId)) {
+        const updatedIds = content.cardIds.map((cid) => (cid === trimmedOldId ? trimmedNewId : cid))
+        await prisma.userCreatedSection.update({
+          where: { id: sec.id },
+          data: { content: { ...content, cardIds: updatedIds } }
+        })
+      }
+    }
+
+    return res.status(200).json({ success: true, oldId: trimmedOldId, newId: trimmedNewId, card: created })
+  } catch (err) {
+    return next(err)
+  }
+}
+
 module.exports = {
   getPages,
   getPageById,
   createPage,
   updatePage,
   deletePage,
+  reorderPages,
+  renamePage,
   getSections,
   getSectionById,
   createSection,
   updateSection,
   deleteSection,
+  renameSection,
   getCards,
   getCardById,
   createCard,
   updateCard,
   deleteCard,
+  renameCard,
   getColors,
   getColorById,
   createColor,
