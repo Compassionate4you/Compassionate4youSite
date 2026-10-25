@@ -84,31 +84,6 @@ body {
   font-size: 95%;
 }
  
-/* CARDS */
-.cards-row {
-  display: flex;
-  gap: 16px;
-}
-.card {
-  background-color: var(--color-white);
-  border: 1px solid var(--color-divider);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  flex: 1;
-  cursor: pointer;
-}
-.card:hover {
-  border-color: var(--color-primary);
-}
-.card h3 {
-  font-size: 95%;
-  margin: 0 0 8px 0;
-}
-.card p {
-  font-size: 90%;
-  color: var(--color-muted-text);
-  margin: 0;
-}
 .visit-number {
   font-size: 200%;
   font-weight: bold;
@@ -461,17 +436,6 @@ td {
     line-height: 1;
 }
 
-/* CARD ICONS */ 
-.card-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-}
-
 /* DT-499: keep checkboxes from being stretched  */
 .field input[type="checkbox"] {
   width: 16px;
@@ -512,38 +476,6 @@ table td:last-child {
     margin: 8px 0;
 }
 
-.card-icon-blue { background-color: #dbeafe; color: #2563eb; }
-.card-icon-green { background-color: #dcfce7; color: #16a34a; }
-.card-icon-purple { background-color: #f3e8ff; color: #9333ea; }
-
-/* Contact Provider Card */
-
-.cards-row {
-    flex-wrap: wrap;
-}
-
-.portal-contact-card {
-    appearance: none;
-    color: inherit;
-    font-family: inherit;
-    text-align: left;
-}
-
-.card-icon-contact {
-    background-color: #fef3c7;
-    color: #b45309;
-}
-
-/*  Contact Provider Form  */
-.portal-contact-form-card {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: white;
-}
-
 .portal-contact-form-heading {
     margin-bottom: 24px;
 }
@@ -558,11 +490,6 @@ table td:last-child {
     color: #6b7280;
     font-size: 14px;
     line-height: 1.5;
-}
-
-.portal-contact-form-card textarea {
-    min-height: 160px;
-    resize: vertical;
 }
 
 .portal-contact-form-actions {
@@ -587,17 +514,4 @@ table td:last-child {
     color: #166534;
     font-size: 14px;
     font-weight: 600;
-}
-
-/* Visible field borders for Contact Provider form */
-.portal-contact-form-card .field input,
-.portal-contact-form-card .field select,
-.portal-contact-form-card .field textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #9ca3af;
-    border-radius: 6px;
-    background-color: #fff;
-    color: #111827;
-    box-sizing: border-box;
 }

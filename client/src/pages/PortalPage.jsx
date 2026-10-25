@@ -372,39 +372,41 @@ function PortalPage () {
                 <p>{t('portal.welcomeSubtitle')}</p>
               </div>
 
-              <div className='cards-row'>
-                <div className='card' onClick={() => navigate('/schedule')}>
-                  <div className='card-icon card-icon-blue'>
-                    <Plus size={20} />
+              <div className='portals-section'>
+                <div className='cards-row'>
+                  <div className='card' onClick={() => navigate('/schedule')}>
+                    <div className='card-icon card-icon-blue'>
+                      <Plus size={20} />
+                    </div>
+                    <h3>{t('portal.scheduleCard')}</h3>
+                    <p>{t('portal.scheduleCardDesc')}</p>
                   </div>
-                  <h3>{t('portal.scheduleCard')}</h3>
-                  <p>{t('portal.scheduleCardDesc')}</p>
-                </div>
 
-                <div className='card'>
-                  <div className='card-icon card-icon-green'>
-                    <Calendar size={20} />
+                  <div className='card'>
+                    <div className='card-icon card-icon-green'>
+                      <Calendar size={20} />
+                    </div>
+                    <h3>{t('portal.upcomingVisits')}</h3>
+                    <div className='visit-number'>{visitCount}</div>
+                    <p>{t('portal.confirmedAppointments')}</p>
                   </div>
-                  <h3>{t('portal.upcomingVisits')}</h3>
-                  <div className='visit-number'>{visitCount}</div>
-                  <p>{t('portal.confirmedAppointments')}</p>
-                </div>
 
-                <div className='card' onClick={() => setShowProfile(true)}>
-                  <div className='card-icon card-icon-purple'>
-                    <Settings size={20} />
+                  <div className='card' onClick={() => setShowProfile(true)}>
+                    <div className='card-icon card-icon-purple'>
+                      <Settings size={20} />
+                    </div>
+                    <h3>Profile Settings</h3>
+                    <p>Update your contact information and preferences</p>
                   </div>
-                  <h3>Profile Settings</h3>
-                  <p>Update your contact information and preferences</p>
-                </div>
 
-                <button type='button' className='card portal-contact-card' onClick={handleOpenContactForm}>
-                  <div className='card-icon card-icon-contact'>
-                    <MessageCircle size={20} />
-                  </div>
-                  <h3>Contact Your Provider</h3>
-                  <p>Send a question or message to your care team</p>
-                </button>
+                  <button type='button' className='card portal-contact-card' onClick={handleOpenContactForm}>
+                    <div className='card-icon card-icon-contact'>
+                      <MessageCircle size={20} />
+                    </div>
+                    <h3>Contact Your Provider</h3>
+                    <p>Send a question or message to your care team</p>
+                  </button>
+                </div>
               </div>
 
               <div className='section-box'>

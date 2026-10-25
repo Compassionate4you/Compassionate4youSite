@@ -20,6 +20,18 @@
     "philosophyText": "Chúng tôi tin vào việc đối xử với bệnh nhân bằng phẩm giá, sự tôn trọng và lòng đồng cảm. Chúng tôi nỗ lực giúp hành trình cuối đời của quý vị thoải mái và ý nghĩa nhất có thể.",
     "caringSinceTitle": "Tận tâm chăm sóc từ năm 2021",
     "caringSinceText": "Mang đến sự chăm sóc tận tâm ngay tại ngôi nhà thoải mái của quý vị từ năm 2021.",
+    "infoCards": {
+      "card1": {
+        "imageAlt": "Mọi người cùng nhau xếp hình",
+        "header": "Tiêu chí Medicare về chăm sóc sức khỏe tại nhà",
+        "paragraph": "Để đủ điều kiện nhận dịch vụ chăm sóc sức khỏe tại nhà của Medicare, bệnh nhân phải bị hạn chế trong nhà, đang được bác sĩ (bác sĩ y khoa, bác sĩ nắn xương hoặc bác sĩ chuyên khoa bàn chân) chăm sóc và đã tham gia chương trình Medicare."
+      },
+      "card2": {
+        "imageAlt": "Cặp vợ chồng lớn tuổi mỉm cười bên nhau",
+        "header": "Dịch vụ chuyên khoa",
+        "paragraph": "Cung cấp dịch vụ chăm sóc tại nhà toàn diện, chất lượng cao cho bệnh nhân bằng cách xây dựng mối quan hệ hợp tác chặt chẽ với gia đình, nhân viên quản lý ca bệnh, người lập kế hoạch xuất viện và bác sĩ của họ.\n\nChúng tôi tin vào việc xây dựng một đội ngũ chuyên gia tận tâm với mục tiêu chăm sóc và hỗ trợ bệnh nhân của chúng tôi."
+      }
+    },
     "aboutTitle": "Giới thiệu",
     "aboutText": "Compassionate Home Health & Hospice là doanh nghiệp gia đình do Jane Smith, RN sáng lập và điều hành. Với hơn 15 năm kinh nghiệm trong lĩnh vực y tế, Jane thành lập công ty này để mang đến sự chăm sóc cá nhân hóa và tận tâm cho bệnh nhân ngay tại nhà. Đội ngũ chuyên gia tận tụy của chúng tôi cam kết nâng cao chất lượng cuộc sống của bệnh nhân và gia đình họ thông qua các dịch vụ chăm sóc sức khỏe tại nhà và chăm sóc cuối đời toàn diện.",
     "contactTitle": "Liên hệ",
