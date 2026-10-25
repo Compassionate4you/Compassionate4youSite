@@ -14,9 +14,20 @@ export default function ChatbotWidget() {
   const chat = useChatbot()
 
   // DT-808: highlights what the chatbot pointed the user to on the new page.
-  usePageHighlight()
+  const highlight = usePageHighlight()
 
     return (
+      <>
+        {/* DT-808: lets the user dismiss the highlights (Esc works too). */}
+        {highlight.isActive && (
+          <button
+            type="button"
+            className="chatbot-clear-highlights"
+            onClick={highlight.clear}
+          >
+            <span aria-hidden="true">✕</span> {t("chatbot.clearHighlights")}
+          </button>
+        )}
         <div className="chatbot-widget">
             { /* This is the Floating Button */ }
             {!isOpen && (
@@ -44,5 +55,6 @@ export default function ChatbotWidget() {
         </>
       )}
     </div>
+      </>
   )
 }

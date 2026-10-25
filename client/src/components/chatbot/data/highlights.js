@@ -2,49 +2,62 @@
 // Gandhar Tare
 // What to highlight on a page after the chatbot sends the user there.
 //
-// Each entry lists CSS selectors for the parts of the page that answer the
-// question. The highlighter marks the text inside them, so it works in every
-// language and for cards loaded from the database. If a page's markup
-// changes, update the selectors here (chatbotHighlights.test.js checks every
-// FAQ highlight points to an entry in this list).
+// Two kinds of target, so only the useful words are marked rather than
+// whole cards:
+// - `selectors`: short elements highlighted in full, such as service names,
+//   specialty items, contact details and office hours.
+// - `phrases: true`: key phrases inside longer paragraphs. The phrases live
+//   in the locale files under `chatbot.highlightPhrases.<id>` and are copied
+//   word for word from the page text in each language, so they work in every
+//   language the page is shown in. chatbotHighlights.test.js checks that
+//   every phrase really appears in that language's page text.
 
 export const highlights = {
-  // "What home health services do you offer?"
+  // "What home health services do you offer?" - the service names and the
+  // specialty list.
   homeHealthServices: {
-    selectors: ['.services-section .card', '.specialty-card']
+    selectors: ['.services-section .card h3', '.specialty-text']
   },
-  // "Who will be providing the care?" - the service cards are the staff roles.
+  // "Who will be providing the care?" - the service names are the staff roles.
   homeHealthStaff: {
-    selectors: ['.services-section .card']
+    selectors: ['.services-section .card h3']
   },
   // "Do you provide care at home?"
   homeHealthAtHome: {
-    selectors: ['.hero-description']
+    selectors: [],
+    phrases: true
   },
-  // "What is the difference between home health and hospice?"
+  // "What is the difference between home health and hospice?" - key points
+  // from every section of the Hospice page.
   hospiceOverview: {
-    selectors: ['.HospiceDescription', '.HospiceBanner + .card-section .card']
+    selectors: [],
+    phrases: true
   },
   // "Do you offer support for family members?"
   hospiceFamily: {
-    selectors: ['.HospiceDescription', '.HospiceAboveAndBeyondText']
+    selectors: [],
+    phrases: true
   },
   // "What areas do you serve?"
   officeLocation: {
     selectors: ['.map-section__title', '.map-section__directions']
   },
-  // "How do I contact you?" - phone, email, fax and address on the home page.
+  // "How do I contact you?" - the phone, email, fax and address values.
   contactInfo: {
-    selectors: ['.contact-info']
+    selectors: ['.contact-info .contact-item p']
   },
   // "What are your hours?" - the footer is on every page.
   officeHours: {
-    selectors: ['.footer__hours-list']
+    selectors: ['.footer__hours-text']
   }
 }
 
 export function getHighlight (id) {
   return highlights[id] || null
+}
+
+export function highlightPhrasesKey (id) {
+  return `chatbot.highlightPhrases.${id}`
 }
 
 export default highlights

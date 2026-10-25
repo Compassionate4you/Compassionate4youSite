@@ -365,7 +365,8 @@
       "locations": "Go to Locations",
       "schedule": "Go to Scheduling"
     },
-    "open": "چیٹ کھولیں"
+    "open": "چیٹ کھولیں",
+    "clearHighlights": "نمایاں کاری ہٹائیں"
   },
   "login": {
     "title": "سائن اِن",

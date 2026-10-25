@@ -524,6 +524,40 @@
         "reply": "Esta es la página para restablecer su contraseña. $t(login.reset.subtitle)",
         "button": "Ir a Restablecer Contraseña"
       }
+    },
+    "clearHighlights": "Quitar resaltado",
+    "highlightPhrases": {
+      "homeHealthAtHome": [
+        "en la comodidad y seguridad de su hogar",
+        "Los servicios se prestan en el lugar de residencia del paciente"
+      ],
+      "hospiceOverview": [
+        "consuelo, dignidad y apoyo compasivo durante el viaje final de la vida",
+        "apoyo a las personas que se acercan al final de su vida",
+        "en lugar de curar la enfermedad",
+        "gestionan el dolor y otros síntomas",
+        "en el propio hogar de la persona",
+        "las 24 horas del día, los 7 días de la semana",
+        "Dispositivos médicos",
+        "Suministros médicos",
+        "Medicamentos para el alivio de los síntomas y el dolor",
+        "Su médico personal continúa brindándole atención",
+        "Control del dolor y los síntomas",
+        "Apoyo emocional y espiritual",
+        "Apoyo en el duelo y la pérdida"
+      ],
+      "hospiceFamily": [
+        "Estamos aquí para los pacientes y sus familias en cada paso del camino.",
+        "usted y su familia pueden recibir apoyo espiritual y emocional",
+        "apoyo emocional y espiritual a las familias",
+        "los cuidados paliativos afectan a toda la familia",
+        "apoyo emocional, espiritual y práctico a todos los involucrados",
+        "satisfacer las necesidades espirituales de usted y su familia",
+        "Ofrecer apoyo emocional",
+        "Orientación para cuidadores",
+        "Servicios de voluntariado y compañía",
+        "Apoyo en el duelo y la pérdida"
+      ]
     }
   },
   "confirmation": {

@@ -11,7 +11,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { matchIntent } from '../engine/matcher'
 import { buildResponse } from '../engine/responseBuilder'
 import { faq } from '../data/faq'
-import { highlights } from '../data/highlights'
+import { highlightPhrasesKey, highlights } from '../data/highlights'
 import { navButtonKey, navReplyKey, pages } from '../data/navigation'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
@@ -136,8 +136,20 @@ describe('highlights (DT-808)', () => {
 
   it('every FAQ highlight refers to an entry in highlights.js', () => {
     for (const entry of faq.filter((e) => e.link?.highlight)) {
-      expect(highlights[entry.link.highlight], entry.id).toBeDefined()
-      expect(highlights[entry.link.highlight].selectors.length, entry.id).toBeGreaterThan(0)
+      const spec = highlights[entry.link.highlight]
+      expect(spec, entry.id).toBeDefined()
+      // Each entry highlights something: short elements, phrases, or both.
+      expect(spec.selectors.length > 0 || spec.phrases === true, entry.id).toBe(true)
+    }
+  })
+
+  it('no entry highlights a whole card or section', () => {
+    // Whole cards are too much to read; only titles and short items are
+    // highlighted in full. Long text is covered by phrases instead.
+    for (const [id, spec] of Object.entries(highlights)) {
+      for (const selector of spec.selectors) {
+        expect(selector, id).not.toMatch(/(^|\s)\.card$|\.contact-info$|\.footer__hours-list$|-section$/)
+      }
     }
   })
 
@@ -215,5 +227,60 @@ describe('chatbot text resolves in every language', () => {
       const answer = i18n.getFixedT(locale)('chatbot.faq.service-area.answer')
       expect(answer, locale).not.toMatch(/Sacramento|सैक्रामेंटो|ਸੈਕਰਾਮੈਂਟੋ/)
     }
+  })
+})
+
+describe('highlight phrases (DT-808)', () => {
+  // The page text the phrases are matched against, per language. The cards
+  // are seeded from these same locale strings.
+  const pageText = Object.fromEntries(
+    LOCALES.map((loc) => {
+      const t = JSON.parse(fs.readFileSync(path.join(srcDir, 'locales', loc, 'translation.json'), 'utf8'))
+      const strings = []
+      const walk = (v) => {
+        if (typeof v === 'string') strings.push(v)
+        else if (v && typeof v === 'object') Object.values(v).forEach(walk)
+      }
+      walk(t.hospice)
+      walk(t.homeHealth)
+      walk(t.homeHealthPage)
+      return [loc, { t, text: strings.join('\n').toLowerCase() }]
+    })
+  )
+  const phraseIds = Object.entries(highlights).filter(([, spec]) => spec.phrases).map(([id]) => id)
+
+  it.each(LOCALES)('every phrase entry has a list of phrases in %s', (locale) => {
+    const { t } = pageText[locale]
+    for (const id of phraseIds) {
+      const list = highlightPhrasesKey(id).split('.').reduce((node, part) => node?.[part], t)
+      expect(Array.isArray(list) && list.length > 0, `${locale}: ${id}`).toBe(true)
+    }
+  })
+
+  it.each(LOCALES)('every phrase appears word for word in the %s page text', (locale) => {
+    const { t, text } = pageText[locale]
+    for (const id of phraseIds) {
+      const list = highlightPhrasesKey(id).split('.').reduce((node, part) => node?.[part], t)
+      for (const phrase of list) {
+        expect(text.includes(phrase.toLowerCase()), `${locale}: ${id}: "${phrase}"`).toBe(true)
+      }
+    }
+  })
+
+  it('phrases are short, not whole paragraphs', () => {
+    for (const locale of LOCALES) {
+      const { t } = pageText[locale]
+      for (const id of phraseIds) {
+        const list = highlightPhrasesKey(id).split('.').reduce((node, part) => node?.[part], t)
+        for (const phrase of list) {
+          expect(phrase.length, `${locale}: ${id}: "${phrase}"`).toBeLessThanOrEqual(100)
+        }
+      }
+    }
+  })
+
+  it.each(['en', 'es', 'pa', 'hi', 'ur', 'vi', 'zh'])('the clear highlights button is labelled in %s', (locale) => {
+    const t = JSON.parse(fs.readFileSync(path.join(srcDir, 'locales', locale, 'translation.json'), 'utf8'))
+    expect(t.chatbot.clearHighlights, locale).toBeTruthy()
   })
 })

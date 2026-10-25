@@ -402,7 +402,8 @@
       "hospice": "前往安宁疗护",
       "locations": "前往地点",
       "schedule": "前往预约"
-    }
+    },
+    "clearHighlights": "清除高亮"
   },
   "confirmation": {
     "title": "预约已安排！",

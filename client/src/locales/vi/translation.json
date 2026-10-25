@@ -402,7 +402,8 @@
       "hospice": "Đến trang Chăm sóc cuối đời",
       "locations": "Đến trang Địa điểm",
       "schedule": "Đến trang Đặt lịch hẹn"
-    }
+    },
+    "clearHighlights": "Bỏ đánh dấu"
   },
   "confirmation": {
     "title": "Đã đặt lịch hẹn!",

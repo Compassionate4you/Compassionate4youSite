@@ -1,10 +1,10 @@
 // DT-808 Sprint 8
 // Gandhar Tare
 // Page highlighting after the chatbot sends the user somewhere: the DOM
-// helpers, the hook that runs on navigation, and the chat button that starts
-// it.
+// helpers, the hook that runs on navigation (including clearing), and the
+// chat button that starts it.
 import { useEffect, useState } from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -12,8 +12,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   FALLBACK_CLASS,
   HIGHLIGHT_NAME,
-  applyHighlights,
+  applyRanges,
   clearHighlights,
+  collectRanges,
+  findPhraseRanges,
   findTargets,
   supportsHighlightApi,
   textRangesFor
@@ -24,6 +26,22 @@ import ActionButton from '../components/ActionButton'
 vi.mock('../hooks/useAccessibilityBridge', () => ({
   useAccessibilityBridge: () => ({ runAction: vi.fn() })
 }))
+
+// Phrases the hook reads from the locale files. Other keys come back as-is,
+// like the shared test translator.
+const TEST_PHRASES = {
+  'chatbot.highlightPhrases.hospiceOverview': ['rather than curing the illness', '24 hours a day']
+}
+vi.mock('react-i18next', () => {
+  const t = (key) => TEST_PHRASES[key] ?? key
+  return {
+    useTranslation: () => ({
+      t,
+      i18n: { language: 'en', getFixedT: () => t, changeLanguage: () => Promise.resolve() }
+    }),
+    initReactI18next: { type: '3rdParty', init: () => {} }
+  }
+})
 
 // jsdom has no CSS Highlight API. This stands in for it so both code paths
 // can be tested.
@@ -41,6 +59,9 @@ function removeHighlightApi () {
   delete globalThis.Highlight
 }
 
+const highlighted = (registry) =>
+  (registry.get(HIGHLIGHT_NAME)?.ranges || []).map((r) => r.toString())
+
 beforeEach(() => {
   // jsdom does not implement scrolling.
   Element.prototype.scrollIntoView = vi.fn()
@@ -55,64 +76,111 @@ afterEach(() => {
 describe('findTargets', () => {
   it('returns matching elements in page order without duplicates', () => {
     document.body.innerHTML = `
-      <section class="services-section"><article class="card" id="a">A</article></section>
-      <div class="specialty-card" id="b">B</div>
-      <section class="services-section"><article class="card" id="c">C</article></section>`
+      <section class="services-section"><article class="card"><h3 id="a">A</h3></article></section>
+      <div class="specialty-text" id="b">B</div>
+      <section class="services-section"><article class="card"><h3 id="c">C</h3></article></section>`
 
-    const ids = findTargets(['.specialty-card', '.services-section .card', '#a']).map((el) => el.id)
+    const ids = findTargets(['.specialty-text', '.services-section .card h3', '#a']).map((el) => el.id)
 
     expect(ids).toEqual(['a', 'b', 'c'])
   })
 
-  it('returns nothing when no selectors match', () => {
-    document.body.innerHTML = '<p>nothing here</p>'
-    expect(findTargets(['.services-section .card'])).toEqual([])
-    expect(findTargets([])).toEqual([])
+  it('never returns anything inside the chat window', () => {
+    document.body.innerHTML = `
+      <h3 class="x" id="page">On the page</h3>
+      <div class="chatbot-widget"><h3 class="x" id="chat">In the chat</h3></div>`
+
+    expect(findTargets(['.x']).map((el) => el.id)).toEqual(['page'])
+  })
+})
+
+describe('findPhraseRanges', () => {
+  it('covers only the phrase, not the whole paragraph', () => {
+    document.body.innerHTML =
+      '<p>Hospice care focuses on comfort, rather than curing the illness. It is provided by a team.</p>'
+
+    const ranges = findPhraseRanges(['rather than curing the illness'])
+
+    expect(ranges.map((r) => r.toString())).toEqual(['rather than curing the illness'])
+  })
+
+  it('ignores case and finds every occurrence', () => {
+    document.body.innerHTML = '<p>Emotional Support here.</p><p>More emotional support there.</p>'
+
+    const ranges = findPhraseRanges(['emotional support'])
+
+    expect(ranges.map((r) => r.toString())).toEqual(['Emotional Support', 'emotional support'])
+  })
+
+  it('skips text inside the chat window', () => {
+    document.body.innerHTML = `
+      <p>24 hours a day on the page</p>
+      <div class="chatbot-widget"><p>24 hours a day in the chat</p></div>`
+
+    expect(findPhraseRanges(['24 hours a day'])).toHaveLength(1)
+  })
+
+  it('returns nothing for phrases that are not on the page', () => {
+    document.body.innerHTML = '<p>Something else</p>'
+    expect(findPhraseRanges(['not here'])).toEqual([])
+    expect(findPhraseRanges([])).toEqual([])
   })
 })
 
 describe('textRangesFor', () => {
   it('creates one range per non-blank piece of text', () => {
     document.body.innerHTML = `
-      <article class="card"><h3>Skilled Nurses</h3>
-        <p>Medical care at home</p>   </article>`
+      <ul class="hours"><li>Monday – Friday</li>
+        <li>8:00 AM – 6:00 PM</li>   </ul>`
 
-    const ranges = textRangesFor([document.querySelector('.card')])
+    const ranges = textRangesFor([document.querySelector('.hours')])
 
-    expect(ranges.map((r) => r.toString())).toEqual(['Skilled Nurses', 'Medical care at home'])
+    expect(ranges.map((r) => r.toString())).toEqual(['Monday – Friday', '8:00 AM – 6:00 PM'])
   })
 })
 
-describe('applyHighlights with the CSS Highlight API', () => {
-  it('registers the text of every target and leaves the DOM unchanged', () => {
+describe('collectRanges', () => {
+  it('combines short elements and phrases, in page order', () => {
+    document.body.innerHTML = `
+      <p>Care that is about comfort rather than curing the illness.</p>
+      <h3 class="title">Skilled Nurses</h3>`
+
+    const ranges = collectRanges({ selectors: ['.title'], phrases: ['rather than curing the illness'] })
+
+    expect(ranges.map((r) => r.toString())).toEqual(['rather than curing the illness', 'Skilled Nurses'])
+  })
+})
+
+describe('applyRanges with the CSS Highlight API', () => {
+  it('registers the ranges and leaves the DOM unchanged', () => {
     const registry = installHighlightApi()
-    document.body.innerHTML = '<div class="t">One</div><div class="t">Two</div>'
+    document.body.innerHTML = '<p>Keep comfort first, rather than curing the illness.</p>'
     const before = document.body.innerHTML
 
-    const count = applyHighlights(findTargets(['.t']))
+    const count = applyRanges(findPhraseRanges(['rather than curing the illness']))
 
     expect(supportsHighlightApi()).toBe(true)
-    expect(count).toBe(2)
-    expect(registry.get(HIGHLIGHT_NAME).ranges.map((r) => r.toString())).toEqual(['One', 'Two'])
+    expect(count).toBe(1)
+    expect(highlighted(registry)).toEqual(['rather than curing the illness'])
     expect(document.body.innerHTML).toBe(before)
   })
 
   it('clearHighlights removes them', () => {
     const registry = installHighlightApi()
-    document.body.innerHTML = '<div class="t">One</div>'
+    document.body.innerHTML = '<p>One</p>'
 
-    applyHighlights(findTargets(['.t']))
+    applyRanges(findPhraseRanges(['One']))
     clearHighlights()
 
     expect(registry.has(HIGHLIGHT_NAME)).toBe(false)
   })
 })
 
-describe('applyHighlights without the API (fallback)', () => {
-  it('outlines the targets with a class, and clearing removes it', () => {
-    document.body.innerHTML = '<div class="t" id="x">One</div><div id="y">Other</div>'
+describe('applyRanges without the API (fallback)', () => {
+  it('outlines only the elements holding the text, and clearing removes it', () => {
+    document.body.innerHTML = '<p id="x">rather than curing the illness</p><p id="y">Other</p>'
 
-    applyHighlights(findTargets(['.t']))
+    applyRanges(findPhraseRanges(['rather than curing the illness']))
 
     expect(supportsHighlightApi()).toBe(false)
     expect(document.getElementById('x')).toHaveClass(FALLBACK_CLASS)
@@ -125,26 +193,37 @@ describe('applyHighlights without the API (fallback)', () => {
 
 // --- The hook on real route changes --------------------------------------
 
+// Renders what the widget renders: the "Clear highlights" button while
+// highlights are showing.
 function Highlighter () {
-  usePageHighlight()
-  return null
+  const { isActive, clear } = usePageHighlight()
+  return isActive ? <button onClick={clear}>chatbot.clearHighlights</button> : null
 }
 
 function HomeHealthStub () {
+  const navigate = useNavigate()
   return (
     <main>
       <p className='hero-description'>Care at home</p>
       <section className='services-section'>
-        <article className='card' data-testid='nurse-card'>Skilled Nurses</article>
+        <article className='card'>
+          <h3 data-testid='nurse-title'>Skilled Nurses</h3>
+          <p data-testid='nurse-text'>Collaborate with physicians.</p>
+        </article>
       </section>
-      <div className='specialty-card' data-testid='specialty'>Wound Care</div>
+      <p className='specialty-text' data-testid='specialty'>Wound Care</p>
+      <button onClick={() => navigate('/elsewhere')}>leave</button>
     </main>
   )
 }
 
-function OtherPage () {
-  const navigate = useNavigate()
-  return <button onClick={() => navigate('/elsewhere')}>leave</button>
+function HospiceStub () {
+  return (
+    <main>
+      <p data-testid='card'>Hospice focuses on comfort rather than curing the illness, with a long explanation after it.</p>
+      <p data-testid='benefits'>A phone line 24 hours a day for questions.</p>
+    </main>
+  )
 }
 
 function renderApp (initialEntry) {
@@ -152,48 +231,100 @@ function renderApp (initialEntry) {
     <MemoryRouter initialEntries={[initialEntry]}>
       <Highlighter />
       <Routes>
-        <Route path='/home-health' element={<><HomeHealthStub /><OtherPage /></>} />
+        <Route path='/home-health' element={<HomeHealthStub />} />
+        <Route path='/hospice' element={<HospiceStub />} />
         <Route path='/elsewhere' element={<p>Somewhere else</p>} />
       </Routes>
     </MemoryRouter>
   )
 }
 
+const clearButton = () => screen.queryByRole('button', { name: 'chatbot.clearHighlights' })
+
 describe('usePageHighlight', () => {
-  it('highlights the services when the chatbot asked for it', () => {
+  it('highlights the service names and specialties, not the card descriptions', () => {
+    const registry = installHighlightApi()
     renderApp({ pathname: '/home-health', state: { chatbotHighlight: 'homeHealthServices' } })
 
-    expect(screen.getByTestId('nurse-card')).toHaveClass(FALLBACK_CLASS)
-    expect(screen.getByTestId('specialty')).toHaveClass(FALLBACK_CLASS)
+    expect(highlighted(registry)).toEqual(['Skilled Nurses', 'Wound Care'])
+    expect(highlighted(registry)).not.toContain('Collaborate with physicians.')
     expect(Element.prototype.scrollIntoView).toHaveBeenCalled()
   })
 
+  it('highlights key phrases across every section of the page, not whole paragraphs', () => {
+    const registry = installHighlightApi()
+    renderApp({ pathname: '/hospice', state: { chatbotHighlight: 'hospiceOverview' } })
+
+    expect(highlighted(registry)).toEqual(['rather than curing the illness', '24 hours a day'])
+  })
+
+  it('shows the clear button while highlights are on screen', () => {
+    installHighlightApi()
+    renderApp({ pathname: '/hospice', state: { chatbotHighlight: 'hospiceOverview' } })
+
+    expect(clearButton()).toBeInTheDocument()
+  })
+
+  it('the clear button removes the highlights and hides itself', async () => {
+    const user = userEvent.setup()
+    const registry = installHighlightApi()
+    renderApp({ pathname: '/hospice', state: { chatbotHighlight: 'hospiceOverview' } })
+
+    await user.click(clearButton())
+
+    expect(registry.has(HIGHLIGHT_NAME)).toBe(false)
+    expect(clearButton()).not.toBeInTheDocument()
+    // Still on the same page.
+    expect(screen.getByTestId('card')).toBeInTheDocument()
+  })
+
+  it('Esc removes the highlights', () => {
+    const registry = installHighlightApi()
+    renderApp({ pathname: '/hospice', state: { chatbotHighlight: 'hospiceOverview' } })
+
+    act(() => { fireEvent.keyDown(window, { key: 'Escape' }) })
+
+    expect(registry.has(HIGHLIGHT_NAME)).toBe(false)
+    expect(clearButton()).not.toBeInTheDocument()
+  })
+
   it('does nothing on a normal visit', () => {
+    const registry = installHighlightApi()
     renderApp({ pathname: '/home-health' })
 
-    expect(screen.getByTestId('nurse-card')).not.toHaveClass(FALLBACK_CLASS)
+    expect(registry.has(HIGHLIGHT_NAME)).toBe(false)
+    expect(clearButton()).not.toBeInTheDocument()
     expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled()
   })
 
   it('ignores an unknown highlight id', () => {
+    const registry = installHighlightApi()
     renderApp({ pathname: '/home-health', state: { chatbotHighlight: 'no-such-highlight' } })
 
-    expect(screen.getByTestId('nurse-card')).not.toHaveClass(FALLBACK_CLASS)
+    expect(registry.has(HIGHLIGHT_NAME)).toBe(false)
   })
 
   it('clears the highlight when the user moves to another page', async () => {
     const user = userEvent.setup()
+    const registry = installHighlightApi()
     renderApp({ pathname: '/home-health', state: { chatbotHighlight: 'homeHealthServices' } })
-    const card = screen.getByTestId('nurse-card')
-    expect(card).toHaveClass(FALLBACK_CLASS)
+    expect(registry.has(HIGHLIGHT_NAME)).toBe(true)
 
     await user.click(screen.getByText('leave'))
 
     expect(screen.getByText('Somewhere else')).toBeInTheDocument()
-    expect(card).not.toHaveClass(FALLBACK_CLASS)
+    expect(registry.has(HIGHLIGHT_NAME)).toBe(false)
+  })
+
+  it('uses the outline fallback in browsers without the API', () => {
+    renderApp({ pathname: '/home-health', state: { chatbotHighlight: 'homeHealthServices' } })
+
+    expect(screen.getByTestId('nurse-title')).toHaveClass(FALLBACK_CLASS)
+    expect(screen.getByTestId('nurse-text')).not.toHaveClass(FALLBACK_CLASS)
   })
 
   it('highlights cards that load after the page has rendered', async () => {
+    const registry = installHighlightApi()
     // The service cards come from the database, so they appear later.
     function LateCards () {
       const [ready, setReady] = useState(false)
@@ -205,7 +336,7 @@ describe('usePageHighlight', () => {
         <main>
           {ready && (
             <section className='services-section'>
-              <article className='card' data-testid='late-card'>Speech Therapists</article>
+              <article className='card'><h3 data-testid='late-card'>Speech Therapists</h3></article>
             </section>
           )}
         </main>
@@ -221,10 +352,10 @@ describe('usePageHighlight', () => {
       </MemoryRouter>
     )
 
-    const card = await screen.findByTestId('late-card')
+    await screen.findByTestId('late-card')
     // The MutationObserver callback runs as a microtask after the insert.
     await act(async () => { await Promise.resolve() })
-    expect(card).toHaveClass(FALLBACK_CLASS)
+    expect(highlighted(registry)).toEqual(['Speech Therapists'])
   })
 })
 

@@ -467,6 +467,40 @@
         "reply": "Here's the password reset page. $t(login.reset.subtitle)",
         "button": "Go to Reset Password"
       }
+    },
+    "clearHighlights": "Clear highlights",
+    "highlightPhrases": {
+      "homeHealthAtHome": [
+        "in the comfort and safety of your home",
+        "Services are rendered in the client's place of residence"
+      ],
+      "hospiceOverview": [
+        "comfort, dignity, and compassionate support during life's final journey",
+        "support for people nearing the end of life",
+        "rather than curing the illness",
+        "manage pain and other symptoms",
+        "in a person's home",
+        "24 hours a day, 7 days a week",
+        "medical appliances",
+        "medical supplies",
+        "medications for symptoms and pain relief",
+        "Your personal physician continues to provide your care",
+        "Pain and Symptom Control",
+        "Emotional and Spiritual Support",
+        "Grief & Bereavement Support"
+      ],
+      "hospiceFamily": [
+        "We're here for patients and their families every step of the way.",
+        "you and your family can receive spiritual and emotional support",
+        "emotional and spiritual support to families",
+        "hospice care affects the entire family",
+        "emotional, spiritual, and practical support for everyone involved",
+        "meeting the spiritual needs of you and your family",
+        "offering emotional support",
+        "Caregiver Guidance",
+        "Volunteer & Companionship Services",
+        "Grief & Bereavement Support"
+      ]
     }
   },
   "login": {
