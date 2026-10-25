@@ -5,7 +5,18 @@ const { sendValidationError } = require('../utils/errorResponse');
 const { signToken, setSessionCookie, clearSessionCookie } = require('../utils/token');
 
 async function signup(req, res) {
-    const { email, password } = req.body;
+    const { email, password, fullName, phone } = req.body;
+
+    // DT-747: Make sure the user enters a full name
+    if (typeof fullName !== 'string' || !fullName.trim()) {
+        return sendValidationError(res, 'Full name is required.', 'fullName');
+    }
+
+    // DT-747: Make sure the user enters a valid phone number
+    if (typeof phone !== 'string' || !/^\+?[\d\s().-]{7,20}$/.test(phone.trim())) {
+        return sendValidationError(res, 'Please enter a valid phone number.', 'phone');
+    }
+
 
     if (!isValidEmail(email)) {
         return sendValidationError(res, 'Please enter a valid email address.', 'email');
@@ -22,7 +33,7 @@ async function signup(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-        data: { email, password: hashedPassword },
+        data: { email, password: hashedPassword, name: fullName.trim(), phone: phone.trim() },
     });
 
     setSessionCookie(res, signToken(user));

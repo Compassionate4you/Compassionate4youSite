@@ -20,6 +20,18 @@
     "philosophyText": "We believe in treating our patients with dignity, respect, and empathy. We strive to make their end-of-life journey as comfortable and meaningful as possible.",
     "caringSinceTitle": "Caring Since 2021",
     "caringSinceText": "Providing compassionate care in the comfort of your home since 2021.",
+    "infoCards": {
+      "card1": {
+        "imageAlt": "People working on a puzzle together",
+        "header": "Medicare Home Health Criteria",
+        "paragraph": "To qualify for Medicare home health services, a patient must be confined to the home and be under physician care who is a doctor of medicine, a doctor of osteopathy, or a doctor of podiatric medicine, and enrolled in the Medicare Program."
+      },
+      "card2": {
+        "imageAlt": "Older couple smiling together",
+        "header": "Specialty Services",
+        "paragraph": "To provide comprehensive, high quality home-care services to our patients by creating strong partnerships with their families, case managers, discharge planners and physicians.\n\nWe believe in creating a team of caring professionals whose goal is the care and support of our patients."
+      }
+    },
     "aboutTitle": "About",
     "aboutText": "Compassionate Home Health & Hospice is a family-owned and operated business founded by Jane Smith, RN. With over 15 years of experience in healthcare, Jane started this company to provide personalized, compassionate care to patients in their homes. Our team of dedicated professionals is committed to enhancing the quality of life for our patients and their families through comprehensive home health and hospice services.",
     "contactTitle": "Contact",

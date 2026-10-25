@@ -74,7 +74,7 @@ function AccountsTab({
                                 name="birthdate"
                                 value={accountForm.birthdate}
                                 onChange={onAccountInputChange}
-                                required
+                                //required
                             />
                         </div>
 
