@@ -115,6 +115,28 @@ export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
 }
 
+//DT-751: admin account managemnet api
+//Retrieve all user accounts form supabase through the backend
+export function apiGetAccounts() 
+{
+  return request('/accounts');
+}
+
+
+export function apiUpdateAccount(id, account) 
+{
+  //send the account ID and updated information to the backend
+  return request(`/accounts/${encodeURIComponent(id)}`, {method: 'PUT', body: account});
+}
+
+
+//delete an account from supabase using its ID
+export function apiDeleteAccount(id)
+{
+  return request(`/accounts/${encodeURIComponent(id)}`, {method: `DELETE`,});
+}
+
+
 //DT- 710: Locations API
 export function apiGetLocations()  //Gets all locations from the database through the backend
 {
@@ -166,5 +188,8 @@ export default {
   apiUpdateLocation,
   apiDeleteLocation,
   apiCancelAppointment,
-  apiRescheduleAppointment
+  apiRescheduleAppointment,
+  apiGetAccounts,
+  apiUpdateAccount,
+  apiDeleteAccount
 }
