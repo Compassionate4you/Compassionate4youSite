@@ -144,50 +144,181 @@ export default function AuditHistoryTool ({ onNotification }) {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {Object.entries(edits).map(([key, diff]) => {
-                const before = diff?.before
-                const after = diff?.after
+                const before = diff?.before || {}
+                const after = diff?.after || {}
+
+                // DT-622 Sprint 8 - Preston Ball: Detailed Page section diff analysis
+                const isPage = key.startsWith('page.')
+                const isSection = key.startsWith('section.')
+                const isCard = key.startsWith('card.')
+                const isColor = key.startsWith('color.')
+
+                const beforeSections = before.content?.sectionIds || []
+                const afterSections = after.content?.sectionIds || []
+                const addedSections = afterSections.filter(s => !beforeSections.includes(s))
+                const removedSections = beforeSections.filter(s => !afterSections.includes(s))
+
+                const beforeCards = before.content?.cardIds || []
+                const afterCards = after.content?.cardIds || []
+                const addedCards = afterCards.filter(c => !beforeCards.includes(c))
+                const removedCards = beforeCards.filter(c => !afterCards.includes(c))
 
                 return (
-                  <div key={key} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px', fontSize: '0.9rem' }}>
-                    <div style={{ fontWeight: '700', color: '#1e293b', marginBottom: '8px' }}>
-                      Target: <code>{key}</code>
+                  <div key={key} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '14px', fontSize: '0.9rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ fontWeight: '700', color: '#1e293b' }}>
+                        Target: <code style={{ color: '#0369a1' }}>{key}</code>
+                      </div>
+                      {isPage && (addedSections.length > 0 || removedSections.length > 0) && (
+                        <div style={{ display: 'flex', gap: '6px', fontSize: '12px' }}>
+                          {addedSections.length > 0 && (
+                            <span style={{ background: '#dcfce7', color: '#166534', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold' }}>
+                              +{addedSections.length} section{addedSections.length > 1 ? 's' : ''} added
+                            </span>
+                          )}
+                          {removedSections.length > 0 && (
+                            <span style={{ background: '#fee2e2', color: '#991b1b', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold' }}>
+                              -{removedSections.length} section{removedSections.length > 1 ? 's' : ''} removed
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
 
+                    {/* DT-622 Sprint 8 - Preston Ball: Explicit Page Section Changes summary badge */}
+                    {isPage && (addedSections.length > 0 || removedSections.length > 0) && (
+                      <div style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '6px', padding: '10px 12px', marginBottom: '10px', fontSize: '13px' }}>
+                        {addedSections.length > 0 && (
+                          <div style={{ color: '#15803d', marginBottom: '4px' }}>
+                            <strong>Added Sections:</strong> {addedSections.map(s => <code key={s} style={{ background: '#dcfce7', padding: '1px 5px', borderRadius: '3px', marginRight: '4px' }}>{s}</code>)}
+                          </div>
+                        )}
+                        {removedSections.length > 0 && (
+                          <div style={{ color: '#b91c1c', marginBottom: '4px' }}>
+                            <strong>Removed Sections:</strong> {removedSections.map(s => <code key={s} style={{ background: '#fee2e2', padding: '1px 5px', borderRadius: '3px', marginRight: '4px' }}>{s}</code>)}
+                          </div>
+                        )}
+                        <div style={{ color: '#64748b', fontSize: '12px' }}>
+                          Count changed from <strong>{beforeSections.length}</strong> to <strong>{afterSections.length}</strong> sections.
+                        </div>
+                      </div>
+                    )}
+
+                    {/* DT-622 Sprint 8 - Preston Ball: Explicit Section Card Changes summary */}
+                    {isSection && (addedCards.length > 0 || removedCards.length > 0) && (
+                      <div style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '6px', padding: '10px 12px', marginBottom: '10px', fontSize: '13px' }}>
+                        {addedCards.length > 0 && (
+                          <div style={{ color: '#15803d', marginBottom: '4px' }}>
+                            <strong>Added Cards:</strong> {addedCards.map(c => <code key={c} style={{ background: '#dcfce7', padding: '1px 5px', borderRadius: '3px', marginRight: '4px' }}>{c}</code>)}
+                          </div>
+                        )}
+                        {removedCards.length > 0 && (
+                          <div style={{ color: '#b91c1c' }}>
+                            <strong>Removed Cards:</strong> {removedCards.map(c => <code key={c} style={{ background: '#fee2e2', padding: '1px 5px', borderRadius: '3px', marginRight: '4px' }}>{c}</code>)}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                      {/* Before */}
-                      <div style={{ background: '#fee2e2', padding: '8px 12px', borderRadius: '6px', border: '1px solid #fca5a5' }}>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#991b1b', marginBottom: '4px' }}>PREVIOUS STATE</div>
-                        <div style={{ fontSize: '0.85rem', color: '#7f1d1d', wordBreak: 'break-word' }}>
-                          {typeof before === 'object' && before !== null ? (
-                            <div>
-                              {before.content?.title && <div>Title: {before.content.title}</div>}
-                              {before.content?.header && <div>Header: {before.content.header}</div>}
-                              {before.content?.text && <div>Text: {before.content.text}</div>}
-                              {before.layout && <div>Layout: {before.layout}</div>}
-                              {before.lightModeColor && <div>Colors: {before.lightModeColor} / {before.darkModeColor}</div>}
-                              {!before.content && !before.layout && !before.lightModeColor && JSON.stringify(before)}
+                      {/* Before State */}
+                      <div style={{ background: '#fee2e2', padding: '10px 14px', borderRadius: '6px', border: '1px solid #fca5a5' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#991b1b', marginBottom: '6px' }}>PREVIOUS STATE</div>
+                        <div style={{ fontSize: '0.85rem', color: '#7f1d1d', wordBreak: 'break-word', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          {isPage && (
+                            <>
+                              {before.content?.title && <div><strong>Title:</strong> {before.content.title}</div>}
+                              <div><strong>Sections ({beforeSections.length}):</strong> [{beforeSections.join(', ') || 'none'}]</div>
+                            </>
+                          )}
+                          {isSection && (
+                            <>
+                              {before.layout && <div><strong>Layout:</strong> <code>{before.layout}</code></div>}
+                              {before.content?.header && <div><strong>Header:</strong> {before.content.header}</div>}
+                              {before.content?.text && <div><strong>Text:</strong> {before.content.text}</div>}
+                              {beforeCards.length > 0 && <div><strong>Cards ({beforeCards.length}):</strong> [{beforeCards.join(', ')}]</div>}
+                              {before.content?.colors && (
+                                <div style={{ fontSize: '12px' }}>
+                                  <strong>Colors:</strong> BG: {before.content.colors.backgroundColor || 'none'}, Text: {before.content.colors.textColor || 'none'}
+                                </div>
+                              )}
+                            </>
+                          )}
+                          {isCard && (
+                            <>
+                              {before.layout && <div><strong>Layout:</strong> <code>{before.layout}</code></div>}
+                              {before.content?.header && <div><strong>Header:</strong> {before.content.header}</div>}
+                              {before.content?.paragraph && <div><strong>Paragraph:</strong> {before.content.paragraph}</div>}
+                              {before.content?.symbol && <div><strong>Symbol:</strong> {before.content.symbol}</div>}
+                              {before.content?.imageUrl && <div><strong>Image:</strong> {before.content.imageUrl}</div>}
+                              {before.content?.colors && (
+                                <div style={{ fontSize: '12px' }}>
+                                  <strong>Colors:</strong> BG: {before.content.colors.backgroundColor || 'none'}, Text: {before.content.colors.textColor || 'none'}
+                                </div>
+                              )}
+                            </>
+                          )}
+                          {isColor && (
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                              <div style={{ width: '20px', height: '20px', background: before.lightModeColor, borderRadius: '4px', border: '1px solid #ccc' }} />
+                              <span>☀️ {before.lightModeColor}</span>
+                              <div style={{ width: '20px', height: '20px', background: before.darkModeColor, borderRadius: '4px', border: '1px solid #ccc' }} />
+                              <span>🌙 {before.darkModeColor}</span>
                             </div>
-                          ) : (
-                            String(before ?? 'none')
+                          )}
+                          {!isPage && !isSection && !isCard && !isColor && (
+                            <div>{JSON.stringify(before)}</div>
                           )}
                         </div>
                       </div>
 
-                      {/* After */}
-                      <div style={{ background: '#dcfce7', padding: '8px 12px', borderRadius: '6px', border: '1px solid #86efac' }}>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#166534', marginBottom: '4px' }}>UPDATED STATE</div>
-                        <div style={{ fontSize: '0.85rem', color: '#14532d', wordBreak: 'break-word' }}>
-                          {typeof after === 'object' && after !== null ? (
-                            <div>
-                              {after.content?.title && <div>Title: {after.content.title}</div>}
-                              {after.content?.header && <div>Header: {after.content.header}</div>}
-                              {after.content?.text && <div>Text: {after.content.text}</div>}
-                              {after.layout && <div>Layout: {after.layout}</div>}
-                              {after.lightModeColor && <div>Colors: {after.lightModeColor} / {after.darkModeColor}</div>}
-                              {!after.content && !after.layout && !after.lightModeColor && JSON.stringify(after)}
+                      {/* After State */}
+                      <div style={{ background: '#dcfce7', padding: '10px 14px', borderRadius: '6px', border: '1px solid #86efac' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#166534', marginBottom: '6px' }}>UPDATED STATE</div>
+                        <div style={{ fontSize: '0.85rem', color: '#14532d', wordBreak: 'break-word', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          {isPage && (
+                            <>
+                              {after.content?.title && <div><strong>Title:</strong> {after.content.title}</div>}
+                              <div><strong>Sections ({afterSections.length}):</strong> [{afterSections.join(', ') || 'none'}]</div>
+                            </>
+                          )}
+                          {isSection && (
+                            <>
+                              {after.layout && <div><strong>Layout:</strong> <code>{after.layout}</code></div>}
+                              {after.content?.header && <div><strong>Header:</strong> {after.content.header}</div>}
+                              {after.content?.text && <div><strong>Text:</strong> {after.content.text}</div>}
+                              {afterCards.length > 0 && <div><strong>Cards ({afterCards.length}):</strong> [{afterCards.join(', ')}]</div>}
+                              {after.content?.colors && (
+                                <div style={{ fontSize: '12px' }}>
+                                  <strong>Colors:</strong> BG: {after.content.colors.backgroundColor || 'none'}, Text: {after.content.colors.textColor || 'none'}
+                                </div>
+                              )}
+                            </>
+                          )}
+                          {isCard && (
+                            <>
+                              {after.layout && <div><strong>Layout:</strong> <code>{after.layout}</code></div>}
+                              {after.content?.header && <div><strong>Header:</strong> {after.content.header}</div>}
+                              {after.content?.paragraph && <div><strong>Paragraph:</strong> {after.content.paragraph}</div>}
+                              {after.content?.symbol && <div><strong>Symbol:</strong> {after.content.symbol}</div>}
+                              {after.content?.imageUrl && <div><strong>Image:</strong> {after.content.imageUrl}</div>}
+                              {after.content?.colors && (
+                                <div style={{ fontSize: '12px' }}>
+                                  <strong>Colors:</strong> BG: {after.content.colors.backgroundColor || 'none'}, Text: {after.content.colors.textColor || 'none'}
+                                </div>
+                              )}
+                            </>
+                          )}
+                          {isColor && (
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                              <div style={{ width: '20px', height: '20px', background: after.lightModeColor, borderRadius: '4px', border: '1px solid #ccc' }} />
+                              <span>☀️ {after.lightModeColor}</span>
+                              <div style={{ width: '20px', height: '20px', background: after.darkModeColor, borderRadius: '4px', border: '1px solid #ccc' }} />
+                              <span>🌙 {after.darkModeColor}</span>
                             </div>
-                          ) : (
-                            String(after ?? 'none')
+                          )}
+                          {!isPage && !isSection && !isCard && !isColor && (
+                            <div>{JSON.stringify(after)}</div>
                           )}
                         </div>
                       </div>

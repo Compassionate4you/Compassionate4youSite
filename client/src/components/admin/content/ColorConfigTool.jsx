@@ -1,9 +1,9 @@
-// DT-510 Sprint 7
-// PBall
-// Color configuration management tool component supporting visual color wheel pickers, luminance filtering, and sorting
+// DT-622 DT-618 Sprint 8
+// Preston Ball
+// Color configuration management tool component supporting visual color wheel pickers, expanded edit modal, general color search, and sort direction toggles
 
 import React, { useState, useMemo } from 'react'
-import { ColorConfigService, getLuminance } from '../../../services/colorConfigService'
+import { ColorConfigService, getGeneralColor } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 
 export default function ColorConfigTool ({ onNotification }) {
@@ -12,14 +12,17 @@ export default function ColorConfigTool ({ onNotification }) {
   const [newId, setNewId] = useState('')
   const [lightMode, setLightMode] = useState('')
   const [darkMode, setDarkMode] = useState('')
-  const [editingId, setEditingId] = useState(null)
+
+  // DT-622 Sprint 8 - Preston Ball: Expanded edit modal state
+  const [editingColor, setEditingColor] = useState(null)
   const [editLight, setEditLight] = useState('')
   const [editDark, setEditDark] = useState('')
 
-  // DT-510 Sprint 7 - PBall: Search, filter, and sorting state
+  // DT-622 Sprint 8 - Preston Ball: Search, general color filter, and sort state
   const [searchTerm, setSearchTerm] = useState('')
-  const [filterMode, setFilterMode] = useState('all')
-  const [sortBy, setSortBy] = useState('id-asc')
+  const [generalColorFilter, setGeneralColorFilter] = useState('all')
+  const [sortBy, setSortBy] = useState('id')
+  const [sortDirection, setSortDirection] = useState('asc')
 
   const handleCreate = (e) => {
     e.preventDefault()
@@ -55,25 +58,43 @@ export default function ColorConfigTool ({ onNotification }) {
     }
   }
 
-  const handleSaveEdit = (id) => {
-    if (!editLight.trim() || !editDark.trim()) {
+  const handleOpenEdit = (col) => {
+    setEditingColor(col)
+    setEditLight(col.lightModeColor)
+    setEditDark(col.darkModeColor)
+  }
+
+  const handleCloseEdit = () => {
+    setEditingColor(null)
+    setEditLight('')
+    setEditDark('')
+  }
+
+  const handleSaveEdit = (e) => {
+    if (e) e.preventDefault()
+    if (!editingColor) return
+    const trimmedLight = editLight.trim()
+    const trimmedDark = editDark.trim()
+
+    if (!trimmedLight || !trimmedDark) {
       alert('Light and Dark mode colors cannot be empty.')
       return
     }
+
     try {
-      const oldColor = colors.find(c => c.id === id)
-      const updated = ColorConfigService.updateColor(id, {
-        lightModeColor: editLight.trim(),
-        darkModeColor: editDark.trim()
+      const oldColor = colors.find(c => c.id === editingColor.id)
+      const updated = ColorConfigService.updateColor(editingColor.id, {
+        lightModeColor: trimmedLight,
+        darkModeColor: trimmedDark
       })
       setColors(ColorConfigService.getColors())
       AuditHistoryService.recordAppliedChange({
         edits: {
-          [`color.${id}`]: { before: oldColor, after: updated }
+          [`color.${editingColor.id}`]: { before: oldColor, after: updated }
         }
       })
-      setEditingId(null)
-      onNotification(`Updated color "${id}"`)
+      handleCloseEdit()
+      onNotification(`Updated color "${editingColor.id}"`)
     } catch (err) {
       alert(err.message)
     }
@@ -88,31 +109,48 @@ export default function ColorConfigTool ({ onNotification }) {
         deletions: [{ type: 'color', id, data: removed }]
       })
       onNotification(`Deleted color "${id}"`)
+      if (editingColor?.id === id) {
+        handleCloseEdit()
+      }
     } catch (err) {
       alert(err.message)
     }
   }
 
+  // DT-622 Sprint 8 - Preston Ball: Filter by ID or general color, sort by property and direction
   const displayedColors = useMemo(() => {
     let result = [...colors]
     if (searchTerm.trim()) {
-      const q = searchTerm.toLowerCase()
-      result = result.filter(c => c.id.toLowerCase().includes(q))
+      const q = searchTerm.toLowerCase().trim()
+      result = result.filter(c => {
+        const idMatch = c.id.toLowerCase().includes(q)
+        const lightColorMatch = getGeneralColor(c.lightModeColor).toLowerCase().includes(q)
+        const darkColorMatch = getGeneralColor(c.darkModeColor).toLowerCase().includes(q)
+        return idMatch || lightColorMatch || darkColorMatch
+      })
     }
-    if (filterMode === 'light-dominant') {
-      result = result.filter(c => getLuminance(c.lightModeColor) > 0.5)
-    } else if (filterMode === 'dark-dominant') {
-      result = result.filter(c => getLuminance(c.lightModeColor) <= 0.5)
+    if (generalColorFilter !== 'all') {
+      result = result.filter(c => {
+        const lightFamily = getGeneralColor(c.lightModeColor)
+        const darkFamily = getGeneralColor(c.darkModeColor)
+        return lightFamily === generalColorFilter || darkFamily === generalColorFilter
+      })
     }
+
     result.sort((a, b) => {
-      if (sortBy === 'id-asc') return a.id.localeCompare(b.id)
-      if (sortBy === 'id-desc') return b.id.localeCompare(a.id)
-      if (sortBy === 'light-hex') return a.lightModeColor.localeCompare(b.lightModeColor)
-      if (sortBy === 'dark-hex') return a.darkModeColor.localeCompare(b.darkModeColor)
-      return 0
+      let cmp = 0
+      if (sortBy === 'id') {
+        cmp = a.id.localeCompare(b.id)
+      } else if (sortBy === 'light') {
+        cmp = a.lightModeColor.localeCompare(b.lightModeColor)
+      } else if (sortBy === 'dark') {
+        cmp = a.darkModeColor.localeCompare(b.darkModeColor)
+      }
+      return sortDirection === 'desc' ? -cmp : cmp
     })
+
     return result
-  }, [colors, searchTerm, filterMode, sortBy])
+  }, [colors, searchTerm, generalColorFilter, sortBy, sortDirection])
 
   return (
     <div className="content-editor-card">
@@ -205,81 +243,262 @@ export default function ColorConfigTool ({ onNotification }) {
           </button>
         </div>
       </form>
-      {/* DT-510 Sprint 7 - PBall: Filter, Sort, and Search Bar */}
+
+      {/* DT-622 Sprint 8 - Preston Ball: Expanded Edit Modal / Larger Menu */}
+      {editingColor && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.55)',
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px'
+        }}>
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            maxWidth: '680px',
+            width: '100%',
+            padding: '28px',
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ margin: 0, fontSize: '1.25rem' }}>
+                ✏️ Edit Color Token: <code style={{ color: '#0369a1' }}>{editingColor.id}</code>
+              </h3>
+              <button
+                type="button"
+                onClick={handleCloseEdit}
+                style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#64748b' }}
+              >
+                &times;
+              </button>
+            </div>
+            <p style={{ color: '#64748b', fontSize: '14px', margin: '0 0 20px' }}>
+              Adjust color values using the dual color wheel pickers and hex inputs below.
+            </p>
+
+            <form onSubmit={handleSaveEdit}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {/* Light Mode Picker */}
+                <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                  <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px', fontSize: '14px' }}>
+                    ☀️ Light Mode Color
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
+                    <input
+                      type="color"
+                      value={editLight || '#ffffff'}
+                      onChange={(e) => setEditLight(e.target.value)}
+                      title="Light Mode Color Wheel"
+                      style={{ width: '48px', height: '48px', padding: '2px', border: '1px solid #cbd5e1', borderRadius: '8px', cursor: 'pointer' }}
+                    />
+                    <input
+                      type="text"
+                      value={editLight}
+                      onChange={(e) => setEditLight(e.target.value)}
+                      placeholder="#ffffff"
+                      required
+                      style={{ flex: 1, padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '14px' }}
+                    />
+                  </div>
+                  <div style={{ height: '36px', background: editLight, borderRadius: '6px', border: '1px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 'bold', color: editLight }}>Preview</span>
+                  </div>
+                </div>
+
+                {/* Dark Mode Picker */}
+                <div style={{ background: '#0f172a', color: '#ffffff', padding: '16px', borderRadius: '10px', border: '1px solid #1e293b' }}>
+                  <label style={{ display: 'block', fontWeight: '600', marginBottom: '8px', fontSize: '14px' }}>
+                    🌙 Dark Mode Color
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
+                    <input
+                      type="color"
+                      value={editDark || '#000000'}
+                      onChange={(e) => setEditDark(e.target.value)}
+                      title="Dark Mode Color Wheel"
+                      style={{ width: '48px', height: '48px', padding: '2px', border: '1px solid #475569', borderRadius: '8px', cursor: 'pointer' }}
+                    />
+                    <input
+                      type="text"
+                      value={editDark}
+                      onChange={(e) => setEditDark(e.target.value)}
+                      placeholder="#000000"
+                      required
+                      style={{ flex: 1, padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#1e293b', color: '#fff', fontSize: '14px' }}
+                    />
+                  </div>
+                  <div style={{ height: '36px', background: editDark, borderRadius: '6px', border: '1px solid #475569', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 'bold', color: editDark }}>Preview</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={handleCloseEdit}
+                  style={{
+                    padding: '10px 18px',
+                    borderRadius: '8px',
+                    border: '1px solid #cbd5e1',
+                    background: '#ffffff',
+                    color: '#334155',
+                    fontWeight: '600',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  style={{
+                    padding: '10px 22px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: '#0f172a',
+                    color: '#ffffff',
+                    fontWeight: '600',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* DT-622 Sprint 8 - Preston Ball: Filter, General Color Search, and Sort with Direction Toggle */}
       <div style={{ marginTop: '28px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px' }}>
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ flex: '1 1 200px' }}>
+        <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ flex: '1 1 240px' }}>
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="🔍 Search colors by ID..."
-              style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '14px' }}
+              placeholder="🔍 Search colors by ID or general color (e.g. red, green)..."
+              style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '14px' }}
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
             <div>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', marginRight: '6px' }}>Filter:</span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', marginRight: '6px' }}>Color Family:</span>
               <select
-                value={filterMode}
-                onChange={(e) => setFilterMode(e.target.value)}
+                value={generalColorFilter}
+                onChange={(e) => setGeneralColorFilter(e.target.value)}
                 style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '14px' }}
               >
-                <option value="all">All Colors ({colors.length})</option>
-                <option value="light-dominant">Light Dominant (&gt;50% luminance)</option>
-                <option value="dark-dominant">Dark Dominant (&le;50% luminance)</option>
+                <option value="all">All Colors</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+                <option value="orange">Orange</option>
+                <option value="purple">Purple</option>
+                <option value="pink">Pink</option>
+                <option value="cyan">Cyan / Teal</option>
+                <option value="gray">Gray</option>
+                <option value="black">Black</option>
+                <option value="white">White</option>
               </select>
             </div>
 
-            <div>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', marginRight: '6px' }}>Sort:</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#64748b' }}>Sort:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '14px' }}
               >
-                <option value="id-asc">Name / ID (A-Z)</option>
-                <option value="id-desc">Name / ID (Z-A)</option>
-                <option value="light-hex">Light Hex</option>
-                <option value="dark-hex">Dark Hex</option>
+                <option value="id">Name / ID</option>
+                <option value="light">Light Hex</option>
+                <option value="dark">Dark Hex</option>
               </select>
+
+              <button
+                type="button"
+                onClick={() => setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))}
+                title="Toggle sort direction"
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid #cbd5e1',
+                  background: '#f8fafc',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+              >
+                {sortDirection === 'asc' ? '▲ Asc' : '▼ Desc'}
+              </button>
             </div>
           </div>
         </div>
       </div>
 
+      {/* DT-622 Sprint 8 - Preston Ball: Displayed Colors Grid mapping displayedColors */}
       <div style={{ marginTop: '20px' }}>
-        <h3>Colors ({colors.length})</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px', marginTop: '10px' }}>
-          {colors.map((col) => (
-            <div key={col.id} style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px', background: '#fff' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontWeight: 'bold', fontFamily: 'monospace' }}>{col.id}</span>
-                {editingId !== col.id && (
-                  <div>
-                    <button type="button" onClick={() => { setEditingId(col.id); setEditLight(col.lightModeColor); setEditDark(col.darkModeColor); }} style={{ marginRight: '4px', fontSize: '12px', padding: '2px 6px' }}>Edit</button>
-                    <button type="button" onClick={() => handleDelete(col.id)} style={{ fontSize: '12px', padding: '2px 6px', background: '#fee2e2', color: '#991b1b', border: 'none' }}>Del</button>
-                  </div>
-                )}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+          <h3 style={{ margin: 0 }}>
+            Color Tokens ({displayedColors.length} of {colors.length})
+          </h3>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '14px' }}>
+          {displayedColors.map((col) => (
+            <div key={col.id} style={{ border: '1px solid #e2e8f0', borderRadius: '10px', padding: '14px', background: '#fff', boxShadow: '0 2px 6px rgba(0,0,0,0.03)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <span style={{ fontWeight: 'bold', fontFamily: 'monospace', fontSize: '14px' }}>{col.id}</span>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEdit(col)}
+                    style={{ fontSize: '12px', padding: '4px 8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#f8fafc', cursor: 'pointer', fontWeight: '600' }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(col.id)}
+                    style={{ fontSize: '12px', padding: '4px 8px', background: '#fee2e2', color: '#991b1b', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+                  >
+                    Del
+                  </button>
+                </div>
               </div>
-              {editingId === col.id ? (
-                <div>
-                  <input type="text" value={editLight} onChange={(e) => setEditLight(e.target.value)} style={{ width: '100%', marginBottom: '4px', padding: '4px' }} />
-                  <input type="text" value={editDark} onChange={(e) => setEditDark(e.target.value)} style={{ width: '100%', marginBottom: '4px', padding: '4px' }} />
-                  <button type="button" onClick={() => handleSaveEdit(col.id)} style={{ marginRight: '4px', padding: '4px 8px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '4px' }}>Save</button>
-                  <button type="button" onClick={() => setEditingId(null)} style={{ padding: '4px 8px', background: '#ccc', border: 'none', borderRadius: '4px' }}>Cancel</button>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ flex: 1, textAlign: 'center' }}>
+                  <div style={{ height: '32px', background: col.lightModeColor, borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '4px' }} />
+                  <div style={{ fontSize: '11px', color: '#64748b' }}>☀️ Light</div>
+                  <code style={{ fontSize: '11px' }}>{col.lightModeColor}</code>
                 </div>
-              ) : (
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <div style={{ flex: 1, textAlign: 'center' }}><div style={{ height: '24px', background: col.lightModeColor, borderRadius: '4px', border: '1px solid #ccc' }} /><small>☀️ Light Mode: {col.lightModeColor}</small></div>
-                  <div style={{ flex: 1, textAlign: 'center' }}><div style={{ height: '24px', background: col.darkModeColor, borderRadius: '4px', border: '1px solid #ccc' }} /><small>🌙 Dark Mode: {col.darkModeColor}</small></div>
+                <div style={{ flex: 1, textAlign: 'center' }}>
+                  <div style={{ height: '32px', background: col.darkModeColor, borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '4px' }} />
+                  <div style={{ fontSize: '11px', color: '#64748b' }}>🌙 Dark</div>
+                  <code style={{ fontSize: '11px' }}>{col.darkModeColor}</code>
                 </div>
-              )}
+              </div>
             </div>
           ))}
+          {displayedColors.length === 0 && (
+            <div style={{ gridColumn: '1 / -1', padding: '30px', textAlign: 'center', color: '#64748b', background: '#f8fafc', borderRadius: '10px' }}>
+              No colors found matching your filter/search criteria.
+            </div>
+          )}
         </div>
       </div>
     </div>
   )
 }
+

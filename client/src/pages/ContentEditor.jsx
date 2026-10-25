@@ -12,7 +12,7 @@ import CardManager from '../components/admin/content/CardManager'
 import AuditHistoryTool from '../components/admin/content/AuditHistoryTool'
 import '../styles/contenteditor.css'
 
-export default function ContentEditor () {
+export default function ContentEditor ({ embedded = false }) {
   const navigate = useNavigate()
   const [activeTool, setActiveTool] = useState('pages')
   const [notification, setNotification] = useState('')
@@ -23,15 +23,17 @@ export default function ContentEditor () {
   }
 
   return (
-    <div className="content-editor-page">
-      <div className="content-editor-header-bar">
-        <Link to="/admin" className="content-editor-back-link">
-          &larr; Back to Dashboard
-        </Link>
-        <span style={{ fontSize: '0.9rem', color: '#64748b' }}>
-          Admin User UUID: <code>a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d</code>
-        </span>
-      </div>
+    <div className={`content-editor-page ${embedded ? 'content-editor-page--embedded' : ''}`}>
+      {!embedded && (
+        <div className="content-editor-header-bar">
+          <Link to="/admin" className="content-editor-back-link">
+            &larr; Back to Dashboard
+          </Link>
+          <span style={{ fontSize: '0.9rem', color: '#64748b' }}>
+            Admin User UUID: <code>a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d</code>
+          </span>
+        </div>
+      )}
 
       <h1 className="content-editor-title">Content Editor Suite</h1>
       <p className="content-editor-subtitle">

@@ -33,6 +33,45 @@ export function getLuminance (hex) {
   return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b)
 }
 
+// DT-622 Sprint 8 - Preston Ball: Utility to categorize a hex color into general color families
+export function getGeneralColor (hex) {
+  if (!hex || typeof hex !== 'string') return 'other'
+  const cleanHex = hex.replace('#', '').trim()
+  if (cleanHex.length !== 3 && cleanHex.length !== 6) return 'other'
+  let r, g, b
+  if (cleanHex.length === 3) {
+    r = parseInt(cleanHex[0] + cleanHex[0], 16) / 255
+    g = parseInt(cleanHex[1] + cleanHex[1], 16) / 255
+    b = parseInt(cleanHex[2] + cleanHex[2], 16) / 255
+  } else {
+    r = parseInt(cleanHex.substring(0, 2), 16) / 255
+    g = parseInt(cleanHex.substring(2, 4), 16) / 255
+    b = parseInt(cleanHex.substring(4, 6), 16) / 255
+  }
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+  const d = max - min
+
+  if (l >= 0.92) return 'white'
+  if (l <= 0.12) return 'black'
+  if (d <= 0.15) return 'gray'
+
+  let h = 0
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60
+  else if (max === g) h = ((b - r) / d + 2) * 60
+  else h = ((r - g) / d + 4) * 60
+
+  if (h < 15 || h >= 345) return 'red'
+  if (h < 45) return 'orange'
+  if (h < 70) return 'yellow'
+  if (h < 165) return 'green'
+  if (h < 195) return 'cyan'
+  if (h < 260) return 'blue'
+  if (h < 315) return 'purple'
+  return 'pink'
+}
+
 export const ColorConfigService = {
   data: (() => {
     try {
