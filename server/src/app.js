@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-
+const accountRoutes = require('./routes/accountRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const authRoutes = require('./routes/authRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
@@ -37,7 +37,7 @@ app.use('/api/locations', locationRoutes);
 app.use('/api/sections', sectionRoutes);
 // app.use('/api/portal', portalRoutes);
 // app.use('/api/services', serviceRoutes);
-
+app.use('/api/accounts', accountRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

@@ -53,8 +53,8 @@ export async function sendChatMessage (message) {
 }
 
 // DT-556 / DT-560: auth.
-export function apiSignup (email, password) {
-  return request('/auth/signup', { method: 'POST', body: { email, password } })
+export function apiSignup (email, password, fullName, phone) {
+  return request('/auth/signup', { method: 'POST', body: { email, password, fullName, phone } })
 }
 
 export function apiLogin (email, password) {
@@ -115,6 +115,52 @@ export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
 }
 
+//DT-751: admin account managemnet api
+//Retrieve all user accounts form supabase through the backend
+export function apiGetAccounts() 
+{
+  return request('/accounts');
+}
+
+
+export function apiUpdateAccount(id, account) 
+{
+  //send the account ID and updated information to the backend
+  return request(`/accounts/${encodeURIComponent(id)}`, {method: 'PUT', body: account});
+}
+
+
+//delete an account from supabase using its ID
+export function apiDeleteAccount(id)
+{
+  return request(`/accounts/${encodeURIComponent(id)}`, {method: `DELETE`,});
+}
+
+
+//DT- 710: Locations API
+export function apiGetLocations()  //Gets all locations from the database through the backend
+{
+  return request('/locations')  //Sends a get request to locations
+}
+
+export function apiCreateLocation(location) // Addd a new location to the database
+{
+  return request ('/locations', { method: 'POST', body: location }) //Sends the location information to the backend
+}
+
+
+export function apiUpdateLocation (id, location) //Updates an existing location in the database
+{
+  return request(`/locations/${encodeURIComponent(id)}`, {method: 'PUT', body: location}) //Uses the location ID to find the correct location
+}
+
+
+export function apiDeleteLocation(id) //Deletes a location from the database
+{
+  return request(`/locations/${encodeURIComponent(id)}`, {method: 'DELETE'}) //uses the location ID to identify which location to delete
+}
+
+
 // DT-278 (725): cancel one of the signed in user's appointments
 export function apiCancelAppointment(id){
     return request(`/appointments/${encodeURIComponent(id)}/cancel`, { method: 'PATCH' })
@@ -137,6 +183,13 @@ export default {
   apiGetAvailability,
   apiCreateAppointment,
   apiGetMyAppointments,
+  apiGetLocations,
+  apiCreateLocation,
+  apiUpdateLocation,
+  apiDeleteLocation,
   apiCancelAppointment,
-  apiRescheduleAppointment
+  apiRescheduleAppointment,
+  apiGetAccounts,
+  apiUpdateAccount,
+  apiDeleteAccount
 }
