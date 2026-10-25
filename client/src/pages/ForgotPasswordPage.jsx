@@ -1,8 +1,12 @@
-// Forgot password page (DT-341). UI only - backend not wired yet.
+// Forgot password page (DT-341).
+// DT-765: sends the request to the backend. Accepts an email or a phone
+// number; the reset link always goes to the email on the account. When more
+// than one account shares the phone number, the user is asked for their email.
 
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { apiForgotPassword } from '../services/api'
 import '../styles/forgotPassword.css'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -21,26 +25,65 @@ function ForgotPasswordPage () {
   const { t } = useTranslation()
 
   const [identifier, setIdentifier] = useState('')
+  const [confirmEmail, setConfirmEmail] = useState('')
+  // DT-765: true once the server says the phone number matches several accounts.
+  const [needsEmail, setNeedsEmail] = useState(false)
   const [errorKey, setErrorKey] = useState(null)
+  const [errorField, setErrorField] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e) => {
+  const showError = (key, field) => {
+    setErrorKey(key)
+    setErrorField(field)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    if (isSubmitting) return
+
     const value = identifier.trim()
+    const email = confirmEmail.trim()
 
     if (!value) {
-      setErrorKey('login.reset.errors.required')
+      showError('login.reset.errors.required', 'identifier')
       return
     }
 
     if (!looksLikeEmail(value) && !looksLikePhone(value)) {
-      setErrorKey('login.reset.errors.invalid')
+      showError('login.reset.errors.invalid', 'identifier')
       return
     }
 
-    // TODO: POST /api/auth/forgot-password when backend is built.
-    setErrorKey(null)
-    setSubmitted(true)
+    if (needsEmail) {
+      if (!email) {
+        showError('login.reset.errors.confirmEmailRequired', 'confirmEmail')
+        return
+      }
+      if (!looksLikeEmail(email)) {
+        showError('login.reset.errors.confirmEmailInvalid', 'confirmEmail')
+        return
+      }
+    }
+
+    showError(null, null)
+    setIsSubmitting(true)
+    try {
+      await apiForgotPassword(value, needsEmail ? email : undefined)
+      setSubmitted(true)
+    } catch (err) {
+      if (err.status === 409 && err.field === 'confirmEmail') {
+        setNeedsEmail(true)
+      } else if (err.field === 'confirmEmail') {
+        showError('login.reset.errors.confirmEmailInvalid', 'confirmEmail')
+      } else if (err.field === 'identifier') {
+        showError('login.reset.errors.invalid', 'identifier')
+      } else {
+        showError('login.reset.errors.network', null)
+      }
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -69,7 +112,7 @@ function ForgotPasswordPage () {
               <form onSubmit={handleSubmit} noValidate>
                 <div
                   className={`forgotpassword-field${
-                                    errorKey ? ' forgotpassword-field--error' : ''
+                                    errorField === 'identifier' ? ' forgotpassword-field--error' : ''
                                 }`}
                 >
                   <label htmlFor='reset-identifier'>
@@ -85,11 +128,42 @@ function ForgotPasswordPage () {
                     value={identifier}
                     onChange={(e) => {
                       setIdentifier(e.target.value)
-                      if (errorKey) setErrorKey(null)
+                      // A different number may not be shared, so ask again.
+                      if (needsEmail) setNeedsEmail(false)
+                      if (errorKey) showError(null, null)
                     }}
-                    aria-invalid={errorKey ? 'true' : 'false'}
+                    aria-invalid={errorField === 'identifier' ? 'true' : 'false'}
                   />
                 </div>
+
+                {needsEmail && (
+                  <>
+                    <p className='forgotpassword-desc' role='status'>
+                      {t('login.reset.confirmEmailPrompt')}
+                    </p>
+                    <div
+                      className={`forgotpassword-field${
+                        errorField === 'confirmEmail' ? ' forgotpassword-field--error' : ''
+                      }`}
+                    >
+                      <label htmlFor='reset-confirm-email'>
+                        {t('login.reset.confirmEmail')}
+                      </label>
+                      <input
+                        id='reset-confirm-email'
+                        type='email'
+                        autoComplete='email'
+                        placeholder={t('login.reset.confirmEmailPlaceholder')}
+                        value={confirmEmail}
+                        onChange={(e) => {
+                          setConfirmEmail(e.target.value)
+                          if (errorKey) showError(null, null)
+                        }}
+                        aria-invalid={errorField === 'confirmEmail' ? 'true' : 'false'}
+                      />
+                    </div>
+                  </>
+                )}
 
                 {errorKey && (
                   <div className='forgotpassword-form-error' role='alert'>
@@ -98,8 +172,8 @@ function ForgotPasswordPage () {
                 )}
 
                 <div className='forgotpassword-login-actions'>
-                  <button type='submit' className='forgotpassword-btn-primary'>
-                    {t('login.reset.submit')}
+                  <button type='submit' className='forgotpassword-btn-primary' disabled={isSubmitting}>
+                    {isSubmitting ? t('login.reset.sending') : t('login.reset.submit')}
                   </button>
                   <Link to='/login' className='forgotpassword-login-forgot-link'>
                     {t('login.reset.backToLogin')}

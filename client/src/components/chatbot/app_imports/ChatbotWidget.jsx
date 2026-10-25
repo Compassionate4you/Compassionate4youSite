@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ChatWindow from '../components/ChatWindow';
 import { useChatbot } from '../hooks/useChatbot';
+import { usePageHighlight } from '../hooks/usePageHighlight';
 import './styles/ChatbotWidget.css';
 
 export default function ChatbotWidget() {
@@ -11,6 +12,9 @@ export default function ChatbotWidget() {
   // DT-392: chat state lives here, not in ChatWindow. ChatWindow unmounts
   // when the window is closed, so keeping it there wiped the conversation.
   const chat = useChatbot()
+
+  // DT-808: highlights what the chatbot pointed the user to on the new page.
+  usePageHighlight()
 
     return (
         <div className="chatbot-widget">

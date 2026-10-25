@@ -69,6 +69,25 @@ export function apiMe () {
   return request('/auth/me')
 }
 
+// DT-765: request a reset link by email or phone. confirmEmail is only needed
+// when more than one account shares the phone number.
+export function apiForgotPassword (identifier, confirmEmail) {
+  return request('/auth/forgot-password', {
+    method: 'POST',
+    body: confirmEmail ? { identifier, confirmEmail } : { identifier }
+  })
+}
+
+// DT-781: check a reset link and get the account's name and email.
+export function apiVerifyResetToken (token) {
+  return request('/auth/reset-password/verify', { method: 'POST', body: { token } })
+}
+
+// DT-781: set the new password.
+export function apiResetPassword (token, newPassword) {
+  return request('/auth/reset-password', { method: 'POST', body: { token, newPassword } })
+}
+
 // DT-563 / DT-564: appointments.
 export function apiGetAvailability (date) {
   return request(`/appointments/availability?date=${encodeURIComponent(date)}`)
@@ -180,6 +199,9 @@ export default {
   apiLogin,
   apiLogout,
   apiMe,
+  apiForgotPassword,
+  apiVerifyResetToken,
+  apiResetPassword,
   apiGetAvailability,
   apiCreateAppointment,
   apiGetMyAppointments,
