@@ -2,8 +2,9 @@ import { useTranslation } from 'react-i18next';
 import useSection from '../../hooks/useSection';
 import Card from './Card';
 import { pickText } from './cardText';
+import { withWelcomeTranslations } from './welcomeCardTranslations';
 
-// <CardSection slug="welcome-info" /> renders a section entirely from the database.
+// Database content takes priority; original welcome copy has local translation fallbacks.
 export default function CardSection({ slug, className = '' }) {
   const { i18n } = useTranslation();
   const { section, loading, error } = useSection(slug);
@@ -21,7 +22,7 @@ export default function CardSection({ slug, className = '' }) {
     <section className={sectionClassName} aria-label={title || undefined}>
       {title && <h2 className="card-section__title">{title}</h2>}
       <div className="card-grid" style={{ '--card-columns': columns }}>
-        {section.cards.map((card) => <Card key={card.id} card={card} />)}
+        {section.cards.map((card) => <Card key={card.id} card={withWelcomeTranslations(card, slug, i18n)} />)}
       </div>
     </section>
   );
