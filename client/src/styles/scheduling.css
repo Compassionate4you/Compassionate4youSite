@@ -7,58 +7,6 @@ body {
   padding: 0;
 }
 
-/* NAVBAR */
-/* Update from Preston 9/13 - The navbar rules were not in use since it has its own css with a higher priority. */
-/* .navbar {
-  background-color: var(--color-light-gray);
-  border-bottom: 1px solid #ddd;
-  padding: 12px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-} */
-
-.avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: var(--color-primary);
-  color: var(--color-primary-text);
-  font-weight: bold;
-  font-size: 95%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* .navbar-title {
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.navbar-subtitle {
-  font-size: 12px;
-  color: gray;
-}
-
-.navbar-right button {
-  background: none;
-  border: none;
-  font-size: 13px;
-  cursor: pointer;
-  padding: 6px 12px;
-}
-
-.navbar-right button:hover {
-  background-color: #f0f2ee;
-} */
-
 /* CONTENT */
 .content {
   max-width: 960px;
@@ -103,6 +51,8 @@ body {
 .field input,
 .field select,
 .field textarea {
+  background-color: var(--color-white);
+  color: var(--color-white-text);
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--color-input-border);
@@ -154,38 +104,6 @@ body {
   font-size: 95%;
   font-weight: bold;
   cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background-color: var(--color-page-background);
-}
-
-/* BACK BUTTON */
-.back-btn {
-  background: none;
-  border: none;
-  margin-bottom: 16px;
-  color: var(--color-muted-text);
-  cursor: pointer;
-  margin-bottom: 18px;
-  padding: 0;
-}
-
-.back-btn:hover {
-  color: var(--color-white-text);
-}
-
-/* DT-591: Schedule page only - narrower form and spacing between the two buttons */
-.schedule-page .content {
-  max-width: 800px;
-}
- 
-.schedule-page .btn-primary {
-  margin-top: 10px;
-}
- 
-.schedule-page .btn-secondary {
-  margin-left: 10px;
 }
 
 /* SUCCESS */
@@ -255,30 +173,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-/* The confirmation/details pages respond to the existing accessibility theme
-   without changing the site's existing text-size rules. */
-html[theme='dark'] .appointment-page .section-box {
-  background: #222829;
-  color: #f3f4f6;
-  border-color: #465052;
-}
-
-html[theme='dark'] .appointment-page .desc,
-html[theme='dark'] .appointment-page .appointment-details {
-  color: #f3f4f6;
-}
-
-html[theme='dark'] .appointment-page .appointment-details {
-  background: #1b2021;
-  border-color: #465052;
-}
-
-html[theme='dark'] .appointment-page .btn-secondary {
-  background: #15191a;
-  color: #f3f4f6;
-  border-color: #596467;
 }
 
 html.high-contrast .appointment-page .section-box,

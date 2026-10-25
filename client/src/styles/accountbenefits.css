@@ -1,7 +1,7 @@
 /* DT-591: Replaced old variable names (--color1, --color3, --color4, --cooltone3) that no longer exist in global.css with the current shared variables */
 
 .account-benefits-section {
-  background: var(--color-light-gray);
+  /*background: var(--color1, #e6e6e6);*/
   padding: 5rem 1rem;
   font-family: var(--font-body);
 }
@@ -16,7 +16,7 @@
   font-family: var(--font-heading);
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  color: var(--color-light-gray-text);
+  color: var(--color-white-text);
   margin-bottom: 2rem;
   letter-spacing: -0.02em;
 }

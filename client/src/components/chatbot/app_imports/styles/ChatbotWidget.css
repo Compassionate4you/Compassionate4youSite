@@ -1,8 +1,9 @@
 /* Chatbot floating launcher button (DT-326). Uses brand palette. */
 
 :root {
-    --chatbot-btn-size: 60px;
-    --chatbot-btn-font-size: 26px;
+    /* DT-628: sized in rem so the launcher grows with the text-size tools. */
+    --chatbot-btn-size: 3.75rem;
+    --chatbot-btn-font-size: 1.6rem;
     --chatbot-btn-color: var(--color-green, #366454);
     --chatbot-btn-hover-color: var(--color-teal, #3A5F5F);
     --chatbot-btn-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
@@ -12,7 +13,10 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 999;
+    z-index: 1100;
+    max-width: calc(100vw - 24px);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-right: env(safe-area-inset-right);
 }
 
 .chatbot-toggle-btn {
@@ -28,6 +32,7 @@
     transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     justify-content: center;
 }
 
@@ -40,4 +45,60 @@
 .chatbot-toggle-btn:focus-visible {
     outline: 3px solid var(--color-link-highlight, #00aec5);
     outline-offset: 3px;
+}
+
+/* DT-626: launcher follows the shared brand tokens. */
+:root {
+    --chatbot-btn-color: var(--color-primary, #366454);
+    --chatbot-btn-hover-color: var(--color-primary-hover, #294f42);
+}
+
+/* DT-628: the floating button keeps its contrast in dark mode. */
+:root[data-theme="dark"] .chatbot-toggle-btn {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+/* Touch target and mobile placement. */
+.chatbot-toggle-btn {
+    min-width: 56px;
+    min-height: 56px;
+    touch-action: manipulation;
+}
+
+.chatbot-toggle-btn:focus-visible {
+    outline: 3px solid var(--color-link-highlight, #00aec5);
+    outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+    .chatbot-widget,
+    .chatbot-toggle-btn {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .chatbot-widget {
+        right: max(12px, env(safe-area-inset-right));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        z-index: 1100;
+    }
+}
+
+@media (max-width: 480px) {
+    .chatbot-widget {
+        right: max(10px, env(safe-area-inset-right));
+        bottom: max(12px, env(safe-area-inset-bottom));
+    }
+
+    .chatbot-toggle-btn {
+        width: 54px;
+        height: 54px;
+        min-width: 54px;
+        min-height: 54px;
+    }
+}
+
+html[dir="rtl"] .chatbot-widget {
+    right: auto;
+    left: max(20px, env(safe-area-inset-left));
 }
