@@ -103,7 +103,7 @@ export function AuthProvider ({ children }) {
     [matchTestAccount]
   )
 
-  const signup = useCallback(async (email, password) => {
+  const signup = useCallback(async (email, password, fullName, phone) => {
     const normalizedEmail = String(email || '').trim().toLowerCase()
     const normalizedPassword = String(password || '')
 
@@ -116,7 +116,7 @@ export function AuthProvider ({ children }) {
     }
 
     try {
-      const data = await apiSignup(normalizedEmail, normalizedPassword)
+      const data = await apiSignup(normalizedEmail, normalizedPassword, fullName.trim(), phone.trim())
       setUser({
         id: data.user?.id ?? data.userId,
         email: data.user?.email ?? normalizedEmail,

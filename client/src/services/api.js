@@ -53,8 +53,8 @@ export async function sendChatMessage (message) {
 }
 
 // DT-556 / DT-560: auth.
-export function apiSignup (email, password) {
-  return request('/auth/signup', { method: 'POST', body: { email, password } })
+export function apiSignup (email, password, fullName, phone) {
+  return request('/auth/signup', { method: 'POST', body: { email, password, fullName, phone } })
 }
 
 export function apiLogin (email, password) {
