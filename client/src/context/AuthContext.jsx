@@ -145,7 +145,7 @@ export function AuthProvider ({ children }) {
     }
   }, [])
 
-  const signup = useCallback(async (email, password) => {
+  const signup = useCallback(async (email, password, fullName, phone) => {
     const normalizedEmail = String(email || '').trim().toLowerCase()
     const normalizedPassword = String(password || '')
 
@@ -158,7 +158,7 @@ export function AuthProvider ({ children }) {
     }
 
     try {
-      const data = await apiSignup(normalizedEmail, normalizedPassword)
+      const data = await apiSignup(normalizedEmail, normalizedPassword, fullName.trim(),phone.trim())
       const nextUser = buildUser(
         { ...data.user, id: data.user?.id ?? data.userId },
         normalizedEmail
