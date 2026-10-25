@@ -287,7 +287,19 @@
     },
     "requiredError": "Complete todos los campos obligatorios de la cita.",
     "slotTaken": "reservado",
-    "submitting": "Reservando..."
+    "submitting": "Reservando...",
+    "errors": {
+      "fullName": "Ingrese su nombre completo.",
+      "phone": "Ingrese su número de teléfono.",
+      "email": "Ingrese su correo electrónico.",
+      "emailInvalid": "Ingrese un correo electrónico válido.",
+      "serviceType": "Elija un servicio.",
+      "date": "Elija una fecha.",
+      "datePast": "Elija una fecha futura.",
+      "timeSlot": "Elija un horario disponible.",
+      "slotTaken": "Ese horario acaba de ser reservado. Elija otro.",
+      "generic": "No pudimos reservar su cita. Inténtelo de nuevo."
+    }
   },
   "login": {
     "title": "Iniciar Sesión",

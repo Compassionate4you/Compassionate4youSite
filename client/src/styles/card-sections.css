@@ -423,3 +423,22 @@
   .welcome-text-section .card h3 { font-size: 2.25rem; margin-bottom: 28px; }
   .care .welcome-text-section { padding: 0 0 40px; }
 }
+/* Hospice-style cards: make list text match paragraph text DT-715 */
+.card-section:not(.welcome-text-section) .card--text { --card-body-color: #5f6672; }
+
+.card-section:not(.welcome-text-section) .card--text p,
+.card-section:not(.welcome-text-section) .card--text .card-list li {
+  color: var(--card-body-color);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.card-section:not(.welcome-text-section) .card--text p { margin: 0 0 .75rem; }
+
+.card-section:not(.welcome-text-section) .card--text .card-list {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: .25rem 0 .75rem;
+}
+
+.card-section:not(.welcome-text-section) .card--text .card-list li { margin: .25rem 0; }
