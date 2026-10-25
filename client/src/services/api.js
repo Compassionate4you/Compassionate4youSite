@@ -161,13 +161,10 @@ export default {
   apiGetAvailability,
   apiCreateAppointment,
   apiGetMyAppointments,
-<<<<<<< HEAD
   apiGetLocations,
   apiCreateLocation,
   apiUpdateLocation,
-  apiDeleteLocation
-=======
+  apiDeleteLocation,
   apiCancelAppointment,
   apiRescheduleAppointment
->>>>>>> origin/dev
 }
