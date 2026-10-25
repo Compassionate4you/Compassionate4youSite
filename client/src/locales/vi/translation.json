@@ -282,10 +282,37 @@
       "submit": "Gửi liên kết đặt lại",
       "sending": "Đang gửi…",
       "backToLogin": "← Quay lại đăng nhập",
-      "confirmation": "Nếu tài khoản đó tồn tại, chúng tôi đã gửi cho quý vị liên kết đặt lại mật khẩu. Vui lòng kiểm tra email hoặc tin nhắn của quý vị.",
+      "confirmation": "Nếu tài khoản đó tồn tại, chúng tôi đã gửi liên kết đặt lại mật khẩu đến địa chỉ email của tài khoản.",
       "errors": {
         "required": "Vui lòng nhập email hoặc số điện thoại của quý vị.",
-        "invalid": "Vui lòng nhập email hoặc số điện thoại hợp lệ."
+        "invalid": "Vui lòng nhập email hoặc số điện thoại hợp lệ.",
+        "confirmEmailRequired": "Vui lòng nhập địa chỉ email của tài khoản.",
+        "confirmEmailInvalid": "Vui lòng nhập địa chỉ email hợp lệ.",
+        "network": "Không thể kết nối với máy chủ. Vui lòng thử lại."
+      },
+      "confirmEmailPrompt": "Có nhiều tài khoản dùng số điện thoại này. Vui lòng nhập địa chỉ email của tài khoản để chúng tôi biết cần đặt lại tài khoản nào.",
+      "confirmEmail": "Địa chỉ email của tài khoản",
+      "confirmEmailPlaceholder": "you@example.com"
+    },
+    "passwordUpdated": "Mật khẩu của quý vị đã được cập nhật. Vui lòng đăng nhập bằng mật khẩu mới.",
+    "resetPage": {
+      "title": "Chọn mật khẩu mới",
+      "checking": "Đang kiểm tra liên kết đặt lại…",
+      "accountFor": "Đặt lại mật khẩu cho {{name}}",
+      "invalidTitle": "Liên kết này đã hết hạn hoặc không hợp lệ",
+      "invalidText": "Liên kết đặt lại có hiệu lực trong 1 giờ và chỉ dùng được một lần. Vui lòng yêu cầu liên kết mới để tiếp tục.",
+      "requestNew": "Yêu cầu liên kết mới",
+      "newPassword": "Mật khẩu mới",
+      "newPasswordPlaceholder": "Tạo mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu mới",
+      "confirmPasswordPlaceholder": "Nhập lại mật khẩu mới",
+      "submit": "Cập nhật mật khẩu",
+      "submitting": "Đang cập nhật…",
+      "errors": {
+        "required": "Vui lòng điền cả hai ô mật khẩu.",
+        "weak": "Mật khẩu phải có ít nhất 8 ký tự, gồm một chữ hoa, một chữ thường, một chữ số và một ký tự đặc biệt.",
+        "mismatch": "Mật khẩu không khớp.",
+        "network": "Không thể kết nối với máy chủ. Vui lòng thử lại."
       }
     }
   },

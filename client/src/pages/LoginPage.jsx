@@ -3,7 +3,7 @@ import { LogIn } from 'lucide-react'
 // Login page (DT-336).
 
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import AccountBenefits from '../components/AccountBenefits'
@@ -13,8 +13,13 @@ function LoginPage () {
   const { t } = useTranslation()
   const { login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const [email, setEmail] = useState('')
+  // DT-781: arriving from the reset page shows a confirmation and pre-fills
+  // the email so the user can try the new password straight away.
+  const passwordUpdated = Boolean(location.state?.passwordUpdated)
+
+  const [email, setEmail] = useState(location.state?.email || '')
   const [password, setPassword] = useState('')
   const [errorKey, setErrorKey] = useState(null)
   const [serverError, setServerError] = useState(null)
@@ -66,6 +71,11 @@ function LoginPage () {
         </div>
 
         <div className='section-box'>
+          {passwordUpdated && (
+            <div className='login-success' role='status'>
+              {t('login.passwordUpdated')}
+            </div>
+          )}
           <form onSubmit={handleSubmit} noValidate>
             <div
               className={`field${isEmailError ? ' field--error' : ''}`}

@@ -391,10 +391,37 @@
       "submit": "Send reset link",
       "sending": "Sending…",
       "backToLogin": "← Back to sign in",
-      "confirmation": "If that account exists, we sent a reset link. Check your email or messages.",
+      "confirmation": "اگر وہ اکاؤنٹ موجود ہے تو ہم نے اس کے ای میل پتے پر پاس ورڈ ری سیٹ کرنے کا لنک بھیج دیا ہے۔",
       "errors": {
         "required": "Please enter your email or phone number.",
-        "invalid": "Please enter a valid email address or phone number."
+        "invalid": "Please enter a valid email address or phone number.",
+        "confirmEmailRequired": "براہ کرم اپنے اکاؤنٹ کا ای میل پتہ درج کریں۔",
+        "confirmEmailInvalid": "براہ کرم ایک درست ای میل پتہ درج کریں۔",
+        "network": "سرور سے رابطہ نہیں ہو سکا۔ براہ کرم دوبارہ کوشش کریں۔"
+      },
+      "confirmEmailPrompt": "اس فون نمبر سے ایک سے زیادہ اکاؤنٹس منسلک ہیں۔ اپنے اکاؤنٹ کا ای میل پتہ درج کریں تاکہ ہمیں معلوم ہو کہ کون سا اکاؤنٹ ری سیٹ کرنا ہے۔",
+      "confirmEmail": "آپ کے اکاؤنٹ کا ای میل پتہ",
+      "confirmEmailPlaceholder": "you@example.com"
+    },
+    "passwordUpdated": "آپ کا پاس ورڈ اپ ڈیٹ ہو گیا ہے۔ اپنے نئے پاس ورڈ سے سائن ان کریں۔",
+    "resetPage": {
+      "title": "نیا پاس ورڈ منتخب کریں",
+      "checking": "آپ کا ری سیٹ لنک چیک کیا جا رہا ہے…",
+      "accountFor": "{{name}} کا پاس ورڈ ری سیٹ کیا جا رہا ہے",
+      "invalidTitle": "اس لنک کی میعاد ختم ہو گئی ہے یا یہ درست نہیں ہے",
+      "invalidText": "ری سیٹ لنک 1 گھنٹے تک کارآمد رہتے ہیں اور صرف ایک بار استعمال ہو سکتے ہیں۔ جاری رکھنے کے لیے نیا لنک طلب کریں۔",
+      "requestNew": "نیا لنک طلب کریں",
+      "newPassword": "نیا پاس ورڈ",
+      "newPasswordPlaceholder": "نیا پاس ورڈ بنائیں",
+      "confirmPassword": "نئے پاس ورڈ کی تصدیق کریں",
+      "confirmPasswordPlaceholder": "نیا پاس ورڈ دوبارہ درج کریں",
+      "submit": "پاس ورڈ اپ ڈیٹ کریں",
+      "submitting": "اپ ڈیٹ ہو رہا ہے…",
+      "errors": {
+        "required": "براہ کرم پاس ورڈ کے دونوں خانے پُر کریں۔",
+        "weak": "پاس ورڈ کم از کم 8 حروف کا ہونا چاہیے اور اس میں ایک بڑا حرف، ایک چھوٹا حرف، ایک نمبر اور ایک خاص علامت شامل ہونی چاہیے۔",
+        "mismatch": "پاس ورڈ آپس میں میل نہیں کھاتے۔",
+        "network": "سرور سے رابطہ نہیں ہو سکا۔ براہ کرم دوبارہ کوشش کریں۔"
       }
     }
   },

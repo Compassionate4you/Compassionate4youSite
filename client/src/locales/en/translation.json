@@ -366,7 +366,8 @@
       "toggleDarkMode": "Click below to switch to dark mode.",
       "toggleLightMode": "Click below to switch back to light mode.",
       "toggleHighContrast": "Click below to toggle high contrast.",
-      "error": "Couldn't reach the server. Try again in a moment."
+      "error": "Couldn't reach the server. Try again in a moment.",
+      "placeholder": "Got your message. Full chatbot responses coming soon."
     },
     "faqButton": "Common questions",
     "faqIntro": "Here are some questions people often ask:",
@@ -374,9 +375,99 @@
       "homeHealth": "Go to Home Health",
       "hospice": "Go to Hospice",
       "locations": "Go to Locations",
-      "schedule": "Go to Scheduling"
+      "schedule": "Go to Scheduling",
+      "contact": "Go to Contact Info",
+      "hours": "Show Office Hours"
     },
-    "open": "Open chat"
+    "open": "Open chat",
+    "faq": {
+      "services-offered": {
+        "question": "What services do you offer?",
+        "answer": "We provide home health care and hospice care. Our Home Health page has the full list of services."
+      },
+      "service-area": {
+        "question": "What areas do you serve?",
+        "answer": "Our office is at $t(locations.address1). The Locations page has a map and directions."
+      },
+      "schedule-appointment": {
+        "question": "How do I schedule an appointment?",
+        "answer": "You can request an appointment from our scheduling page, and our staff will follow up to confirm."
+      },
+      "home-health-vs-hospice": {
+        "question": "What is the difference between home health and hospice?",
+        "answer": "They serve different needs, and the right choice depends on your situation. Our Hospice page explains more, and our staff can talk it through with you."
+      },
+      "cost-insurance": {
+        "question": "How much does it cost, and do you take insurance?",
+        "answer": "Coverage depends on your plan and the type of care. Please contact our office and our staff will go over the details with you."
+      },
+      "contact": {
+        "question": "How do I contact you?",
+        "answer": "You can call us at $t(landing.contactPhone). Our phone number, email, and address are in the Contact section of our home page."
+      },
+      "getting-started": {
+        "question": "How do we get started with care?",
+        "answer": "Getting started usually begins with a conversation about what you need. Request an appointment and our staff will walk you through the next steps."
+      },
+      "who-qualifies": {
+        "question": "Who qualifies for your services?",
+        "answer": "Eligibility depends on each person’s situation and their doctor’s guidance. Our staff can review your circumstances with you directly."
+      },
+      "who-provides-care": {
+        "question": "Who will be providing the care?",
+        "answer": "Care is delivered by our clinical team. Our Home Health page describes the kinds of care our staff provide."
+      },
+      "care-at-home": {
+        "question": "Do you provide care at home?",
+        "answer": "Yes, our services are provided where you live. Our Home Health page has more detail on what that looks like."
+      },
+      "hours-availability": {
+        "question": "What are your hours?",
+        "answer": "Our office is open $t(footer.weekdays), $t(footer.weekdayHours), and $t(footer.saturday), $t(footer.saturdayHours). We are closed on $t(footer.sunday). The hours are also at the bottom of every page."
+      },
+      "family-support": {
+        "question": "Do you offer support for family members?",
+        "answer": "Support for families is part of how we work. Our staff can explain what support is available in your situation."
+      }
+    },
+    "nav": {
+      "home": {
+        "reply": "Here's our home page. $t(landing.heroSubtitle)",
+        "button": "Go to Home"
+      },
+      "homeHealth": {
+        "reply": "Here's our Home Health page. $t(homeHealth.subtitle)",
+        "button": "Go to Home Health"
+      },
+      "hospice": {
+        "reply": "Here's our Hospice page. $t(hospice.blurb.description)",
+        "button": "Go to Hospice"
+      },
+      "locations": {
+        "reply": "Our office is at $t(locations.address1). The Locations page has a map and directions.",
+        "button": "Go to Locations"
+      },
+      "schedule": {
+        "reply": "You can request an appointment on our scheduling page. $t(schedule.subtitle)",
+        "button": "Go to Scheduling"
+      },
+      "portal": {
+        "reply": "The Customer Portal is where you can see and manage your appointments. You'll need to sign in first.",
+        "button": "Go to Customer Portal"
+      },
+      "login": {
+        "reply": "Here's the sign-in page, where you can access your account to manage appointments and care.",
+        "button": "Go to Sign In"
+      },
+      "signup": {
+        "reply": "Here's the page to create an account. $t(signup.subtitle)",
+        "button": "Go to Create Account"
+      },
+      "forgotPassword": {
+        "reply": "Here's the password reset page. $t(login.reset.subtitle)",
+        "button": "Go to Reset Password"
+      }
+    }
   },
   "login": {
     "title": "Sign In",
@@ -402,10 +493,37 @@
       "submit": "Send reset link",
       "sending": "Sending…",
       "backToLogin": "← Back to sign in",
-      "confirmation": "If that account exists, we sent a reset link. Check your email or messages.",
+      "confirmation": "If that account exists, we sent a reset link to its email address.",
       "errors": {
         "required": "Please enter your email or phone number.",
-        "invalid": "Please enter a valid email address or phone number."
+        "invalid": "Please enter a valid email address or phone number.",
+        "confirmEmailRequired": "Please enter the email address on your account.",
+        "confirmEmailInvalid": "Please enter a valid email address.",
+        "network": "Couldn't reach the server. Please try again."
+      },
+      "confirmEmailPrompt": "More than one account uses this phone number. Enter the email address on your account so we know which one to reset.",
+      "confirmEmail": "Email address on your account",
+      "confirmEmailPlaceholder": "you@example.com"
+    },
+    "passwordUpdated": "Your password has been updated. Sign in with your new password.",
+    "resetPage": {
+      "title": "Choose a new password",
+      "checking": "Checking your reset link…",
+      "accountFor": "Resetting the password for {{name}}",
+      "invalidTitle": "This link has expired or isn't valid",
+      "invalidText": "Reset links last 1 hour and can only be used once. Request a new one to continue.",
+      "requestNew": "Request a new link",
+      "newPassword": "New password",
+      "newPasswordPlaceholder": "Create a new password",
+      "confirmPassword": "Confirm new password",
+      "confirmPasswordPlaceholder": "Re-enter your new password",
+      "submit": "Update password",
+      "submitting": "Updating…",
+      "errors": {
+        "required": "Please fill in both password fields.",
+        "weak": "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character.",
+        "mismatch": "Those passwords do not match.",
+        "network": "Couldn't reach the server. Please try again."
       }
     }
   },
@@ -460,9 +578,7 @@
       "required": "Please fill in all fields.",
       "passwordMismatch": "Those passwords do not match."
     }
-    
   },
-  
   "layout": {
     "skipToMain": "Skip to main content"
   },

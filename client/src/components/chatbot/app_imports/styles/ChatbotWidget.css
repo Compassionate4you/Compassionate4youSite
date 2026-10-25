@@ -102,3 +102,36 @@ html[dir="rtl"] .chatbot-widget {
     right: auto;
     left: max(20px, env(safe-area-inset-left));
 }
+
+/* DT-808: text the chatbot highlights after taking the user to a page.
+   Light green from the brand palette with black text in light mode; a
+   darker green with white text in dark mode. Both meet WCAG AA contrast. */
+:root {
+    --chatbot-highlight-bg: var(--color-light-green, #DBE4C3);
+    --chatbot-highlight-text: #000000;
+    --chatbot-highlight-outline: var(--color-primary, #366454);
+}
+
+:root[data-theme="dark"] {
+    --chatbot-highlight-bg: #2f5d4d;
+    --chatbot-highlight-text: #ffffff;
+    --chatbot-highlight-outline: var(--color-light-green, #DBE4C3);
+}
+
+:root.high-contrast {
+    --chatbot-highlight-bg: #ffff00;
+    --chatbot-highlight-text: #000000;
+    --chatbot-highlight-outline: #000000;
+}
+
+::highlight(chatbot-highlight) {
+    background-color: var(--chatbot-highlight-bg);
+    color: var(--chatbot-highlight-text);
+}
+
+/* Browsers without the CSS Highlight API get an outline instead. */
+.chatbot-highlight-fallback {
+    outline: 3px solid var(--chatbot-highlight-outline);
+    outline-offset: 4px;
+    border-radius: 4px;
+}

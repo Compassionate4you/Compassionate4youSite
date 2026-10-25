@@ -12,7 +12,9 @@ function sendMessage(req, res) {
 
     return res.status(200).json({
         reply: {
-            text: 'Got your message. Full chatbot responses coming soon.',
+            // A translation key rather than text, so the placeholder follows
+            // the site's language like the rest of the chatbot.
+            textKey: 'chatbot.responses.placeholder',
             actionButtons: [],
         },
     });
