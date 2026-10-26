@@ -2,11 +2,12 @@ import './styles/NavBar.css'
 import logo from '../../assets/images/CompassionateLogo.jpeg'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 function Navbar () {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
-
+  const { logout } = useAuth()
   // DT-37: re render Navbar on route change so login check stays updated
   const location = useLocation();
   // DT-586: Remove NavBar from Admin Dashboard
@@ -17,9 +18,10 @@ function Navbar () {
   // Check if user is logged in
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
   // Log user out and send them back to login
-  function handleLogout () {
+    function handleLogout () {
     localStorage.removeItem('isLoggedIn')
     navigate('/login')
+    logout()
   }
 
   return (

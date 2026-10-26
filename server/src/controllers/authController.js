@@ -91,7 +91,7 @@ async function signup(req, res) {
     return res.status(201).json({
         success: true,
         userId: user.id,
-        user: { id: user.id, email: user.email },
+        user: { id: user.id, email: user.email, role: user.role },
     });
 }
 
@@ -121,7 +121,7 @@ async function login(req, res) {
     return res.status(200).json({
         success: true,
         userId: user.id,
-        user: { id: user.id, email: user.email },
+        user: { id: user.id, email: user.email, role: user.role},
     });
 }
 
@@ -269,11 +269,19 @@ function logout(req, res) {
 }
 
 // Lets the client restore a session on page load.
-function me(req, res) {
+//DT-755, reads the role fresh from the database, so a role change applies on the next page load
+function me(req, res, next) {
     if (!req.user) {
         return res.status(200).json({ user: null });
     }
-    return res.status(200).json({ user: req.user });
+
+    return prisma.user
+        .findUnique({
+            where: { id: req.user.id },
+            select: { id: true, email: true, role: true },
+        })
+        .then((account) => res.status(200).json({ user: account || null }))
+        .catch(next);
 }
 
 module.exports = { signup, login, forgotPassword, verifyResetToken, resetPassword, logout, me, phoneDigits };

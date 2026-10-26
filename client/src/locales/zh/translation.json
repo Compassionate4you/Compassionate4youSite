@@ -256,7 +256,19 @@
     },
     "requiredError": "请填写所有必填的预约字段。",
     "slotTaken": "已预订",
-    "submitting": "正在预订..."
+    "submitting": "正在预订...",
+        "errors": {
+      "fullName": "请输入您的全名。",
+      "phone": "请输入您的电话号码。",
+      "email": "请输入您的电子邮件地址。",
+      "emailInvalid": "请输入有效的电子邮件地址。",
+      "serviceType": "请选择服务。",
+      "date": "请选择日期。",
+      "datePast": "请选择未来的日期。",
+      "timeSlot": "请选择可用的时间。",
+      "slotTaken": "该时间刚刚被预约，请选择其他时间。",
+      "generic": "无法为您预约，请重试。"
+    }
   },
   "login": {
     "title": "登录",

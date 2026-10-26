@@ -2,8 +2,10 @@ import { LogIn } from 'lucide-react'
 
 // Login page (DT-336).
 
-import { useState } from 'react'
+
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import AccountBenefits from '../components/AccountBenefits'
@@ -11,7 +13,7 @@ import '../styles/portal.css' // used for the navbar and content styling
 import '../styles/login.css' // used for the login form styling
 function LoginPage () {
   const { t } = useTranslation()
-  const { login } = useAuth()
+  const { login, user, isLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -19,7 +21,18 @@ function LoginPage () {
   // the email so the user can try the new password straight away.
   const passwordUpdated = Boolean(location.state?.passwordUpdated)
 
+  // Already signed in: go straight to the right home page.
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate(user.role === 'admin' ? '/admin' : '/portal', { replace: true })
+    }
+  }, [isLoading, user, navigate])
+  
+  // DT-781: arriving from the reset page shows a confirmation and pre-fills
+  // the email so the user can try the new password straight away.
   const [email, setEmail] = useState(location.state?.email || '')
+  const passwordUpdated = Boolean(location.state?.passwordUpdated)
+
   const [password, setPassword] = useState('')
   const [errorKey, setErrorKey] = useState(null)
   const [serverError, setServerError] = useState(null)

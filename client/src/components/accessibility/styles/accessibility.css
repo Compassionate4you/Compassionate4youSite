@@ -364,3 +364,8 @@ html[dir="rtl"] .section-label {
 html[dir="rtl"] .a11y-toggle svg {
   flex-shrink: 0;
 }
+/*DT-709*/
+html .a11y-toggle.a11y-toggle--open {
+  visibility: hidden !important;
+  pointer-events: none;
+}

@@ -110,4 +110,37 @@ describe('POST /api/auth/login', () => {
         expect(res.status).toBe(200);
         expect(res.body.success).toBe(true);
     });
+        test('returns the customer role for a customer login', async () => {
+        prisma.user.findUnique.mockResolvedValue({
+            id: 'abc123',
+            email: 'user@example.com',
+            password: 'hashed_password',
+            role: 'customer',
+        });
+        bcrypt.compare.mockResolvedValue(true);
+
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'user@example.com', password: 'ValidPass1!' });
+
+        expect(res.status).toBe(200);
+        expect(res.body.user.role).toBe('customer');
+    });
+
+    test('returns the admin role for an admin login', async () => {
+        prisma.user.findUnique.mockResolvedValue({
+            id: 'admin1',
+            email: 'admin@example.com',
+            password: 'hashed_password',
+            role: 'admin',
+        });
+        bcrypt.compare.mockResolvedValue(true);
+
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'admin@example.com', password: 'ValidPass1!' });
+
+        expect(res.status).toBe(200);
+        expect(res.body.user.role).toBe('admin');
+    });
 });

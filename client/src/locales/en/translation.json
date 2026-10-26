@@ -287,7 +287,19 @@
     },
     "requiredError": "Please complete all required appointment fields.",
     "slotTaken": "booked",
-    "submitting": "Booking..."
+    "submitting": "Booking...",
+    "errors": {
+      "fullName": "Please enter your full name.",
+      "phone": "Please enter your phone number.",
+      "email": "Please enter your email address.",
+      "emailInvalid": "Please enter a valid email address.",
+      "serviceType": "Please choose a service.",
+      "date": "Please choose a date.",
+      "datePast": "Please choose a date in the future.",
+      "timeSlot": "Please choose an available time.",
+      "slotTaken": "That time has just been booked. Please choose another slot.",
+      "generic": "We couldn't book your appointment. Please try again."
+    }
   },
   "admin": {
     "title": "Admin Dashboard",

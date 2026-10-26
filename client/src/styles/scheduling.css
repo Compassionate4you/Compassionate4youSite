@@ -180,3 +180,15 @@ html.high-contrast .appointment-page .appointment-details,
 html.high-contrast .appointment-page .btn-secondary {
   border-width: 2px;
 }
+.field-error {
+  margin: 0.35rem 0 0;
+  color: #b3261e;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.field input[aria-invalid='true'],
+.field select[aria-invalid='true'],
+.field textarea[aria-invalid='true'] {
+  border-color: #b3261e;
+}
