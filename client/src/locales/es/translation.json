@@ -20,6 +20,18 @@
     "philosophyText": "Creemos en tratar a nuestros pacientes con dignidad, respeto y empatía. Nos esforzamos por hacer que su proceso al final de la vida sea lo más cómodo y significativo posible.",
     "caringSinceTitle": "Brindando cuidado desde 2021",
     "caringSinceText": "Brindando atención compasiva en la comodidad de su hogar desde 2021.",
+    "infoCards": {
+      "card1": {
+        "imageAlt": "Personas armando un rompecabezas juntas",
+        "header": "Criterios de Medicare para la atención médica en el hogar",
+        "paragraph": "Para calificar para los servicios de salud en el hogar de Medicare, el paciente debe estar confinado en su hogar, estar bajo el cuidado de un médico (doctor en medicina, doctor en osteopatía o doctor en medicina podiátrica) y estar inscrito en el Programa Medicare."
+      },
+      "card2": {
+        "imageAlt": "Pareja de personas mayores sonriendo juntas",
+        "header": "Servicios Especializados",
+        "paragraph": "Brindar servicios integrales y de alta calidad de atención en el hogar a nuestros pacientes, creando alianzas sólidas con sus familias, gestores de casos, planificadores de altas médicas y médicos.\n\nCreemos en formar un equipo de profesionales atentos cuyo objetivo es el cuidado y apoyo de nuestros pacientes."
+      }
+    },
     "aboutTitle": "Acerca de",
     "aboutText": "Compassionate Home Health & Hospice es una empresa familiar fundada y operada por Jane Smith, RN. Con más de 15 años de experiencia en el sector salud, Jane creó esta empresa para brindar atención personalizada y compasiva a los pacientes en sus hogares. Nuestro equipo de profesionales dedicados está comprometido con mejorar la calidad de vida de nuestros pacientes y sus familias a través de servicios integrales de salud en el hogar y hospicio.",
     "contactTitle": "Contacto",
@@ -275,7 +287,19 @@
     },
     "requiredError": "Complete todos los campos obligatorios de la cita.",
     "slotTaken": "reservado",
-    "submitting": "Reservando..."
+    "submitting": "Reservando...",
+    "errors": {
+      "fullName": "Ingrese su nombre completo.",
+      "phone": "Ingrese su número de teléfono.",
+      "email": "Ingrese su correo electrónico.",
+      "emailInvalid": "Ingrese un correo electrónico válido.",
+      "serviceType": "Elija un servicio.",
+      "date": "Elija una fecha.",
+      "datePast": "Elija una fecha futura.",
+      "timeSlot": "Elija un horario disponible.",
+      "slotTaken": "Ese horario acaba de ser reservado. Elija otro.",
+      "generic": "No pudimos reservar su cita. Inténtelo de nuevo."
+    }
   },
   "login": {
     "title": "Iniciar Sesión",
@@ -301,10 +325,37 @@
       "submit": "Enviar enlace de restablecimiento",
       "sending": "Enviando…",
       "backToLogin": "← Volver a iniciar sesión",
-      "confirmation": "Si esa cuenta existe, le hemos enviado un enlace para restablecer la contraseña. Revise su correo electrónico o mensajes.",
+      "confirmation": "Si la cuenta existe, enviamos un enlace para restablecer la contraseña a su correo electrónico.",
       "errors": {
         "required": "Por favor ingrese su correo electrónico o número de teléfono.",
-        "invalid": "Por favor ingrese un correo electrónico o número de teléfono válido."
+        "invalid": "Por favor ingrese un correo electrónico o número de teléfono válido.",
+        "confirmEmailRequired": "Ingrese el correo electrónico de su cuenta.",
+        "confirmEmailInvalid": "Ingrese un correo electrónico válido.",
+        "network": "No se pudo conectar con el servidor. Inténtelo de nuevo."
+      },
+      "confirmEmailPrompt": "Hay más de una cuenta con este número de teléfono. Ingrese el correo electrónico de su cuenta para saber cuál restablecer.",
+      "confirmEmail": "Correo electrónico de su cuenta",
+      "confirmEmailPlaceholder": "you@example.com"
+    },
+    "passwordUpdated": "Su contraseña se actualizó. Inicie sesión con su nueva contraseña.",
+    "resetPage": {
+      "title": "Elija una nueva contraseña",
+      "checking": "Verificando su enlace…",
+      "accountFor": "Restableciendo la contraseña de {{name}}",
+      "invalidTitle": "Este enlace venció o no es válido",
+      "invalidText": "Los enlaces para restablecer la contraseña duran 1 hora y solo se pueden usar una vez. Solicite uno nuevo para continuar.",
+      "requestNew": "Solicitar un enlace nuevo",
+      "newPassword": "Nueva contraseña",
+      "newPasswordPlaceholder": "Cree una nueva contraseña",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "confirmPasswordPlaceholder": "Vuelva a escribir la nueva contraseña",
+      "submit": "Actualizar contraseña",
+      "submitting": "Actualizando…",
+      "errors": {
+        "required": "Complete ambos campos de contraseña.",
+        "weak": "La contraseña debe tener al menos 8 caracteres e incluir una mayúscula, una minúscula, un número y un carácter especial.",
+        "mismatch": "Las contraseñas no coinciden.",
+        "network": "No se pudo conectar con el servidor. Inténtelo de nuevo."
       }
     }
   },
@@ -385,7 +436,8 @@
       "toggleDarkMode": "Haga clic abajo para cambiar al modo oscuro.",
       "toggleLightMode": "Haga clic abajo para volver al modo claro.",
       "toggleHighContrast": "Haga clic abajo para alternar el alto contraste.",
-      "error": "No se pudo conectar con el servidor. Inténtelo de nuevo en un momento."
+      "error": "No se pudo conectar con el servidor. Inténtelo de nuevo en un momento.",
+      "placeholder": "Recibimos su mensaje. Las respuestas completas del chat estarán disponibles pronto."
     },
     "faqButton": "Preguntas frecuentes",
     "faqIntro": "Estas son algunas preguntas que nos hacen con frecuencia:",
@@ -393,7 +445,131 @@
       "homeHealth": "Ir a Salud en el Hogar",
       "hospice": "Ir a Cuidados Paliativos",
       "locations": "Ir a Ubicaciones",
-      "schedule": "Ir a Programar Cita"
+      "schedule": "Ir a Programar Cita",
+      "contact": "Ir a Información de Contacto",
+      "hours": "Ver Horario de Oficina"
+    },
+    "faq": {
+      "services-offered": {
+        "question": "¿Qué servicios ofrecen?",
+        "answer": "Ofrecemos atención de salud en el hogar y cuidados paliativos. Nuestra página de Salud en el Hogar tiene la lista completa de servicios."
+      },
+      "service-area": {
+        "question": "¿A qué áreas prestan servicio?",
+        "answer": "Nuestra oficina está en $t(locations.address1). La página de Ubicaciones tiene un mapa e indicaciones."
+      },
+      "schedule-appointment": {
+        "question": "¿Cómo programo una cita?",
+        "answer": "Puede solicitar una cita desde nuestra página de programación, y nuestro personal se comunicará con usted para confirmarla."
+      },
+      "home-health-vs-hospice": {
+        "question": "¿Cuál es la diferencia entre salud en el hogar y cuidados paliativos?",
+        "answer": "Atienden necesidades distintas, y la opción adecuada depende de su situación. Nuestra página de Cuidados Paliativos explica más, y nuestro personal puede conversarlo con usted."
+      },
+      "cost-insurance": {
+        "question": "¿Cuánto cuesta y aceptan seguro?",
+        "answer": "La cobertura depende de su plan y del tipo de atención. Comuníquese con nuestra oficina y nuestro personal repasará los detalles con usted."
+      },
+      "contact": {
+        "question": "¿Cómo puedo comunicarme con ustedes?",
+        "answer": "Puede llamarnos al $t(landing.contactPhone). Nuestro teléfono, correo electrónico y dirección están en la sección de Contacto de nuestra página de inicio."
+      },
+      "getting-started": {
+        "question": "¿Cómo comenzamos con la atención?",
+        "answer": "Comenzar suele empezar con una conversación sobre lo que usted necesita. Solicite una cita y nuestro personal lo guiará en los siguientes pasos."
+      },
+      "who-qualifies": {
+        "question": "¿Quién califica para sus servicios?",
+        "answer": "La elegibilidad depende de la situación de cada persona y de la orientación de su médico. Nuestro personal puede revisar sus circunstancias directamente con usted."
+      },
+      "who-provides-care": {
+        "question": "¿Quién brindará la atención?",
+        "answer": "La atención es brindada por nuestro equipo clínico. Nuestra página de Salud en el Hogar describe los tipos de atención que brinda nuestro personal."
+      },
+      "care-at-home": {
+        "question": "¿Brindan atención en el hogar?",
+        "answer": "Sí, nuestros servicios se brindan donde usted vive. Nuestra página de Salud en el Hogar tiene más detalles sobre cómo funciona."
+      },
+      "hours-availability": {
+        "question": "¿Cuál es su horario?",
+        "answer": "Nuestra oficina abre $t(footer.weekdays), $t(footer.weekdayHours), y $t(footer.saturday), $t(footer.saturdayHours). Cerramos el $t(footer.sunday). El horario también aparece al final de cada página."
+      },
+      "family-support": {
+        "question": "¿Ofrecen apoyo para los familiares?",
+        "answer": "El apoyo a las familias es parte de cómo trabajamos. Nuestro personal puede explicarle qué apoyo está disponible en su situación."
+      }
+    },
+    "nav": {
+      "home": {
+        "reply": "Esta es nuestra página de inicio. $t(landing.heroSubtitle)",
+        "button": "Ir a Inicio"
+      },
+      "homeHealth": {
+        "reply": "Esta es nuestra página de Salud en el Hogar. $t(homeHealth.subtitle)",
+        "button": "Ir a Salud en el Hogar"
+      },
+      "hospice": {
+        "reply": "Esta es nuestra página de Cuidados Paliativos. $t(hospice.blurb.description)",
+        "button": "Ir a Cuidados Paliativos"
+      },
+      "locations": {
+        "reply": "Nuestra oficina está en $t(locations.address1). La página de Ubicaciones tiene un mapa e indicaciones.",
+        "button": "Ir a Ubicaciones"
+      },
+      "schedule": {
+        "reply": "Puede solicitar una cita en nuestra página de citas. $t(schedule.subtitle)",
+        "button": "Ir a Programar Cita"
+      },
+      "portal": {
+        "reply": "En el Portal del Cliente puede ver y administrar sus citas. Primero debe iniciar sesión.",
+        "button": "Ir al Portal del Cliente"
+      },
+      "login": {
+        "reply": "Esta es la página para iniciar sesión, donde puede acceder a su cuenta para administrar sus citas y su atención.",
+        "button": "Ir a Iniciar Sesión"
+      },
+      "signup": {
+        "reply": "Esta es la página para crear una cuenta. $t(signup.subtitle)",
+        "button": "Ir a Crear una Cuenta"
+      },
+      "forgotPassword": {
+        "reply": "Esta es la página para restablecer su contraseña. $t(login.reset.subtitle)",
+        "button": "Ir a Restablecer Contraseña"
+      }
+    },
+    "clearHighlights": "Quitar resaltado",
+    "highlightPhrases": {
+      "homeHealthAtHome": [
+        "en la comodidad y seguridad de su hogar",
+        "Los servicios se prestan en el lugar de residencia del paciente"
+      ],
+      "hospiceOverview": [
+        "consuelo, dignidad y apoyo compasivo durante el viaje final de la vida",
+        "apoyo a las personas que se acercan al final de su vida",
+        "en lugar de curar la enfermedad",
+        "gestionan el dolor y otros síntomas",
+        "en el propio hogar de la persona",
+        "las 24 horas del día, los 7 días de la semana",
+        "Dispositivos médicos",
+        "Suministros médicos",
+        "Medicamentos para el alivio de los síntomas y el dolor",
+        "Su médico personal continúa brindándole atención",
+        "Control del dolor y los síntomas",
+        "Apoyo emocional y espiritual",
+        "Apoyo en el duelo y la pérdida"
+      ],
+      "hospiceFamily": [
+        "Estamos aquí para los pacientes y sus familias en cada paso del camino.",
+        "usted y su familia pueden recibir apoyo espiritual y emocional",
+        "apoyo emocional y espiritual a las familias",
+        "los cuidados paliativos afectan a toda la familia",
+        "apoyo emocional, espiritual y práctico a todos los involucrados",
+        "satisfacer las necesidades espirituales de usted y su familia",
+        "Ofrecer apoyo emocional",
+        "Orientación para cuidadores",
+        "Servicios de voluntariado y compañía",
+        "Apoyo en el duelo y la pérdida"
+      ]
     }
   },
   "confirmation": {

@@ -5,6 +5,13 @@
   font-family: Arial, sans-serif;
 }
 
+/* DT-622 Sprint 8 - Preston Ball: Styles for content editor embedded in admin dashboard */
+.content-editor-page--embedded {
+  min-height: auto;
+  padding: 16px 0;
+  background-color: transparent;
+}
+
 .content-editor-back-link {
   display: inline-block;
   margin-bottom: 20px;

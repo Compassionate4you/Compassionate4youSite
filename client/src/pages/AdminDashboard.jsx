@@ -1,6 +1,10 @@
+// DT-622 Sprint 8
+// Preston Ball
+// Admin dashboard integrating Appointments, Content Editor, Locations, and Accounts tabs
+
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "../styles/admindashboard.css";
 import AdminHeader from "../components/admin/AdminHeader";
 import AdminTabs from "../components/admin/AdminTabs";
@@ -9,16 +13,20 @@ import ConfirmModal from "../components/admin/ConfirmModal";
 import AppointmentsTab from "../components/admin/AppointmentsTab";
 import AccountsTab from "../components/admin/AccountsTab";
 import LocationsTab from "../components/admin/LocationsTab";
+import ContentEditor from "./ContentEditor";
 import useAppointments from "../hooks/admin/useAppointments";
 import useAccounts from "../hooks/admin/useAccounts";
 import useLocations from "../hooks/admin/useLocations";
+import { useAuth } from "../context/AuthContext";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const { logout } = useAuth();
     
-    //General Dashboard state
-    const [tab, setTab] = useState("appointments");
+    // General Dashboard state
+    const [tab, setTab] = useState(searchParams.get("tab") || "appointments");
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
     //For Add Appointment
@@ -28,6 +36,12 @@ const AdminDashboard = () => {
         appointmentPendingDelete,
         appointments,
         appointmentForm,
+        appointmentsLoading,
+        appointmentsError,
+        appointmentSubmitting,
+        appointmentSubmitError,
+        appointmentDeleting,
+        appointmentDeleteError,
         handleAppointmentInputChange,
         formatAppointmentDate,
         handleOpenAddAppointment,
@@ -73,7 +87,13 @@ const AdminDashboard = () => {
         handleCancelAddLocation,
         handleAddLocation,
     } = useLocations();
-    
+        // DT-755: really sign out (user, test login and server session), then leave the dashboard.
+    const handleConfirmLogout = () => {
+        localStorage.removeItem("isLoggedIn");
+        setShowLogoutConfirm(false);
+        navigate("/");
+        logout();
+    };
     return (
         <div className="admin-dashboard-page">
             <AdminHeader
@@ -93,6 +113,10 @@ const AdminDashboard = () => {
                         editingAppointmentId={editingAppointmentId}
                         appointmentForm={appointmentForm}
                         appointments={appointments}
+                        appointmentsLoading={appointmentsLoading}
+                        appointmentsError={appointmentsError}
+                        appointmentSubmitting={appointmentSubmitting}
+                        appointmentSubmitError={appointmentSubmitError}
                         onOpenAddAppointment={handleOpenAddAppointment}
                         onAppointmentInputChange={handleAppointmentInputChange}
                         onSubmitAppointment={handleAddAppointment}
@@ -120,8 +144,10 @@ const AdminDashboard = () => {
                     />
                 )}
 
-                {/*//DT-492 Content Editor - Preston Ball: Removed the content items from the admin board, and simply 
-                directed the user to the content editor page. All editing options are now displayed in the main page. */}
+                {/* DT-622 Sprint 8 - Preston Ball: Render Content Editor within the admin dashboard */}
+                {tab === "content" && (
+                    <ContentEditor embedded={true} />
+                )}
 
                 {/* Location tab linked to ../components/admin/LocationsTab.jsx */}
                 {tab === "locations" && (
@@ -151,7 +177,7 @@ const AdminDashboard = () => {
                 title="Confirm Logout"
                 message="Are you sure you want to log out?"
                 onCancel={() => setShowLogoutConfirm(false)}
-                onConfirm={() => navigate("/")}
+                onConfirm={handleConfirmLogout}
             />
 
             {/* Appointment Deletion Confirmation */}
@@ -160,10 +186,24 @@ const AdminDashboard = () => {
                 title="Delete Appointment"
                 message={
                     <>
-                        Are you sure you want to delete the appointment for{" "}
-                        <strong>{appointmentPendingDelete?.name}</strong>?
+                        Are you sure you want to permanently delete the appointment for{" "}
+                        <strong>
+                            {appointmentPendingDelete?.name}
+                        </strong>
+                        ?
+
+                        {appointmentDeleteError && (
+                            <span className="admin-modal-error" role="alert">
+                                {appointmentDeleteError}
+                            </span>
+                        )}
                     </>
                 }
+                confirmText={
+                    appointmentDeleting ? "Deleting..." : "Delete"
+                }
+                cancelText="Cancel"
+                isConfirming={appointmentDeleting}
                 onCancel={handleCancelDeleteAppointment}
                 onConfirm={handleConfirmDeleteAppointment}
             />

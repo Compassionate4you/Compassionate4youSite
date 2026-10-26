@@ -1,4 +1,7 @@
-//Contains Appointments, Content, Locations, and Accounts tab code
+// DT-622 Sprint 8
+// Preston Ball
+// Navigation tabs for Admin Dashboard sections: Appointments, Content, Locations, and Accounts
+
 import { useTranslation } from "react-i18next";
 
 function AdminTabs({
@@ -21,10 +24,11 @@ function AdminTabs({
                 {t("admin.tabs.appointments")}
             </button>
 
+            {/* DT-622 Sprint 8 - Preston Ball: Activate content editor directly within the admin dashboard */}
             <button
                 type="button"
                 className={activeTab === "content" ? "active" : ""}
-                onClick={onOpenContent}
+                onClick={() => (onSelectTab ? onSelectTab("content") : onOpenContent && onOpenContent())}
             >
                 {t("admin.tabs.content")}
             </button>

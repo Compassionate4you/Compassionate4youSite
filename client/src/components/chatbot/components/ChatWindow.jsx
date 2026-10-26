@@ -13,9 +13,9 @@ function ChatWindow ({ onClose, messages, isSending, sendMessage }) {
   const [showFaq, setShowFaq] = useState(false)
 
   // DT-420: asking from the FAQ list goes through the normal send flow.
-  const askFromFaq = (question) => {
+  const askFromFaq = (question, faqId) => {
     setShowFaq(false)
-    sendMessage(question)
+    sendMessage(question, faqId)
   }
 
   return (

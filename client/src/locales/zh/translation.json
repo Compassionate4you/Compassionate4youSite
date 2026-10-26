@@ -20,6 +20,18 @@
     "philosophyText": "我们相信，应以尊严、尊重和同理心对待每一位患者。我们努力让您的生命末期旅程尽可能舒适而有意义。",
     "caringSinceTitle": "自2021年起提供关爱照护",
     "caringSinceText": "自2021年起，在您舒适的家中提供充满关爱的照护。",
+    "infoCards": {
+      "card1": {
+        "imageAlt": "大家一起拼拼图",
+        "header": "Medicare 居家医疗资格标准",
+        "paragraph": "要获得 Medicare 居家医疗服务资格，患者必须居家受限（因病难以外出），接受医学博士、整骨医学博士或足病医学博士的诊疗，并已参加 Medicare 计划。"
+      },
+      "card2": {
+        "imageAlt": "一对老年夫妇微笑着依偎在一起",
+        "header": "专科服务",
+        "paragraph": "通过与患者家属、个案管理师、出院规划师和医生建立牢固的合作关系，为患者提供全面、高质量的居家照护服务。\n\n我们相信，要组建一支充满关爱的专业团队，以照护和支持患者为己任。"
+      }
+    },
     "aboutTitle": "关于我们",
     "aboutText": "Compassionate Home Health & Hospice 是一家由 Jane Smith（注册护士）创立并经营的家族企业。Jane 拥有超过15年的医疗行业经验，创办本公司的初衷是为患者在家中提供个性化、充满关爱的照护。我们敬业的专业团队致力于通过全面的居家医疗和安宁疗护服务，改善患者及其家人的生活质量。",
     "contactTitle": "联系我们",
@@ -244,7 +256,19 @@
     },
     "requiredError": "请填写所有必填的预约字段。",
     "slotTaken": "已预订",
-    "submitting": "正在预订..."
+    "submitting": "正在预订...",
+        "errors": {
+      "fullName": "请输入您的全名。",
+      "phone": "请输入您的电话号码。",
+      "email": "请输入您的电子邮件地址。",
+      "emailInvalid": "请输入有效的电子邮件地址。",
+      "serviceType": "请选择服务。",
+      "date": "请选择日期。",
+      "datePast": "请选择未来的日期。",
+      "timeSlot": "请选择可用的时间。",
+      "slotTaken": "该时间刚刚被预约，请选择其他时间。",
+      "generic": "无法为您预约，请重试。"
+    }
   },
   "login": {
     "title": "登录",
@@ -270,10 +294,37 @@
       "submit": "发送重置链接",
       "sending": "正在发送…",
       "backToLogin": "← 返回登录",
-      "confirmation": "如果该账户存在，我们已向您发送重置密码的链接。请查看您的邮箱或短信。",
+      "confirmation": "如果该账户存在，我们已将重置密码链接发送到该账户的电子邮箱。",
       "errors": {
         "required": "请输入您的电子邮箱或电话号码。",
-        "invalid": "请输入有效的电子邮箱或电话号码。"
+        "invalid": "请输入有效的电子邮箱或电话号码。",
+        "confirmEmailRequired": "请输入您账户的电子邮箱。",
+        "confirmEmailInvalid": "请输入有效的电子邮箱地址。",
+        "network": "无法连接服务器，请重试。"
+      },
+      "confirmEmailPrompt": "有多个账户使用此电话号码。请输入您账户的电子邮箱，以便我们确认要重置哪个账户。",
+      "confirmEmail": "账户电子邮箱",
+      "confirmEmailPlaceholder": "you@example.com"
+    },
+    "passwordUpdated": "您的密码已更新。请使用新密码登录。",
+    "resetPage": {
+      "title": "设置新密码",
+      "checking": "正在验证您的重置链接…",
+      "accountFor": "正在为 {{name}} 重置密码",
+      "invalidTitle": "此链接已过期或无效",
+      "invalidText": "重置链接的有效期为 1 小时，且只能使用一次。请重新申请链接以继续。",
+      "requestNew": "重新申请链接",
+      "newPassword": "新密码",
+      "newPasswordPlaceholder": "创建新密码",
+      "confirmPassword": "确认新密码",
+      "confirmPasswordPlaceholder": "再次输入新密码",
+      "submit": "更新密码",
+      "submitting": "正在更新…",
+      "errors": {
+        "required": "请填写两个密码字段。",
+        "weak": "密码至少需要 8 个字符，并包含一个大写字母、一个小写字母、一个数字和一个特殊字符。",
+        "mismatch": "两次输入的密码不一致。",
+        "network": "无法连接服务器，请重试。"
       }
     }
   },
@@ -363,7 +414,8 @@
       "hospice": "前往安宁疗护",
       "locations": "前往地点",
       "schedule": "前往预约"
-    }
+    },
+    "clearHighlights": "清除高亮"
   },
   "confirmation": {
     "title": "预约已安排！",

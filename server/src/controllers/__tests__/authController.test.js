@@ -23,6 +23,8 @@ const app = express();
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
+// DT-747 made full name and phone required at signup, so the signup cases
+// below send them.
 describe('POST /api/auth/signup', () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -31,7 +33,7 @@ describe('POST /api/auth/signup', () => {
     test('rejects an invalid email format', async () => {
         const res = await request(app)
             .post('/api/auth/signup')
-            .send({ email: 'not-an-email', password: 'ValidPass1!' });
+            .send({ email: 'not-an-email', fullName: 'Test User', phone: '(555) 123-4567', password: 'ValidPass1!' });
 
         expect(res.status).toBe(400);
         expect(res.body.success).toBe(false);
@@ -41,7 +43,7 @@ describe('POST /api/auth/signup', () => {
     test('rejects a weak password', async () => {
         const res = await request(app)
             .post('/api/auth/signup')
-            .send({ email: 'user@example.com', password: 'weak' });
+            .send({ email: 'user@example.com', fullName: 'Test User', phone: '(555) 123-4567', password: 'weak' });
 
         expect(res.status).toBe(400);
         expect(res.body.success).toBe(false);
@@ -54,7 +56,7 @@ describe('POST /api/auth/signup', () => {
 
         const res = await request(app)
             .post('/api/auth/signup')
-            .send({ email: 'user@example.com', password: 'ValidPass1!' });
+            .send({ email: 'user@example.com', fullName: 'Test User', phone: '(555) 123-4567', password: 'ValidPass1!' });
 
         expect(res.status).toBe(201);
         expect(res.body.success).toBe(true);
@@ -107,5 +109,38 @@ describe('POST /api/auth/login', () => {
 
         expect(res.status).toBe(200);
         expect(res.body.success).toBe(true);
+    });
+        test('returns the customer role for a customer login', async () => {
+        prisma.user.findUnique.mockResolvedValue({
+            id: 'abc123',
+            email: 'user@example.com',
+            password: 'hashed_password',
+            role: 'customer',
+        });
+        bcrypt.compare.mockResolvedValue(true);
+
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'user@example.com', password: 'ValidPass1!' });
+
+        expect(res.status).toBe(200);
+        expect(res.body.user.role).toBe('customer');
+    });
+
+    test('returns the admin role for an admin login', async () => {
+        prisma.user.findUnique.mockResolvedValue({
+            id: 'admin1',
+            email: 'admin@example.com',
+            password: 'hashed_password',
+            role: 'admin',
+        });
+        bcrypt.compare.mockResolvedValue(true);
+
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'admin@example.com', password: 'ValidPass1!' });
+
+        expect(res.status).toBe(200);
+        expect(res.body.user.role).toBe('admin');
     });
 });

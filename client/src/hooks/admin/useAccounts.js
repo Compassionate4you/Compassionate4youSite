@@ -1,62 +1,54 @@
-// Add Account handlers
-import { useState } from "react";
+//useEffect runs when the dashboard loads
+import { useState, useEffect } from "react";
+//Import the API function to retrieve accounts from supabase
+import { apiGetAccounts, apiUpdateAccount, apiDeleteAccount } from "../../services/api";
 
 function useAccounts() {
     const [showAccountForm, setShowAccountForm] = useState(false);
     const [editingAccountId, setEditingAccountId] = useState(null);
     const [accountPendingDelete, setAccountPendingDelete] = useState(null);
-    const [accounts, setAccounts] = useState([
-        {
-            id: 1,
-            name: "John Doe",
-            birthdate: "1988-04-12",
-            email: "john.doe@example.com",
-            role: "Customer",
-            created: "Jan 15, 26",
-            status: "Active",
-            lastLogin: "Mar 08, 26",
-        },
-        {
-            id: 2,
-            name: "Mary Smith",
-            birthdate: "1975-10-03",
-            email: "mary.smith@example.com",
-            role: "Customer",
-            created: "Feb 10, 26",
-            status: "Active",
-            lastLogin: "Mar 07, 26",
-        },
-        {
-            id: 3,
-            name: "Robert Williams",
-            birthdate: "1969-11-21",
-            email: "robert.will@example.com",
-            role: "Customer",
-            created: "May 22, 25",
-            status: "Inactive",
-            lastLogin: "Oct 28, 25",
-        },
-        {
-            id: 4,
-            name: "James Cameron",
-            birthdate: "1980-08-18",
-            email: "james.cam@admin.com",
-            role: "Admin",
-            created: "Sep 01, 25",
-            status: "Active",
-            lastLogin: "April 08, 26",
-        },
-        {
-            id: 5,
-            name: "Michael Brown",
-            birthdate: "1975-09-16",
-            email: "michael.brown@admin.com",
-            role: "Admin",
-            created: "Jan 26, 26",
-            status: "Active",
-            lastLogin: "April 01, 26",
-        },
-    ]);
+    const [accounts, setAccounts] = useState([]);
+
+
+    //Retrieve accounts when the dashboard loads
+    useEffect(() => {
+        async function loadAccounts() {
+            try {
+                //request accounts from the backend
+                const data = await apiGetAccounts();
+
+                //Convert database fields to the format used by the dashboard
+
+                 const databaseAccounts = data.accounts.map((account) => ({
+                id: account.id,
+                name: account.name || "",
+                email: account.email,
+                phone: account.phone || "",
+                role: account.role === "admin" ? "Admin" : "Customer",
+                status: account.accountStatus === "active" ? "Active" : "Inactive",
+                created: new Date(account.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "2-digit",
+                }),
+
+                // These fields are not currently stored in the User table
+                birthdate: "",
+                lastLogin: "",
+            }));
+
+            // Display the database accounts instead of hardcoded accounts
+            setAccounts(databaseAccounts);
+        } catch (err) {
+            // Display errors in the browser console
+            console.error("Failed to load accounts:", err);
+        }
+    }
+
+    loadAccounts();
+}, []);
+
+
 
     const [accountForm, setAccountForm] = useState({
         name: "", birthdate: "", email: "", role: "", status: "",
@@ -104,14 +96,14 @@ function useAccounts() {
     };
 
     // Adds a new Account or saves changes to an existing Account.
-    const handleAddAccount = (event) => {
+    const handleAddAccount = async (event) => {
         event.preventDefault();
         const accountName = accountForm.name.trim();
         const accountEmail =
             accountForm.email.trim().toLowerCase();
         if (
             !accountName ||
-            !accountForm.birthdate ||
+            //!accountForm.birthdate ||
             !accountEmail ||
             !accountForm.role ||
             !accountForm.status
@@ -119,6 +111,21 @@ function useAccounts() {
             return;
         }
         if (editingAccountId !== null) {
+
+            try {
+                //Convert dashboard values to database values
+                const updateData = {
+                    name: accountName,
+                    email: accountEmail,
+                    role: accountForm.role.toLowerCase(),
+                    accountStatus: accountForm.status.toLowerCase(),
+                };
+
+                //save changes to supabase before updating the dashboard
+                await apiUpdateAccount(editingAccountId, updateData);
+            
+
+
             setAccounts((currentAccounts) =>
                 currentAccounts.map((account) =>
                     account.id === editingAccountId
@@ -133,29 +140,14 @@ function useAccounts() {
                         : account
                 )
             );
+        }catch (err) {
+            //show an error if saving to supabase fails
+            console.error("Failed to update account:", err);
+            return;
+        }
         } else {
-            const createdDate = new Date().toLocaleDateString(
-                "en-US",
-                {
-                    month: "short",
-                    day: "2-digit",
-                    year: "2-digit",
-                }
-            );
-            const newAccount = {
-                id: Date.now(),
-                name: accountName,
-                birthdate: accountForm.birthdate,
-                email: accountEmail,
-                role: accountForm.role,
-                created: createdDate,
-                status: accountForm.status,
-                lastLogin: "Recently",
-            };
-            setAccounts((currentAccounts) => [
-                ...currentAccounts,
-                newAccount,
-            ]);
+            console.error("Creating account is not supported here.");
+            return;
         }
         resetAccountForm();
         setEditingAccountId(null);
@@ -182,10 +174,15 @@ function useAccounts() {
     const handleCancelDeleteAccount = () => {setAccountPendingDelete(null); };
 
     // Deletes the selected Account.
-    const handleConfirmDeleteAccount = () => {
+    const handleConfirmDeleteAccount = async () => {
         if (!accountPendingDelete) {
             return;
         }
+        try {
+            //Delete the account from supabase first
+            await apiDeleteAccount(accountPendingDelete.id);
+        
+          
 
         setAccounts((currentAccounts) =>
             currentAccounts.filter(
@@ -193,9 +190,15 @@ function useAccounts() {
                     account.id !== accountPendingDelete.id
             )
         );
+          setAccountPendingDelete(null);
 
-        setAccountPendingDelete(null);
-    };
+    }
+
+    catch (err) {
+        //keep the account on screen if database deletion fails
+        console.error("Failed to delete account:", err);
+    }
+};
 
     return {
         showAccountForm,

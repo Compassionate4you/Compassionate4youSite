@@ -1,0 +1,53 @@
+/*
+DT-622 Sprint 8
+Preston Ball
+Styles for the dynamic content page container and header
+*/
+
+.content-page {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.content-page-hero {
+  padding: 40px 24px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content-page-hero h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color1, #262626);
+  margin-bottom: 8px;
+}
+
+.content-page-sections {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.content-page-empty {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 40px 24px;
+  text-align: center;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+}
+
+.content-page-empty h2 {
+  font-size: 1.5rem;
+  color: #334155;
+  margin-bottom: 12px;
+}
+
+.content-page-empty p {
+  color: #64748b;
+  font-size: 1rem;
+}
