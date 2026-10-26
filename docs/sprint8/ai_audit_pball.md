@@ -167,4 +167,37 @@ Complete the Content Editor enhancements, modular layout extensions, and respons
 - [x] Server test suite passes (5 suites, 97/97 tests passing).
 - [x] Client production build passes with zero errors (2017 modules transformed).
 
+---
+
+## [2026-10-26 00:45 UTC] Task: DT-622 & DT-625 - No-Commit Merge with `dev` Branch & Conflict Resolution
+
+- **Agent / Model**: Copilot SDK in VS Code
+- **Sprint**: Sprint 8
+- **Author / Driver**: Preston Ball
+- **Status**: Complete
+
+### Context & Intent  
+Perform a `--no-commit` merge from `dev` into `Preston-Ball`, pulling all latest changes from `dev` and resolving merge conflicts according to team routing and modular component requirements.
+
+### Changes Implemented  
+- **Modified**:  
+  - `client/src/routes/AppRoutes.jsx`: Preserved legacy routes (`/`, `/home-health`, `/hospice`), integrated `dev`'s `<RequireRole>` wrappers on `/admin`, `/admin/content-editor`, and `/portal` plus `/reset-password`, commented out root `ContentPage` overrides, and routed dynamic content pages via `/content/:pageId`.
+  - `client/src/components/layout/Navbar.jsx`: Combined `PageStorageService` dynamic responsive navigation with `useAuth().logout`, routing dynamic pages to `/content/:pageId` while preserving `/home-health` and `/hospice`.
+  - `client/src/pages/AdminDashboard.jsx`: Combined `useSearchParams` tab selection with `useAuth().logout`.
+  - `client/src/components/modular/CardSection.jsx`: Preserved `dev`'s slug-based `CardSection` with `withWelcomeTranslations` while `DynamicSectionRenderer` uses `modular/sections/CardSection.jsx`.
+  - `client/src/components/modular/cards/ModularCard.jsx`: Supported both nested `card.content` and top-level legacy card properties.
+
+### Prompts & AI Assistance  
+- **User Request**: "Please perform a no commit merge with the dev branch, pulling all changes into the preston-ball branch and resolving merge conflicts. Please ask as many clarifying questions as necessary."
+- **Agent Action**: Executed `git merge --no-commit --no-ff dev`, inspected all conflicted files, clarified routing and `CardSection` resolution preferences with the user, resolved all conflicts, and validated client build and server test suites.
+
+### Validation & Verification  
+- [x] Conforms to Standard JS / JSX syntax conventions.  
+- [x] Top-of-file headers and inline task comments added.  
+- [x] No regression in accessibility attributes (ARIA labels, roles).  
+- [x] Binary files restricted to assets directory.
+- [x] Server test suite passes (7 suites, 129/129 tests passing).
+- [x] Client production build passes with zero errors (2037 modules transformed).
+
+
 

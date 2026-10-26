@@ -169,7 +169,6 @@ model Location {
 
   @@map("locations")
 }
-
 //card layout (accepted bot changes, troubleshoot)
 enum CardLayout {
   IMAGE_FULL_WIDTH

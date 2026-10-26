@@ -8,10 +8,13 @@ import logo from '../../assets/images/CompassionateLogo.jpeg'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { PageStorageService } from '../../services/pageStorageService'
+import { useAuth } from '../../context/AuthContext'
 
 function Navbar () {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const { logout } = useAuth()
+  // DT-37: re render Navbar on route change so login check stays updated
   const location = useLocation()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -92,12 +95,13 @@ function Navbar () {
 
   // Check if user is logged in
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-
+  // Log user out and send them back to login
   function handleLogout () {
     localStorage.removeItem('isLoggedIn')
     setDropdownOpen(false)
     setMobileMenuOpen(false)
     navigate('/login')
+    logout()
   }
 
   // DT-622 DT-625 Sprint 8 - Preston Ball: Separate content pages (excluding landing) in configured order
@@ -126,7 +130,8 @@ function Navbar () {
   function getPageRoute (pageId) {
     if (pageId === 'homeHealth') return '/home-health'
     if (pageId === 'hospice') return '/hospice'
-    return `/${pageId}`
+    // DT-622 Sprint 8 - Preston Ball: Temporary /content/:pageId routing scheme for dynamic pages
+    return `/content/${pageId}`
   }
 
   const navAriaLabel = i18n.language.startsWith('es')

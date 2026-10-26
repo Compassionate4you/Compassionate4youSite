@@ -32,14 +32,14 @@ export default function ModularCard ({ card, theme = 'light' }) {
   }
 
   const commonProps = {
-    header: pickText(content.header, lang),
-    paragraph: pickText(content.paragraph || content.text, lang),
-    imageUrl: content.imageUrl,
-    imageAlt: pickText(content.imageAlt, lang),
-    symbol: content.symbol || content.iconName,
-    alignment: content.alignment || content.facing || 'left',
+    header: pickText(content.header ?? card.header, lang),
+    paragraph: pickText(content.paragraph || content.text || card.paragraph, lang),
+    imageUrl: content.imageUrl ?? card.imageUrl,
+    imageAlt: pickText(content.imageAlt ?? card.imageAlt, lang),
+    symbol: content.symbol || content.iconName || card.symbol,
+    alignment: content.alignment || content.facing || card.alignment || 'left',
     // DT-625 Sprint 8 - Preston Ball: Forward typography configuration to cards
-    typography: content.typography || {},
+    typography: content.typography || card.typography || {},
     style: customStyles
   }
 
