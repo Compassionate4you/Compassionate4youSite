@@ -10,6 +10,7 @@ import SchedulePage from '../pages/SchedulePage'
 import LoginPage from '../pages/LoginPage'
 import SignupPage from '../pages/SignupPage'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 import Scheduling from '../pages/AcuityScheduling'
 import NotFoundPage from '../pages/NotFoundPage'
 import RequireRole from '../components/RequireRole'
@@ -43,6 +44,8 @@ function AppRoutes () {
       <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+      {/* DT-781: page linked from the password reset email */}
+      <Route path='/reset-password' element={<ResetPasswordPage />} />
       <Route
         path='/AcuityScheduling'
         element={<Scheduling />}

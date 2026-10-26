@@ -24,6 +24,7 @@ function MessageBubble ({ message }) {
               label={action.label}
               actionId={action.actionId}
               to={action.to}
+              highlight={action.highlight}
             />
           ))}
         </div>

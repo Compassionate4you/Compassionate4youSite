@@ -23,6 +23,8 @@ const app = express();
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
+// DT-747 made full name and phone required at signup, so the signup cases
+// below send them.
 describe('POST /api/auth/signup', () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -31,7 +33,7 @@ describe('POST /api/auth/signup', () => {
     test('rejects an invalid email format', async () => {
         const res = await request(app)
             .post('/api/auth/signup')
-            .send({ email: 'not-an-email', password: 'ValidPass1!' });
+            .send({ email: 'not-an-email', fullName: 'Test User', phone: '(555) 123-4567', password: 'ValidPass1!' });
 
         expect(res.status).toBe(400);
         expect(res.body.success).toBe(false);
@@ -41,7 +43,7 @@ describe('POST /api/auth/signup', () => {
     test('rejects a weak password', async () => {
         const res = await request(app)
             .post('/api/auth/signup')
-            .send({ email: 'user@example.com', password: 'weak' });
+            .send({ email: 'user@example.com', fullName: 'Test User', phone: '(555) 123-4567', password: 'weak' });
 
         expect(res.status).toBe(400);
         expect(res.body.success).toBe(false);
@@ -54,7 +56,7 @@ describe('POST /api/auth/signup', () => {
 
         const res = await request(app)
             .post('/api/auth/signup')
-            .send({ email: 'user@example.com', password: 'ValidPass1!' });
+            .send({ email: 'user@example.com', fullName: 'Test User', phone: '(555) 123-4567', password: 'ValidPass1!' });
 
         expect(res.status).toBe(201);
         expect(res.body.success).toBe(true);
