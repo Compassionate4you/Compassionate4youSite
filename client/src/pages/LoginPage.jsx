@@ -17,10 +17,6 @@ function LoginPage () {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // DT-781: arriving from the reset page shows a confirmation and pre-fills
-  // the email so the user can try the new password straight away.
-  const passwordUpdated = Boolean(location.state?.passwordUpdated)
-
   // Already signed in: go straight to the right home page.
   useEffect(() => {
     if (!isLoading && user) {
