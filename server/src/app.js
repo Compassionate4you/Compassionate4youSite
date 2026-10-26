@@ -6,6 +6,7 @@ const accountRoutes = require('./routes/accountRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const authRoutes = require('./routes/authRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const contentRoutes = require('./routes/contentRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const locationRoutes = require('./routes/locationRoutes');
 const sectionRoutes = require('./routes/sectionRoutes');
@@ -32,6 +33,9 @@ app.get('/api/health', (req, res) => {
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
+// DT-622 DT-618: Content editor and dynamic content routes
+app.use('/api/admin/content', contentRoutes);
+app.use('/api/content', contentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/sections', sectionRoutes);
