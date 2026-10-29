@@ -2,8 +2,7 @@
 // Preston Ball
 // Application routes preserving legacy routes alongside temporary /content/:pageId dynamic routes
 
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import LandingPage from '../pages/LandingPage'
 import HomeHealthPage from '../pages/HomeHealthPage'
 import HospicePage from '../pages/HospicePage'
@@ -24,20 +23,6 @@ import ClientSchedulingConfirmation from '../pages/ClientSchedulingConfirmation'
 import ViewAppointmentDetailsPage from '../pages/ViewAppointmentDetailsPage'
 
 function AppRoutes () {
-  const location = useLocation()
-  const firstRender = useRef(true)
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
-
-    // Move focus to the new page's main region after client-side navigation.
-    // This gives keyboard and screen-reader users a clear starting point.
-    document.getElementById('main-content')?.focus()
-  }, [location.pathname])
-
   return (
     <Routes>
       {/* DT-622 Sprint 8 - Preston Ball: Root content route commented out so legacy routes remain accessible */}
