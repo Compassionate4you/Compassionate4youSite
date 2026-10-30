@@ -1,6 +1,6 @@
-// DT-622 DT-618 DT-625 Sprint 8
-// Preston Ball
-// Card Element Manager component supporting layout-specific dynamic fields, custom typography, element renaming, custom selects, custom modals, and live preview
+// DT-923 DT-622 DT-618 DT-625 Sprint 9
+// PBall
+// Card Element Manager component dispatching layout-specific form components with custom typography, element renaming, custom selects, custom modals, and live preview
 
 import React, { useState, useEffect } from 'react'
 import { CardStorageService } from '../../../services/cardStorageService'
@@ -10,7 +10,9 @@ import { AuditHistoryService } from '../../../services/auditHistoryService'
 import ModularCard from '../../modular/cards/ModularCard'
 import CustomModal from './CustomModal'
 import CustomSelect from './CustomSelect'
-import TypographyControls from './TypographyControls'
+import HeaderParagraphLayout from './CardManager/HeaderParagraphLayout'
+import ImageFullWidthLayout from './CardManager/ImageFullWidthLayout'
+import HeaderSymbolLayout from './CardManager/HeaderSymbolLayout'
 
 const SYMBOL_OPTIONS = [
   'Heart', 'Check', 'Home', 'Stethoscope', 'Users', 'Phone',
@@ -356,6 +358,89 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
 
   const symbolDropdownOptions = SYMBOL_OPTIONS.map(s => ({ value: s, label: s }))
 
+  // DT-923 Sprint 9 - PBall: Dispatch per-layout form component for CardManager
+  const renderCardLayoutFields = ({
+    currentLayout,
+    currentHeader,
+    onHeaderChange,
+    currentHeaderTypography,
+    onHeaderTypographyChange,
+    currentParagraph,
+    onParagraphChange,
+    currentParagraphTypography,
+    onParagraphTypographyChange,
+    currentImageUrl,
+    onImageUrlChange,
+    currentImageAlt,
+    onImageAltChange,
+    currentSymbol,
+    onSymbolChange,
+    currentAlignment,
+    onAlignmentChange,
+    isEdit = false
+  }) => {
+    switch (currentLayout) {
+      case 'IMAGE_FULL_WIDTH':
+        return (
+          <ImageFullWidthLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            paragraph={currentParagraph}
+            onParagraphChange={onParagraphChange}
+            paragraphTypography={currentParagraphTypography}
+            onParagraphTypographyChange={onParagraphTypographyChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            imageAlt={currentImageAlt}
+            onImageAltChange={onImageAltChange}
+            alignment={currentAlignment}
+            onAlignmentChange={onAlignmentChange}
+            imageUrlPlaceholder={isEdit ? '/assets/images/CareImage1.jpeg' : '/images/older_couple_smiling.jpeg'}
+          />
+        )
+      case 'HEADER_SYMBOL':
+        return (
+          <HeaderSymbolLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            symbol={currentSymbol}
+            onSymbolChange={onSymbolChange}
+            symbolOptions={symbolDropdownOptions}
+            alignment={currentAlignment}
+            onAlignmentChange={onAlignmentChange}
+            alignmentOptions={ALIGNMENT_OPTIONS}
+            symbolLabel={isEdit ? 'Icon Symbol' : 'Symbol Icon'}
+            symbolAriaLabel={isEdit ? 'Icon Symbol' : 'Select Icon Symbol'}
+            alignmentLabel={isEdit ? 'Icon Alignment' : 'Alignment'}
+            alignmentAriaLabel={isEdit ? 'Icon Alignment' : 'Select Icon Alignment'}
+          />
+        )
+      case 'HEADER_PARAGRAPH':
+      default:
+        return (
+          <HeaderParagraphLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            paragraph={currentParagraph}
+            onParagraphChange={onParagraphChange}
+            paragraphTypography={currentParagraphTypography}
+            onParagraphTypographyChange={onParagraphTypographyChange}
+            alignment={currentAlignment}
+            onAlignmentChange={onAlignmentChange}
+            alignmentOptions={ALIGNMENT_OPTIONS}
+            alignmentLabel={isEdit ? 'Card Alignment' : 'Text Alignment'}
+            alignmentAriaLabel={isEdit ? 'Card Alignment' : 'Select Card Alignment'}
+          />
+        )
+    }
+  }
+
   return (
     <div className="content-editor-card">
       <h2>Card Element Manager</h2>
@@ -459,118 +544,27 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
             </div>
           </div>
 
-          {activeTab === 'content' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Header</label>
-                <input
-                  type="text"
-                  value={header}
-                  onChange={(e) => { setHeader(e.target.value); markDirty() }}
-                  placeholder="Card title"
-                  style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                />
-                <TypographyControls
-                  label="Card Header Typography"
-                  value={headerTypography}
-                  onChange={(val) => { setHeaderTypography(val); markDirty() }}
-                />
-              </div>
-
-              {['HEADER_PARAGRAPH', 'IMAGE_FULL_WIDTH'].includes(layout) && (
-                <div>
-                  <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>
-                    Paragraph Body (Lines starting with "- " render as bullet items)
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={paragraph}
-                    onChange={(e) => { setParagraph(e.target.value); markDirty() }}
-                    placeholder="Enter card description..."
-                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                  />
-                  <TypographyControls
-                    label="Paragraph Body Typography"
-                    value={paragraphTypography}
-                    onChange={(val) => { setParagraphTypography(val); markDirty() }}
-                  />
-                </div>
-              )}
-
-              {layout === 'IMAGE_FULL_WIDTH' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr', gap: '12px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image URL</label>
-                    <input
-                      type="text"
-                      value={imageUrl}
-                      onChange={(e) => { setImageUrl(e.target.value); markDirty() }}
-                      placeholder="/images/older_couple_smiling.jpeg"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alt</label>
-                    <input
-                      type="text"
-                      value={imageAlt}
-                      onChange={(e) => { setImageAlt(e.target.value); markDirty() }}
-                      placeholder="Image description"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alignment</label>
-                    <CustomSelect
-                      value={alignment}
-                      onChange={(val) => { setAlignment(val); markDirty() }}
-                      options={[
-                        { value: 'left', label: 'Image on Left' },
-                        { value: 'right', label: 'Image on Right' }
-                      ]}
-                      ariaLabel="Image Alignment"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {layout === 'HEADER_SYMBOL' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Symbol Icon</label>
-                    <CustomSelect
-                      value={symbol}
-                      onChange={(val) => { setSymbol(val); markDirty() }}
-                      options={symbolDropdownOptions}
-                      ariaLabel="Select Icon Symbol"
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Alignment</label>
-                    <CustomSelect
-                      value={alignment}
-                      onChange={(val) => { setAlignment(val); markDirty() }}
-                      options={ALIGNMENT_OPTIONS}
-                      ariaLabel="Select Icon Alignment"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {layout === 'HEADER_PARAGRAPH' && (
-                <div>
-                  <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Alignment</label>
-                  <CustomSelect
-                    value={alignment}
-                    onChange={(val) => { setAlignment(val); markDirty() }}
-                    options={ALIGNMENT_OPTIONS}
-                    style={{ width: '180px' }}
-                    ariaLabel="Select Card Alignment"
-                  />
-                </div>
-              )}
-            </div>
-          )}
+          {/* DT-923 Sprint 9 - PBall: Render separated card layout component in create mode */}
+          {activeTab === 'content' && renderCardLayoutFields({
+            currentLayout: layout,
+            currentHeader: header,
+            onHeaderChange: (val) => { setHeader(val); markDirty() },
+            currentHeaderTypography: headerTypography,
+            onHeaderTypographyChange: (val) => { setHeaderTypography(val); markDirty() },
+            currentParagraph: paragraph,
+            onParagraphChange: (val) => { setParagraph(val); markDirty() },
+            currentParagraphTypography: paragraphTypography,
+            onParagraphTypographyChange: (val) => { setParagraphTypography(val); markDirty() },
+            currentImageUrl: imageUrl,
+            onImageUrlChange: (val) => { setImageUrl(val); markDirty() },
+            currentImageAlt: imageAlt,
+            onImageAltChange: (val) => { setImageAlt(val); markDirty() },
+            currentSymbol: symbol,
+            onSymbolChange: (val) => { setSymbol(val); markDirty() },
+            currentAlignment: alignment,
+            onAlignmentChange: (val) => { setAlignment(val); markDirty() },
+            isEdit: false
+          })}
 
           {activeTab === 'colors' && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
@@ -662,118 +656,27 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
                 />
               </div>
 
-              {activeTab === 'content' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Header</label>
-                    <input
-                      type="text"
-                      value={editHeader}
-                      onChange={(e) => { setEditHeader(e.target.value); markDirty() }}
-                      placeholder="Card title"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                    <TypographyControls
-                      label="Card Header Typography"
-                      value={editHeaderTypography}
-                      onChange={(val) => { setEditHeaderTypography(val); markDirty() }}
-                    />
-                  </div>
-
-                  {['HEADER_PARAGRAPH', 'IMAGE_FULL_WIDTH'].includes(editLayout) && (
-                    <div>
-                      <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>
-                        Paragraph Body (Lines starting with "- " render as bullet items)
-                      </label>
-                      <textarea
-                        rows={4}
-                        value={editParagraph}
-                        onChange={(e) => { setEditParagraph(e.target.value); markDirty() }}
-                        placeholder="Enter card description..."
-                        style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                      />
-                      <TypographyControls
-                        label="Paragraph Body Typography"
-                        value={editParagraphTypography}
-                        onChange={(val) => { setEditParagraphTypography(val); markDirty() }}
-                      />
-                    </div>
-                  )}
-
-                  {editLayout === 'IMAGE_FULL_WIDTH' && (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr', gap: '12px' }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image URL</label>
-                        <input
-                          type="text"
-                          value={editImageUrl}
-                          onChange={(e) => { setEditImageUrl(e.target.value); markDirty() }}
-                          placeholder="/assets/images/CareImage1.jpeg"
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alt</label>
-                        <input
-                          type="text"
-                          value={editImageAlt}
-                          onChange={(e) => { setEditImageAlt(e.target.value); markDirty() }}
-                          placeholder="Image description"
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alignment</label>
-                        <CustomSelect
-                          value={editAlignment}
-                          onChange={(val) => { setEditAlignment(val); markDirty() }}
-                          options={[
-                            { value: 'left', label: 'Image on Left' },
-                            { value: 'right', label: 'Image on Right' }
-                          ]}
-                          ariaLabel="Image Alignment"
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {editLayout === 'HEADER_SYMBOL' && (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Icon Symbol</label>
-                        <CustomSelect
-                          value={editSymbol}
-                          onChange={(val) => { setEditSymbol(val); markDirty() }}
-                          options={symbolDropdownOptions}
-                          ariaLabel="Icon Symbol"
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Icon Alignment</label>
-                        <CustomSelect
-                          value={editAlignment}
-                          onChange={(val) => { setEditAlignment(val); markDirty() }}
-                          options={ALIGNMENT_OPTIONS}
-                          ariaLabel="Icon Alignment"
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {editLayout === 'HEADER_PARAGRAPH' && (
-                    <div>
-                      <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Alignment</label>
-                      <CustomSelect
-                        value={editAlignment}
-                        onChange={(val) => { setEditAlignment(val); markDirty() }}
-                        options={ALIGNMENT_OPTIONS}
-                        style={{ width: '180px' }}
-                        ariaLabel="Card Alignment"
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* DT-923 Sprint 9 - PBall: Render separated card layout component in manage mode */}
+              {activeTab === 'content' && renderCardLayoutFields({
+                currentLayout: editLayout,
+                currentHeader: editHeader,
+                onHeaderChange: (val) => { setEditHeader(val); markDirty() },
+                currentHeaderTypography: editHeaderTypography,
+                onHeaderTypographyChange: (val) => { setEditHeaderTypography(val); markDirty() },
+                currentParagraph: editParagraph,
+                onParagraphChange: (val) => { setEditParagraph(val); markDirty() },
+                currentParagraphTypography: editParagraphTypography,
+                onParagraphTypographyChange: (val) => { setEditParagraphTypography(val); markDirty() },
+                currentImageUrl: editImageUrl,
+                onImageUrlChange: (val) => { setEditImageUrl(val); markDirty() },
+                currentImageAlt: editImageAlt,
+                onImageAltChange: (val) => { setEditImageAlt(val); markDirty() },
+                currentSymbol: editSymbol,
+                onSymbolChange: (val) => { setEditSymbol(val); markDirty() },
+                currentAlignment: editAlignment,
+                onAlignmentChange: (val) => { setEditAlignment(val); markDirty() },
+                isEdit: true
+              })}
 
               {activeTab === 'colors' && (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>

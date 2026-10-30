@@ -2,12 +2,11 @@
 // Preston Ball
 // Modular card section layout loading cards from database via CardStorageService
 
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import ModularCard from '../cards/ModularCard'
 import { CardStorageService } from '../../../services/cardStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
-import { pickText } from '../cardText'
+import { pickText } from '../cards/CardBase'
 import '../../../styles/components/modular/sections/CardSection.css'
 
 export default function CardSection ({
