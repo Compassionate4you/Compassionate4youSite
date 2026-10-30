@@ -2,9 +2,8 @@
 // Preston Ball
 // Modular image card component supporting split media alignment and responsive layout
 
-import React from 'react'
-import CardBody from '../CardBody'
 import '../../../styles/components/modular/cards/ImageCard.css'
+import CardBody from './CardBase'
 
 export default function ImageCard ({
   header,

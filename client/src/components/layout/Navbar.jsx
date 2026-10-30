@@ -131,7 +131,7 @@ function Navbar () {
     if (pageId === 'homeHealth') return '/home-health'
     if (pageId === 'hospice') return '/hospice'
     // DT-622 Sprint 8 - Preston Ball: Temporary /content/:pageId routing scheme for dynamic pages
-    return `/content/${pageId}`
+    return `/${pageId}`
   }
 
   const navAriaLabel = i18n.language.startsWith('es')
@@ -172,7 +172,7 @@ function Navbar () {
 
           {mobileMenuOpen && (
             <ul id="navbar-mobile-menu" className="navbar-mobile-menu" role="menu">
-              <li role="none">
+              {/* <li role="none">
                 <Link
                   to="/"
                   role="menuitem"
@@ -181,7 +181,7 @@ function Navbar () {
                 >
                   {t('nav.welcome')}
                 </Link>
-              </li>
+              </li> */}
               {contentPages.map((page) => {
                 const route = getPageRoute(page.id)
                 const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
@@ -248,11 +248,11 @@ function Navbar () {
         </div>
       ) : (
         <ul className="nav-links">
-          <li>
+          {/* <li>
             <Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>
               {t('nav.welcome')}
             </Link>
-          </li>
+          </li> */}
 
           {/* DT-622 DT-625 Sprint 8 - Preston Ball: Dynamically display visible content pages */}
           {visiblePages.map((page) => {

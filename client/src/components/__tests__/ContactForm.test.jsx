@@ -7,7 +7,7 @@ vi.mock('../../services/api', () => ({
   apiSubmitContactForm: vi.fn()
 }))
 
-import ContactForm from '../ContactForm'
+import ContactForm from '../modular/sections/ContactFormSection'
 import { apiSubmitContactForm } from '../../services/api'
 
 const VALID = {

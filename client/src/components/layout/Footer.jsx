@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import './styles/footer.css';
-import './styles/resetfooter.css';
 import { useLocation } from "react-router-dom";
 
 function Footer() {
