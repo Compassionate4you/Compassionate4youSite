@@ -2,9 +2,8 @@
 // Preston Ball
 // Modular header paragraph card component supporting rich body text, bullet formatting, and custom typography
 
-import React from 'react'
-import CardBody from '../CardBody'
 import '../../../styles/components/modular/cards/HeaderParagraphCard.css'
+import CardBody from './CardBase'
 
 export default function HeaderParagraphCard ({
   header,
