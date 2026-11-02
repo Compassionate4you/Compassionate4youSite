@@ -2,12 +2,11 @@
 // Preston Ball
 // Card interpreter dispatching layouts and resolving theme color tokens
 
-import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { pickText } from './CardBase'
 import ImageCard from './ImageCard'
 import HeaderParagraphCard from './HeaderParagraphCard'
 import HeaderSymbolCard from './HeaderSymbolCard'
-import { pickText } from '../cardText'
 import { ColorConfigService } from '../../../services/colorConfigService'
 
 export default function ModularCard ({ card, theme = 'light' }) {
