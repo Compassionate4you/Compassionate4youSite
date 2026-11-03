@@ -13,7 +13,7 @@ import { useAuth } from '../../context/AuthContext'
 function Navbar () {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
-  const { logout } = useAuth()
+  const { logout, user } = useAuth() //Gets the user DT-826
   // DT-37: re render Navbar on route change so login check stays updated
   const location = useLocation()
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -94,7 +94,11 @@ function Navbar () {
   }
 
   // Check if user is logged in
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+    // Logged in = a real session (or test login) in AuthContext, so this also survives refresh.
+  const isLoggedIn = Boolean(user)
+  // DT-755: each role sees only its own dashboard link.
+  const dashboardPath = user?.role === 'admin' ? '/admin' : '/portal'
+  const dashboardLabel = user?.role === 'admin' ? t('nav.admin') : t('nav.dashboard')
   // Log user out and send them back to login
   function handleLogout () {
     localStorage.removeItem('isLoggedIn')
@@ -212,12 +216,12 @@ function Navbar () {
                 <>
                   <li role="none">
                     <Link
-                      to="/portal"
+                      to={dashboardPath}
                       role="menuitem"
-                      aria-current={location.pathname === '/portal' ? 'page' : undefined}
+                      aria-current={location.pathname === dashboardPath ? 'page' : undefined}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {t('nav.dashboard')}
+                      {dashboardLabel}
                     </Link>
                   </li>
                   <li role="none">
@@ -279,8 +283,8 @@ function Navbar () {
             isLoggedIn ? (
               <>
                 <li>
-                  <Link to="/portal" aria-current={location.pathname === '/portal' ? 'page' : undefined}>
-                    {t('nav.dashboard')}
+                  <Link to={dashboardPath} aria-current={location.pathname === dashboardPath ? 'page' : undefined}>
+                    {dashboardLabel}
                   </Link>
                 </li>
                 <li>
@@ -334,12 +338,12 @@ function Navbar () {
                       <>
                         <li className="nav-dropdown-item" role="none">
                           <Link
-                            to="/portal"
+                            to={dashboardPath}
                             role="menuitem"
-                            aria-current={location.pathname === '/portal' ? 'page' : undefined}
+                            aria-current={location.pathname === dashboardPath ? dashboardPath : undefined}
                             onClick={() => setDropdownOpen(false)}
                           >
-                            {t('nav.dashboard')}
+                            {dashboardLabel}
                           </Link>
                         </li>
                         <li className="nav-dropdown-item" role="none">
