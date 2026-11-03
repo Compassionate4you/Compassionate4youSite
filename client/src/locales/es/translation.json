@@ -246,8 +246,8 @@
   },
   "portal": {
     "title": "Portal del Cliente",
-    "welcome": "Bienvenido, John Doe",
-    "welcomeBanner": "¡Bienvenido de nuevo, John Doe!",
+    "welcome": "Bienvenido, {{name}}",
+    "welcomeBanner": "¡Bienvenido de nuevo, {{name}}!",
     "welcomeSubtitle": "Administre sus citas e información de atención médica",
     "scheduleCard": "Programar Cita",
     "scheduleCardDesc": "Reserve una nueva cita de salud en casa o de hospicio",

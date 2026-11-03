@@ -215,8 +215,8 @@
   },
   "portal": {
     "title": "客户门户",
-    "welcome": "欢迎，John Doe",
-    "welcomeBanner": "欢迎回来，John Doe！",
+    "welcome": "欢迎，{{name}}",
+    "welcomeBanner": "欢迎回来，{{name}}！",
     "welcomeSubtitle": "管理您的预约和医疗信息",
     "scheduleCard": "预约就诊",
     "scheduleCardDesc": "预约新的居家医疗或安宁疗护服务",

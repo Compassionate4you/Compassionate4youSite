@@ -246,8 +246,8 @@
   },
   "portal": {
     "title": "ग्राहक पोर्टल",
-    "welcome": "स्वागत है, John Doe",
-    "welcomeBanner": "वापसी पर स्वागत है, John Doe!",
+    "welcome": "स्वागत है, {{name}}",
+    "welcomeBanner": "वापसी पर स्वागत है, {{name}}!",
     "welcomeSubtitle": "अपने अपॉइंटमेंट और स्वास्थ्य देखभाल की जानकारी प्रबंधित करें",
     "scheduleCard": "अपॉइंटमेंट बुक करें",
     "scheduleCardDesc": "नया होम हेल्थ या हॉस्पिस अपॉइंटमेंट बुक करें",

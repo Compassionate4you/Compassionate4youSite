@@ -246,8 +246,8 @@
   },
   "portal": {
     "title": "ਗਾਹਕ ਪੋਰਟਲ",
-    "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ, John Doe",
-    "welcomeBanner": "ਮੁੜ ਜੀ ਆਇਆਂ ਨੂੰ, John Doe!",
+    "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ, {{name}}",
+    "welcomeBanner": "ਮੁੜ ਜੀ ਆਇਆਂ ਨੂੰ, {{name}}!",
     "welcomeSubtitle": "ਆਪਣੀਆਂ ਮੁਲਾਕਾਤਾਂ ਅਤੇ ਸਿਹਤ ਸੰਭਾਲ ਜਾਣਕਾਰੀ ਦਾ ਪ੍ਰਬੰਧ ਕਰੋ",
     "scheduleCard": "ਮੁਲਾਕਾਤ ਤੈਅ ਕਰੋ",
     "scheduleCardDesc": "ਨਵੀਂ ਘਰੇਲੂ ਸਿਹਤ ਜਾਂ ਹੌਸਪਿਸ ਮੁਲਾਕਾਤ ਬੁੱਕ ਕਰੋ",
