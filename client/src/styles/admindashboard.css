@@ -79,6 +79,16 @@
   background-color: #fef2f2;
 }
 
+.admin-header-logo {
+  text-decoration: none;
+}
+
+.admin-header-logo:focus-visible {
+  border-radius: 4px;
+  outline: 3px solid #00aec5;
+  outline-offset: 4px;
+}
+
 /* ---------- Dashboard Tabs ----------*/
 
 .admin-tabs {
