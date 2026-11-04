@@ -285,3 +285,70 @@
   border: none;
   display: block;
 }
+
+/* ---------- Content Editor: Dark Mode ---------- */
+
+:root[data-theme="dark"] .content-editor-page {
+  background-color: var(--color-page-background);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .content-editor-title {
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .content-editor-subtitle,
+:root[data-theme="dark"] .content-editor-card-description,
+:root[data-theme="dark"] .content-editor-help-text,
+:root[data-theme="dark"] .content-editor-upload-description {
+  color: var(--color-dark-muted-text);
+}
+
+:root[data-theme="dark"] .content-editor-tabs {
+  background-color: var(--color-dark-surface-raised);
+  border-color: var(--color-dark-divider);
+}
+
+:root[data-theme="dark"] .content-editor-tab {
+  background-color: var(--color-dark-surface-raised) !important;
+  border-color: var(--color-dark-divider) !important;
+  color: var(--color-dark-text) !important;
+}
+
+:root[data-theme="dark"] .content-editor-tab.active {
+  background-color: #366454 !important;
+  border-color: #7fbfa6 !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .content-editor-tab:hover:not(.active) {
+  background-color: var(--color-dark-surface) !important;
+}
+
+:root[data-theme="dark"] .content-editor-card {
+  background-color: var(--color-dark-surface-raised);
+  border-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .content-editor-field input,
+:root[data-theme="dark"] .content-editor-field textarea,
+:root[data-theme="dark"] .content-editor-file-input {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-input-border);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .content-editor-upload-area,
+:root[data-theme="dark"] .content-editor-preview {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .content-editor-cancel-button,
+:root[data-theme="dark"] .content-editor-changelog-button {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}

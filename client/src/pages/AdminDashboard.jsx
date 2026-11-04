@@ -5,7 +5,6 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import "../styles/admindashboard.css";
 import AdminHeader from "../components/admin/AdminHeader";
 import AdminTabs from "../components/admin/AdminTabs";
 import AdminFooter from "../components/admin/AdminFooter";
@@ -18,6 +17,16 @@ import useAppointments from "../hooks/admin/useAppointments";
 import useAccounts from "../hooks/admin/useAccounts";
 import useLocations from "../hooks/admin/useLocations";
 import { useAuth } from "../context/AuthContext";
+/* Import styling */
+import "../styles/admin/admin-dashboard.css";
+import "../styles/admin/admin-header.css";
+import "../styles/admin/admin-tables.css";
+import "../styles/admin/appointments-tab.css";
+import "../styles/admin/accounts-tab.css";
+import "../styles/admin/locations-tab.css";
+import "../styles/admin/admin-footer.css";
+import "../styles/admin/admin-modals.css";
+import "../styles/admin/admin-dark-mode.css";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
