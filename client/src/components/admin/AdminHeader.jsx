@@ -3,17 +3,29 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import compassionateLogo from "../../assets/images/CompassionateLogo.jpeg";
 
-function AdminHeader({ onLogout }) {
+function AdminHeader({ adminName, onLogout }) {
     const { t } = useTranslation();
+
+    const displayName = adminName || "Admin User";
+    const nameParts = displayName
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+    [/* DT-872: Welcome text corresponds to logged in user */]
+    const initials = nameParts.length > 1
+        ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase()
+        : nameParts[0]?.[0]?.toUpperCase() || "AD";
 
     return (
         <header className="topbar">
             <div className="admin-identity">
-                <div className="admin-avatar">AD</div>
+                <div className="admin-avatar" aria-hidden="true">
+                    {initials}
+                </div>
                 {/** Welcome text */}
                 <div className="header-text">
                     <h1>{t("admin.title")}</h1>
-                    <p>{t("admin.welcome")}</p>
+                    <p>{t("nav.welcome")}, {displayName}</p>
                 </div>
             </div>
             {/* Logo */}

@@ -23,7 +23,7 @@ const AdminDashboard = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
     
     // General Dashboard state
     const [tab, setTab] = useState(searchParams.get("tab") || "appointments");
@@ -97,6 +97,7 @@ const AdminDashboard = () => {
     return (
         <div className="admin-dashboard-page">
             <AdminHeader
+                adminName={user?.displayName}
                 onLogout={() => setShowLogoutConfirm(true)}
             />
             <AdminTabs

@@ -64,11 +64,15 @@ function normalizeRole (role) {
 }
 
 function buildUser (apiUser, fallbackEmail) {
+  const email = apiUser?.email ?? fallbackEmail ?? ''
+  const name = String(apiUser?.name || '').trim()
+
   return {
     id: apiUser?.id,
-    email: apiUser?.email ?? fallbackEmail,
+    email,
+    name,
     role: normalizeRole(apiUser?.role),
-    displayName: apiUser?.email ?? fallbackEmail
+    displayName: name || email
   }
 }
 
