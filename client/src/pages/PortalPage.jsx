@@ -7,6 +7,9 @@ import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-
 import { apiGetMyAppointments, apiCancelAppointment, apiRescheduleAppointment, apiGetAvailability } from '../services/api'
 import '../styles/portal.css'
 
+// DT-809 (810): get the signed in user's name for welcome messages
+import { useAuth } from '../context/AuthContext'
+
 // DT-278 (726): Times a user can pick when rescheduling.
 // Must match TIME_SLOTS in server/src/controllers/appointmentController.js
 const TIME_SLOTS = ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM']
@@ -46,6 +49,11 @@ function getAppointmentDateTime (appt) {
 function PortalPage () {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  // DT-809 (810): show the account's name, or the email if there's no name yet
+  const { user } = useAuth()
+  const displayName = user?.displayName || ''
+
   const saved = JSON.parse(localStorage.getItem('profileSettings') || '{}')
 
   const [showProfile, setShowProfile] = useState(false)
@@ -307,7 +315,7 @@ function PortalPage () {
           <div>
             <div className='navbar-title'>{t('portal.title')}</div>
             <div className='navbar-subtitle'>
-              Welcome, {fullName}
+              {t('portal.welcome', { name: displayName })}
               {upcomingAppt && (
                 <span className='notification-icon' title={`Upcoming: ${upcomingAppt.service} - ${upcomingAppt.date} at ${upcomingAppt.time.split(' - ')[0]}`}>
                   🔔
@@ -368,7 +376,7 @@ function PortalPage () {
               )}
 
               <div className='welcome-banner'>
-                <h1>{t('portal.welcomeBanner')}</h1>
+                <h1>{t('portal.welcomeBanner', {name: displayName })}</h1>
                 <p>{t('portal.welcomeSubtitle')}</p>
               </div>
 

@@ -91,7 +91,8 @@ async function signup(req, res) {
     return res.status(201).json({
         success: true,
         userId: user.id,
-        user: { id: user.id, email: user.email, role: user.role },
+        // DT-809: include name and phone so they are available right after signing in
+        user: { id: user.id, email: user.email, role: user.role, name: user.name, phone: user.phone },
     });
 }
 
@@ -278,7 +279,8 @@ function me(req, res, next) {
     return prisma.user
         .findUnique({
             where: { id: req.user.id },
-            select: { id: true, email: true, role: true },
+            // DT-809: also send the name and phone so the portal and schedule page can use them
+            select: { id: true, email: true, role: true, name: true, phone: true },
         })
         .then((account) => res.status(200).json({ user: account || null }))
         .catch(next);

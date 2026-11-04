@@ -13,7 +13,9 @@ import { useAuth } from '../../context/AuthContext'
 function Navbar () {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
-  const { logout } = useAuth()
+
+  // DT-848: get the real signed-in state from AuthContext
+  const { logout, isAuthenticated } = useAuth()
   // DT-37: re render Navbar on route change so login check stays updated
   const location = useLocation()
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -93,11 +95,10 @@ function Navbar () {
     return null
   }
 
-  // Check if user is logged in
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+  // DT-848: Use AuthContext instead of localstorage, so nav stays correct after a refresh
+  const isLoggedIn = isAuthenticated
   // Log user out and send them back to login
   function handleLogout () {
-    localStorage.removeItem('isLoggedIn')
     setDropdownOpen(false)
     setMobileMenuOpen(false)
     navigate('/login')
