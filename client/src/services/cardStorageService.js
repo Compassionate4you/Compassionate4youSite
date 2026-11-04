@@ -1,6 +1,8 @@
-// DT-513 Sprint 7
-// PBall
-// Service handling user-created cards with in-memory persistence and database integration placeholders
+// DT-622 Sprint 8
+// Preston Ball
+// Service handling user-created cards with database persistence and fallback cache
+
+import { API_BASE_URL } from './api'
 
 const STORAGE_KEY = 'cms_user_cards_store'
 
@@ -39,6 +41,23 @@ export const CardStorageService = {
     return [...this.data]
   },
 
+  // DT-622 Sprint 8 - Preston Ball: Load card elements from backend database
+  async loadFromDatabase () {
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/content/cards`)
+      if (res.ok) {
+        const remoteCards = await res.json()
+        if (Array.isArray(remoteCards) && remoteCards.length > 0) {
+          this.data = remoteCards
+          this._persist()
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load user cards from database:', err)
+    }
+    return [...this.data]
+  },
+
   getCardById (id) {
     return this.data.find(c => c.id === id) || null
   },
@@ -62,19 +81,21 @@ export const CardStorageService = {
     this.data.push(newCard)
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbCreateCard (cardData) {
-     *   const res = await fetch('/api/admin/content/cards', {
-     *     method: 'POST',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(cardData)
-     *   })
-     *   if (!res.ok) throw new Error('Database card creation failed')
-     *   return await res.json()
-     * }
-     * await dbCreateCard(newCard)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Persist card to database
+    async function dbCreateCard (cardData) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/cards`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(cardData)
+        })
+        if (!res.ok) throw new Error('Database card creation failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database card creation error:', err)
+      }
+    }
+    dbCreateCard(newCard)
 
     return newCard
   },
@@ -96,19 +117,21 @@ export const CardStorageService = {
     this.data[index] = updated
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbUpdateCard (cardId, updates) {
-     *   const res = await fetch(`/api/admin/content/cards/${cardId}`, {
-     *     method: 'PUT',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(updates)
-     *   })
-     *   if (!res.ok) throw new Error('Database card update failed')
-     *   return await res.json()
-     * }
-     * await dbUpdateCard(id, updated)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Update card in database
+    async function dbUpdateCard (cardId, updates) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/cards/${cardId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        })
+        if (!res.ok) throw new Error('Database card update failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database card update error:', err)
+      }
+    }
+    dbUpdateCard(id, updated)
 
     return updated
   },
@@ -122,19 +145,72 @@ export const CardStorageService = {
     const removed = this.data.splice(index, 1)[0]
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbDeleteCard (cardId) {
-     *   const res = await fetch(`/api/admin/content/cards/${cardId}`, {
-     *     method: 'DELETE'
-     *   })
-     *   if (!res.ok) throw new Error('Database card deletion failed')
-     *   return await res.json()
-     * }
-     * await dbDeleteCard(id)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Delete card from database
+    async function dbDeleteCard (cardId) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/cards/${cardId}`, {
+          method: 'DELETE'
+        })
+        if (!res.ok) throw new Error('Database card deletion failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database card deletion error:', err)
+      }
+    }
+    dbDeleteCard(id)
 
     return removed
+  },
+
+  // DT-625 Sprint 8 - Preston Ball: Rename card ID and cascade references across sections
+  async renameCard (oldId, newId) {
+    const trimmedOldId = String(oldId || '').trim()
+    const trimmedNewId = String(newId || '').trim()
+    if (!trimmedOldId || !trimmedNewId) throw new Error('Both old and new card IDs are required')
+    if (trimmedOldId === trimmedNewId) return this.getCardById(trimmedOldId)
+
+    if (this.data.some(c => c.id === trimmedNewId)) {
+      throw new Error(`Card ID "${trimmedNewId}" already exists`)
+    }
+
+    const index = this.data.findIndex(c => c.id === trimmedOldId)
+    if (index === -1) throw new Error(`Card with ID "${trimmedOldId}" not found`)
+
+    const updated = {
+      ...this.data[index],
+      id: trimmedNewId
+    }
+    this.data[index] = updated
+    this._persist()
+
+    // Cascade to SectionStorageService
+    try {
+      const { SectionStorageService } = await import('./sectionStorageService')
+      const sections = SectionStorageService.getSections()
+      sections.forEach(s => {
+        if (Array.isArray(s.content?.cardIds) && s.content.cardIds.includes(trimmedOldId)) {
+          const updatedCardIds = s.content.cardIds.map(cid => cid === trimmedOldId ? trimmedNewId : cid)
+          SectionStorageService.updateSection(s.id, {
+            content: { ...s.content, cardIds: updatedCardIds }
+          })
+        }
+      })
+    } catch (e) {
+      console.warn('Could not cascade card rename to sections locally:', e)
+    }
+
+    // Persist to database
+    try {
+      await fetch(`${API_BASE_URL}/admin/content/cards/rename`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldId: trimmedOldId, newId: trimmedNewId })
+      })
+    } catch (err) {
+      console.error('Database card rename error:', err)
+    }
+
+    return updated
   },
 
   _persist () {

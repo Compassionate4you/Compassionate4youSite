@@ -1,0 +1,110 @@
+/*
+DT-625 Sprint 8
+Preston Ball
+Accessible custom dropdown select component styling
+*/
+
+.custom-select-container {
+  position: relative;
+  width: 100%;
+  font-family: inherit;
+}
+
+.custom-select-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.custom-select-trigger:hover:not(:disabled) {
+  border-color: #94a3b8;
+}
+
+.custom-select-trigger:focus-visible {
+  outline: none;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.custom-select-trigger:disabled {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.custom-select-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-select-placeholder {
+  color: #94a3b8;
+}
+
+.custom-select-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  z-index: 1050;
+  padding: 4px;
+  list-style: none;
+  margin: 0;
+  animation: customSelectFadeIn 0.12s ease-out;
+}
+
+.custom-select-option {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  color: #1e293b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: background-color 0.1s ease;
+}
+
+.custom-select-option:hover,
+.custom-select-option--highlighted {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.custom-select-option--selected {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  font-weight: 600;
+}
+
+.custom-select-option--selected:hover {
+  background-color: #bae6fd;
+}
+
+@keyframes customSelectFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

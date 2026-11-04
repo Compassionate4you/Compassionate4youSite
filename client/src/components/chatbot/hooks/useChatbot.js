@@ -2,7 +2,7 @@
 // Tries client-side matcher first, falls back to backend.
 // DT-398: messages are mirrored to the backend so history survives a reload.
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { matchIntent } from '../engine/matcher'
+import { matchIntent, matchFaqById } from '../engine/matcher'
 import { buildResponse } from '../engine/responseBuilder'
 import { sendChatMessage } from '../../../services/api'
 import { useChatHistory } from './useChatHistory'
@@ -37,13 +37,15 @@ export function useChatbot () {
   )
 
   const sendMessage = useCallback(
-    async (rawText) => {
+    async (rawText, faqId) => {
       const text = String(rawText || '').trim()
       if (!text || inFlightRef.current) return
 
       appendMessage({ sender: 'user', text })
 
-      const intent = matchIntent(text)
+      // A question picked from the FAQ list resolves by id; anything typed
+      // goes through keyword matching.
+      const intent = faqId ? matchFaqById(faqId) : matchIntent(text)
       const localReply = buildResponse(intent)
       if (localReply) {
         appendMessage({
@@ -62,6 +64,7 @@ export function useChatbot () {
         appendMessage({
           sender: 'bot',
           text: reply?.text || '',
+          textKey: reply?.textKey,
           actionButtons: reply?.actionButtons || []
         })
       } catch (err) {
