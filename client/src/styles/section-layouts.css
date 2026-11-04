@@ -1,3 +1,81 @@
+/* DT-861: Reusable centered Welcome banners with decorative icon dividers. */
+.c4-welcome-banners {
+  display: grid;
+  gap: clamp(20px, 3vw, 40px);
+  padding: clamp(16px, 2vw, 32px);
+}
+
+.c4-welcome-banner,
+.c4-welcome-banner * {
+  box-sizing: border-box;
+}
+
+.c4-welcome-banner {
+  min-width: 0;
+  padding: 4px clamp(20px, 5vw, 100px) clamp(28px, 2.5vw, 48px);
+  border-radius: clamp(20px, 2vw, 32px);
+  background: color-mix(in srgb, var(--color-white) 60%, var(--color-page-background));
+  color: var(--color-white-text);
+  font-family: var(--font-body);
+  text-align: center;
+}
+
+.c4-welcome-banner__ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 1.75vw, 32px);
+  width: 100%;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.c4-welcome-banner__ornament::before,
+.c4-welcome-banner__ornament::after {
+  content: '';
+  flex: 1;
+  min-width: 0;
+  height: 2px;
+  background: var(--color-sage);
+  opacity: 0.7;
+}
+
+.c4-welcome-banner__badge {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: clamp(72px, 6vw, 116px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-light-green);
+  color: var(--color-light-green-text);
+}
+
+.c4-welcome-banner__badge svg {
+  width: 58%;
+  height: 58%;
+}
+
+.c4-welcome-banner .c4-welcome-banner__title {
+  margin: 4px 0 20px;
+  padding: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.c4-welcome-banner__description {
+  max-width: 80ch;
+  margin: 0 auto;
+  font-size: clamp(1rem, 1.65vw, 2rem);
+  line-height: 1.5;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
 /* Sprint 08 / DT-743. Standalone section styles; no legacy card selectors. */
 .c4-section {
   position: relative;

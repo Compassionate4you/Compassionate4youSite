@@ -1,13 +1,23 @@
 import React, { useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Heart, HeartHandshake, Users } from 'lucide-react'
 import { HeaderCardsSection, HeaderStackSection, TimelineSection } from '../components/modular/sections'
+import english from '../locales/en/translation.json'
 import careImage from '../assets/images/CareImage1.jpeg'
 import '../styles/global.css'
 // Include existing styles to expose accidental interactions in this isolated preview.
 import '../styles/card-sections.css'
 import '../styles/HospicePage.css'
 import '../styles/responsive.css'
+import '../styles/section-layouts.css'
 import './section-layouts-preview.css'
+
+// DT-861: Welcome examples share the site copy with distinct decorative icons.
+const welcomeSections = [
+  { id: 'about', title: english.landing.aboutTitle, description: english.landing.aboutText, Icon: Users },
+  { id: 'caring', title: english.landing.caringSinceTitle, description: english.landing.caringSinceText, Icon: HeartHandshake },
+  { id: 'philosophy', title: english.landing.philosophyTitle, description: english.landing.philosophyText, Icon: Heart }
+]
 
 const advantages = [
   { id: 'obligations', description: 'We manage all employer obligations in payroll, taxes and compensation.', iconName: 'FileCheck' },
@@ -35,6 +45,7 @@ const steps = [
   { id: 'review', title: 'Review', description: 'The care team reviews the plan as needs change.' }
 ]
 
+// DT-861: Display the Welcome banner examples alongside the existing DT-743 layouts.
 function SectionLayoutsPreview () {
   const [headerPosition, setHeaderPosition] = useState('left')
   const [background, setBackground] = useState(true)
@@ -45,7 +56,7 @@ function SectionLayoutsPreview () {
   return (
     <main className='c4-preview' theme={dark ? 'dark' : 'light'}>
       <div className='c4-preview__controls'>
-        <h1>Section layout preview · DT-743</h1>
+        <h1>Section layout preview · DT-743 / DT-861</h1>
         <label>Header position
           <select value={headerPosition} onChange={event => setHeaderPosition(event.target.value)}>
             <option value='left'>Left</option><option value='right'>Right</option>
@@ -63,6 +74,20 @@ function SectionLayoutsPreview () {
           </select>
         </label>
         <label><input type='checkbox' checked={dark} onChange={event => setDark(event.target.checked)} /> Dark theme</label>
+      </div>
+      {/* DT-861: Centered Welcome panels matching the icon-and-divider reference. */}
+      <div className='c4-welcome-banners'>
+        {welcomeSections.map(({ id, title, description, Icon }) => (
+          <section className='c4-welcome-banner' aria-labelledby={`welcome-${id}-title`} key={id}>
+            <div className='c4-welcome-banner__ornament' aria-hidden='true'>
+              <span className='c4-welcome-banner__badge'>
+                <Icon focusable='false' strokeWidth={1.6} />
+              </span>
+            </div>
+            <h2 className='c4-welcome-banner__title' id={`welcome-${id}-title`}>{title}</h2>
+            <p className='c4-welcome-banner__description'>{description}</p>
+          </section>
+        ))}
       </div>
       <HeaderCardsSection
         label='Better care at home'
