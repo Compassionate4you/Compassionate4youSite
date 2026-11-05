@@ -5,6 +5,9 @@ import { apiCreateAppointment, apiGetAvailability } from '../services/api'
 import '../styles/portal.css'
 import '../styles/scheduling.css'
 
+// DT-809 (811): get the signed-in user's info to pre-fill the form
+import { useAuth } from '../context/AuthContext'
+
 const TIME_SLOTS = [
   ['9:00 AM', 'schedule.times.9'],
   ['10:00 AM', 'schedule.times.10'],
@@ -30,6 +33,9 @@ function SchedulePage () {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
+  // DT-809: signed-in user's info, for the header and pre-filling the form
+  const { user } = useAuth()
+
   const [form, setForm] = useState({
     fullName: '',
     phone: '',
@@ -39,6 +45,19 @@ function SchedulePage () {
     timeSlot: '',
     notes: ''
   })
+
+  // DT-809 (811): Fill in name, email, and phone for signed in users. Only fills empty boxes
+  // so it never erases something the user already typed. They can still change anything, like when booking
+  // for a family member.
+  useEffect(() => {
+    if(!user) return
+    setForm((current) => ({
+      ...current,
+      fullName: current.fullName || user.name || '',
+      phone: current.phone || user.phone || '',
+      email: current.email || user.email || ''
+    }))
+  },  [user])
 
   // DT-719: errors are stored as translation keys, keyed by field name,
   // so they re-translate if the language changes. `formError` is for

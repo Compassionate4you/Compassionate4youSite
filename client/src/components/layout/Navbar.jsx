@@ -13,7 +13,9 @@ import { useAuth } from '../../context/AuthContext'
 function Navbar () {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
-  const { logout, user } = useAuth() //Gets the user DT-826
+  const { logout, user, isAuthenticated } = useAuth() //Gets the user DT-826
+
+  // DT-848: get the real signed-in state from AuthContext
   // DT-37: re render Navbar on route change so login check stays updated
   const location = useLocation()
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -92,16 +94,14 @@ function Navbar () {
   if (isAdminPage) {
     return null
   }
-
-  // Check if user is logged in
-    // Logged in = a real session (or test login) in AuthContext, so this also survives refresh.
-  const isLoggedIn = Boolean(user)
+  // DT-848: Use AuthContext instead of localStorage, so nav stays correct after refresh
+  const isLoggedIn = isAuthenticated
   // DT-755: each role sees only its own dashboard link.
   const dashboardPath = user?.role === 'admin' ? '/admin' : '/portal'
   const dashboardLabel = user?.role === 'admin' ? t('nav.admin') : t('nav.dashboard')
+
   // Log user out and send them back to login
   function handleLogout () {
-    localStorage.removeItem('isLoggedIn')
     setDropdownOpen(false)
     setMobileMenuOpen(false)
     navigate('/login')
@@ -135,7 +135,7 @@ function Navbar () {
     if (pageId === 'homeHealth') return '/home-health'
     if (pageId === 'hospice') return '/hospice'
     // DT-622 Sprint 8 - Preston Ball: Temporary /content/:pageId routing scheme for dynamic pages
-    return `/content/${pageId}`
+    return `/${pageId}`
   }
 
   const navAriaLabel = i18n.language.startsWith('es')
@@ -176,7 +176,7 @@ function Navbar () {
 
           {mobileMenuOpen && (
             <ul id="navbar-mobile-menu" className="navbar-mobile-menu" role="menu">
-              <li role="none">
+              {/* <li role="none">
                 <Link
                   to="/"
                   role="menuitem"
@@ -185,7 +185,7 @@ function Navbar () {
                 >
                   {t('nav.welcome')}
                 </Link>
-              </li>
+              </li> */}
               {contentPages.map((page) => {
                 const route = getPageRoute(page.id)
                 const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
@@ -252,11 +252,11 @@ function Navbar () {
         </div>
       ) : (
         <ul className="nav-links">
-          <li>
+          {/* <li>
             <Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>
               {t('nav.welcome')}
             </Link>
-          </li>
+          </li> */}
 
           {/* DT-622 DT-625 Sprint 8 - Preston Ball: Dynamically display visible content pages */}
           {visiblePages.map((page) => {
@@ -340,7 +340,7 @@ function Navbar () {
                           <Link
                             to={dashboardPath}
                             role="menuitem"
-                            aria-current={location.pathname === dashboardPath ? dashboardPath : undefined}
+                           aria-current={location.pathname === dashboardPath ? 'page' : undefined}
                             onClick={() => setDropdownOpen(false)}
                           >
                             {dashboardLabel}

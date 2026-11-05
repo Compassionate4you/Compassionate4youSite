@@ -246,8 +246,8 @@
   },
   "portal": {
     "title": "Customer Portal",
-    "welcome": "Welcome, John Doe",
-    "welcomeBanner": "Welcome back, John Doe!",
+    "welcome": "Welcome, {{name}}",
+    "welcomeBanner": "Welcome back, {{name}}!",
     "welcomeSubtitle": "Manage your appointments and health care information",
     "scheduleCard": "Schedule Appointment",
     "scheduleCardDesc": "Book a new home health or hospice appointment",
