@@ -12,7 +12,7 @@ function App() {
         <Router>
             <div className="app">
                 <Navbar />
-                <main id="main-content" tabIndex="-1">
+                <main>
                     <AppRoutes />
                 </main>
                 <Footer />
@@ -20,7 +20,7 @@ function App() {
                 <AccessibilityPanel />
             </div>
         </Router>
-    );
+    )
 }
 
 export default App

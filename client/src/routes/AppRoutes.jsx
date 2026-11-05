@@ -1,60 +1,47 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
-import LandingPage from '../pages/LandingPage'
+// DT-622 Sprint 8
+// Preston Ball
+// Application routes preserving legacy routes alongside temporary /content/:pageId dynamic routes
+
+import { Routes, Route, Navigate } from 'react-router-dom'
+import ContentPage from '../pages/ContentPage'
 import AdminDashboard from '../pages/AdminDashboard'
-import HomeHealthPage from '../pages/HomeHealthPage'
-import HospicePage from '../pages/HospicePage'
 import LocationsPage from '../pages/LocationsPage'
 import PortalPage from '../pages/PortalPage'
 import SchedulePage from '../pages/SchedulePage'
 import LoginPage from '../pages/LoginPage'
 import SignupPage from '../pages/SignupPage'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
-import Scheduling from '../pages/AcuityScheduling'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 import NotFoundPage from '../pages/NotFoundPage'
-
-import ContentEditor from '../pages/ContentEditor'
+import RequireRole from '../components/RequireRole'
 import ClientSchedulingConfirmation from '../pages/ClientSchedulingConfirmation'
 import ViewAppointmentDetailsPage from '../pages/ViewAppointmentDetailsPage'
+
 function AppRoutes () {
-  const location = useLocation()
-  const firstRender = useRef(true)
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
-
-    // Move focus to the new page's main region after client-side navigation.
-    // This gives keyboard and screen-reader users a clear starting point.
-    document.getElementById('main-content')?.focus()
-  }, [location.pathname])
-
   return (
     <Routes>
-      <Route path='/' element={<LandingPage />} />
-      <Route path='/admin' element={<AdminDashboard />} />
-      <Route path='/home-health' element={<HomeHealthPage />} />
-      <Route path='/hospice' element={<HospicePage />} />
+      {/* DT-875 - Preston Ball Sprint 6: Route all content pages through content page.*/}
+      <Route path='/:pageId' element={<ContentPage />} />
+      <Route path='' element={<Navigate to='/welcome' replace/>} />
+
+      <Route path='/admin' element={<RequireRole role='admin'><AdminDashboard /></RequireRole>} />
       <Route path='/locations' element={<LocationsPage />} />
-      <Route path='/portal' element={<PortalPage />} />
+      <Route path='/portal' element={<RequireRole role='customer'><PortalPage /></RequireRole>} />
       <Route path='/schedule' element={<SchedulePage />} />
+
       <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-      <Route
-        path='/AcuityScheduling'
-        element={<Scheduling />}
-      />
-      <Route path='/admin/content-editor' element={<ContentEditor />} />
+      {/* DT-781: page linked from the password reset email */}
+      <Route path='/reset-password' element={<ResetPasswordPage />} />
       <Route path='/schedule/confirmation' element={<ClientSchedulingConfirmation />} />
-      {/* Keep the existing confirmation URL working as well. */}
       <Route path='/confirmation' element={<ClientSchedulingConfirmation />} />
       <Route path='/appointment-details' element={<ViewAppointmentDetailsPage />} />
+
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   )
 }
 
 export default AppRoutes
+

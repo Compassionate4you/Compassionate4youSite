@@ -1,0 +1,55 @@
+/*
+DT-622 Sprint 8
+Preston Ball
+Modular header symbol card layout stylesheet with icon badges and responsive alignment
+*/
+
+.card--symbol {
+  background: var(--card-bg, #ffffff);
+  color: var(--card-text, #1e293b);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card--symbol:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card--symbol .card__symbol {
+  font-size: 2rem;
+  color: var(--card-header, var(--primary, #366454));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card--symbol h3 {
+  margin: 0;
+  color: var(--card-header, inherit);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.card--symbol.card--align-left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.card--symbol.card--align-center {
+  align-items: center;
+  text-align: center;
+}
+
+.card--symbol.card--align-right {
+  align-items: flex-end;
+  text-align: right;
+}

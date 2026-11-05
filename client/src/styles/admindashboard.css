@@ -405,7 +405,8 @@
 }
 
 .appointment-form-field input,
-.appointment-form-field select {
+.appointment-form-field select,
+.appointment-form-field textarea {
   width: 100%;
   min-height: 44px;
   padding: 10px 12px;
@@ -416,9 +417,18 @@
 }
 
 .appointment-form-field input:focus,
-.appointment-form-field select:focus {
+.appointment-form-field select:focus,
+.appointment-form-field textarea:focus {
   border-color: #366454;
   outline: 2px solid rgba(54, 100, 84, 0.2);
+}
+
+.appointment-form-field textarea {
+  resize: vertical;
+}
+
+.appointment-form-field-full {
+  grid-column: 1 / -1;
 }
 
 .appointment-form-actions {
@@ -453,6 +463,16 @@
 
 .appointment-submit-button:hover {
   background-color: #294f42;
+}
+
+.appointment-form .appointment-form-error {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.appointment-submit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
 }
 
 /* ---------- Admin Footer ---------- */
@@ -633,6 +653,18 @@
 
 .logout-yes-button:hover {
   background-color: #b91c1c;
+}
+
+.admin-modal-error {
+  display: block;
+  margin-top: 12px;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.logout-modal-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
 }
 
 /* ---------Responsive Styles --------- */

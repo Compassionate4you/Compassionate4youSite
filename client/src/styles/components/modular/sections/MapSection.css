@@ -1,0 +1,67 @@
+/*
+DT-622 Sprint 8
+Preston Ball
+Modular Google Maps section stylesheet
+*/
+
+.modular-map-section {
+  padding: 4rem 1.5rem;
+  background-color: var(--section-bg, #ffffff);
+  color: var(--section-text, #1e293b);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.modular-map-section__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.modular-map-section__title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  color: var(--section-header, #0f172a);
+}
+
+.modular-map-section__address {
+  font-size: 1.15rem;
+  color: var(--section-text, #475569);
+  margin: 0 0 2rem;
+}
+
+.modular-map-section__embed {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+.modular-map-section__iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.modular-map-section__directions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.75rem;
+  background-color: var(--section-accent, #366454);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.modular-map-section__directions:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}

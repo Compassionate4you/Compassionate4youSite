@@ -5,6 +5,7 @@ function ConfirmModal({
     message,
     confirmText = "Yes",
     cancelText = "No",
+    isConfirming = false,
     onConfirm,
     onCancel,
 }) {
@@ -35,6 +36,7 @@ function ConfirmModal({
                         type="button"
                         className="logout-no-button"
                         onClick={onCancel}
+                        disabled={isConfirming}
                     >
                         {cancelText}
                     </button>
@@ -43,6 +45,7 @@ function ConfirmModal({
                         type="button"
                         className="logout-yes-button"
                         onClick={onConfirm}
+                        disabled={isConfirming}
                     >
                         {confirmText}
                     </button>

@@ -1,0 +1,32 @@
+/*
+DT-622 Sprint 8
+Preston Ball
+Modular header text section stylesheet
+*/
+
+.modular-header-text-section {
+  padding: 4rem 1.5rem;
+  background-color: var(--section-bg, #f8fafc);
+  color: var(--section-text, #1e293b);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.modular-header-text-section__inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.modular-header-text-section__title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  color: var(--section-header, #0f172a);
+}
+
+.modular-header-text-section__text {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--section-text, #475569);
+  white-space: pre-line;
+}

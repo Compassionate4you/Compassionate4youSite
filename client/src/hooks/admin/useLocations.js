@@ -1,28 +1,62 @@
 // Add Location handlers
-import { useState } from "react";
+import { useEffect, useState} from "react";
+import {apiGetLocations, apiCreateLocation, apiUpdateLocation} from "../../services/api";
+
+
 
 function useLocations() {
-    const [locations, setLocations] = useState([
-        {
-            id: 1,
-            name: "Main Office",
-            address:  "1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596",
-            phone: "(925) 425-7104",
-            status: "Active",
-        },
-    ]);
+    const [locations, setLocations] = useState([]);
+
+    const [error, setError] = useState(""); //stores an error message if loading locations fail
+
+
+    //Loads locations from the backend when the page first opens
+    useEffect(() => {
+        async function loadLocations() {
+            //Requests all locations form the backend api
+            try {
+                const data = await apiGetLocations();
+            
+            //converts database fields into the format used by the dashboard
+            const formattedLocations = data.locations.map((location) => ({
+                ...location,
+                address: [
+                    location.streetAddress,
+                    location.city,
+                    location.state,
+                    location.zipCode,
+                ].filter(Boolean).join(", "),
+                phone: location.phone || "", 
+                status: location.active === false ? "Inactive" : "Active",
+
+            }));
+
+            //Updates the locations displayed on the dashboard
+            setLocations(formattedLocations);
+
+
+        } catch (err) {
+
+            //saves the error if the request fails
+            setError(err.message);
+            console.error("Failed to load locations:", err);
+        }
+    }
+
+    loadLocations();
+},[]);
 
     const [editingLocationId, setEditingLocationId] =
         useState(null);
 
     const [editForm, setEditForm] = useState({
-        name: "", address: "", phone: "", status: "",
+        name: "", streetAddress: "", phone: "", status: "", city: "", state: "", zipCode: ""
     });
 
     const [showLocationForm, setShowLocationForm] = useState(false);
 
     const [locationForm, setLocationForm] = useState({
-        name: "", address: "", phone: "", status: "", 
+        name: "", streetAddress: "", city: "", state: "", phone: "", status: "", zipCode: "",
     });
 
     // Opens the edit form with an existing Location's information
@@ -30,9 +64,13 @@ function useLocations() {
         setEditingLocationId(location.id);
         setEditForm({
             name: location.name,
-            address: location.address,
-            phone: location.phone,
-            status: location.status,
+            streetAddress: location.streetAddress || "",
+            city: location.city || "",
+            state: location.state || "",
+            zipCode: location.zipCode || "",
+
+            phone: location.phone || "",
+            status: location.status || "",
         });
     };
 
@@ -44,20 +82,49 @@ function useLocations() {
         }));
     };
 
-    // Saves changes made to an existing Location
-    const handleSaveLocation = (id) => {
+// Saves changes to an existing location in the database
+const handleSaveLocation = async (id) => {
+    try {
+        setError("");
+
+        // Sends the updated location information to the backend
+        const data = await apiUpdateLocation(id, {
+            name: editForm.name.trim(),
+            streetAddress: editForm.streetAddress.trim(),
+            city: editForm.city.trim(),
+            state: editForm.state.trim(),
+            zipCode: editForm.zipCode.trim(),
+        });
+
+        // Formats the updated location for the dashboard
+        const updatedLocation = {
+            ...data.location,
+            address: [
+                data.location.streetAddress,
+                data.location.city,
+                data.location.state,
+                data.location.zipCode,
+            ].filter(Boolean).join(", "),
+            phone: data.location.phone || "",
+            status: data.location.active === false ? "Inactive" : "Active",
+        };
+
+        // Updates the displayed location after the database saves successfully
         setLocations((currentLocations) =>
             currentLocations.map((location) =>
-                location.id === id
-                    ? {
-                          ...location,
-                          ...editForm,
-                      }
-                    : location
+                location.id === id ? updatedLocation : location
             )
         );
+
+        // Closes the edit form
         setEditingLocationId(null);
-    };
+
+    } catch (err) {
+        // Displays an error if updating the location fails
+        setError(err.message);
+        console.error("Failed to update location:", err);
+    }
+};
 
     // Closes the edit form without saving changes
     const handleCancelEdit = () => {
@@ -67,7 +134,7 @@ function useLocations() {
     // Clears the Add Location form upon Cancel
     const resetLocationForm = () => {
         setLocationForm({
-            name: "", address: "", phone: "", status: "", 
+            name: "", streetAddress: "", phone: "", status: "", city: "", state: "", zipCode: "", 
         });
     };
 
@@ -93,36 +160,62 @@ function useLocations() {
         setShowLocationForm(false);
     };
 
-    // Adds a temporary Location to React state.
-    const handleAddLocation = (event) => {
-        event.preventDefault();
-        const locationName = locationForm.name.trim();
-        const address = locationForm.address.trim();
-        const phone = locationForm.phone.trim();
-        if (
-            !locationName || !address || !phone || !locationForm.status
-        ) {
-            return;
-        }
+ // Adds a new location to the database
+const handleAddLocation = async (event) => {
+    event.preventDefault();
 
-        const newLocation = {
-            id: Date.now(),
+    // Gets the information entered in the form
+    const locationName = locationForm.name.trim();
+    const streetAddress = locationForm.streetAddress.trim();
+    const city = locationForm.city.trim();
+    const state = locationForm.state.trim();
+    const zipCode = locationForm.zipCode.trim();
+
+    // Makes sure all required database fields are filled out
+    if (!locationName || !streetAddress || !city || !state || !zipCode) {
+        setError("Please fill out all required fields.");
+        return;
+    }
+
+    try {
+        setError("");
+
+        // Sends the new location to the backend and saves it in Supabase
+        const data = await apiCreateLocation({
             name: locationName,
-            address,
-            phone,
-            status: locationForm.status,
+            streetAddress,
+            city,
+            state,
+            zipCode,
+        });
+
+        // Adds the saved location to the dashboard
+        const newLocation = {
+            ...data.location,
+            address: [streetAddress, city, state, zipCode].join(", "),
+            phone: "",
+            status: "Active",
         };
 
         setLocations((currentLocations) => [
             ...currentLocations,
             newLocation,
         ]);
+
+        // Clears and closes the form after saving
         resetLocationForm();
         setShowLocationForm(false);
-    };
+
+    } catch (err) {
+        // Displays an error if saving fails
+        setError(err.message);
+        console.error("Failed to add location:", err);
+    }
+};
 
     return {
         locations,
+        error,
         editingLocationId,
         editForm,
         showLocationForm,
