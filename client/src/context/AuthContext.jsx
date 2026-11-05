@@ -63,6 +63,7 @@ function normalizeRole (role) {
   return String(role || '').toLowerCase() === 'admin' ? 'admin' : 'customer'
 }
 
+// DT-809: keep the account's name and phone too, and show the name when there is one
 function buildUser (apiUser, fallbackEmail) {
   const email = apiUser?.email ?? fallbackEmail ?? ''
   const name = String(apiUser?.name || '').trim()
@@ -71,6 +72,7 @@ function buildUser (apiUser, fallbackEmail) {
     id: apiUser?.id,
     email,
     name,
+    phone: apiUser?.phone ?? '',
     role: normalizeRole(apiUser?.role),
     displayName: name || email
   }

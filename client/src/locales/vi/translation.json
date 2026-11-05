@@ -215,8 +215,8 @@
   },
   "portal": {
     "title": "Cổng thông tin khách hàng",
-    "welcome": "Chào mừng, John Doe",
-    "welcomeBanner": "Chào mừng quay lại, John Doe!",
+    "welcome": "Chào mừng, {{name}}",
+    "welcomeBanner": "Chào mừng quay lại, {{name}}!",
     "welcomeSubtitle": "Quản lý lịch hẹn và thông tin chăm sóc sức khỏe của quý vị",
     "scheduleCard": "Đặt lịch hẹn",
     "scheduleCardDesc": "Đặt lịch hẹn chăm sóc sức khỏe tại nhà hoặc chăm sóc cuối đời mới",
