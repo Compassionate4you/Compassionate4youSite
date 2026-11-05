@@ -1,5 +1,7 @@
 import SectionHeading, { useSectionTitleId } from './SectionHeading'
-import '../../../styles/section-layouts.css'
+// DT-902: Load the shared foundation and this layout's styles.
+import '../../../styles/components/modular/sections/SectionShared.css'
+import '../../../styles/components/modular/sections/HeaderStackSection.css'
 
 /** Items: { id, title, description }[]. columns: 1 (default) | 2. */
 export default function HeaderStackSection ({ title, subtitle, label, items = [], columns = 1 }) {

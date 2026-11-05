@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Heart, HeartHandshake, Users } from 'lucide-react'
+import BannerSection, { getWelcomeBannerIcon } from '../components/modular/sections/BannerSection'
 import { HeaderCardsSection, HeaderStackSection, TimelineSection } from '../components/modular/sections'
 import english from '../locales/en/translation.json'
 import careImage from '../assets/images/CareImage1.jpeg'
 import '../styles/global.css'
 // Include existing styles to expose accidental interactions in this isolated preview.
 import '../styles/card-sections.css'
-import '../styles/HospicePage.css'
 import '../styles/responsive.css'
-import '../styles/section-layouts.css'
+// DT-902: Layout components load their own styles; banners are previewed directly.
+import '../styles/components/modular/sections/BannerSection.css'
 import './section-layouts-preview.css'
 
 // DT-861: Welcome examples share the site copy with distinct decorative icons.
 const welcomeSections = [
-  { id: 'about', title: english.landing.aboutTitle, description: english.landing.aboutText, Icon: Users },
-  { id: 'caring', title: english.landing.caringSinceTitle, description: english.landing.caringSinceText, Icon: HeartHandshake },
-  { id: 'philosophy', title: english.landing.philosophyTitle, description: english.landing.philosophyText, Icon: Heart }
+  { id: 'about', title: english.landing.aboutTitle, description: english.landing.aboutText, Icon: getWelcomeBannerIcon('welcome-about') },
+  { id: 'caring', title: english.landing.caringSinceTitle, description: english.landing.caringSinceText, Icon: getWelcomeBannerIcon('welcome-caring-since') },
+  { id: 'philosophy', title: english.landing.philosophyTitle, description: english.landing.philosophyText, Icon: getWelcomeBannerIcon('welcome-philosophy') }
 ]
 
 const advantages = [
@@ -45,6 +45,7 @@ const steps = [
   { id: 'review', title: 'Review', description: 'The care team reviews the plan as needs change.' }
 ]
 
+// DT-902: Reuse the live banner component in the preview.
 // DT-861: Display the Welcome banner examples alongside the existing DT-743 layouts.
 function SectionLayoutsPreview () {
   const [headerPosition, setHeaderPosition] = useState('left')
@@ -78,15 +79,7 @@ function SectionLayoutsPreview () {
       {/* DT-861: Centered Welcome panels matching the icon-and-divider reference. */}
       <div className='c4-welcome-banners'>
         {welcomeSections.map(({ id, title, description, Icon }) => (
-          <section className='c4-welcome-banner' aria-labelledby={`welcome-${id}-title`} key={id}>
-            <div className='c4-welcome-banner__ornament' aria-hidden='true'>
-              <span className='c4-welcome-banner__badge'>
-                <Icon focusable='false' strokeWidth={1.6} />
-              </span>
-            </div>
-            <h2 className='c4-welcome-banner__title' id={`welcome-${id}-title`}>{title}</h2>
-            <p className='c4-welcome-banner__description'>{description}</p>
-          </section>
+          <BannerSection key={id} title={title} description={description} Icon={Icon} />
         ))}
       </div>
       <HeaderCardsSection

@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import SectionHeading, { useSectionTitleId } from './SectionHeading'
 import SectionIcon from './SectionIcon'
-import '../../../styles/section-layouts.css'
+// DT-902: Load the shared foundation and this layout's styles.
+import '../../../styles/components/modular/sections/SectionShared.css'
+import '../../../styles/components/modular/sections/HeaderCardsSection.css'
 
 /**
  * Presentation only. Items: { id, title?, description, iconName? }[].

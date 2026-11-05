@@ -3,12 +3,14 @@
 // Modular card section layout loading cards from database via CardStorageService
 
 import { useTranslation } from 'react-i18next'
+import { getWelcomeBannerIcon } from './BannerSection'
 import ModularCard from '../cards/ModularCard'
 import { CardStorageService } from '../../../services/cardStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 import { pickText } from '../cards/CardBase'
 import '../../../styles/components/modular/sections/CardSection.css'
 
+// DT-902: Recognized Welcome text cards share the full banner presentation.
 export default function CardSection ({
   config,
   content = {},
@@ -50,8 +52,10 @@ export default function CardSection ({
     return null
   }
 
+  const hasParagraphCards = resolvedCards.some(card => ['HEADER_PARAGRAPH', 'HEADER_TEXT_BOX'].includes(card.layout || card.layoutType || 'HEADER_PARAGRAPH'))
+  const BannerIcon = hasParagraphCards ? getWelcomeBannerIcon(slug, sectionId, activeConfig.slug, activeConfig.id) : undefined
   const columns = Number(data.gridCols || data.columns || 3)
-  const sectionClassName = ['card-section', className].filter(Boolean).join(' ')
+  const sectionClassName = ['card-section', BannerIcon ? 'card-section--banners' : '', className].filter(Boolean).join(' ')
   const headerTypo = data.typography?.header || {}
   const headerStyle = {
     textAlign: headerTypo.align || undefined,
@@ -62,13 +66,14 @@ export default function CardSection ({
 
   return (
     <section className={sectionClassName} style={style} aria-label={title || undefined}>
-      {title && <h2 className="card-section__title" style={headerStyle}>{title}</h2>}
-      <div className="card-grid" style={{ '--card-columns': Math.min(Math.max(columns, 1), 4) }}>
+      {title && <h2 className='card-section__title' style={headerStyle}>{title}</h2>}
+      <div className='card-grid' style={{ '--card-columns': Math.min(Math.max(columns, 1), 4) }}>
         {resolvedCards.map((card, index) => (
           <ModularCard
             key={card.id || `card-${index}`}
             card={card}
             theme={theme}
+            BannerIcon={BannerIcon}
           />
         ))}
       </div>

@@ -9,9 +9,11 @@ import { SectionStorageService } from '../services/sectionStorageService'
 import { CardStorageService } from '../services/cardStorageService'
 import { ColorConfigService } from '../services/colorConfigService'
 import DynamicSectionRenderer from '../components/modular/DynamicSectionRenderer'
+import HospiceSections from '../components/modular/HospiceSections'
 import NotFoundPage from './NotFoundPage'
 import '../styles/contentpage.css'
 
+// DT-732: Route Hospice sections through the new stack/cards presentation adapter.
 export default function ContentPage ({ defaultPageId }) {
   const params = useParams()
   const rawPageId = params.pageId || defaultPageId || 'landing'
@@ -92,7 +94,7 @@ export default function ContentPage ({ defaultPageId }) {
       {/* DT-622 Sprint 8 - Preston Ball: Render all configured modular sections */}
       <div className="content-page-sections">
         {resolvedSections.length > 0 ? (
-          resolvedSections.map((sec) => (
+          normalizedPageId === 'hospice' ? <HospiceSections sections={resolvedSections} theme='light' /> : resolvedSections.map((sec) => (
             <DynamicSectionRenderer
               key={sec.id}
               config={sec}

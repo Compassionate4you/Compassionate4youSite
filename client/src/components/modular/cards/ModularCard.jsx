@@ -4,12 +4,14 @@
 
 import { useTranslation } from 'react-i18next'
 import { pickText } from './CardBase'
+import BannerSection from '../sections/BannerSection'
 import ImageCard from './ImageCard'
 import HeaderParagraphCard from './HeaderParagraphCard'
 import HeaderSymbolCard from './HeaderSymbolCard'
 import { ColorConfigService } from '../../../services/colorConfigService'
 
-export default function ModularCard ({ card, theme = 'light' }) {
+// DT-902: Welcome paragraph cards can render the shared banner without changing other layouts.
+export default function ModularCard ({ card, theme = 'light', BannerIcon }) {
   const { i18n } = useTranslation()
   if (!card) return null
 
@@ -43,6 +45,20 @@ export default function ModularCard ({ card, theme = 'light' }) {
   }
 
   const layout = card.layout || card.layoutType || 'HEADER_PARAGRAPH'
+
+  // DT-902: Restrict banners to paragraph cards within recognized Welcome sections.
+  if (BannerIcon && ['HEADER_PARAGRAPH', 'HEADER_TEXT_BOX'].includes(layout)) {
+    return (
+      <BannerSection
+        title={commonProps.header}
+        description={commonProps.paragraph}
+        Icon={BannerIcon}
+        typography={commonProps.typography}
+        style={commonProps.style}
+        formatBody
+      />
+    )
+  }
 
   switch (layout) {
     case 'IMAGE_FULL_WIDTH':
