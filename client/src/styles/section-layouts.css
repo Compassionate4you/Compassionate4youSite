@@ -3,6 +3,7 @@
   display: grid;
   gap: clamp(20px, 3vw, 40px);
   padding: clamp(16px, 2vw, 32px);
+
 }
 
 .c4-welcome-banner,
