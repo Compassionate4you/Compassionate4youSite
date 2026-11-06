@@ -23,7 +23,10 @@ export default function ContentPage ({ defaultPageId }) {
   const rawPageId = params.pageId || defaultPageId || 'landing'
 
   // DT-622 Sprint 8 - Preston Ball: Normalize aliases (e.g., home-health to homeHealth)
-  const normalizedPageId = rawPageId === 'home-health' ? 'homeHealth' : rawPageId
+  // DT-902: The application opens /welcome; all Welcome aliases use the same presentation.
+  const normalizedPageId = ['welcome', 'landing', 'home'].includes(rawPageId)
+    ? 'landing'
+    : (rawPageId === 'home-health' ? 'homeHealth' : rawPageId)
 
   const [pages, setPages] = useState(PageStorageService.getPages())
   const [loading, setLoading] = useState(true)
@@ -61,7 +64,11 @@ export default function ContentPage ({ defaultPageId }) {
     }
   }, [normalizedPageId])
 
-  const currentPage = pages.find((p) => p.id === normalizedPageId || p.id === rawPageId)
+  // DT-902: Prefer the requested CMS record before falling back to a compatible Welcome alias.
+  const pageCandidates = normalizedPageId === 'landing'
+    ? [rawPageId, 'landing', 'welcome', 'home']
+    : [rawPageId, normalizedPageId]
+  const currentPage = pageCandidates.map(id => pages.find(page => page.id === id)).find(Boolean)
 
   useEffect(() => {
     if (currentPage?.content?.title) {
