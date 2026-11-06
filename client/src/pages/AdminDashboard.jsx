@@ -62,18 +62,17 @@ const AdminDashboard = () => {
         handleCancelAppointment,
     } = useAppointments();
     
-    //For Add Account
+    //For Updating Accounts
     const {
         showAccountForm,
         editingAccountId,
         accountPendingDelete,
         accounts,
         accountForm,
-        handleOpenAddAccount,
+        handleUpdateAccount,
         handleCancelAccount,
         handleAccountInputChange,
         formatAccountBirthdate,
-        handleAddAccount,
         handleEditAccount,
         handleDeleteAccount,
         handleCancelDeleteAccount,
@@ -141,12 +140,10 @@ const AdminDashboard = () => {
                 {tab === "accounts" && (
                     <AccountsTab
                         showAccountForm={showAccountForm}
-                        editingAccountId={editingAccountId}
                         accountForm={accountForm}
                         accounts={accounts}
-                        onOpenAddAccount={handleOpenAddAccount}
                         onAccountInputChange={handleAccountInputChange}
-                        onSubmitAccount={handleAddAccount}
+                        onSubmitAccount={handleUpdateAccount}
                         onCancelAccount={handleCancelAccount}
                         onEditAccount={handleEditAccount}
                         onDeleteAccount={handleDeleteAccount}

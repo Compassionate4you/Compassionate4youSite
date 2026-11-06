@@ -78,6 +78,20 @@ model Appointment {
   @@map("appointments")
 }
 
+// Stores capacity exceptions for individual future dates.
+// Dates without an override use the default capacity of 2.
+model AppointmentCapacityOverride {
+  id       String @id @default(uuid())
+  date     String @unique
+  capacity Int
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([date])
+  @@map("appointment_capacity_overrides")
+}
+
 // DT-397: chatbot history. userId is a plain string rather than a relation so
 // it can be linked to User once accounts and chat sessions are tied together.
 model ChatSession {

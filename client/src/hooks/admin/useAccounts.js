@@ -61,13 +61,6 @@ function useAccounts() {
         });
     };
 
-    // Opens an empty form for a new Account.
-    const handleOpenAddAccount = () => {
-        resetAccountForm();
-        setEditingAccountId(null);
-        setShowAccountForm(true);
-    };
-
     // Discards form changes and returns to the table.
     const handleCancelAccount = () => {
         resetAccountForm();
@@ -95,63 +88,57 @@ function useAccounts() {
         });
     };
 
-    // Adds a new Account or saves changes to an existing Account.
-    const handleAddAccount = async (event) => {
+    // Saves changes to an existing account.
+    const handleUpdateAccount = async (event) => {
         event.preventDefault();
+
+        if (editingAccountId === null) {
+            return;
+        }
+
         const accountName = accountForm.name.trim();
-        const accountEmail =
-            accountForm.email.trim().toLowerCase();
+        const accountEmail = accountForm.email.trim().toLowerCase();
+
         if (
             !accountName ||
-            //!accountForm.birthdate ||
             !accountEmail ||
             !accountForm.role ||
             !accountForm.status
         ) {
             return;
         }
-        if (editingAccountId !== null) {
 
-            try {
-                //Convert dashboard values to database values
-                const updateData = {
-                    name: accountName,
-                    email: accountEmail,
-                    role: accountForm.role.toLowerCase(),
-                    accountStatus: accountForm.status.toLowerCase(),
-                };
+        try {
+            const updateData = {
+                name: accountName,
+                email: accountEmail,
+                role: accountForm.role.toLowerCase(),
+                accountStatus: accountForm.status.toLowerCase(),
+            };
 
-                //save changes to supabase before updating the dashboard
-                await apiUpdateAccount(editingAccountId, updateData);
-            
-
+            await apiUpdateAccount(editingAccountId, updateData);
 
             setAccounts((currentAccounts) =>
                 currentAccounts.map((account) =>
                     account.id === editingAccountId
                         ? {
-                              ...account,
-                              name: accountName,
-                              birthdate: accountForm.birthdate,
-                              email: accountEmail,
-                              role: accountForm.role,
-                              status: accountForm.status,
-                          }
+                            ...account,
+                            name: accountName,
+                            birthdate: accountForm.birthdate,
+                            email: accountEmail,
+                            role: accountForm.role,
+                            status: accountForm.status,
+                        }
                         : account
                 )
             );
-        }catch (err) {
-            //show an error if saving to supabase fails
+
+            resetAccountForm();
+            setEditingAccountId(null);
+            setShowAccountForm(false);
+        } catch (err) {
             console.error("Failed to update account:", err);
-            return;
         }
-        } else {
-            console.error("Creating account is not supported here.");
-            return;
-        }
-        resetAccountForm();
-        setEditingAccountId(null);
-        setShowAccountForm(false);
     };
 
     // Opens the form with an existing Account's information
@@ -206,11 +193,10 @@ function useAccounts() {
         accountPendingDelete,
         accounts,
         accountForm,
-        handleOpenAddAccount,
+        handleUpdateAccount,
         handleCancelAccount,
         handleAccountInputChange,
         formatAccountBirthdate,
-        handleAddAccount,
         handleEditAccount,
         handleDeleteAccount,
         handleCancelDeleteAccount,
