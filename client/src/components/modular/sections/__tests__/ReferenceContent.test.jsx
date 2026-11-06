@@ -41,7 +41,8 @@ describe('Sprint 08 reference content', () => {
     let cursor = 0
     let previousText = ''
     for (const block of reference[name]) {
-      const text = normalize(block.text)
+      // DT-902: The user-facing Home name is now Welcome; preserve the original fixture.
+      const text = normalize(block.text === 'Back to Home' ? 'Back to Welcome' : block.text)
       if (text === previousText) continue
       const position = fullText.indexOf(text, cursor)
       expect(position, `${name}: ${block.text}`).toBeGreaterThanOrEqual(cursor)
@@ -62,7 +63,7 @@ describe('Sprint 08 reference content', () => {
     expect(container.querySelector('.card-section, .card-grid')).toBeNull()
     const scheduleLinks = screen.queryAllByRole('link').filter(link => link.getAttribute('href') === '/schedule')
     expect(scheduleLinks).toHaveLength(name === 'Welcome' ? 0 : 2)
-    if (name !== 'Welcome') expect(screen.getByRole('link', { name: 'Back to Home' })).toHaveAttribute('href', '/')
+    if (name !== 'Welcome') expect(screen.getByRole('link', { name: 'Back to Welcome' })).toHaveAttribute('href', '/welcome')
     if (name === 'Welcome') {
       expect(screen.getByRole('region', { name: en.landing.heroTitle })).toHaveClass('c4-welcome-hero')
       expect(screen.getByRole('link', { name: 'Get Directions' })).toHaveAttribute('href', expect.stringContaining('destination=1501'))

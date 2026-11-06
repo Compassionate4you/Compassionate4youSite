@@ -134,3 +134,37 @@ Files modified: `client/src/pages/ContentPage.jsx`, `client/src/components/modul
 Validation: seven focused test files passed, 41 tests total. New integration tests mount the real ContentPage and Welcome adapter for all three aliases with landing-only and renamed-welcome records, both known hero identifiers, exact-record precedence, one H1, the bundled photo, language control, and absence of the old CTA. Targeted Standard checks and the production build passed; existing dependency/chunk warnings remain.
 
 Full-application Chrome checks used the normal app entry, router, navigation, global stylesheet imports, and temporary intercepted read-only CMS responses containing a `welcome` record and seeded section IDs. At 1440 and 390px, `/`, `/welcome`, `/landing`, and `/home` all displayed the intended hero with one H1, a loaded photo, no hero scheduling action, and no horizontal overflow. `/` correctly redirected to `/welcome`. Changing the hero selector to Spanish updated the title, accessibility-panel selector, and document language together. Desktop/mobile full-route screenshots were inspected against the supplied target. The backend database was untouched, and the temporary Vite/Chrome processes were stopped afterward.
+
+## Public-page dark mode, complete translations, and Welcome naming
+
+ContentPage now reads the active AccessibilityContext theme instead of passing `light` to every renderer. Public adapters and generic sections receive the active value. Known-page browser titles follow the active language.
+
+ContentPageTheme.css supplies light/dark surface, raised surface, input, text, heading, border, muted, accent, and feedback tokens scoped to the three public page adapters. ContactFormSection, MapSection, and FAQSection use those tokens as fallbacks while preserving explicit CMS color overrides. Inputs, placeholders, focus rings, validation errors, success/failure messages, addresses, directions, expanded FAQ answers, and icons remain readable. The audit also corrected pale HeaderCards surfaces with white text, HeaderStack title strips, and the default informational ImageCard surfaces in dark mode. Approved hero designs and photos remain unchanged. The embedded map provider controls the map imagery; its surrounding interface follows the site theme.
+
+Added missing Home Health and FAQ content for Hindi, Punjabi, and Urdu, plus missing contact-form validation and status messages for Urdu, Mandarin, and Vietnamese. Existing English strings incorrectly stored in Urdu Hospice/service fields were translated, including list items, descriptions, support services, and care-process steps. Existing equivalent localized Hospice paragraphs supply the newly completed FAQ answers. All seven supported locales now contain the full shape of the public landing/homeHealth/homeHealthPage/hospice/faq/locations/accessibility/nav/footer namespaces. This supersedes the earlier English-fallback limitation documented for DT-731 and the earlier restoration.
+
+The known Home page is displayed as Welcome throughout navigation, browser titles, footer links, and return actions, using localized labels. Known Home Health/Hospice navigation labels are translated instead of exposing the English CMS title. Custom CMS page titles are preserved. Legacy Welcome alias records collapse into one navigation link, with `/welcome` as the destination and active-link support for `/`, `/home`, and `/landing`. Existing URLs and CMS IDs/data are unchanged.
+
+The Urdu audit found that the closed accessibility panel's direction-change transition briefly crossed the visible page. An aria-hidden panel is now visually hidden and ignores pointer events, while the normal open-panel behavior remains intact.
+
+### Additional files modified
+
+- `client/src/pages/ContentPage.jsx`: active-theme forwarding, scoped public-page theme class, and localized browser title.
+- `client/src/services/contentPageLabels.js`: known-page labels and Welcome alias recognition.
+- `client/src/components/layout/{Navbar,Footer}.jsx` and `client/src/components/modular/sections/PageCallToAction.jsx`: translated naming, alias deduplication, and canonical Welcome links.
+- `client/src/components/modular/WelcomeSections.jsx`: localized map iframe title.
+- `client/src/styles/ContentPageTheme.css`, `client/src/styles/components/modular/sections/{ContactFormSection,MapSection,FAQSection}.css`, and `client/src/styles/components/modular/cards/ImageCard.css`: public theme tokens and surface/text fallbacks.
+- `client/src/components/accessibility/styles/accessibility.css`: prevent hidden-panel flashes during language-direction changes.
+- `client/src/locales/{en,es,pa,ur,zh,vi,hi}/translation.json`: complete public copy, navigation controls, and Welcome return labels. JSON files retain valid JSON syntax; story attribution is recorded here because JSON has no comment syntax.
+- `client/src/components/modular/sections/__tests__/PublicPageTranslations.test.jsx`: every-locale key/array coverage, copied-English regression checks, and translated known-page labels.
+- Existing ContentPageLayouts, ContentPageWelcome, and ReferenceContent tests: dark-theme forwarding, Welcome browser title, and the explicitly renamed return action. The original HTML content fixture remains unchanged.
+
+### Validation
+
+- Nine focused test files passed, 73 tests total: translation coverage, both ContentPage suites, reference content, Home Health, Hospice, HeroSection, shared layouts, and contact-form regression tests.
+- Targeted Standard checks passed for the new label helper, modified public adapters/action, translation/reference tests, and ContentPage tests. Navbar retains its existing JSX quote/format conventions rather than applying unrelated whole-file formatting changes.
+- Production build passed with the existing dependency directive, dynamic-import, and bundle-size warnings. `git diff --check` passed.
+- Full-application Chrome checks with temporary read-only CMS fixtures covered 84 combinations: three pages × seven languages × two themes × desktop/mobile widths (1440/390px). All language changes updated the document language, no public-page horizontal overflow occurred, all local page images loaded, and the desktop navbar contained one Welcome link even with duplicate alias records.
+- Dark Contact, Map, and FAQ computed backgrounds were rgb(31,36,34), with rgb(240,242,238) contact/FAQ text. Dark inputs used rgb(32,39,35), with readable rgb(180,189,183) placeholders. Light surfaces retained white backgrounds and dark text. FAQ expansion and input focus were exercised in both modes.
+- Inspected dark contact-form and Urdu mobile screenshots after correcting the closed-panel visibility issue. The hero language control, accessibility selector, document direction, page content, and translated browser titles responded together. Native map tiles retain provider styling.
+- Browser fixtures were intercepted only in a temporary Chrome profile. No backend writes, migrations, or reseeding were performed; the temporary Vite and Chrome sessions were stopped after verification.

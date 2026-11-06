@@ -1,6 +1,6 @@
 {
   "nav": {
-    "welcome": "Bienvenido",
+    "welcome": "Bienvenida",
     "homeHealth": "Salud en Casa",
     "hospice": "Hospicio",
     "locations": "Ubicaciones",
@@ -10,7 +10,11 @@
     "admin": "Administrador",
     "logout": "Cerrar Sesión",
     "dashboard": "Panel De Usuario",
-    "home": "Inicio"
+    "home": "Bienvenida",
+    "menu": "Menú",
+    "close": "Cerrar",
+    "morePages": "Más páginas",
+    "mainNavigation": "Navegación principal"
   },
   "landing": {
     "heroTitle": "Cuidado compasivo para sus seres queridos",
@@ -208,7 +212,7 @@
       "title": "Estamos aquí para ayudar",
       "description": "Nuestro compasivo equipo de cuidados paliativos está disponible las 24 horas del día, los 7 días de la semana, para responder a sus preguntas y brindarle apoyo.",
       "contactButton": "Contacta con nosotros hoy",
-      "homeButton": "Volver al inicio"
+      "homeButton": "Volver a Bienvenida"
     }
   },
   "homeHealth": {
@@ -655,7 +659,7 @@
     "ctaTitle": "Comience hoy su atención de salud en casa",
     "ctaDescription": "Permítanos ayudarle a usted o a su ser querido a recibir la atención de calidad que merece en la comodidad de su hogar.",
     "ctaSchedule": "Programar una cita",
-    "ctaBack": "Volver al inicio"
+    "ctaBack": "Volver a Bienvenida"
   },
   "faq": {
     "title": "Preguntas frecuentes",

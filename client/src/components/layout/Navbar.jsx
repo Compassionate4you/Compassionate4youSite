@@ -7,11 +7,13 @@ import './styles/NavBar.css'
 import logo from '../../assets/images/CompassionateLogo.jpeg'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { getContentPageLabel, isWelcomePage } from '../../services/contentPageLabels'
 import { PageStorageService } from '../../services/pageStorageService'
 import { useAuth } from '../../context/AuthContext'
 
+// DT-902: Translate public page labels and show one Welcome link for legacy aliases.
 function Navbar () {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   // DT-848: get the real signed-in state from AuthContext
@@ -112,7 +114,8 @@ function Navbar () {
       const orderB = typeof b.content?.order === 'number' ? b.content.order : 999
       return orderA - orderB
     })
-    .filter((p) => p.id !== 'landing')
+    // DT-902: Keep one Welcome link even when multiple legacy alias records coexist.
+    .filter((page, index, all) => !isWelcomePage(page.id) || all.findIndex(item => isWelcomePage(item.id)) === index)
 
   // DT-625 Sprint 8 - Preston Ball: Calculate responsive thresholds
   const isMobile = viewportWidth < 720
@@ -128,20 +131,23 @@ function Navbar () {
   const overflowPages = contentPages.slice(maxVisibleContentPages)
   const showDropdown = !isMobile && (overflowPages.length > 0 || collapseSecondaryToDropdown)
 
+  // DT-902: Welcome links use the canonical path; aliases remain compatible.
   function getPageRoute (pageId) {
+    if (isWelcomePage(pageId)) return '/welcome'
     if (pageId === 'homeHealth') return '/home-health'
     if (pageId === 'hospice') return '/hospice'
     // DT-622 Sprint 8 - Preston Ball: Temporary /content/:pageId routing scheme for dynamic pages
     return `/${pageId}`
   }
 
-  const navAriaLabel = i18n.language.startsWith('es')
-    ? 'Navegación principal'
-    : i18n.language.startsWith('ur')
-      ? 'مرکزی نیویگیشن'
-      : i18n.language.startsWith('pa')
-        ? 'ਮੁੱਖ ਨੈਵੀਗੇਸ਼ਨ'
-        : 'Main navigation'
+  // DT-902: Keep Welcome highlighted on every compatible legacy URL.
+  function isPageCurrent (pageId, route) {
+    return isWelcomePage(pageId)
+      ? ['/', '/welcome', '/home', '/landing'].includes(location.pathname)
+      : location.pathname === route || location.pathname === `/${pageId}`
+  }
+
+  const navAriaLabel = t('nav.mainNavigation')
 
   return (
     <nav className="navbar" ref={navRef} aria-label={navAriaLabel}>
@@ -185,7 +191,7 @@ function Navbar () {
               </li> */}
               {contentPages.map((page) => {
                 const route = getPageRoute(page.id)
-                const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
+                const isCurrent = isPageCurrent(page.id, route)
                 return (
                   <li key={page.id} role="none">
                     <Link
@@ -194,7 +200,7 @@ function Navbar () {
                       aria-current={isCurrent ? 'page' : undefined}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {page.content?.title || page.id}
+                      {getContentPageLabel(page, t)}
                     </Link>
                   </li>
                 )
@@ -258,11 +264,11 @@ function Navbar () {
           {/* DT-622 DT-625 Sprint 8 - Preston Ball: Dynamically display visible content pages */}
           {visiblePages.map((page) => {
             const route = getPageRoute(page.id)
-            const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
+            const isCurrent = isPageCurrent(page.id, route)
             return (
               <li key={page.id}>
                 <Link to={route} aria-current={isCurrent ? 'page' : undefined}>
-                  {page.content?.title || page.id}
+                  {getContentPageLabel(page, t)}
                 </Link>
               </li>
             )
@@ -316,7 +322,7 @@ function Navbar () {
                 <ul className="nav-dropdown-menu" role="menu">
                   {overflowPages.map((page) => {
                     const route = getPageRoute(page.id)
-                    const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
+                    const isCurrent = isPageCurrent(page.id, route)
                     return (
                       <li key={page.id} className="nav-dropdown-item" role="none">
                         <Link
@@ -325,7 +331,7 @@ function Navbar () {
                           aria-current={isCurrent ? 'page' : undefined}
                           onClick={() => setDropdownOpen(false)}
                         >
-                          {page.content?.title || page.id}
+                          {getContentPageLabel(page, t)}
                         </Link>
                       </li>
                     )

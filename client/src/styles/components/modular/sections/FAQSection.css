@@ -1,3 +1,4 @@
+/* DT-902: Inherit the public page theme while honoring explicit CMS color overrides. */
 /*
 DT-622 Sprint 8
 Preston Ball
@@ -5,8 +6,8 @@ Modular FAQ accordion section stylesheet
 */
 
 .faq-section {
-  background: var(--section-bg, #ffffff);
-  color: var(--section-text, #1e293b);
+  background: var(--section-bg, var(--public-surface, #ffffff));
+  color: var(--section-text, var(--public-text, #1e293b));
   padding: 5rem 1.5rem;
   font-family: inherit;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -21,7 +22,7 @@ Modular FAQ accordion section stylesheet
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   text-align: center;
-  color: var(--section-header, #0f172a);
+  color: var(--section-header, var(--public-heading, #0f172a));
   margin-bottom: 2.5rem;
   letter-spacing: -0.02em;
 }
@@ -39,27 +40,27 @@ Modular FAQ accordion section stylesheet
   padding: 1.25rem 0.25rem;
   background: transparent;
   border: none;
-  text-align: left;
+  text-align: start;
   font-family: inherit;
   font-size: 1.15rem;
   font-weight: 600;
-  color: var(--section-header, #0f172a);
+  color: var(--section-header, var(--public-heading, #0f172a));
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .faq-item__question:hover {
-  color: var(--section-accent, #366454);
+  color: var(--section-accent, var(--public-accent, #366454));
 }
 
 .faq-item__question:focus-visible {
-  outline: 2px solid var(--section-accent, #366454);
+  outline: 2px solid var(--section-accent, var(--public-accent, #366454));
   outline-offset: 2px;
 }
 
 .faq-item__icon {
   flex-shrink: 0;
-  color: var(--section-accent, #366454);
+  color: var(--section-accent, var(--public-accent, #366454));
   transition: transform 0.2s ease;
 }
 
@@ -83,7 +84,7 @@ Modular FAQ accordion section stylesheet
 
 .faq-item__answer {
   margin: 0 0.25rem 1.5rem;
-  color: var(--section-text, #4b5563);
+  color: var(--section-text, var(--public-text, #4b5563));
   font-size: 1.05rem;
   line-height: 1.7;
 }

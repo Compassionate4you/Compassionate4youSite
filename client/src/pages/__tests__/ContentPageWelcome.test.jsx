@@ -8,6 +8,9 @@ import { PageStorageService } from '../../services/pageStorageService'
 import { SectionStorageService } from '../../services/sectionStorageService'
 import en from '../../locales/en/translation.json'
 
+// DT-902: Exercise theme propagation without depending on the app-level provider.
+vi.mock('../../context/AccessibilityContext', () => ({ useAccessibility: () => ({ theme: 'dark' }) }))
+
 vi.unmock('react-i18next')
 vi.mock('../../services/pageStorageService', () => ({
   PageStorageService: {
@@ -46,6 +49,7 @@ describe('Welcome ContentPage integration', () => {
     const { container } = await show(route)
     expect(await screen.findByRole('heading', { name: en.landing.heroTitle })).toBeVisible()
     expect(container.querySelector('.c4-welcome-hero')).toBeInTheDocument()
+    expect(document.title).toBe('Welcome | Compassionate Care')
     expect(container.querySelectorAll('h1')).toHaveLength(1)
     expect(screen.queryByRole('heading', { name: 'Home' })).toBeNull()
     expect(screen.getByRole('img', { name: en.landing.heroImageAlt }).getAttribute('src')).toContain('CareImage1')

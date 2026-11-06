@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import './styles/footer.css';
 import { useLocation } from "react-router-dom";
 
+// DT-902: Use the translated Welcome label and canonical destination.
 function Footer() {
     const { t } = useTranslation();
     const location = useLocation();
@@ -24,7 +25,7 @@ function Footer() {
           <div>
             <h4 className='footer__subheading'>{t('footer.quickLinks')}</h4>
             <ul className='footer__links'>
-              <li><a href='/' className='footer__link'>{t('nav.home')}</a></li>
+              <li><a href='/welcome' className='footer__link'>{t('nav.welcome')}</a></li>
               <li><a href='/home-health' className='footer__link'>{t('nav.homeHealth')}</a></li>
               <li><a href='/hospice' className='footer__link'>{t('nav.hospice')}</a></li>
               <li><a href='/schedule' className='footer__link'>{t('nav.schedule')}</a></li>

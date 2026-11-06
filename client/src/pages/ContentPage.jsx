@@ -14,11 +14,18 @@ import HomeHealthSections from '../components/modular/HomeHealthSections'
 import WelcomeSections from '../components/modular/WelcomeSections'
 import NotFoundPage from './NotFoundPage'
 import '../styles/contentpage.css'
+import '../styles/ContentPageTheme.css'
+import { useTranslation } from 'react-i18next'
+import { useAccessibility } from '../context/AccessibilityContext'
+import { getContentPageLabel } from '../services/contentPageLabels'
 
 // DT-732: Route Hospice sections through the new stack/cards presentation adapter.
 // DT-731: Route Home Health sections through translated screenshot layouts.
 // DT-902: Use the reference-content adapters without duplicate page/hero headings.
 export default function ContentPage ({ defaultPageId }) {
+  // DT-902: Share the active theme and translated page title with all section renderers.
+  const { theme } = useAccessibility()
+  const { t } = useTranslation()
   const params = useParams()
   const rawPageId = params.pageId || defaultPageId || 'landing'
 
@@ -72,9 +79,9 @@ export default function ContentPage ({ defaultPageId }) {
 
   useEffect(() => {
     if (currentPage?.content?.title) {
-      document.title = `${currentPage.content.title} | Compassionate Care`
+      document.title = `${getContentPageLabel(currentPage, t)} | Compassionate Care`
     }
-  }, [currentPage])
+  }, [currentPage, t])
 
   if (loading) {
     return (
@@ -99,7 +106,7 @@ export default function ContentPage ({ defaultPageId }) {
     : (normalizedPageId === 'hospice' ? HospiceSections : (normalizedPageId === 'landing' ? WelcomeSections : null))
 
   return (
-    <main id="main-content" className="content-page">
+    <main id="main-content" className={`content-page${PageSections ? ' content-page--standard' : ''}`}>
       {/* DT-622 Sprint 8 - Preston Ball: Render page header if not landing */}
       {!PageSections && normalizedPageId !== 'landing' && (
         <div className="content-page-hero">
@@ -110,11 +117,11 @@ export default function ContentPage ({ defaultPageId }) {
       {/* DT-622 Sprint 8 - Preston Ball: Render all configured modular sections */}
       <div className="content-page-sections">
         {resolvedSections.length > 0 ? (
-          PageSections ? <PageSections sections={resolvedSections} theme='light' /> : resolvedSections.map((sec) => (
+          PageSections ? <PageSections sections={resolvedSections} theme={theme} /> : resolvedSections.map((sec) => (
             <DynamicSectionRenderer
               key={sec.id}
               config={sec}
-              theme="light"
+              theme={theme}
             />
           ))
         ) : (

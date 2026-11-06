@@ -2,7 +2,7 @@
   "nav": {
     "welcome": "Welcome",
     "homeHealth": "Home Health",
-    "hospice": "Hospice",
+    "hospice": "Hospice Care",
     "locations": "Locations",
     "schedule": "Schedule",
     "login": "Login",
@@ -10,7 +10,11 @@
     "admin": "Admin",
     "logout": "Logout",
     "dashboard": "User Dashboard",
-    "home": "Home"
+    "home": "Welcome",
+    "menu": "Menu",
+    "close": "Close",
+    "morePages": "More pages",
+    "mainNavigation": "Main navigation"
   },
   "landing": {
     "heroTitle": "Compassionate Care for Your Loved Ones",
@@ -231,7 +235,7 @@
       "title": "We're Here to Help",
       "description": "Our compassionate hospice team is available 24/7 to answer your questions and provide support.",
       "contactButton": "Contact Us Today",
-      "homeButton": "Back to Home"
+      "homeButton": "Back to Welcome"
     }
   },
   "locations": {
@@ -656,7 +660,7 @@
     "ctaTitle": "Start Your Home Health Care Today",
     "ctaDescription": "Let us help you or your loved one receive the quality care you deserve in the comfort of your home.",
     "ctaSchedule": "Schedule Appointment",
-    "ctaBack": "Back to Home"
+    "ctaBack": "Back to Welcome"
   },
   "faq": {
     "title": "Frequently asked questions",

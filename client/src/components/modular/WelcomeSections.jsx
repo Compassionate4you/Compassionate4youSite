@@ -43,7 +43,7 @@ export default function WelcomeSections ({ sections, theme = 'light' }) {
       return <div key={key} id='contact'><ContactFormSection content={{ ...content, title: t('landing.contactTitle') }} /></div>
     }
     if (key === 'sec-landing-map') {
-      return <MapSection key={key} content={{ hideHeading: true, mapAddress: `${t('landing.contactAddressLine1')} ${t('landing.contactAddressLine2')}`, directionsText: t('locations.getDirections') }} />
+      return <MapSection key={key} content={{ hideHeading: true, header: t('locations.mapTitle'), mapAddress: `${t('landing.contactAddressLine1')} ${t('landing.contactAddressLine2')}`, directionsText: t('locations.getDirections') }} />
     }
     if (key === 'sec-landing-faq') {
       return <FAQSection key={key} content={{ title: t('faq.title'), faqItems: t('faq.items', { returnObjects: true }) }} />
