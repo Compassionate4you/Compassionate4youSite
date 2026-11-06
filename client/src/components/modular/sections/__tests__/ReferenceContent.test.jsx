@@ -65,6 +65,13 @@ describe('Sprint 08 reference content', () => {
     expect(scheduleLinks).toHaveLength(name === 'Welcome' ? 0 : 2)
     if (name !== 'Welcome') expect(screen.getByRole('link', { name: 'Back to Welcome' })).toHaveAttribute('href', '/welcome')
     if (name === 'Welcome') {
+      // DT-902: Only the two informational cards use the new bordered photo presentation.
+      const medicare = screen.getByRole('article', { name: en.landing.infoCards.card1.header })
+      const specialty = screen.getByRole('article', { name: en.landing.infoCards.card2.header })
+      expect(medicare).toHaveClass('c4-photo-card')
+      expect(medicare).not.toHaveClass('c4-photo-card--right')
+      expect(specialty).toHaveClass('c4-photo-card--right')
+      expect(specialty.querySelectorAll('.c4-photo-card__body p')).toHaveLength(2)
       expect(screen.getByRole('region', { name: en.landing.heroTitle })).toHaveClass('c4-welcome-hero')
       expect(screen.getByRole('link', { name: 'Get Directions' })).toHaveAttribute('href', expect.stringContaining('destination=1501'))
       expect(screen.getByRole('img', { name: en.landing.infoCards.card1.imageAlt })).toHaveAttribute('src', expect.stringContaining('working_a_puzzle'))

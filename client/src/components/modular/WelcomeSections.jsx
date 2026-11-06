@@ -6,7 +6,7 @@ import careImage from '../../assets/images/CareImage1.jpeg'
 import ContactFormSection from './sections/ContactFormSection'
 import MapSection from './sections/MapSection'
 import FAQSection from './sections/FAQSection'
-import ImageCard from './cards/ImageCard'
+import PhotoTextCard from './cards/PhotoTextCard'
 import puzzleImage from '../../assets/images/working_a_puzzle_together.jpeg'
 import coupleImage from '../../assets/images/older_couple_smiling.jpeg'
 
@@ -29,12 +29,10 @@ export default function WelcomeSections ({ sections, theme = 'light' }) {
     }
     if (key === 'sec-landing-info-cards') {
       return (
-        <div key={key} className='c4-section'>
-          <div className='c4-section__inner'>
-            {[[puzzleImage, 'left'], [coupleImage, 'right']].map(([image, alignment], index) => (
-              <ImageCard key={image} header={t(`landing.infoCards.card${index + 1}.header`)} paragraph={t(`landing.infoCards.card${index + 1}.paragraph`)} imageAlt={t(`landing.infoCards.card${index + 1}.imageAlt`)} imageUrl={image} alignment={alignment} />
-            ))}
-          </div>
+        <div key={key} className='c4-photo-cards'>
+          {[[puzzleImage, 'left'], [coupleImage, 'right']].map(([image, alignment], index) => (
+            <PhotoTextCard key={image} header={t(`landing.infoCards.card${index + 1}.header`)} paragraph={t(`landing.infoCards.card${index + 1}.paragraph`)} imageAlt={t(`landing.infoCards.card${index + 1}.imageAlt`)} imageUrl={image} imagePosition={alignment} />
+          ))}
         </div>
       )
     }

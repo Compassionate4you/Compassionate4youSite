@@ -168,3 +168,21 @@ The Urdu audit found that the closed accessibility panel's direction-change tran
 - Dark Contact, Map, and FAQ computed backgrounds were rgb(31,36,34), with rgb(240,242,238) contact/FAQ text. Dark inputs used rgb(32,39,35), with readable rgb(180,189,183) placeholders. Light surfaces retained white backgrounds and dark text. FAQ expansion and input focus were exercised in both modes.
 - Inspected dark contact-form and Urdu mobile screenshots after correcting the closed-panel visibility issue. The hero language control, accessibility selector, document direction, page content, and translated browser titles responded together. Native map tiles retain provider styling.
 - Browser fixtures were intercepted only in a temporary Chrome profile. No backend writes, migrations, or reseeding were performed; the temporary Vite and Chrome sessions were stopped after verification.
+
+## Welcome bordered photo cards
+
+Added reusable PhotoTextCard and its own scoped PhotoTextCard.css to match the supplied bordered-card reference. Applied it only to Welcome's Medicare Home Health Criteria and Specialty Services informational cards; existing ImageCard and BannerSection presentation is unchanged.
+
+- Wide rounded containers use a prominent 3px border, balanced photo/text columns, generous responsive padding and card spacing, rounded photo crops, centered serif headings, and centered body copy.
+- Medicare uses the puzzle photo on the left; Specialty Services uses the couple photo on the right. Existing local imports, translations, alternative text, and Specialty Services' two paragraphs are preserved.
+- Root theme tokens produce white cards with dark border/text in light mode and dark cards with white border/text in dark mode. No hard-coded dark-only presentation was introduced.
+- On phones both photos appear above their respective text. Explicit physical image positioning and automatically detected copy direction preserve alternating desktop layout in Urdu while rendering text in its own reading direction.
+- PhotoTextCard accepts header, paragraph, imageUrl, imageAlt, and imagePosition (left/right). It reuses CardBody for paragraph/list formatting, the existing image resolver for known local paths, and a unique heading ID for its accessible article name.
+
+Files modified: `client/src/components/modular/cards/PhotoTextCard.jsx` (new), `client/src/styles/components/modular/cards/PhotoTextCard.css` (new), `client/src/components/modular/WelcomeSections.jsx`, and existing `ReferenceContent.test.jsx`.
+
+Validation: four focused suites passed, 25 tests total, covering Welcome content and card scope/order, paragraph preservation, translation coverage, and page routing. Targeted Standard checks, production build, and `git diff --check` passed. Existing build dependency/chunk warnings remain.
+
+Full-app browser checks covered the two cards at 1440, 390, and 320px in light/dark themes and English/Urdu (12 combinations). Photos loaded, translated copy fit, normal-size pages had no horizontal overflow, desktop photos alternated, and mobile photos stacked above text. Inspected desktop light/dark captures and the Urdu mobile capture against the reference. Enlarged Urdu text also fit both cards at 1440 and 390px. The desktop enlarged-text run exposed a separate existing navbar overflow (navbar scrollWidth 1445px versus a 1440px viewport); card containers and ContentPage remained within bounds. Navbar styling was left outside this card-only change.
+
+Temporary read-only CMS fixtures and browser sessions were used for verification; no database writes or reseeding. The local preview server and temporary Chrome session were stopped afterward.

@@ -7,7 +7,7 @@ Modular contact form and contact information section stylesheet
 
 .modular-contact-section {
   padding: 4rem 1.5rem;
-  background-color: var(--section-bg, var(--public-surface, #ffffff));
+  background-color: var(--color-gray);
   color: var(--section-text, var(--public-text, #1e293b));
   transition: background-color 0.2s ease, color 0.2s ease;
 }
