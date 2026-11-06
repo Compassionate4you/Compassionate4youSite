@@ -10,10 +10,12 @@ import { CardStorageService } from '../services/cardStorageService'
 import { ColorConfigService } from '../services/colorConfigService'
 import DynamicSectionRenderer from '../components/modular/DynamicSectionRenderer'
 import HospiceSections from '../components/modular/HospiceSections'
+import HomeHealthSections from '../components/modular/HomeHealthSections'
 import NotFoundPage from './NotFoundPage'
 import '../styles/contentpage.css'
 
 // DT-732: Route Hospice sections through the new stack/cards presentation adapter.
+// DT-731: Route Home Health sections through translated screenshot layouts.
 export default function ContentPage ({ defaultPageId }) {
   const params = useParams()
   const rawPageId = params.pageId || defaultPageId || 'landing'
@@ -82,6 +84,11 @@ export default function ContentPage ({ defaultPageId }) {
     .map((secId) => SectionStorageService.getSectionById(secId))
     .filter(Boolean)
 
+  // DT-731: Reuse normalized page IDs so /home-health selects the Home Health adapter.
+  const PageSections = normalizedPageId === 'homeHealth'
+    ? HomeHealthSections
+    : (normalizedPageId === 'hospice' ? HospiceSections : null)
+
   return (
     <main id="main-content" className="content-page">
       {/* DT-622 Sprint 8 - Preston Ball: Render page header if not landing */}
@@ -94,7 +101,7 @@ export default function ContentPage ({ defaultPageId }) {
       {/* DT-622 Sprint 8 - Preston Ball: Render all configured modular sections */}
       <div className="content-page-sections">
         {resolvedSections.length > 0 ? (
-          normalizedPageId === 'hospice' ? <HospiceSections sections={resolvedSections} theme='light' /> : resolvedSections.map((sec) => (
+          PageSections ? <PageSections sections={resolvedSections} theme='light' /> : resolvedSections.map((sec) => (
             <DynamicSectionRenderer
               key={sec.id}
               config={sec}
