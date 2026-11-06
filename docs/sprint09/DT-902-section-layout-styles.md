@@ -186,3 +186,14 @@ Validation: four focused suites passed, 25 tests total, covering Welcome content
 Full-app browser checks covered the two cards at 1440, 390, and 320px in light/dark themes and English/Urdu (12 combinations). Photos loaded, translated copy fit, normal-size pages had no horizontal overflow, desktop photos alternated, and mobile photos stacked above text. Inspected desktop light/dark captures and the Urdu mobile capture against the reference. Enlarged Urdu text also fit both cards at 1440 and 390px. The desktop enlarged-text run exposed a separate existing navbar overflow (navbar scrollWidth 1445px versus a 1440px viewport); card containers and ContentPage remained within bounds. Navbar styling was left outside this card-only change.
 
 Temporary read-only CMS fixtures and browser sessions were used for verification; no database writes or reseeding. The local preview server and temporary Chrome session were stopped afterward.
+
+## Section background token refinement
+
+- Dark-mode section surfaces on Welcome, Home Health, and Hospice now use `var(--color-light-gray)` (#353535) through the scoped public-surface and page-background tokens. HeaderStack roots, timeline/CTA backgrounds, map/FAQ surfaces, and the surrounding page share this value; light-mode surfaces remain unchanged.
+- BannerSection's separate gray background declarations were replaced with a transparent background, allowing the actual surrounding section color to show through.
+- The entire public Contact section uses `var(--color-sage)` in both themes. Its heading and contact details use the sage text token for readable dark text. The form card, inputs, labels, feedback, and focus styling keep their existing light/dark colors.
+- Individual bordered photo-card surfaces and approved hero backgrounds/photos are unchanged.
+
+Files modified: `client/src/styles/ContentPageTheme.css`, `client/src/styles/components/modular/sections/BannerSection.css`, and this documentation.
+
+Validation: production client build and `git diff --check` passed. Browser checks used the full app with temporary read-only CMS fixtures across the three pages in both themes, waiting for the site's color transitions to settle. Dark page/stack/timeline/map/FAQ surfaces resolved to rgb(53,53,53), banners to transparent, and Contact to rgb(157,161,145). The form card retained white in light mode and rgb(42,48,45) in dark mode; input colors also remained unchanged. Inspected the dark Contact capture to confirm the sage section, readable details, and preserved form panel. No new tests were added for this CSS-only adjustment. Existing build dependency/chunk warnings remain; temporary browser and Vite processes were stopped afterward.
