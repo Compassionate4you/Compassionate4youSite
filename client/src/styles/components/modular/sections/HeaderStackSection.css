@@ -1,0 +1,52 @@
+/* DT-902: Extracted modular HeaderStackSection styles. */
+/* Header / Stack: all content is visible, with no disclosure interaction. */
+.c4-header-stack {
+  background: var(--color-white);
+}
+
+.c4-header-stack__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.c4-header-stack__grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.c4-header-stack__card {
+  min-width: 0;
+  border: 1px solid var(--color-sage);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.c4-header-stack__card-title {
+  margin: 0;
+  padding: 20px 28px;
+  background: color-mix(in srgb, var(--color-light-green) 40%, var(--color-white));
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.c4-header-stack__body {
+  padding: 24px 28px 28px;
+  line-height: 1.75;
+}
+
+@media (max-width: 767px) {
+  .c4-header-stack__grid--two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .c4-header-stack__card-title {
+    padding: 18px 20px;
+  }
+
+  .c4-header-stack__body {
+    padding: 20px;
+  }
+}
