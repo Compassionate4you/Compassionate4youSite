@@ -11,11 +11,13 @@ import { ColorConfigService } from '../services/colorConfigService'
 import DynamicSectionRenderer from '../components/modular/DynamicSectionRenderer'
 import HospiceSections from '../components/modular/HospiceSections'
 import HomeHealthSections from '../components/modular/HomeHealthSections'
+import WelcomeSections from '../components/modular/WelcomeSections'
 import NotFoundPage from './NotFoundPage'
 import '../styles/contentpage.css'
 
 // DT-732: Route Hospice sections through the new stack/cards presentation adapter.
 // DT-731: Route Home Health sections through translated screenshot layouts.
+// DT-902: Use the reference-content adapters without duplicate page/hero headings.
 export default function ContentPage ({ defaultPageId }) {
   const params = useParams()
   const rawPageId = params.pageId || defaultPageId || 'landing'
@@ -87,12 +89,12 @@ export default function ContentPage ({ defaultPageId }) {
   // DT-731: Reuse normalized page IDs so /home-health selects the Home Health adapter.
   const PageSections = normalizedPageId === 'homeHealth'
     ? HomeHealthSections
-    : (normalizedPageId === 'hospice' ? HospiceSections : null)
+    : (normalizedPageId === 'hospice' ? HospiceSections : (normalizedPageId === 'landing' ? WelcomeSections : null))
 
   return (
     <main id="main-content" className="content-page">
       {/* DT-622 Sprint 8 - Preston Ball: Render page header if not landing */}
-      {normalizedPageId !== 'landing' && (
+      {!PageSections && normalizedPageId !== 'landing' && (
         <div className="content-page-hero">
           <h1>{currentPage.content?.title || currentPage.id}</h1>
         </div>

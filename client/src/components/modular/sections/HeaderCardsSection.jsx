@@ -6,10 +6,11 @@ import '../../../styles/components/modular/sections/SectionShared.css'
 import '../../../styles/components/modular/sections/HeaderCardsSection.css'
 
 /**
- * Presentation only. Items: { id, title?, description, iconName? }[].
+ * Presentation only. Items: { id, title?, description, iconName?, listItems? }[].
  * headerPosition: 'left' (default) | 'right'; the header comes first on mobile.
  * Background images are decorative; all meaningful content belongs in text props.
  */
+// DT-902: Preserve reference benefit lists as semantic lists beneath introductory copy.
 export default function HeaderCardsSection ({
   title, subtitle, label, items = [], backgroundImageUrl, headerPosition = 'left'
 }) {
@@ -38,6 +39,11 @@ export default function HeaderCardsSection ({
               <span className='c4-header-cards__icon'><SectionIcon name={item.iconName} /></span>
               {item.title && <h3 className='c4-header-cards__card-title'>{item.title}</h3>}
               {item.description && <p className='c4-section__description'>{item.description}</p>}
+              {item.listItems?.length > 0 && (
+                <ul className='c4-section__description'>
+                  {item.listItems.map((text, index) => <li key={index}>{text}</li>)}
+                </ul>
+              )}
               <span className='c4-header-cards__number' aria-hidden='true'>{index + 1}</span>
             </li>
           ))}
