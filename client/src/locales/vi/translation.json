@@ -134,7 +134,9 @@
             "list2": " - Hỗ trợ các vấn đề thực tế, chẳng hạn như tìm thêm sự giúp đỡ tại nhà"
           }
         }
-      }
+      },
+      "label": "Hỗ trợ tận tâm",
+      "subtitle": "Gặp gỡ đội ngũ chăm sóc và tìm hiểu sự hỗ trợ dành cho người bệnh cùng gia đình."
     },
     "comprehensiveServices": {
       "title": "Dịch vụ hỗ trợ toàn diện",
@@ -163,7 +165,9 @@
           "title": "Nếu xảy ra tình huống khó khăn thì sao?",
           "description": "Chúng tôi hiểu rằng người chăm sóc có thể gặp những tình huống khó khăn. Đường dây điện thoại hoạt động 24 giờ giúp người chăm sóc liên lạc với một y tá chuyên về chăm sóc cuối đời, người có thể tư vấn qua điện thoại hoặc đến thăm tại nhà nếu cần."
         }
-      }
+      },
+      "label": "Hỗ trợ mỗi ngày",
+      "subtitle": "Hỗ trợ thiết thực, tình cảm và tinh thần cho người bệnh và những người chăm sóc họ."
     },
     "aboveAndBeyond": {
       "title": "Sự chăm sóc vượt trên mong đợi",
@@ -535,7 +539,19 @@
     "ctaTitle": "Bắt đầu chăm sóc sức khỏe tại nhà ngay hôm nay",
     "ctaDescription": "Hãy để chúng tôi giúp quý vị hoặc người thân nhận được sự chăm sóc chất lượng xứng đáng ngay trong ngôi nhà thoải mái của mình.",
     "ctaSchedule": "Đặt lịch hẹn",
-    "ctaBack": "Quay lại trang Chào mừng"
+    "ctaBack": "Quay lại trang Chào mừng",
+    "servicesIntro": {
+      "label": "Chăm sóc tại nhà",
+      "subtitle": "Gặp gỡ các chuyên gia hỗ trợ sức khỏe, khả năng tự lập và việc chăm sóc hằng ngày của bạn tại nhà."
+    },
+    "advantagesIntro": {
+      "label": "Chăm sóc tại nhà tốt hơn",
+      "subtitle": "Sự chăm sóc tận tâm giúp cải thiện cuộc sống tại nhà và trong cộng đồng."
+    },
+    "specialtiesIntro": {
+      "label": "Chăm sóc theo nhu cầu",
+      "subtitle": "Tìm hiểu các dịch vụ chuyên biệt hỗ trợ điều trị, phục hồi và sức khỏe hằng ngày của bạn."
+    }
   },
   "faq": {
     "title": "Câu hỏi thường gặp",

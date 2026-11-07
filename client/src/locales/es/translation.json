@@ -134,7 +134,9 @@
             "list2": " - asistir con asuntos prácticos, tales como encontrar ayuda adicional en el hogar"
           }
         }
-      }
+      },
+      "label": "Apoyo compasivo",
+      "subtitle": "Conozca al equipo de atención y descubra el apoyo disponible para pacientes y sus familias."
     },
     "comprehensiveServices": {
       "title": "Servicios de apoyo integral",
@@ -163,7 +165,9 @@
           "title": "¿Qué pasa si surge una situación difícil?",
           "description": "Comprendemos que los cuidadores pueden enfrentar situaciones difíciles. Una línea telefónica disponible las 24 horas pone al cuidador en contacto con un enfermero especializado en cuidados paliativos, quien puede ofrecer asesoramiento telefónico o realizar una visita domiciliaria si es necesario."
         }
-      }
+      },
+      "label": "Apoyo para cada día",
+      "subtitle": "Apoyo práctico, emocional y espiritual para pacientes y las personas que los cuidan."
     },
     "aboveAndBeyond": {
       "title": "Atención excepcional",
@@ -659,7 +663,19 @@
     "ctaTitle": "Comience hoy su atención de salud en casa",
     "ctaDescription": "Permítanos ayudarle a usted o a su ser querido a recibir la atención de calidad que merece en la comodidad de su hogar.",
     "ctaSchedule": "Programar una cita",
-    "ctaBack": "Volver a Bienvenida"
+    "ctaBack": "Volver a Bienvenida",
+    "servicesIntro": {
+      "label": "Atención en casa",
+      "subtitle": "Conozca a los profesionales que apoyan su salud, independencia y cuidado diario en casa."
+    },
+    "advantagesIntro": {
+      "label": "Mejor atención en casa",
+      "subtitle": "Atención compasiva que mejora la vida, en casa y en la comunidad."
+    },
+    "specialtiesIntro": {
+      "label": "Atención para sus necesidades",
+      "subtitle": "Explore servicios especializados que apoyan su tratamiento, recuperación y bienestar diario."
+    }
   },
   "faq": {
     "title": "Preguntas frecuentes",

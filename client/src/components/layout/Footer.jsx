@@ -3,6 +3,7 @@ import './styles/footer.css';
 import { useLocation } from "react-router-dom";
 
 // DT-902: Use the translated Welcome label and canonical destination.
+// DT-718: Group horizontal contact details and hours with the copyright below.
 function Footer() {
     const { t } = useTranslation();
     const location = useLocation();
@@ -17,20 +18,6 @@ function Footer() {
       <div className='footer__inner'>
         <div className='footer__grid'>
 
-          <div>
-            <h3 className='footer__heading'>Compassionate Home Health &amp; Hospice</h3>
-            <p className='footer__about-text'>{t('footer.tagline')}</p>
-          </div>
-
-          <div>
-            <h4 className='footer__subheading'>{t('footer.quickLinks')}</h4>
-            <ul className='footer__links'>
-              <li><a href='/welcome' className='footer__link'>{t('nav.welcome')}</a></li>
-              <li><a href='/home-health' className='footer__link'>{t('nav.homeHealth')}</a></li>
-              <li><a href='/hospice' className='footer__link'>{t('nav.hospice')}</a></li>
-              <li><a href='/schedule' className='footer__link'>{t('nav.schedule')}</a></li>
-            </ul>
-          </div>
           {/* DT-160: User can view the location of the company in the footer */}
           <div>
             <h4 className='footer__subheading'>{t('footer.contactUs')}</h4>
@@ -86,17 +73,17 @@ function Footer() {
                 </svg>
                 <span className='footer__hours-text'>{t('footer.weekdays')}<br />{t('footer.weekdayHours')}</span>
               </li>
-              <li className='footer__hours-indent'>
+              <li className='footer__hours-item'>
                 <span className='footer__hours-text'>{t('footer.saturday')}<br />{t('footer.saturdayHours')}</span>
               </li>
-              <li className='footer__hours-indent'>
+              <li className='footer__hours-item'>
                 <span className='footer__hours-text'>{t('footer.sunday')}<br />{t('footer.sundayClosed')}</span>
               </li>
             </ul>
           </div>
 
         </div>
-
+        {/* DT-718: Retain the translated copyright beneath both footer columns. */}
         <div className='footer__bottom'>
           <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}</p>
         </div>

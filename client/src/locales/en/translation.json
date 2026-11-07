@@ -157,7 +157,9 @@
             "list2": " - assisting with practical matters, such as finding additional help in the home"
           }
         }
-      }
+      },
+      "label": "Compassionate support",
+      "subtitle": "Meet the care team and explore the support available to patients and their families."
     },
     "comprehensiveServices": {
       "title": "Comprehensive Support Services",
@@ -186,7 +188,9 @@
           "title": "What if a difficult situation arises?",
           "description": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
         }
-      }
+      },
+      "label": "Support for every day",
+      "subtitle": "Practical, emotional, and spiritual support for patients and the people who care for them."
     },
     "aboveAndBeyond": {
       "title": "Above and Beyond Care",
@@ -660,7 +664,19 @@
     "ctaTitle": "Start Your Home Health Care Today",
     "ctaDescription": "Let us help you or your loved one receive the quality care you deserve in the comfort of your home.",
     "ctaSchedule": "Schedule Appointment",
-    "ctaBack": "Back to Welcome"
+    "ctaBack": "Back to Welcome",
+    "servicesIntro": {
+      "label": "Care at home",
+      "subtitle": "Meet the professionals who support your health, independence, and daily care at home."
+    },
+    "advantagesIntro": {
+      "label": "Better care at home",
+      "subtitle": "Compassionate care that improves lives—at home and in the community."
+    },
+    "specialtiesIntro": {
+      "label": "Care for your needs",
+      "subtitle": "Explore specialized services that support your treatment, recovery, and everyday well-being."
+    }
   },
   "faq": {
     "title": "Frequently asked questions",

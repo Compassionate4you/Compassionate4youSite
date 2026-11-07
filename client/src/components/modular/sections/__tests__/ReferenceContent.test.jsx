@@ -8,6 +8,7 @@ import HomeHealthSections from '../../HomeHealthSections'
 import HospiceSections from '../../HospiceSections'
 import en from '../../../../locales/en/translation.json'
 import es from '../../../../locales/es/translation.json'
+import ur from '../../../../locales/ur/translation.json'
 import reference from './fixtures/sprint08-content.json'
 
 vi.unmock('react-i18next')
@@ -28,7 +29,7 @@ function normalize (text) {
 // DT-902: Use real i18n and navigation for reference-copy and CTA assertions.
 async function show (Component, prefix, names) {
   const i18n = createInstance()
-  await i18n.use(initReactI18next).init({ resources: { en: { translation: en }, es: { translation: es } }, lng: 'en', fallbackLng: 'en' })
+  await i18n.use(initReactI18next).init({ resources: { en: { translation: en }, es: { translation: es }, ur: { translation: ur } }, lng: 'en', fallbackLng: 'en' })
   const result = render(<I18nextProvider i18n={i18n}><MemoryRouter><Component sections={names.map(name => ({ id: prefix + name }))} /></MemoryRouter></I18nextProvider>)
   return { ...result, i18n }
 }
@@ -106,12 +107,19 @@ describe('service page presentation refinements', () => {
     ]]
   ])('renders the requested hero and card options for %s', async (Page, prefix, names, icons) => {
     const { container, i18n } = await show(Page, prefix, names)
-    for (const language of ['en', 'es']) {
+    for (const language of ['en', 'es', 'ur']) {
       await act(() => i18n.changeLanguage(language))
       expect(container.querySelector('.c4-hero')).toHaveClass('c4-hero--no-overlay', 'c4-hero--image')
       const sections = container.querySelectorAll('.c4-header-cards')
       expect(sections).toHaveLength(icons.length)
+      const localized = { en, es, ur }[language]
+      const intros = Page === HomeHealthSections
+        ? [localized.homeHealthPage.servicesIntro, localized.homeHealthPage.advantagesIntro, localized.homeHealthPage.specialtiesIntro]
+        : [localized.hospice.careAndBenefits, localized.hospice.comprehensiveServices]
       sections.forEach((section, index) => {
+        // DT-902: Render each locale's introductory copy through the existing heading slots.
+        expect(section.querySelector('.c4-section__label')).toHaveTextContent(intros[index].label)
+        expect(section.querySelector('.c4-section__subtitle')).toHaveTextContent(intros[index].subtitle)
         // DT-902: Reverse only Comprehensive Support; preserve the other Hospice group.
         if (Page === HospiceSections) expect(section.classList.contains('c4-header-cards--right')).toBe(index === 1)
         const actual = section.querySelectorAll('.c4-header-cards__icon svg')

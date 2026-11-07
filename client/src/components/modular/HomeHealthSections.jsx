@@ -25,6 +25,7 @@ const SPECIALTY_ICONS = ['HeartPulse', 'Wind', 'Bone', 'Bandage', 'Droplets', 'A
 // DT-731: Present screenshot content from translations using the new Home Health layouts.
 // DT-902: Restore the reference hero and closing call to action alongside the existing cards.
 // DT-902: Fallback CMS sections use global colours on this public page.
+// DT-902: Supply localized preview-style labels and introductory copy to all three card headings.
 export default function HomeHealthSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
 
@@ -47,7 +48,7 @@ export default function HomeHealthSections ({ sections, theme = 'light' }) {
         title: t(`homeHealth.services.${key}`),
         iconName: SERVICE_ICONS[key]
       }))
-      return <HeaderCardsSection key={section.id} title={t('homeHealth.servicesHeading')} surface='white' items={items} />
+      return <HeaderCardsSection key={section.id} title={t('homeHealth.servicesHeading')} label={t('homeHealthPage.servicesIntro.label')} subtitle={t('homeHealthPage.servicesIntro.subtitle')} surface='white' items={items} />
     }
     // DT-731: Place the advantages heading on the right and its seven cards on the left.
     if (section.id === 'sec-hh-advantages') {
@@ -56,7 +57,7 @@ export default function HomeHealthSections ({ sections, theme = 'light' }) {
         description,
         iconName: ADVANTAGE_ICONS[index]
       }))
-      return <HeaderCardsSection key={section.id} title={t('homeHealthPage.advantagesTitle')} items={items} headerPosition='right' />
+      return <HeaderCardsSection key={section.id} title={t('homeHealthPage.advantagesTitle')} label={t('homeHealthPage.advantagesIntro.label')} subtitle={t('homeHealthPage.advantagesIntro.subtitle')} items={items} headerPosition='right' />
     }
     if (section.id === 'sec-hh-specialties') {
       const items = t('homeHealthPage.specialties', { returnObjects: true }).map((title, index) => ({
@@ -64,7 +65,7 @@ export default function HomeHealthSections ({ sections, theme = 'light' }) {
         title,
         iconName: SPECIALTY_ICONS[index]
       }))
-      return <HeaderCardsSection key={section.id} title={t('homeHealthPage.specialtyTitle')} surface='white' items={items} />
+      return <HeaderCardsSection key={section.id} title={t('homeHealthPage.specialtyTitle')} label={t('homeHealthPage.specialtiesIntro.label')} subtitle={t('homeHealthPage.specialtiesIntro.subtitle')} surface='white' items={items} />
     }
     return <DynamicSectionRenderer key={section.id} config={section} colorSource='global' theme={theme} />
   })

@@ -250,3 +250,16 @@ Validation: client production build passed with existing dependency-directive, m
 Updated `client/src/components/modular/HospiceSections.jsx` to select the existing `headerPosition='right'` option only for `sec-hospice-comprehensive`. Its cards appear on the left and heading on the right at desktop widths. Existing responsive styles retain heading-first stacking at widths up to 1023px. Hospice Care Team & Benefits keeps its header-left layout. No CSS, content, or component API changes.
 
 Updated `client/src/components/modular/sections/__tests__/ReferenceContent.test.jsx` to verify that only Comprehensive Support receives the reverse-layout modifier in English and Spanish. ReferenceContent and SectionLayouts suites passed (21 tests); targeted JavaScript Standard checks and `git diff --check` passed.
+
+## Preview-style introductions for all header/cards groups
+
+Added localized labels and short introductory paragraphs to Home Health Services, Home Health Advantages, Specialty Services, Hospice Care Team & Benefits, and Comprehensive Support Services. Existing HeaderCardsSection `label`/`subtitle` props and SectionHeading styles render the uppercase label with sage dash, title divider, and paragraph. Advantages uses the preview's “Better care at home” label and “Compassionate care that improves lives—at home and in the community.” paragraph. Other groups have section-specific introductory copy. Existing heading positions, bordered cards, icons, global colours, and content sources remain unchanged. No CSS, component API, background-image, or contact-form changes were needed.
+
+Files modified:
+
+- `client/src/components/modular/{HomeHealthSections,HospiceSections}.jsx`: pass localized heading introductions.
+- `client/src/locales/{en,es,hi,pa,ur,vi,zh}/translation.json`: add `homeHealthPage.{servicesIntro,advantagesIntro,specialtiesIntro}.{label,subtitle}` and `hospice.{careAndBenefits,comprehensiveServices}.{label,subtitle}`. DT-902 attribution is recorded here because JSON has no comment syntax.
+- `client/src/components/modular/sections/__tests__/{ReferenceContent,PublicPageTranslations}.test.jsx`: verify localized rendered labels/paragraphs and complete, non-English-copy translations.
+- This sprint document.
+
+Verification: ReferenceContent, PublicPageTranslations, SectionLayouts, and GlobalColors passed (33 tests). Rendering assertions cover English, Spanish, and Urdu; translation coverage includes all seven locales. Production build passed with existing dependency-directive, mixed-import, and bundle-size warnings. Targeted JavaScript Standard checks and `git diff --check` passed. Chrome checks used actual adapter static renders for Home Health and Hospice, English/Urdu, light/dark, and 1440px/500px widths (16 combinations): all five introductions and both decorative dividers rendered with no horizontal page overflow. Inspected English desktop and Urdu dark mobile captures for wrapping and spacing. These were isolated adapter checks, not full application routes. Temporary fixtures remained under `/private/tmp`; no backend writes occurred.
