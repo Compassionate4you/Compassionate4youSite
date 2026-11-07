@@ -11,6 +11,7 @@ import puzzleImage from '../../assets/images/working_a_puzzle_together.jpeg'
 import coupleImage from '../../assets/images/older_couple_smiling.jpeg'
 
 // DT-902: Restore Welcome reference copy while keeping banners, image cards, form, and map behavior.
+// DT-902: Fallback CMS sections use global colours on this public page.
 export default function WelcomeSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
   return sections.map(section => {
@@ -46,6 +47,6 @@ export default function WelcomeSections ({ sections, theme = 'light' }) {
     if (key === 'sec-landing-faq') {
       return <FAQSection key={key} content={{ title: t('faq.title'), faqItems: t('faq.items', { returnObjects: true }) }} />
     }
-    return <DynamicSectionRenderer key={key} config={section} theme={theme} />
+    return <DynamicSectionRenderer key={key} config={section} colorSource='global' theme={theme} />
   })
 }

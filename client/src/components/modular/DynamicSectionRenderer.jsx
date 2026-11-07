@@ -28,7 +28,8 @@ const LAYOUT_COMPONENTS = {
   FAQ: FAQSection
 }
 
-export default function DynamicSectionRenderer ({ config, sectionId, theme = 'light' }) {
+// DT-902: Public pages can bypass CMS palettes while other callers retain them.
+export default function DynamicSectionRenderer ({ config, sectionId, theme = 'light', colorSource = 'cms' }) {
   const section = config || (sectionId ? SectionStorageService.getSectionById(sectionId) : null)
   if (!section) return null
 
@@ -42,12 +43,20 @@ export default function DynamicSectionRenderer ({ config, sectionId, theme = 'li
     return theme === 'dark' ? c.darkModeColor : c.lightModeColor
   }
 
-  const customStyles = {
-    '--section-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#0f172a' : '#ffffff'),
-    '--section-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
-    '--section-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155'),
-    '--section-accent': resolveColor(colors.accentColor, '#366454')
-  }
+  // DT-902: CSS variables remain live when the root theme or global palette changes.
+  const customStyles = colorSource === 'global'
+    ? {
+        '--section-bg': 'var(--color-white)',
+        '--section-header': 'var(--color-white-text)',
+        '--section-text': 'var(--color-white-text)',
+        '--section-accent': 'var(--color-primary)'
+      }
+    : {
+        '--section-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#0f172a' : '#ffffff'),
+        '--section-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
+        '--section-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155'),
+        '--section-accent': resolveColor(colors.accentColor, '#366454')
+      }
 
   const LayoutComponent = LAYOUT_COMPONENTS[section.layout] || HeaderTextSection
 
@@ -57,8 +66,8 @@ export default function DynamicSectionRenderer ({ config, sectionId, theme = 'li
       content={content}
       colors={colors}
       theme={theme}
+      colorSource={colorSource}
       style={customStyles}
     />
   )
 }
-

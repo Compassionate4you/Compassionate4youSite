@@ -1,9 +1,10 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
 /* DT-902: Welcome-only screenshot geometry; background heroes keep their existing styling. */
 .c4-welcome-hero.c4-hero--split {
   grid-template-columns: minmax(0, 54fr) minmax(0, 46fr);
   min-height: 42.1053vw;
-  background: #dbe4c3;
-  color: #000;
+  background: var(--color-light-green);
+  color: var(--color-light-green-text);
 }
 
 .c4-welcome-hero.c4-hero--split .c4-hero__content {

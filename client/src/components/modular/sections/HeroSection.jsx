@@ -11,11 +11,12 @@ const LANGUAGES = [
   ['zh', '普通话'], ['vi', 'tiếng việt'], ['hi', 'हिन्दी']
 ]
 
+// DT-902: Allow individual pages to show untinted photos while retaining the default overlay.
 // DT-902: Reusable split-photo/background hero with optional imagery, icons, CTA, and language control.
 export default function HeroSection ({
   title, description, imageUrl, imageAlt = '', variant = 'background',
   contentPosition = 'left', tone = 'teal', iconName,
-  buttonText, buttonLink = '/schedule', showLanguageSelector = false, className = ''
+  buttonText, buttonLink = '/schedule', showOverlay = true, showLanguageSelector = false, className = ''
 }) {
   const { t, i18n } = useTranslation()
   const titleId = useId()
@@ -29,7 +30,7 @@ export default function HeroSection ({
 
   return (
     <section
-      className={`c4-hero c4-hero--${split ? 'split' : 'background'} c4-hero--${contentPosition === 'right' ? 'right' : 'left'} c4-hero--${tone === 'forest' ? 'forest' : 'teal'}${hasImage ? ' c4-hero--image' : ''}${className ? ` ${className}` : ''}`}
+      className={`c4-hero c4-hero--${split ? 'split' : 'background'} c4-hero--${contentPosition === 'right' ? 'right' : 'left'} c4-hero--${tone === 'forest' ? 'forest' : 'teal'}${hasImage ? ' c4-hero--image' : ''}${!showOverlay ? ' c4-hero--no-overlay' : ''}${className ? ` ${className}` : ''}`}
       aria-labelledby={title ? titleId : undefined}
     >
       {hasImage && (

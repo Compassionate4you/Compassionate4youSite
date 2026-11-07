@@ -11,10 +11,12 @@ import { pickText } from '../cards/CardBase'
 import '../../../styles/components/modular/sections/CardSection.css'
 
 // DT-902: Recognized Welcome text cards share the full banner presentation.
+// DT-902: Forward the page colour source to every nested card.
 export default function CardSection ({
   config,
   content = {},
   theme = 'light',
+  colorSource = 'cms',
   slug,
   sectionId,
   className = '',
@@ -73,6 +75,7 @@ export default function CardSection ({
             key={card.id || `card-${index}`}
             card={card}
             theme={theme}
+            colorSource={colorSource}
             BannerIcon={BannerIcon}
           />
         ))}

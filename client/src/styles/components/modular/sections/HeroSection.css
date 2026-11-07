@@ -1,3 +1,4 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
 /* DT-902: Scoped screenshot hero layouts, independent of banner/legacy hero styles. */
 .c4-hero,
 .c4-hero * { box-sizing: border-box; }
@@ -15,8 +16,8 @@
   align-items: center;
   min-height: 520px;
   padding: 64px clamp(24px, 4vw, 64px);
-  background: #b9cbca;
-  color: #0f1f3d;
+  background: var(--color-teal);
+  color: var(--color-teal-text);
 }
 
 .c4-hero__image {
@@ -39,7 +40,7 @@
   inset: 0;
   z-index: -1;
   content: '';
-  background: rgba(133, 167, 167, 0.75);
+  background: color-mix(in srgb, var(--color-teal) 90%, transparent);
 }
 
 .c4-hero__content { min-width: 0; width: min(100%, 700px); }
@@ -71,35 +72,35 @@
   width: 70px;
   height: 70px;
   border-radius: 16px;
-  background: #f3f5ed;
-  color: #0f1f3d;
+  background: var(--color-white);
+  color: var(--color-white-text);
 }
 .c4-hero__icon svg { width: 40px; height: 40px; }
-.c4-hero__icon--heart { background: #dbe4c3; color: #dc493c; }
-.c4-hero__icon--heart svg { fill: currentColor; stroke: #fff; stroke-width: 1; }
+.c4-hero__icon--heart { background: var(--color-light-green); color: var(--color-light-green-text); }
+.c4-hero__icon--heart svg { fill: currentColor; stroke: var(--color-light-green-text); stroke-width: 1; }
 
 .c4-hero__cta {
   display: inline-block;
   margin-top: 12px;
   padding: 16px 36px;
   border-radius: 12px;
-  background: #fff;
-  color: #172c2c;
+  background: var(--color-white);
+  color: var(--color-white-text);
   text-decoration: none;
   line-height: 1.5;
-  box-shadow: 0 4px 10px rgb(0 0 0 / 10%);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--color-black) 10%, transparent);
 }
-.c4-hero__cta:hover { background: #edf0e8; }
+.c4-hero__cta:hover { background: var(--color-light-gray); }
 .c4-hero :is(a, select):focus-visible { outline: 3px solid currentColor; outline-offset: 5px; }
 
 .c4-hero--forest {
   min-height: 600px;
   padding: 50px 10%;
   align-items: flex-start;
-  background: #225124;
-  color: #fff;
+  background: var(--color-green);
+  color: var(--color-green-text);
 }
-.c4-hero--forest.c4-hero--image::before { background: rgba(34, 81, 36, 0.62); }
+.c4-hero--forest.c4-hero--image::before { background: color-mix(in srgb, var(--color-green) 90%, transparent); }
 .c4-hero--forest .c4-hero__content { width: min(45%, 600px); }
 .c4-hero--forest .c4-hero__heading { justify-content: flex-end; }
 .c4-hero--forest .c4-hero__title { font-size: clamp(2.25rem, 4vw, 3.5rem); }
@@ -111,8 +112,8 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   min-height: max(520px, 80vh);
-  background: #dbe4c3;
-  color: #111;
+  background: var(--color-light-green);
+  color: var(--color-light-green-text);
 }
 .c4-hero--split .c4-hero__content {
   display: flex;
@@ -130,7 +131,7 @@
 .c4-hero__language { margin-top: auto; margin-bottom: 60px; padding-top: 60px; }
 .c4-hero__language label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
 .c4-hero__language svg { width: 18px; height: 18px; }
-.c4-hero__language select { max-width: 100%; width: 210px; padding: 12px 16px; border: 1px solid #ccc; border-radius: 8px; background: #fff; color: #111; font: inherit; }
+.c4-hero__language select { max-width: 100%; width: 210px; padding: 12px 16px; border: 1px solid var(--color-input-border); border-radius: 8px; background: var(--color-white); color: var(--color-white-text); font: inherit; }
 
 /* DT-902: Keep text, controls, and photos usable at narrow widths and increased text sizes. */
 @media (max-width: 767px) {
@@ -149,3 +150,6 @@
   .c4-hero--split.c4-hero--right .c4-hero__image { position: static; width: 100%; grid-column: 1; grid-row: 2; height: 340px; border-radius: 25% 0 0 0; }
   .c4-hero__language { margin-bottom: 0; padding-top: 40px; }
 }
+
+/* DT-902: Remove the image tint only for heroes that explicitly opt out. */
+.c4-hero.c4-hero--no-overlay::before { content: none; }

@@ -11,7 +11,7 @@ import HeaderSymbolCard from './HeaderSymbolCard'
 import { ColorConfigService } from '../../../services/colorConfigService'
 
 // DT-902: Welcome paragraph cards can render the shared banner without changing other layouts.
-export default function ModularCard ({ card, theme = 'light', BannerIcon }) {
+export default function ModularCard ({ card, theme = 'light', colorSource = 'cms', BannerIcon }) {
   const { i18n } = useTranslation()
   if (!card) return null
 
@@ -26,11 +26,18 @@ export default function ModularCard ({ card, theme = 'light', BannerIcon }) {
     return theme === 'dark' ? c.darkModeColor : c.lightModeColor
   }
 
-  const customStyles = {
-    '--card-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#1e293b' : '#ffffff'),
-    '--card-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
-    '--card-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155')
-  }
+  // DT-902: Global mode ignores stored card colours without changing CMS defaults.
+  const customStyles = colorSource === 'global'
+    ? {
+        '--card-bg': 'var(--color-white)',
+        '--card-header': 'var(--color-white-text)',
+        '--card-text': 'var(--color-white-text)'
+      }
+    : {
+        '--card-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#1e293b' : '#ffffff'),
+        '--card-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
+        '--card-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155')
+      }
 
   const commonProps = {
     header: pickText(content.header ?? card.header, lang),

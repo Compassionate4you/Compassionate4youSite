@@ -10,9 +10,10 @@ import '../../../styles/components/modular/sections/HeaderCardsSection.css'
  * headerPosition: 'left' (default) | 'right'; the header comes first on mobile.
  * Background images are decorative; all meaningful content belongs in text props.
  */
+// DT-902: Allow selected sections to use the global white surface and matching text.
 // DT-902: Preserve reference benefit lists as semantic lists beneath introductory copy.
 export default function HeaderCardsSection ({
-  title, subtitle, label, items = [], backgroundImageUrl, headerPosition = 'left'
+  title, subtitle, label, items = [], backgroundImageUrl, headerPosition = 'left', surface
 }) {
   const titleId = useSectionTitleId(title)
   const [failedImage, setFailedImage] = useState(null)
@@ -20,7 +21,7 @@ export default function HeaderCardsSection ({
 
   return (
     <section
-      className={`c4-section c4-header-cards${headerPosition === 'right' ? ' c4-header-cards--right' : ''}${hasBackground ? ' c4-header-cards--image' : ''}`}
+      className={`c4-section c4-header-cards${surface === 'white' ? ' c4-header-cards--white' : ''}${headerPosition === 'right' ? ' c4-header-cards--right' : ''}${hasBackground ? ' c4-header-cards--image' : ''}`}
       aria-labelledby={titleId}
     >
       {hasBackground && (

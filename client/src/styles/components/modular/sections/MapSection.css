@@ -1,3 +1,4 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
 /* DT-902: Inherit the public page theme while honoring explicit CMS color overrides. */
 /*
 DT-622 Sprint 8
@@ -7,8 +8,8 @@ Modular Google Maps section stylesheet
 
 .modular-map-section {
   padding: 4rem 1.5rem;
-  background-color: var(--section-bg, var(--public-surface, #ffffff));
-  color: var(--section-text, var(--public-text, #1e293b));
+  background-color: var(--section-bg, var(--color-white));
+  color: var(--section-text, var(--color-white-text));
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -22,12 +23,12 @@ Modular Google Maps section stylesheet
   font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 700;
   margin: 0 0 0.75rem;
-  color: var(--section-header, var(--public-heading, #0f172a));
+  color: var(--section-header, var(--color-white-text));
 }
 
 .modular-map-section__address {
   font-size: 1.15rem;
-  color: var(--section-text, var(--public-text, #475569));
+  color: var(--section-text, var(--color-white-text));
   margin: 0 0 2rem;
 }
 
@@ -37,8 +38,8 @@ Modular Google Maps section stylesheet
   height: 420px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--color-black) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-black) 8%, transparent);
   margin-bottom: 1.5rem;
 }
 
@@ -53,8 +54,8 @@ Modular Google Maps section stylesheet
   align-items: center;
   gap: 0.6rem;
   padding: 0.85rem 1.75rem;
-  background-color: var(--section-accent, #366454);
-  color: #ffffff;
+  background-color: var(--section-accent, var(--color-primary));
+  color: var(--color-primary-text);
   font-weight: 600;
   font-size: 1rem;
   border-radius: 10px;

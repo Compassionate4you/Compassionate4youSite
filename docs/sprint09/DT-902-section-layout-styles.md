@@ -197,3 +197,44 @@ Temporary read-only CMS fixtures and browser sessions were used for verification
 Files modified: `client/src/styles/ContentPageTheme.css`, `client/src/styles/components/modular/sections/BannerSection.css`, and this documentation.
 
 Validation: production client build and `git diff --check` passed. Browser checks used the full app with temporary read-only CMS fixtures across the three pages in both themes, waiting for the site's color transitions to settle. Dark page/stack/timeline/map/FAQ surfaces resolved to rgb(53,53,53), banners to transparent, and Contact to rgb(157,161,145). The form card retained white in light mode and rgb(42,48,45) in dark mode; input colors also remained unchanged. Inspected the dark Contact capture to confirm the sage section, readable details, and preserved form panel. No new tests were added for this CSS-only adjustment. Existing build dependency/chunk warnings remain; temporary browser and Vite processes were stopped afterward.
+
+
+## Global palette consolidation (supersedes the public-page palette above)
+
+Welcome, Home Health, and Hospice Care now use existing `global.css` colour variables exclusively. Deleted `client/src/styles/ContentPageTheme.css` and removed its import from ContentPage. The previous `--public-*` palette and DT-718 literal grey overrides no longer apply. Global palette values and the accessibility theme attributes are unchanged.
+
+Component styles reference global surface/text pairs, borders, muted text, primary actions, success/error indicators, and token-derived translucent shadows/overlays. PhotoTextCard uses light-gray/light-gray-text; the contact section uses sage/sage-text, while its form panel and inputs use white/white-text. The dark form button uses gray/gray-text. Hero surfaces use teal/green and their respective text tokens; Welcome retains light-green/light-green-text. CTA links use global link tokens. Layout geometry, image assets, translations, and form submission logic are unchanged.
+
+DynamicSectionRenderer and ModularCard accept optional `colorSource` (`cms` by default, or `global`). The three public adapters select global mode for unrecognized CMS sections; CardSection forwards the selection to nested cards. Global mode bypasses stored colour lookups and emits live CSS variable references. Other CMS callers retain their stored light/dark colours. No persistence or database migration is required. Shared modular CSS defaults now use global tokens for all consumers.
+
+### Files modified
+
+- Deleted `client/src/styles/ContentPageTheme.css`; updated `client/src/pages/ContentPage.jsx` and `client/src/styles/contentpage.css`.
+- Updated `client/src/components/modular/{DynamicSectionRenderer,WelcomeSections,HomeHealthSections,HospiceSections}.jsx`, `cards/ModularCard.jsx`, and `sections/{CardSection,PageCallToAction}.jsx`.
+- Updated `client/src/styles/components/modular/cards/{HeaderParagraphCard,HeaderSymbolCard,ImageCard,PhotoTextCard}.css`.
+- Updated `client/src/styles/components/modular/sections/{AccountBenefitsSection,ContactFormSection,FAQSection,FullscreenImageHeaderSection,HeaderCardsSection,HeroSection,ImageHeaderTextSection,MapSection,WelcomeHeroSection}.css`.
+- Added `client/src/components/modular/sections/__tests__/GlobalColors.test.jsx`; updated this document and marked the DT-718 document as superseded.
+
+### Verification
+
+- Eight focused suites passed, 78 tests: GlobalColors, ReferenceContent, HeroSection, SectionLayouts, BannerSection, ContentPageLayouts, ContentPageWelcome, and ContactForm. Includes all three adapters bypassing stored section/card colours and CMS light/dark compatibility for other callers.
+- Production build passed with existing dependency directive, mixed-import, and large-bundle warnings.
+- Targeted JavaScript Standard checks and `git diff --check` passed.
+- Source audit found no remaining `--public-*` references or removed stylesheet imports under `client/src`, and no colour literals in modular CSS or contentpage.css. CMS-mode JavaScript fallbacks intentionally remain for other pages.
+- Local headless-Chrome component fixtures confirmed light panel/input #ffffff with black text, dark panel/input #191919 with white text, photo cards #D9D9D9/#353535, and a dark form button #595959. Inspected the dark form/card fixture; this was a component colour check, not a full three-page responsive browser regression. Full-route desktop/mobile verification remains outstanding.
+
+## Service-page hero, surface, and icon refinements
+
+- Added `HeroSection.showOverlay` (default `true`). Home Health and Hospice explicitly disable it; the no-overlay modifier removes the photo tint without changing image crops, positioning, content, or buttons. Other hero callers retain their existing overlay behavior.
+- Added `HeaderCardsSection.surface`; `white` selects the existing global white/white-text tokens. Home Health's Our Home Health Services and Specialty Services select this option. Advantages and Hospice sections retain their existing surfaces. Global white resolves to #ffffff in light mode and #191919 in dark mode.
+- Assigned varied decorative Lucide icons to all five Home Health/Hospice HeaderCardsSection groups. Home Health services map stable keys to icons; advantages, specialties, and Hospice groups map their established translated list order. SectionIcon's explicit registry includes the new names and retains existing names, the Home alias, decorative accessibility, and the unknown-name Heart fallback.
+- Content sources, global palette values, HeaderStackSection, timelines, and ContactFormSection.css are unchanged by this refinement.
+
+Files modified: `client/src/components/modular/{HomeHealthSections,HospiceSections}.jsx`; `client/src/components/modular/sections/{HeroSection,HeaderCardsSection,SectionIcon}.jsx`; `client/src/styles/components/modular/sections/{HeroSection,HeaderCardsSection}.css`; `client/src/components/modular/sections/__tests__/{HeroSection,ReferenceContent}.test.jsx`; this document.
+
+Validation:
+
+- Six focused suites passed (46 tests): ReferenceContent, HeroSection, SectionLayouts, GlobalColors, ContentPageLayouts, and ContentPageWelcome. New cases check default/disabled overlays, page-specific surfaces, exact icon assignments, and decorative accessibility in English and Spanish.
+- Production build passed with existing dependency-directive, mixed-import, and bundle-size warnings. Targeted JavaScript Standard checks and `git diff --check` passed.
+- Chrome checks used static renders of the actual page adapters and their local images at 1440px and 500px in both themes (eight combinations). All photos loaded, no horizontal overflow occurred, both hero pseudo-elements resolved to `content: none`, and the two Home Health sections resolved to #ffffff/#191919 as expected. Inspected Home Health desktop and Hospice dark mobile screenshots. Text is rendered directly over the untinted photos as requested; contrast varies across the photo. These were adapter render checks, not full application route checks.
+- Temporary browser fixtures/profiles were kept under `/private/tmp`; no backend writes or reseeding occurred.

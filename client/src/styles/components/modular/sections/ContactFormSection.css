@@ -1,3 +1,4 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
 /* DT-902: Inherit the public page theme while honoring explicit CMS color overrides. */
 /*
 DT-622 Sprint 8
@@ -7,8 +8,8 @@ Modular contact form and contact information section stylesheet
 
 .modular-contact-section {
   padding: 4rem 1.5rem;
-  background-color: var(--color-gray);
-  color: var(--section-text, var(--public-text, #1e293b));
+  background-color: var(--color-sage);
+  color: var(--section-text, var(--color-white-text));
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -22,7 +23,7 @@ Modular contact form and contact information section stylesheet
   font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 700;
   margin-bottom: 2.5rem;
-  color: var(--section-header, var(--public-heading, #0f172a));
+  color: var(--section-header, var(--color-white-text));
 }
 
 .modular-contact-container {
@@ -48,28 +49,28 @@ Modular contact form and contact information section stylesheet
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background-color: var(--section-accent, #366454);
-  color: #ffffff;
+  background-color: var(--color-white);
+  color: var(--color-primary-text);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--color-black) 10%, transparent);
 }
 
 .modular-contact-item h3 {
   margin: 0 0 0.35rem 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--section-header, var(--public-heading, #0f172a));
+  color: var(--section-header, var(--color-white-text));
 }
 
 .modular-contact-item p {
   margin: 0;
   font-size: 1.05rem;
   line-height: 1.5;
-  color: var(--section-text, var(--public-text, #64748b));
+  color: var(--section-text, var(--color-white-text));
 }
 
 .modular-contact-form-col {
@@ -77,11 +78,11 @@ Modular contact form and contact information section stylesheet
 }
 
 .contact-form-card {
-  background: var(--card-bg, var(--public-raised, #ffffff));
+  background: var(--card-bg, var(--color-white));
   border-radius: 18px;
   padding: 28px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--color-black) 8%, transparent);
+  border: 1px solid var(--color-input-border);
 }
 
 .contact-form {
@@ -92,46 +93,46 @@ Modular contact form and contact information section stylesheet
 .contact-form__required-note {
   margin: 0 0 10px;
   font-size: 0.85rem;
-  color: var(--public-muted, #64748b);
+  color: var(--color-muted-text);
 }
 
 .contact-form label {
   font-weight: 600;
   margin-bottom: 6px;
   margin-top: 12px;
-  color: var(--section-header, var(--public-heading, #1e293b));
+  color: var(--section-header, var(--color-white-text));
 }
 
 .contact-form__required {
-  color: var(--public-error, #dc2626);
+  color: var(--color-danger);
 }
 
 .contact-form input,
 .contact-form textarea {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--public-border, #d1d5db);
+  border: 1px solid var(--color-input-border);
   border-radius: 10px;
   font-size: 1rem;
   outline: none;
   box-sizing: border-box;
-  background-color: var(--public-input, #f8fafc);
-  color: var(--public-text, #1e293b);
+  background-color: var(--color-white);
+  color: var(--color-white-text);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border-color: var(--section-accent, #366454);
-  box-shadow: 0 0 0 3px rgba(54, 100, 84, 0.2);
+  border-color: var(--section-accent, var(--color-primary));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
 .contact-form__input--error {
-  border-color: #dc2626 !important;
+  border-color: var(--color-danger) !important;
 }
 
 .contact-form__error {
-  color: var(--public-error, #dc2626);
+  color: var(--color-danger);
   font-size: 0.85rem;
   margin-top: 4px;
 }
@@ -145,8 +146,8 @@ Modular contact form and contact information section stylesheet
   padding: 14px 20px;
   border: none;
   border-radius: 10px;
-  background-color: var(--section-accent, #366454);
-  color: #ffffff;
+  background-color: var(--section-accent, var(--color-primary));
+  color: var(--color-primary-text);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -172,13 +173,13 @@ Modular contact form and contact information section stylesheet
 }
 
 .contact-form__status--success {
-  background-color: var(--public-success-bg, #dcfce7);
-  color: var(--public-success-text, #166534);
+  background-color: var(--color-white);
+  color: var(--color-success);
 }
 
 .contact-form__status--error {
-  background-color: var(--public-error-bg, #fee2e2);
-  color: var(--public-error, #991b1b);
+  background-color: var(--color-white);
+  color: var(--color-danger);
 }
 
 @media (max-width: 868px) {
@@ -186,4 +187,22 @@ Modular contact form and contact information section stylesheet
     flex-direction: column;
     gap: 2rem;
   }
+}
+
+/* DT-902: Pair contact details with the global sage surface. */
+.content-page--standard .modular-contact-section__title,
+.content-page--standard .modular-contact-item h3,
+.content-page--standard .modular-contact-item p { color: var(--color-sage-text); }
+
+/* DT-902: Form labels and placeholders use the global input surface palette. */
+.content-page--standard .contact-form label { color: var(--color-white-text); }
+.contact-form :is(input, textarea)::placeholder { color: var(--color-muted-text); opacity: 1; }
+
+/* DT-902: Shared button tokens supply text and focus colours. */
+.contact-form :is(input, textarea):focus-visible { outline-offset: 3px; }
+
+/* DT-902: Keep the dark form action grey using the existing global palette. */
+:root[theme='dark'] .content-page--standard .contact-btn {
+  background-color: var(--color-gray);
+  color: var(--color-gray-text);
 }

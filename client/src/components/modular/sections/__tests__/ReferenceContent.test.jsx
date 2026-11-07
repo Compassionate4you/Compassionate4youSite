@@ -91,3 +91,35 @@ describe('Sprint 08 reference content', () => {
     expect(screen.getByRole('heading', { name: es.faq.title })).toBeInTheDocument()
   })
 })
+
+// DT-902: Exercise page-specific surfaces, untinted photos, and semantic icon assignments in two languages.
+describe('service page presentation refinements', () => {
+  it.each([
+    [HomeHealthSections, 'sec-hh-', ['hero', 'services', 'advantages', 'specialties'], [
+      ['stethoscope', 'activity', 'accessibility', 'cross', 'speech', 'house', 'users', 'languages'],
+      ['clipboard-check', 'coins', 'trending-up', 'clipboard-list', 'house', 'shield-check', 'graduation-cap'],
+      ['heart-pulse', 'wind', 'bone', 'bandage', 'droplets', 'activity', 'pill', 'flask-conical', 'apple', 'test-tube']
+    ]],
+    [HospiceSections, 'sec-hospice-', ['hero', 'benefits', 'comprehensive'], [
+      ['heart-handshake', 'clock', 'briefcase-medical', 'stethoscope', 'cross', 'users'],
+      ['house', 'church', 'hand-helping', 'calendar-days', 'accessibility', 'phone']
+    ]]
+  ])('renders the requested hero and card options for %s', async (Page, prefix, names, icons) => {
+    const { container, i18n } = await show(Page, prefix, names)
+    for (const language of ['en', 'es']) {
+      await act(() => i18n.changeLanguage(language))
+      expect(container.querySelector('.c4-hero')).toHaveClass('c4-hero--no-overlay', 'c4-hero--image')
+      const sections = container.querySelectorAll('.c4-header-cards')
+      expect(sections).toHaveLength(icons.length)
+      sections.forEach((section, index) => {
+        const actual = section.querySelectorAll('.c4-header-cards__icon svg')
+        expect(actual).toHaveLength(icons[index].length)
+        actual.forEach((icon, cardIndex) => {
+          expect(icon).toHaveClass(`lucide-${icons[index][cardIndex]}`)
+          expect(icon).toHaveAttribute('aria-hidden', 'true')
+        })
+        expect(section.classList.contains('c4-header-cards--white')).toBe(Page === HomeHealthSections && index !== 1)
+      })
+    }
+  })
+})

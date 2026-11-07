@@ -2,6 +2,7 @@
 /* Header / Cards */
 .c4-header-cards {
   background: var(--color-light-green);
+  color: var(--color-light-green-text);
 }
 
 .c4-header-cards__background {
@@ -76,6 +77,7 @@
   padding: clamp(20px, 2vw, 30px);
   border-radius: var(--radius-lg);
   background: var(--color-white);
+  color: var(--color-white-text);
 }
 
 .c4-header-cards__icon {
@@ -150,4 +152,10 @@
   .c4-header-cards__grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* DT-902: Selected Home Health sections follow the global white surface in either theme. */
+.c4-header-cards--white {
+  background: var(--color-white);
+  color: var(--color-white-text);
 }

@@ -34,6 +34,15 @@ describe('HeroSection', () => {
     expect(screen.getByRole('link', { name: 'Schedule' })).toHaveAttribute('href', '/schedule')
   })
 
+  // DT-902: Overlays remain enabled by default and can be disabled without removing the photo.
+  it('opts out of the tint without changing the default for other heroes', async () => {
+    const { container, rerender } = await show({ imageUrl: careImage })
+    expect(container.querySelector('section')).not.toHaveClass('c4-hero--no-overlay')
+    rerender(<HeroSection title='Care' imageUrl={careImage} showOverlay={false} />)
+    expect(container.querySelector('section')).toHaveClass('c4-hero--no-overlay', 'c4-hero--image')
+    expect(container.querySelector('img')).toHaveAttribute('src', careImage)
+  })
+
   it('supports right-hand forest content and an external CTA', async () => {
     const { container } = await show({ contentPosition: 'right', tone: 'forest', iconName: 'Heart', buttonText: 'Contact', buttonLink: 'https://example.com/contact' })
     expect(container.querySelector('section')).toHaveClass('c4-hero--right', 'c4-hero--forest')

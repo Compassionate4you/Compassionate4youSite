@@ -14,7 +14,6 @@ import HomeHealthSections from '../components/modular/HomeHealthSections'
 import WelcomeSections from '../components/modular/WelcomeSections'
 import NotFoundPage from './NotFoundPage'
 import '../styles/contentpage.css'
-import '../styles/ContentPageTheme.css'
 import { useTranslation } from 'react-i18next'
 import { useAccessibility } from '../context/AccessibilityContext'
 import { getContentPageLabel } from '../services/contentPageLabels'
@@ -83,10 +82,11 @@ export default function ContentPage ({ defaultPageId }) {
     }
   }, [currentPage, t])
 
+  // DT-902: Loading text follows the global palette.
   if (loading) {
     return (
       <main id="main-content" className="content-page" style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <p style={{ color: '#64748b', fontSize: '1.1rem' }}>Loading content...</p>
+        <p style={{ color: 'var(--color-muted-text)', fontSize: '1.1rem' }}>Loading content...</p>
       </main>
     )
   }

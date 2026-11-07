@@ -7,6 +7,10 @@ import HeroSection from './sections/HeroSection'
 import coupleImage from '../../assets/images/older_couple_smiling.jpeg'
 import PageCallToAction from './sections/PageCallToAction'
 
+// DT-902: Keep card icons aligned with the established translated card order.
+const BENEFIT_ICONS = ['HeartHandshake', 'Clock', 'BriefcaseMedical', 'Stethoscope', 'Cross', 'Users']
+const SUPPORT_ICONS = ['House', 'Church', 'HandHelping', 'CalendarDays', 'Accessibility', 'Phone']
+
 // DT-902: Preserve translated paragraphs and benefit lists without leaking object values into JSX.
 function referenceItems (t, base, count) {
   return Array.from({ length: count }, (_, index) => {
@@ -26,6 +30,7 @@ function referenceItems (t, base, count) {
 
 // DT-732: Retain stack/cards/timeline styling for Hospice.
 // DT-902: Restore full Sprint 08 content, including separate benefits and support-services sections.
+// DT-902: Fallback CMS sections use global colours on this public page.
 export default function HospiceSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
   return sections.map(section => {
@@ -34,7 +39,7 @@ export default function HospiceSections ({ sections, theme = 'light' }) {
       return (
         <HeroSection
           key={section.id} title={t('hospice.blurb.title')} description={t('hospice.blurb.description')}
-          imageUrl={coupleImage} tone='forest' contentPosition='right' iconName='Heart'
+          imageUrl={coupleImage} showOverlay={false} tone='forest' contentPosition='right' iconName='Heart'
           buttonText={t('hospice.blurb.contactButton')} buttonLink='/schedule'
         />
       )
@@ -47,7 +52,9 @@ export default function HospiceSections ({ sections, theme = 'light' }) {
     }
     if (key === 'sec-hospice-benefits' || key === 'sec-hospice-comprehensive') {
       const base = key === 'sec-hospice-benefits' ? 'hospice.careAndBenefits' : 'hospice.comprehensiveServices'
-      return <HeaderCardsSection key={key} title={t(`${base}.title`)} items={referenceItems(t, base, 6)} />
+      const icons = key === 'sec-hospice-benefits' ? BENEFIT_ICONS : SUPPORT_ICONS
+      const items = referenceItems(t, base, 6).map((item, index) => ({ ...item, iconName: icons[index] }))
+      return <HeaderCardsSection key={key} title={t(`${base}.title`)} items={items} />
     }
     if (key === 'sec-hospice-above-beyond') {
       const items = Array.from({ length: 7 }, (_, index) => ({ id: `above-${index}`, title: t(`hospice.aboveAndBeyond.cards.card${index + 1}`) }))
@@ -56,6 +63,6 @@ export default function HospiceSections ({ sections, theme = 'light' }) {
     if (key === 'sec-hospice-process') {
       return <TimelineSection key={key} title={t('hospice.hospiceProcess.title')} items={referenceItems(t, 'hospice.hospiceProcess', 5)} />
     }
-    return <DynamicSectionRenderer key={key} config={section} theme={theme} />
+    return <DynamicSectionRenderer key={key} config={section} colorSource='global' theme={theme} />
   })
 }
