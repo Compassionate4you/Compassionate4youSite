@@ -12,9 +12,18 @@ import coupleImage from '../../assets/images/older_couple_smiling.jpeg'
 
 // DT-902: Restore Welcome reference copy while keeping banners, image cards, form, and map behavior.
 // DT-902: Fallback CMS sections use global colours on this public page.
+// DT-718: Present the FAQ immediately before the map for existing CMS content.
 export default function WelcomeSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
-  return sections.map(section => {
+  // DT-718: Reorder a copy, preserving other sections and incomplete page configurations.
+  const orderedSections = [...sections]
+  const faqIndex = orderedSections.findIndex(section => section.id === 'sec-landing-faq')
+  if (faqIndex !== -1 && orderedSections.some(section => section.id === 'sec-landing-map')) {
+    const [faq] = orderedSections.splice(faqIndex, 1)
+    const mapIndex = orderedSections.findIndex(section => section.id === 'sec-landing-map')
+    orderedSections.splice(mapIndex, 0, faq)
+  }
+  return orderedSections.map(section => {
     const key = section.id
     // DT-902: Cover both seeded CMS and initial local-cache hero identifiers.
     if (key === 'sec-landing-hero' || key === 'sec-hero') {

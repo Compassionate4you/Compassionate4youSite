@@ -41,7 +41,14 @@ describe('Sprint 08 reference content', () => {
     const fullText = normalize(container.textContent)
     let cursor = 0
     let previousText = ''
-    for (const block of reference[name]) {
+    // DT-718: Keep the original fixture intact while expecting FAQ before the map.
+    const blocks = [...reference[name]]
+    if (name === 'Welcome') {
+      const faqIndex = blocks.findIndex(block => block.text === en.faq.title)
+      const mapBlocks = blocks.splice(faqIndex - 2, 2)
+      blocks.push(...mapBlocks)
+    }
+    for (const block of blocks) {
       // DT-902: The user-facing Home name is now Welcome; preserve the original fixture.
       const text = normalize(block.text === 'Back to Home' ? 'Back to Welcome' : block.text)
       if (text === previousText) continue
@@ -77,6 +84,23 @@ describe('Sprint 08 reference content', () => {
       expect(screen.getByRole('link', { name: 'Get Directions' })).toHaveAttribute('href', expect.stringContaining('destination=1501'))
       expect(screen.getByRole('img', { name: en.landing.infoCards.card1.imageAlt })).toHaveAttribute('src', expect.stringContaining('working_a_puzzle'))
     }
+  })
+
+  // DT-718: Verify actual DOM order for saved configurations, including missing sections.
+  it.each([
+    [['contact', 'map', 'faq'], ['contact', 'faq', 'map']],
+    [['faq', 'contact', 'map'], ['contact', 'faq', 'map']],
+    [['contact', 'faq', 'map'], ['contact', 'faq', 'map']],
+    [['contact', 'map'], ['contact', 'map']],
+    [['contact', 'faq'], ['contact', 'faq']]
+  ])('orders Welcome sections %j as %j', async (names, expected) => {
+    const { container } = await show(WelcomeSections, 'sec-landing-', Object.freeze(names))
+    const actual = [...container.children].map(node => {
+      if (node.id === 'contact') return 'contact'
+      if (node.id === 'faq') return 'faq'
+      return 'map'
+    })
+    expect(actual).toEqual(expected)
   })
 
   it('keeps the restored Welcome contact form operational and updates translated content', async () => {
