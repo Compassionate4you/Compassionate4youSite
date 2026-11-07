@@ -16,8 +16,8 @@ const {
 } = require('../controllers/appointmentController');
 
 const { 
-    requireAuth, 
     requireAdmin,
+    requireCustomer,
 } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -35,12 +35,12 @@ router.delete('/:id', requireAdmin, deleteAdminAppointment);
 router.post('/', createAppointment);
 
 // DT-564: a signed-in user's own appointments.
-router.get('/mine', requireAuth, getMyAppointments);
+router.get('/mine', requireCustomer, getMyAppointments);
 
 // DT-278: cancel one of the signed in user's appointments
-router.patch('/:id/cancel', requireAuth, cancelAppointment);
+router.patch('/:id/cancel', requireCustomer, cancelAppointment);
 
 // DT-278 (722): move one of the signed in user appointments to a new date/time
-router.patch('/:id/reschedule', requireAuth, rescheduleAppointment);
+router.patch('/:id/reschedule', requireCustomer, rescheduleAppointment);
 
 module.exports = router;

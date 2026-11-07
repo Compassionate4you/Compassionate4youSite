@@ -1,7 +1,7 @@
 // DT-563 / DT-564: appointment booking and lookup.
 const prisma = require('../config/db');
 const { sendValidationError } = require('../utils/errorResponse');
-const { sendAppointmentConfirmation } = require('../services/notificationService');
+const { sendAppointmentConfirmation, notifyAppointmentChange } = require('../services/notificationService');
 const { isValidEmail } = require('../validators/authValidation');
 
 const SERVICE_TYPES = ['Home Health', 'Hospice Care', 'Consultation'];
@@ -292,7 +292,9 @@ async function createAdminAppointment(req, res, next) {
                 userId: matchingUser?.id ?? null,
             },
         });
-
+        // Tell the person: confirmed if staff booked it as confirmed, otherwise
+        // a request awaiting approval. A failed send never blocks the booking.
+        await notifyAppointmentChange(null, appointment);
         return res.status(201).json({
             success: true,
             appointment,
@@ -446,7 +448,9 @@ async function updateAdminAppointment(req, res, next) {
                     userId: matchingUser?.id ?? null,
                 },
             });
-
+        // Email the person when the status or the date/time changed
+        // (confirmed, rescheduled or cancelled). Never throws.
+        await notifyAppointmentChange(existingAppointment, updatedAppointment);
         return res.status(200).json({
             success: true,
             appointment: updatedAppointment,
@@ -545,7 +549,9 @@ async function cancelAppointment(req, res, next) {
             where: { id: appointment.id },
             data: { status: 'CANCELLED' },
         });
-
+                
+        // Tell the person it was cancelled. Never throws.
+        await notifyAppointmentChange(appointment, updated);
         // Send back the updated appointment so the portal can show the new status
         return res.status(200).json({ success: true, appointment: updated });
     } catch (err) {
@@ -621,7 +627,8 @@ async function rescheduleAppointment(req,res,next){
             where: { id: appointment.id },
             data: { date, timeSlot, status: 'PENDING' },
         });
-
+        // Tell the person the new date and time. Never throws.
+        await notifyAppointmentChange(appointment, updated);
         // Send back the updated appointment so the portal can show the new date and time
         return res.status(200).json({ success: true, appointment: updated });
     } catch (err) {
