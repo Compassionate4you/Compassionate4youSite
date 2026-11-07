@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react'
 
 // DT-278: loads, cancels, and reschedules the signed in user's appointments through the backend
-import { apiGetMyAppointments, apiCancelAppointment, apiRescheduleAppointment, apiGetAvailability } from '../services/api'
+import { apiGetMyAppointments, apiCancelAppointment, apiRescheduleAppointment, apiGetAvailability, apiGetProfile, apiUpdateProfile } from '../services/api'
 import '../styles/portal.css'
 
 // DT-809 (810): get the signed in user's name for welcome messages
@@ -52,24 +52,22 @@ function PortalPage () {
 
   // DT-809 (810): show the account's name, or the email if there's no name yet
   const { user } = useAuth()
-  const displayName = user?.displayName || ''
 
-  const saved = JSON.parse(localStorage.getItem('profileSettings') || '{}')
-
+   // DT-846: Profile Settings start empty and get filled from the database (no more mock info)
   const [showProfile, setShowProfile] = useState(false)
   const [activeTab, setActiveTab] = useState('personal')
-  const [fullName, setFullName] = useState(saved.fullName || 'John Doe')
-  const [email, setEmail] = useState(saved.email || 'customer@example.com')
-  const [phone, setPhone] = useState(saved.phone || '(555) 123-4567')
-  const [address, setAddress] = useState(saved.address || '123 Main St')
-  const [city, setCity] = useState(saved.city || 'Sacramento')
-  const [state, setState] = useState(saved.state || 'California')
-  const [zip, setZip] = useState(saved.zip || '95819')
-  const [emergencyName, setEmergencyName] = useState(saved.emergencyName || 'Jane Doe')
-  const [emergencyPhone, setEmergencyPhone] = useState(saved.emergencyPhone || '(555) 987-6543')
-  const [emailNotif, setEmailNotif] = useState(saved.emailNotif ?? true)
-  const [smsNotif, setSmsNotif] = useState(saved.smsNotif ?? false)
-  const [preferredContact, setPreferredContact] = useState(saved.preferredContact || 'email')
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [zip, setZip] = useState('')
+  const [emergencyName, setEmergencyName] = useState('')
+  const [emergencyPhone, setEmergencyPhone] = useState('')
+  const [emailNotif, setEmailNotif] = useState(true)
+  const [smsNotif, setSmsNotif] = useState(false)
+  const [preferredContact, setPreferredContact] = useState('email')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -79,6 +77,10 @@ function PortalPage () {
   const [showContactForm, setShowContactForm] = useState(false)
   const [messageSent, setMessageSent] = useState(false)
   const [contactForm, setContactForm] = useState({ fullName: '', reason: '', message: '' })
+  // DT-846: last saved profile, so Cancel can undo unsaved edits
+  const[savedProfile, setSavedProfile] = useState(null)
+  // message to show if saving fails
+  const [profileError, setProfileError] = useState('')
 
   // DT-278: Removed mock appointments The list starts empty and gets filled from the backend
   const [appointments, setAppointments] = useState([])
@@ -98,6 +100,9 @@ function PortalPage () {
   const [rescheduleError, setRescheduleError] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
+  // DT-846: show the saved profile name, so the welcome updates right after saving
+  const displayName = fullName || user?.displayName || ''
+
 
 
 
@@ -109,6 +114,32 @@ function PortalPage () {
       .then((data) => setAppointments((data.appointments || []).map(toDisplayAppt)))
       // If it fails (usually because the user isn't signed in), show a message
       .catch(() => setLoadError('Could not load your appointments. Please sign in and try again.'))
+  }, [])
+
+  
+  // DT-846: Put a profile from the database into the Profile Settings boxes
+  function applyProfile (profile) {
+    setFullName(profile.name || '')
+    setEmail(profile.email || '')
+    setPhone(profile.phone || '')
+    setAddress(profile.address || '')
+    setCity(profile.city || '')
+    setState(profile.state || '')
+    setZip(profile.zip || '')
+    setEmergencyName(profile.emergencyName || '')
+    setEmergencyPhone(profile.emergencyPhone || '')
+    setEmailNotif(profile.emailNotif ?? true)
+    setSmsNotif(profile.smsNotif ?? false)
+    setPreferredContact(profile.preferredContact || 'email')
+    setSavedProfile(profile)
+  }
+
+  // DT-846: Load the signed-in user's profile when the page opens
+  useEffect(() => {
+    apiGetProfile()
+      .then((data) => applyProfile(data.profile))
+      .catch(() => {
+      })
   }, [])
 
   function getUpcomingAppointments () {
@@ -227,22 +258,36 @@ function PortalPage () {
     }
   }
 
-  function handleSave () {
-    localStorage.setItem('profileSettings', JSON.stringify({
-      fullName,
-      email,
-      phone,
-      address,
-      city,
-      state,
-      zip,
-      emergencyName,
-      emergencyPhone,
-      emailNotif,
-      smsNotif,
-      preferredContact
-    }))
-    alert('Changes saved!')
+  // DT-846: Save Profile Settings to the database instead of localStorage
+  async function handleSave () {
+    setProfileError('')
+    try {
+      const data = await apiUpdateProfile({
+        name: fullName,
+        phone,
+        address,
+        city,
+        state,
+        zip,
+        emergencyName,
+        emergencyPhone,
+        emailNotif,
+        smsNotif,
+        preferredContact
+      })
+      // Show exactly what was saved
+      applyProfile(data.profile)
+      setShowProfile(false)
+    } catch (err){
+      // show the server message if error such as "Please enter a valid phone number."
+      setProfileError(err.message || 'Could not save your profile. Please try again.')
+    }
+  }
+
+  // DT-846: Cancel any unsaved changes and close the window
+  function handleCancelProfile(){
+    if(savedProfile) applyProfile(savedProfile)
+    setProfileError('')
     setShowProfile(false)
   }
 
@@ -491,7 +536,7 @@ function PortalPage () {
                 <h2 className='modal-title'>Profile Settings</h2>
                 <p className='modal-subtitle'>Update your contact information and preferences</p>
               </div>
-              <button className='modal-close' onClick={() => setShowProfile(false)}>x</button>
+              <button className='modal-close' onClick={handleCancelProfile}>x</button>
             </div>
 
             <div className='tabs'>
@@ -511,7 +556,8 @@ function PortalPage () {
                     </div>
                     <div className='field'>
                       <label>Email Address *</label>
-                      <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                      {/* DT-846: Email is used to log in, so it can't be changed here*/}
+                      <input type='email' value={email} readOnly />
                     </div>
                   </div>
                   <div className='form-row-two'>
@@ -604,9 +650,10 @@ function PortalPage () {
                 </div>
               )}
             </div>
-
+            {/* DT-846: Show an error is saving did not work */}
+            {profileError && <p className='password-error'>{profileError}</p>}
             <div className='modal-footer'>
-              <button className='btn-secondary' onClick={() => setShowProfile(false)}>Cancel</button>
+              <button className='btn-secondary' onClick={handleCancelProfile}>Cancel</button>
               <button className='btn-primary' onClick={handleSave}>Save Changes</button>
             </div>
           </div>

@@ -189,6 +189,15 @@ export function apiCancelAppointment(id){
 export function apiRescheduleAppointment(id, date, timeSlot){
   return request(`/appointments/${encodeURIComponent(id)}/reschedule`, { method: 'PATCH', body: { date, timeSlot } })}
 
+// DT-846: load and save the signed-in user's profile (Profile Settings on the customer portal)
+export function apiGetProfile () {
+  return request('/portal/profile')
+}
+
+export function apiUpdateProfile (profile) {
+  return request('/portal/profile', { method: 'PUT', body: profile })
+}
+
 export default {
   sendChatMessage,
   apiSubmitContactForm,
@@ -213,5 +222,7 @@ export default {
   apiRescheduleAppointment,
   apiGetAccounts,
   apiUpdateAccount,
-  apiDeleteAccount
+  apiDeleteAccount,
+  apiGetProfile,
+  apiUpdateProfile
 }

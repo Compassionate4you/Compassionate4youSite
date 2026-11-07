@@ -13,6 +13,9 @@ const sectionRoutes = require('./routes/sectionRoutes');
 const { attachUser } = require('./middleware/authMiddleware');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
+// DT-846: Customer Portal profile routes
+const portalRoutes = require('./routes/portalRoutes');
+
 const app = express();
 
 // credentials:true so the browser sends the session cookie on API calls.
@@ -39,7 +42,7 @@ app.use('/api/content', contentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/sections', sectionRoutes);
-// app.use('/api/portal', portalRoutes);
+app.use('/api/portal', portalRoutes);
 // app.use('/api/services', serviceRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use(notFound);
