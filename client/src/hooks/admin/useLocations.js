@@ -94,6 +94,7 @@ const handleSaveLocation = async (id) => {
             city: editForm.city.trim(),
             state: editForm.state.trim(),
             zipCode: editForm.zipCode.trim(),
+            phone: editForm.phone.trim(),
         });
 
         // Formats the updated location for the dashboard
@@ -170,6 +171,7 @@ const handleAddLocation = async (event) => {
     const city = locationForm.city.trim();
     const state = locationForm.state.trim();
     const zipCode = locationForm.zipCode.trim();
+    const phone = locationForm.phone.trim();
 
     // Makes sure all required database fields are filled out
     if (!locationName || !streetAddress || !city || !state || !zipCode) {
@@ -187,13 +189,14 @@ const handleAddLocation = async (event) => {
             city,
             state,
             zipCode,
+            phone,
         });
 
         // Adds the saved location to the dashboard
         const newLocation = {
             ...data.location,
             address: [streetAddress, city, state, zipCode].join(", "),
-            phone: "",
+            phone: data.location.phone || "", // Display the phone returned from the database
             status: "Active",
         };
 

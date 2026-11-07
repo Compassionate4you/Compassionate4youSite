@@ -164,6 +164,7 @@ model Location {
   city          String
   state         String
   zipCode       String   @map("zip_code")
+  phone         String?
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
 
