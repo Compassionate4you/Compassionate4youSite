@@ -116,7 +116,7 @@ Modular contact form and contact information section stylesheet
   font-size: 1rem;
   outline: none;
   box-sizing: border-box;
-  background-color: var(--color-white);
+  background-color: var(--color-light-gray);
   color: var(--color-white-text);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -146,7 +146,7 @@ Modular contact form and contact information section stylesheet
   padding: 14px 20px;
   border: none;
   border-radius: 10px;
-  background-color: var(--section-accent, var(--color-primary));
+  background-color: var(--color-green);
   color: var(--color-primary-text);
   font-size: 1rem;
   font-weight: 600;
@@ -200,9 +200,3 @@ Modular contact form and contact information section stylesheet
 
 /* DT-902: Shared button tokens supply text and focus colours. */
 .contact-form :is(input, textarea):focus-visible { outline-offset: 3px; }
-
-/* DT-902: Keep the dark form action grey using the existing global palette. */
-:root[theme='dark'] .content-page--standard .contact-btn {
-  background-color: var(--color-gray);
-  color: var(--color-gray-text);
-}

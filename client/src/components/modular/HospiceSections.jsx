@@ -58,7 +58,8 @@ export default function HospiceSections ({ sections, theme = 'light' }) {
       const icons = key === 'sec-hospice-benefits' ? BENEFIT_ICONS : SUPPORT_ICONS
       const items = referenceItems(t, base, 6).map((item, index) => ({ ...item, iconName: icons[index] }))
       // DT-902: Add localized heading introductions and keep Comprehensive Support cards on the left.
-      return <HeaderCardsSection key={key} title={t(`${base}.title`)} label={t(`${base}.label`)} subtitle={t(`${base}.subtitle`)} items={items} headerPosition={key === 'sec-hospice-comprehensive' ? 'right' : 'left'} />
+      // DT-902: Apply the gray surface only to Comprehensive Support Services.
+      return <HeaderCardsSection key={key} title={t(`${base}.title`)} label={t(`${base}.label`)} subtitle={t(`${base}.subtitle`)} items={items} surface={key === 'sec-hospice-comprehensive' ? 'gray' : undefined} headerPosition={key === 'sec-hospice-comprehensive' ? 'right' : 'left'} />
     }
     if (key === 'sec-hospice-above-beyond') {
       const items = Array.from({ length: 7 }, (_, index) => ({ id: `above-${index}`, title: t(`hospice.aboveAndBeyond.cards.card${index + 1}`) }))

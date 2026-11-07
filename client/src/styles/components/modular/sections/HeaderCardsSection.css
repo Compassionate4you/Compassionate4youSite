@@ -161,3 +161,10 @@
   background: var(--color-white);
   color: var(--color-white-text);
 }
+
+/* DT-902: Comprehensive Support Services uses the global gray surface and matching text. */
+/* DT-902: Keep section copy white on gray in both themes; cards retain their own text colors. */
+.c4-header-cards--gray {
+  background: var(--color-gray);
+  color: #ffffff;
+}

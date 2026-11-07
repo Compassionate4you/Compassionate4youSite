@@ -12,6 +12,7 @@ import '../../../styles/components/modular/sections/HeaderCardsSection.css'
  */
 // DT-902: Allow selected sections to use the global white surface and matching text.
 // DT-902: Preserve reference benefit lists as semantic lists beneath introductory copy.
+// DT-902: Support a gray surface alongside white, retaining the default for other values.
 export default function HeaderCardsSection ({
   title, subtitle, label, items = [], backgroundImageUrl, headerPosition = 'left', surface
 }) {
@@ -21,7 +22,7 @@ export default function HeaderCardsSection ({
 
   return (
     <section
-      className={`c4-section c4-header-cards${surface === 'white' ? ' c4-header-cards--white' : ''}${headerPosition === 'right' ? ' c4-header-cards--right' : ''}${hasBackground ? ' c4-header-cards--image' : ''}`}
+      className={`c4-section c4-header-cards${surface === 'white' || surface === 'gray' ? ` c4-header-cards--${surface}` : ''}${headerPosition === 'right' ? ' c4-header-cards--right' : ''}${hasBackground ? ' c4-header-cards--image' : ''}`}
       aria-labelledby={titleId}
     >
       {hasBackground && (

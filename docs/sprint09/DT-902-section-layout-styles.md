@@ -2,6 +2,22 @@
 
 Sprint: **09**
 
+## White text on Comprehensive Support Services
+
+The gray HeaderCards surface now uses explicit white (`#ffffff`) for inherited section copy in both themes, superseding the earlier `--color-gray-text` choice below. Comprehensive Support Services' heading, label, and introductory paragraph are white on gray. Cards retain their independently defined text/background colors; global palette tokens and neighboring sections are unchanged.
+
+Files modified: `client/src/styles/components/modular/sections/HeaderCardsSection.css` and this document. Added a DT-902 style comment; no API changes.
+
+Validation: production build passed with existing warnings; `git diff --check` passed. Chrome computed-style checks on isolated actual-adapter renders confirmed white heading/label/subtitle on gray in both themes, unchanged card colors, and unchanged neighboring Team & Benefits colors. Temporary fixtures remain outside the repository.
+
+## Comprehensive Support Services gray surface
+
+Extended HeaderCardsSection's optional `surface` prop to accept `'gray'` in addition to `'white'`, using `--color-gray` and `--color-gray-text`. Only Hospice's Comprehensive Support Services selects the gray surface. Other values retain the existing default; cards, content, ordering, and layout remain unchanged. No global palette or database changes.
+
+Files modified: `client/src/components/modular/sections/HeaderCardsSection.jsx`, `client/src/components/modular/HospiceSections.jsx`, `client/src/styles/components/modular/sections/HeaderCardsSection.css`, and this document. Code changes include DT-902 comments.
+
+Validation: production build passed with existing warnings. SectionLayouts, HospiceSections, ReferenceContent, and GlobalColors passed all 27 tests. Chrome checks of isolated actual-adapter renders in light/dark themes confirmed the requested section background is gray, neighboring Team & Benefits remains light green, and card surfaces remain unchanged. Text follows the existing gray-text token (black in light mode, white in dark mode). Temporary fixtures remain outside the repository.
+
 ## Service hero reference refinements
 
 Both service heroes now use white headings, descriptions, and icons in both themes. Home Health retains its gray panel and uses a sage house badge; Hospice retains its sage panel and existing light-green heart badge. The white foreground is scoped locally rather than changing global palette tokens. This supersedes the earlier service hero text-color behavior below.

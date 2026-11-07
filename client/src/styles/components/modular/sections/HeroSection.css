@@ -76,7 +76,7 @@
   color: var(--color-white-text);
 }
 .c4-hero__icon svg { width: 40px; height: 40px; }
-.c4-hero__icon--heart { background: var(--color-light-green); color: var(--color-light-green-text); }
+.c4-hero__icon--heart { background: var(--color-gray); color: var(--color-light-green-text); }
 .c4-hero__icon--heart svg { fill: currentColor; stroke: var(--color-light-green-text); stroke-width: 1; }
 
 .c4-hero__cta {
