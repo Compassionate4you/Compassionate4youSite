@@ -75,6 +75,8 @@
   gap: 12px;
   min-width: 0;
   padding: clamp(20px, 2vw, 30px);
+  /* DT-902: Outline every header/card item using the global theme's text colour. */
+  border: 1px solid var(--color-white-text);
   border-radius: var(--radius-lg);
   background: var(--color-white);
   color: var(--color-white-text);

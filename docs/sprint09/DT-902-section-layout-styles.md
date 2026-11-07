@@ -238,3 +238,15 @@ Validation:
 - Production build passed with existing dependency-directive, mixed-import, and bundle-size warnings. Targeted JavaScript Standard checks and `git diff --check` passed.
 - Chrome checks used static renders of the actual page adapters and their local images at 1440px and 500px in both themes (eight combinations). All photos loaded, no horizontal overflow occurred, both hero pseudo-elements resolved to `content: none`, and the two Home Health sections resolved to #ffffff/#191919 as expected. Inspected Home Health desktop and Hospice dark mobile screenshots. Text is rendered directly over the untinted photos as requested; contrast varies across the photo. These were adapter render checks, not full application route checks.
 - Temporary browser fixtures/profiles were kept under `/private/tmp`; no backend writes or reseeding occurred.
+
+## Borders on all HeaderCardsSection cards
+
+Added `border: 1px solid var(--color-white-text)` to the shared `.c4-header-cards__card` rule in `client/src/styles/components/modular/sections/HeaderCardsSection.css`. Every instance receives the border regardless of section surface: black in light mode, white in dark mode. Existing rounded corners, backgrounds, padding, icons, and responsive grids are preserved. No component API changes or contact-form changes.
+
+Validation: client production build passed with existing dependency-directive, mixed-import, and bundle-size warnings; `git diff --check` passed. Headless Chrome checked actual adapter-render fixtures for Home Health and Hospice at 1440px and 500px in both themes (eight combinations). All 25 Home Health cards and 12 Hospice cards had 1px borders in the expected theme colour, retained 12px corner radii, and caused no horizontal page overflow. The fixtures include white and coloured section backgrounds; these checks used temporary local files and did not modify backend data.
+
+## Comprehensive Support Services reversed layout
+
+Updated `client/src/components/modular/HospiceSections.jsx` to select the existing `headerPosition='right'` option only for `sec-hospice-comprehensive`. Its cards appear on the left and heading on the right at desktop widths. Existing responsive styles retain heading-first stacking at widths up to 1023px. Hospice Care Team & Benefits keeps its header-left layout. No CSS, content, or component API changes.
+
+Updated `client/src/components/modular/sections/__tests__/ReferenceContent.test.jsx` to verify that only Comprehensive Support receives the reverse-layout modifier in English and Spanish. ReferenceContent and SectionLayouts suites passed (21 tests); targeted JavaScript Standard checks and `git diff --check` passed.

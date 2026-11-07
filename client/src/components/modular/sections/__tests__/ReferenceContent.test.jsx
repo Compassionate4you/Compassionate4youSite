@@ -112,6 +112,8 @@ describe('service page presentation refinements', () => {
       const sections = container.querySelectorAll('.c4-header-cards')
       expect(sections).toHaveLength(icons.length)
       sections.forEach((section, index) => {
+        // DT-902: Reverse only Comprehensive Support; preserve the other Hospice group.
+        if (Page === HospiceSections) expect(section.classList.contains('c4-header-cards--right')).toBe(index === 1)
         const actual = section.querySelectorAll('.c4-header-cards__icon svg')
         expect(actual).toHaveLength(icons[index].length)
         actual.forEach((icon, cardIndex) => {
