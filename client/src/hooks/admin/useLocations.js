@@ -27,7 +27,6 @@ function useLocations() {
                     location.zipCode,
                 ].filter(Boolean).join(", "),
                 phone: location.phone || "", 
-                status: location.active === false ? "Inactive" : "Active",
 
             }));
 
@@ -50,13 +49,13 @@ function useLocations() {
         useState(null);
 
     const [editForm, setEditForm] = useState({
-        name: "", streetAddress: "", phone: "", status: "", city: "", state: "", zipCode: ""
+        name: "", streetAddress: "", phone: "", city: "", state: "", zipCode: ""
     });
 
     const [showLocationForm, setShowLocationForm] = useState(false);
 
     const [locationForm, setLocationForm] = useState({
-        name: "", streetAddress: "", city: "", state: "", phone: "", status: "", zipCode: "",
+        name: "", streetAddress: "", city: "", state: "", phone: "", zipCode: "",
     });
 
     // Opens the edit form with an existing Location's information
@@ -70,7 +69,6 @@ function useLocations() {
             zipCode: location.zipCode || "",
 
             phone: location.phone || "",
-            status: location.status || "",
         });
     };
 
@@ -107,7 +105,6 @@ const handleSaveLocation = async (id) => {
                 data.location.zipCode,
             ].filter(Boolean).join(", "),
             phone: data.location.phone || "",
-            status: data.location.active === false ? "Inactive" : "Active",
         };
 
         // Updates the displayed location after the database saves successfully
@@ -135,7 +132,7 @@ const handleSaveLocation = async (id) => {
     // Clears the Add Location form upon Cancel
     const resetLocationForm = () => {
         setLocationForm({
-            name: "", streetAddress: "", phone: "", status: "", city: "", state: "", zipCode: "", 
+            name: "", streetAddress: "", phone: "", city: "", state: "", zipCode: "",
         });
     };
 
@@ -197,7 +194,6 @@ const handleAddLocation = async (event) => {
             ...data.location,
             address: [streetAddress, city, state, zipCode].join(", "),
             phone: data.location.phone || "", // Display the phone returned from the database
-            status: "Active",
         };
 
         setLocations((currentLocations) => [
