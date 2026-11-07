@@ -93,25 +93,27 @@
 .c4-hero__cta:hover { background: var(--color-light-gray); }
 .c4-hero :is(a, select):focus-visible { outline: 3px solid currentColor; outline-offset: 5px; }
 
-.c4-hero--forest {
+/* DT-902: Keep forest background geometry from constraining mirrored split heroes. */
+.c4-hero--background.c4-hero--forest {
   min-height: 600px;
   padding: 50px 10%;
   align-items: flex-start;
   background: var(--color-green);
   color: var(--color-green-text);
 }
-.c4-hero--forest.c4-hero--image::before { background: color-mix(in srgb, var(--color-green) 90%, transparent); }
-.c4-hero--forest .c4-hero__content { width: min(45%, 600px); }
-.c4-hero--forest .c4-hero__heading { justify-content: flex-end; }
-.c4-hero--forest .c4-hero__title { font-size: clamp(2.25rem, 4vw, 3.5rem); }
-.c4-hero--forest .c4-hero__icon { width: 56px; height: 56px; }
-.c4-hero--forest .c4-hero__description { max-width: 320px; margin-left: auto; font-size: clamp(1rem, 1.35vw, 1.25rem); }
-.c4-hero--forest .c4-hero__cta { display: block; width: fit-content; margin-left: auto; }
+.c4-hero--background.c4-hero--forest.c4-hero--image::before { background: color-mix(in srgb, var(--color-green) 90%, transparent); }
+.c4-hero--background.c4-hero--forest .c4-hero__content { width: min(45%, 600px); }
+.c4-hero--background.c4-hero--forest .c4-hero__heading { justify-content: flex-end; }
+.c4-hero--background.c4-hero--forest .c4-hero__title { font-size: clamp(2.25rem, 4vw, 3.5rem); }
+.c4-hero--background.c4-hero--forest .c4-hero__icon { width: 56px; height: 56px; }
+.c4-hero--background.c4-hero--forest .c4-hero__description { max-width: 320px; margin-left: auto; font-size: clamp(1rem, 1.35vw, 1.25rem); }
+.c4-hero--background.c4-hero--forest .c4-hero__cta { display: block; width: fit-content; margin-left: auto; }
 
+/* DT-902: Share Welcome's responsive split-photo proportions across all three public heroes. */
 .c4-hero--split {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  min-height: max(520px, 80vh);
+  grid-template-columns: minmax(0, 54fr) minmax(0, 46fr);
+  min-height: 42.1053vw;
   background: var(--color-light-green);
   color: var(--color-light-green-text);
 }
@@ -121,13 +123,26 @@
   width: 100%;
   grid-column: 1;
   grid-row: 1;
-  padding: 60px;
+  padding: clamp(40px, 5.3vw, 80px) clamp(24px, 4.5vw, 72px) clamp(24px, 4.5vw, 72px);
 }
-.c4-hero--split .c4-hero__title { font-size: clamp(2rem, 3.3vw, 3rem); line-height: 1.5; }
-.c4-hero--split .c4-hero__description { margin-top: 0; font-size: 1rem; line-height: 1.6; }
-.c4-hero--split .c4-hero__image { position: absolute; top: 0; right: 0; width: 50%; border-radius: 35% 0 0 10%; }
+.c4-hero--split .c4-hero__title { font-size: clamp(1.5rem, 3.3vw, 3rem); line-height: 1.5; }
+.c4-hero--split .c4-hero__description { margin: 0; font-size: 1rem; line-height: 1.6; }
+.c4-hero--split .c4-hero__image { position: absolute; top: 0; right: 0; width: 46%; object-position: center; border-radius: 35% 0 0 10%; }
+.c4-hero--split.c4-hero--right { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
 .c4-hero--split.c4-hero--right .c4-hero__content { grid-column: 2; }
 .c4-hero--split.c4-hero--right .c4-hero__image { left: 0; right: auto; border-radius: 0 35% 10% 0; }
+/* DT-902: Service heroes share Welcome's split geometry using the global page palettes. */
+.c4-home-health-hero.c4-hero--split { background: var(--color-gray); color: var(--color-gray-text); }
+.c4-hospice-hero.c4-hero--split { background: var(--color-sage); color: var(--color-sage-text); }
+/* DT-902: Match both service references with white copy/icons and a sage house badge. */
+.c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) { color: #ffffff; }
+.c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__icon { color: #ffffff; }
+.c4-home-health-hero.c4-hero--split .c4-hero__icon { background: var(--color-sage); }
+.c4-hospice-hero.c4-hero--split .c4-hero__icon--heart svg { stroke: currentColor; }
+/* DT-902: Separate copy from the heading and leave a minimum gap before the bottom CTA. */
+.c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__description { padding-top: 20px; padding-bottom: 24px; }
+.c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__cta { margin-top: auto; }
+.c4-hero--split .c4-hero__cta { align-self: flex-start; }
 .c4-hero__language { margin-top: auto; margin-bottom: 60px; padding-top: 60px; }
 .c4-hero__language label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
 .c4-hero__language svg { width: 18px; height: 18px; }
@@ -136,18 +151,22 @@
 /* DT-902: Keep text, controls, and photos usable at narrow widths and increased text sizes. */
 @media (max-width: 767px) {
   .c4-hero--background { min-height: 420px; padding: 40px 24px; }
-  .c4-hero--forest .c4-hero__content { width: 100%; }
-  .c4-hero--forest .c4-hero__heading { justify-content: flex-start; }
-  .c4-hero--forest .c4-hero__description { max-width: none; margin-left: 0; }
-  .c4-hero--forest .c4-hero__cta { margin-left: 0; }
+  .c4-hero--background.c4-hero--forest .c4-hero__content { width: 100%; }
+  .c4-hero--background.c4-hero--forest .c4-hero__heading { justify-content: flex-start; }
+  .c4-hero--background.c4-hero--forest .c4-hero__description { max-width: none; margin-left: 0; }
+  .c4-hero--background.c4-hero--forest .c4-hero__cta { margin-left: 0; }
   .c4-hero__heading { gap: 12px; }
   .c4-hero__icon { width: 50px; height: 50px; border-radius: 12px; }
   .c4-hero__icon svg { width: 30px; height: 30px; }
-  .c4-hero--split { grid-template-columns: minmax(0, 1fr); height: auto; min-height: 0; }
+  .c4-hero--split,
+  .c4-hero--split.c4-hero--right { grid-template-columns: minmax(0, 1fr); height: auto; min-height: 0; }
+  .c4-hero--split .c4-hero__title { font-size: 2rem; }
   .c4-hero--split .c4-hero__content,
   .c4-hero--split.c4-hero--right .c4-hero__content { grid-column: 1; grid-row: 1; padding: 32px 24px; }
   .c4-hero--split .c4-hero__image,
   .c4-hero--split.c4-hero--right .c4-hero__image { position: static; width: 100%; grid-column: 1; grid-row: 2; height: 340px; border-radius: 25% 0 0 0; }
+  /* DT-902: Use the paragraph's 24px bottom padding as the mobile CTA gap. */
+  .c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__cta { margin-top: 0; }
   .c4-hero__language { margin-bottom: 0; padding-top: 40px; }
 }
 

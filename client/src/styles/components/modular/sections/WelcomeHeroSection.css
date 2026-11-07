@@ -1,35 +1,4 @@
-/* DT-902: Resolve component colours from the global light/dark palette. */
-/* DT-902: Welcome-only screenshot geometry; background heroes keep their existing styling. */
-.c4-welcome-hero.c4-hero--split {
-  grid-template-columns: minmax(0, 54fr) minmax(0, 46fr);
-  min-height: 42.1053vw;
-  background: var(--color-light-green);
-  color: var(--color-light-green-text);
-}
-
-.c4-welcome-hero.c4-hero--split .c4-hero__content {
-  padding: clamp(40px, 5.3vw, 80px) clamp(24px, 4.5vw, 72px) clamp(24px, 4.5vw, 72px);
-}
-
-.c4-welcome-hero.c4-hero--split .c4-hero__title {
-  font-family: 'Crimson Text', Georgia, serif;
-  font-size: clamp(1.5rem, 3.3vw, 3rem);
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-.c4-welcome-hero.c4-hero--split .c4-hero__description {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.c4-welcome-hero.c4-hero--split .c4-hero__image {
-  width: 46%;
-  border-radius: 35% 0 0 10%;
-  object-position: center;
-}
-
+/* DT-902: Welcome shares split hero geometry; keep its language control spacing local. */
 .c4-welcome-hero .c4-hero__language {
   margin-top: auto;
   margin-bottom: clamp(20px, 4.2vw, 60px);
@@ -38,11 +7,7 @@
 .c4-welcome-hero .c4-hero__language label { margin-bottom: 12px; }
 .c4-welcome-hero .c4-hero__language select { width: 200px; }
 
-/* DT-902: Preserve readable mobile text and let translated or enlarged content grow naturally. */
+/* DT-902: Keep language controls compact when the shared hero stacks on mobile. */
 @media (max-width: 767px) {
-  .c4-welcome-hero.c4-hero--split { grid-template-columns: minmax(0, 1fr); min-height: 0; }
-  .c4-welcome-hero.c4-hero--split .c4-hero__content { padding: 32px 24px; }
-  .c4-welcome-hero.c4-hero--split .c4-hero__title { font-size: 2rem; }
-  .c4-welcome-hero.c4-hero--split .c4-hero__image { width: 100%; height: 340px; border-radius: 25% 0 0 0; }
   .c4-welcome-hero .c4-hero__language { margin-bottom: 0; padding-top: 40px; }
 }

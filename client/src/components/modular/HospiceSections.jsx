@@ -4,7 +4,8 @@ import HeaderCardsSection from './sections/HeaderCardsSection'
 import HeaderStackSection from './sections/HeaderStackSection'
 import TimelineSection from './sections/TimelineSection'
 import HeroSection from './sections/HeroSection'
-import coupleImage from '../../assets/images/older_couple_smiling.jpeg'
+// DT-902: Use compassion_image3 for the Hospice Care hero.
+import compassionImage from '../../assets/images/compassion_image3.jpeg'
 import PageCallToAction from './sections/PageCallToAction'
 
 // DT-902: Keep card icons aligned with the established translated card order.
@@ -35,11 +36,13 @@ export default function HospiceSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
   return sections.map(section => {
     const key = section.id
+    // DT-902: Match Welcome’s split hero geometry with page-specific colors and photo placement.
     if (key === 'sec-hospice-hero') {
       return (
         <HeroSection
+          variant='split' className='c4-hospice-hero'
           key={section.id} title={t('hospice.blurb.title')} description={t('hospice.blurb.description')}
-          imageUrl={coupleImage} showOverlay={false} tone='forest' contentPosition='right' iconName='Heart'
+          imageUrl={compassionImage} showOverlay={false} tone='forest' contentPosition='right' iconName='Heart'
           buttonText={t('hospice.blurb.contactButton')} buttonLink='/schedule'
         />
       )

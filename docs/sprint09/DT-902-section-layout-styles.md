@@ -2,6 +2,34 @@
 
 Sprint: **09**
 
+## Service hero reference refinements
+
+Both service heroes now use white headings, descriptions, and icons in both themes. Home Health retains its gray panel and uses a sage house badge; Hospice retains its sage panel and existing light-green heart badge. The white foreground is scoped locally rather than changing global palette tokens. This supersedes the earlier service hero text-color behavior below.
+
+Shared service selectors add 20px paragraph top padding and 24px bottom padding, with flex auto margins positioning scheduling buttons at the bottom of the desktop text panel. On mobile, buttons follow the paragraph's 24px gap without adding desktop-height empty space. Existing button colors, panel padding, photos, curves, and placement remain. Welcome is excluded from these refinements.
+
+Files modified: `client/src/styles/components/modular/sections/HeroSection.css` and this document. All style additions carry DT-902 comments; no API or global palette changes.
+
+Validation: production build passed with existing warnings; HeroSection and ReferenceContent suites passed all 12 tests. Chrome checks of isolated actual-adapter renders passed for both service heroes and Welcome at 1440px and 500px in light/dark themes (12 combinations). Verified white service text/icons, sage house badge, 20px paragraph top padding, bottom-aligned buttons within existing panel padding, mobile paragraph/button separation, loaded photos, expected image placement, and no horizontal overflow. Welcome retained its original colors, geometry, language controls, and zero paragraph padding. Inspected the updated Home Health desktop screenshot against the supplied reference. Temporary fixtures and screenshots are outside the repository; these are not full-route checks.
+
+## Service split hero layouts
+
+Home Health now uses a left text panel on `--color-gray` / `--color-gray-text` with the caregiver image on the right. Hospice Care mirrors this arrangement, using the compassion image on the left and text on `--color-sage` / `--color-sage-text` on the right. Both reuse Welcome's 54% text / 46% photo proportions, spacing, typography, and curved photo edge through the shared split variant. Below 768px, text stacks above the full-width, 340px-tall photo. Existing headings, descriptions, icons, and scheduling links remain; the language selector remains exclusive to Welcome.
+
+Welcome's geometry was extracted into shared split styles, leaving its language-control spacing local. Legacy forest sizing/alignment is now scoped to background heroes so it does not constrain the Hospice split layout. Split CTA buttons retain their natural width.
+
+Files modified: `client/src/components/modular/{HomeHealthSections,HospiceSections}.jsx`, `client/src/styles/components/modular/sections/{HeroSection,WelcomeHeroSection}.css`, and this document. No API or database changes.
+
+Validation: production build passed with existing dependency-directive and mixed-import warnings; HeroSection and ReferenceContent suites passed all 12 tests. Isolated actual-adapter static renders were checked in Chrome for Welcome, Home Health, and Hospice in both themes at actual 1440px and 500px viewport widths (12 combinations): images loaded, correct desktop image placement, mobile text above photos, no horizontal overflow, expected palette colors, scheduling links present, and language controls exclusive to Welcome. Chrome enforced a 500px minimum viewport despite a requested 390px window; these checks do not establish 390px coverage or full-route behavior. Inspected desktop Home Health and mobile Hospice captures. Temporary browser fixtures remain outside the repository. Existing global light-theme gray text is black on gray; this update preserves the requested palette tokens. The unrelated older HomeHealthSections icon-count assertion recorded below remains unchanged.
+
+## Service hero image update
+
+Home Health now imports the existing `asian-young-caregiver-caring-her-elderly-patient-senior-daycare-handicap-patient-wheelchair-hospital-talking-friendly-nurse-looking-cheerful-nurse-wheeling-senior-patient_609648-3125.jpeg` asset. Hospice Care now imports the existing `compassion_image3.jpeg` asset. Hero text, layout, links, and styling are preserved.
+
+Files modified: `client/src/components/modular/HomeHealthSections.jsx`, `client/src/components/modular/HospiceSections.jsx`, and this document. Both image assets are currently untracked and must be included when committing these changes.
+
+Validation: `npm run build` passed and emitted both requested images, with existing dependency-directive and mixed-import warnings. The existing HomeHealthSections and HospiceSections suites returned two passing tests and one failure: Home Health expects 25 `.lucide-heart` icons but finds zero. That assertion exercises sections without a hero and is unrelated to these image imports. No browser visual check was performed; the existing centered cover crop is unchanged.
+
 ## Changes
 
 Split the section layout stylesheet into Banner, Header Cards, Header Stack, Timeline, and shared foundation styles. Existing layout selectors, theme tokens, and responsive behavior are preserved. Each layout component imports its shared foundation followed by its own rules; the preview imports banner styles directly.

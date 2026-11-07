@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next'
 import DynamicSectionRenderer from './DynamicSectionRenderer'
 import HeaderCardsSection from './sections/HeaderCardsSection'
 import HeroSection from './sections/HeroSection'
-import careImage from '../../assets/images/CareImage1.jpeg'
+// DT-902: Use the young Asian caregiver photo for the Home Health hero.
+import careImage from '../../assets/images/asian-young-caregiver-caring-her-elderly-patient-senior-daycare-handicap-patient-wheelchair-hospital-talking-friendly-nurse-looking-cheerful-nurse-wheeling-senior-patient_609648-3125.jpeg'
 import PageCallToAction from './sections/PageCallToAction'
 
 // DT-731: Keep the eight screenshot service names in their original reading order.
@@ -30,9 +31,11 @@ export default function HomeHealthSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
 
   return sections.map(section => {
+    // DT-902: Match Welcome’s split hero geometry with page-specific colors and photo placement.
     if (section.id === 'sec-hh-hero') {
       return (
         <HeroSection
+          variant='split' className='c4-home-health-hero'
           key={section.id} title={t('homeHealth.title')} description={t('homeHealth.subtitle')}
           imageUrl={careImage} showOverlay={false} tone='teal' contentPosition='left' iconName='House'
           buttonText={t('homeHealthPage.scheduleConsultation')} buttonLink='/schedule'
