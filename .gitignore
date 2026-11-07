@@ -46,3 +46,7 @@ src/generated/
 
 # Node
 .npm
+
+# DT-718: Keep local section layout previews out of the branch.
+/client/src/previews/
+/client/section-layouts-preview.html
