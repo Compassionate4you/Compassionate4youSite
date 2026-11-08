@@ -37,9 +37,14 @@ async function createLocation(req, res, next) {
         }
 
         const location = await prisma.location.create({
-            data: Object.fromEntries(
-                REQUIRED_FIELDS.map((field) => [field, data[field].trim()])
-            ),
+            data: {
+                //Save the required location information
+                 ...Object.fromEntries(
+                      REQUIRED_FIELDS.map((field) => [field, data[field].trim()])
+                 ),
+                 //Save the phone number if provided
+                 phone: data.phone?.trim() || null,
+},
         });
 
         return res.status(201).json({ success: true, location });
@@ -60,9 +65,15 @@ async function updateLocation(req, res, next) {
 
         const location = await prisma.location.update({
             where: { id: req.params.id },
-            data: Object.fromEntries(
-                REQUIRED_FIELDS.map((field) => [field, data[field].trim()])
-            ),
+            data: {
+                 // Update the required location information
+                 ...Object.fromEntries(
+                      REQUIRED_FIELDS.map((field) => [field, data[field].trim()])
+                  ),
+
+                 // Update the phone number or clear it if empty
+                 phone: data.phone?.trim() || null,
+            },
         });
 
         return res.status(200).json({ success: true, location });

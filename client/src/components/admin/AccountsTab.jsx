@@ -94,6 +94,22 @@ function AccountsTab({
                             />
                         </div>
 
+                        {/* Phone number field */}
+                        <div className="account-form-field">
+                            <label htmlFor="account-phone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                id="account-phone"
+                                type="tel"
+                                name="phone"
+                                value={accountForm.phone}
+                                onChange={onAccountInputChange}
+                                placeholder="Enter phone number"
+                            />
+                        </div>
+
                         <div className="account-form-field">
                             <label htmlFor="account-role">
                                 Role

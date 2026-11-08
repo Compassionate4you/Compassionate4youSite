@@ -31,6 +31,7 @@ model User {
   preferredContact  String    @default("email")
   
   role              String    @default("customer")
+  birthdate         DateTime? @db.Date
   accountStatus     String    @default("active")
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -176,6 +177,7 @@ model Location {
   city          String
   state         String
   zipCode       String   @map("zip_code")
+  phone         String?
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
 

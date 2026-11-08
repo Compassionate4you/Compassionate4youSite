@@ -32,8 +32,9 @@ function useAccounts() {
                     year: "2-digit",
                 }),
 
+                birthdate: account.birthdate ? account.birthdate.slice(0, 10) : "", // Load birthdate from supabase
+
                 // These fields are not currently stored in the User table
-                birthdate: "",
                 lastLogin: "",
             }));
 
@@ -51,13 +52,13 @@ function useAccounts() {
 
 
     const [accountForm, setAccountForm] = useState({
-        name: "", birthdate: "", email: "", role: "", status: "",
+        name: "", birthdate: "", email: "", phone: "", role: "", status: "",
     });
 
     // Clears all Account form fields upon Cancel
     const resetAccountForm = () => {
         setAccountForm({
-            name: "", birthdate: "", email: "", role: "", status: "",
+            name: "", birthdate: "", email: "", phone: "", role: "", status: "",
         });
     };
 
@@ -86,9 +87,9 @@ function useAccounts() {
 
     // Formats YYYY-MM-DD for display in the Account table.
     const formatAccountBirthdate = (birthdate) => {
-        return new Date(
-            `${birthdate}T00:00:00`
-        ).toLocaleDateString("en-US", {
+        if(!birthdate) return "-";
+
+        return new Date(`${birthdate}T00:00:00`).toLocaleDateString("en-US", {
             month: "short",
             day: "2-digit",
             year: "2-digit",
@@ -117,7 +118,9 @@ function useAccounts() {
                 const updateData = {
                     name: accountName,
                     email: accountEmail,
+                    phone: accountForm.phone.trim(),
                     role: accountForm.role.toLowerCase(),
+                    birthdate: accountForm.birthdate, // save birthdate to supabase
                     accountStatus: accountForm.status.toLowerCase(),
                 };
 
@@ -134,6 +137,7 @@ function useAccounts() {
                               name: accountName,
                               birthdate: accountForm.birthdate,
                               email: accountEmail,
+                              phone: accountForm.phone.trim(),
                               role: accountForm.role,
                               status: accountForm.status,
                           }
@@ -160,6 +164,7 @@ function useAccounts() {
             name: account.name,
             birthdate: account.birthdate,
             email: account.email,
+            phone: account.phone || "",
             role: account.role,
             status: account.status,
         });

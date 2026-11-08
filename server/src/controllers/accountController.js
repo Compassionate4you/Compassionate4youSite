@@ -16,6 +16,7 @@
                  email: true,
                  phone: true,
                  role: true,
+                 birthdate: true,
                  accountStatus: true,
                  createdAt: true,
              },
@@ -48,7 +49,7 @@
          const { id } = req.params;
 
          // Get the updated information from the Admin Dashboard
-         const { name, email, phone, role, accountStatus } = req.body || {};
+         const { name, email, phone, birthdate, role, accountStatus } = req.body || {};
 
          // Check that all required fields are valid
          if (
@@ -56,7 +57,16 @@
              typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ||
              !['admin', 'customer'].includes(role) ||
              !['active', 'inactive'].includes(accountStatus) ||
-             (phone !== undefined && phone !== null && typeof phone !== 'string')
+             (phone !== undefined && phone !== null && typeof phone !== 'string') ||
+             (birthdate !== undefined &&
+              birthdate !== null &&
+              (typeof birthdate !== 'string' ||
+               (birthdate !== '' &&
+                (!/^\d{4}-\d{2}-\d{2}$/.test(birthdate) ||
+                 Number.isNaN(new Date(`${birthdate}T00:00:00Z`).getTime()) ||
+                 new Date(`${birthdate}T00:00:00Z`).toISOString().slice(0, 10) !== birthdate))))
+
+
          ) {
              return res.status(400).json({
                  success: false,
@@ -92,6 +102,10 @@
                  name: name.trim(),
                  email: email.trim().toLowerCase(),
                  ...(phone !== undefined ? { phone: phone?.trim() || null } : {}),
+
+                 ...(birthdate !== undefined
+                     ? { birthdate: birthdate ? new Date(`${birthdate}T00:00:00Z`) : null }
+                     : {}),
                  role,
                  accountStatus,
              },
@@ -103,6 +117,7 @@
                  email: true,
                  phone: true,
                  role: true,
+                 birthdate: true,
                  accountStatus: true,
                  createdAt: true,
              },
