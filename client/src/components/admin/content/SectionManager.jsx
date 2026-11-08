@@ -60,8 +60,8 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [imageUrl, setImageUrl] = useState('')
   const [imageAlt, setImageAlt] = useState('')
   const [imagePosition, setImagePosition] = useState('left')
-  const [headerTypography, setHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [textTypography, setTextTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [headerTypography, setHeaderTypography] = useState({})
+  const [textTypography, setTextTypography] = useState({})
   const [buttonText, setButtonText] = useState('')
   const [secondaryButtonText, setSecondaryButtonText] = useState('')
   const [buttonLink, setButtonLink] = useState('')
@@ -103,8 +103,8 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [editImageUrl, setEditImageUrl] = useState('')
   const [editImageAlt, setEditImageAlt] = useState('')
   const [editImagePosition, setEditImagePosition] = useState('left')
-  const [editHeaderTypography, setEditHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [editTextTypography, setEditTextTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [editHeaderTypography, setEditHeaderTypography] = useState({})
+  const [editTextTypography, setEditTextTypography] = useState({})
   const [editButtonText, setEditButtonText] = useState('')
   const [editSecondaryButtonText, setEditSecondaryButtonText] = useState('')
   const [editButtonLink, setEditButtonLink] = useState('')
@@ -182,8 +182,8 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       setEditImageUrl(c.imageUrl || c.backgroundImageUrl || '')
       setEditImageAlt(c.imageAlt || '')
       setEditImagePosition(c.imagePosition || c.headerPosition || c.contentPosition || 'left')
-      setEditHeaderTypography(typo.header || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-      setEditTextTypography(typo.text || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+      setEditHeaderTypography(typo.header || {})
+      setEditTextTypography(typo.text || {})
       setEditButtonText(c.buttonText || c.primaryLabel || '')
       setEditSecondaryButtonText(c.secondaryButtonText || c.homeLabel || '')
       setEditButtonLink(c.buttonLink || '')
@@ -410,6 +410,18 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       })
       markClean()
       onNotification(`Updated section "${activeId}"`)
+      // DT-893 Sprint 9 - Gandhar Tare: warn if the database did not save it.
+      SectionStorageService.lastSave?.then((saved) => {
+        if (saved !== false) return
+        setModalState({
+          isOpen: true,
+          title: 'Section Not Saved',
+          message: 'Your changes are shown here but could not be saved to the database, so the live site will not show them. Please try again.',
+          type: 'alert',
+          confirmText: 'OK',
+          onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+        })
+      })
     } catch (err) {
       setModalState({
         isOpen: true,

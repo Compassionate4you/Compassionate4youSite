@@ -1,6 +1,47 @@
 //Handlers for Add Appointments
-import { useEffect, useState } from "react";
-import { apiGetAllAppointments, apiCreateAdminAppointment, apiUpdateAdminAppointment, apiDeleteAdminAppointment, } from "../../services/api";
+import { useEffect, useMemo, useState } from "react";
+import { apiGetAllAppointments, apiCreateAdminAppointment, apiUpdateAdminAppointment, apiDeleteAdminAppointment, apiUpdateHistoryTag, } from "../../services/api";
+
+// DT-837 / DT-927: history tags and how they read in the dashboard.
+export const HISTORY_TAG_LABELS = {
+    COMPLETED: "Completed",
+    NO_SHOW: "No show",
+    CANCELLED_BY_PATIENT: "Cancelled by patient",
+    CANCELLED_BY_STAFF: "Cancelled by staff",
+    NOT_CONFIRMED: "Not confirmed",
+};
+
+// DT-837: '10:00 AM' -> 600, so times sort in clock order, not as text
+// (as text, "10:00 AM" would come before "9:00 AM").
+export function slotMinutes(timeSlot) {
+    const match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(String(timeSlot || "").trim());
+    if (!match) return 0;
+    let hours = Number(match[1]) % 12;
+    if (match[3].toUpperCase() === "PM") hours += 12;
+    return hours * 60 + Number(match[2]);
+}
+
+// DT-837: oldest first; pass -1 for newest first.
+export function compareAppointments(first, second, direction = 1) {
+    const byDate = first.date.localeCompare(second.date);
+    if (byDate !== 0) return byDate * direction;
+    return (slotMinutes(first.timeSlot) - slotMinutes(second.timeSlot)) * direction;
+}
+
+// Convert backend field names into the names the Admin Dashboard expects.
+function formatAppointment(appointment) {
+    return {
+        ...appointment,
+        name: appointment.fullName,
+        service: appointment.serviceType,
+        // Convert PENDING into Pending, CONFIRMED into Confirmed, etc
+        status:
+            appointment.status.charAt(0) +
+            appointment.status.slice(1).toLowerCase(),
+        // DT-837: 'current' or 'history', decided by the server in Pacific time.
+        section: appointment.section || "current",
+    };
+}
 
 function useAppointments() {
     const [showAppointmentForm, setShowAppointmentForm] = useState(false);
@@ -14,6 +55,11 @@ function useAppointments() {
     const [appointmentSubmitError, setAppointmentSubmitError] = useState("");
     const [appointmentDeleting, setAppointmentDeleting] = useState(false);
     const [appointmentDeleteError, setAppointmentDeleteError] = useState("");
+    // DT-837: which tab is showing, the history search, and tag saving state.
+    const [appointmentView, setAppointmentView] = useState("current");
+    const [historySearch, setHistorySearch] = useState("");
+    const [tagSavingId, setTagSavingId] = useState(null);
+    const [tagError, setTagError] = useState("");
 
     const [appointmentForm, setAppointmentForm] = useState({
     name: "", email: "", phone: "", service: "", date: "", timeSlot: "", status: "", notes: "",
@@ -34,22 +80,7 @@ function useAppointments() {
                     return;
                 }
 
-                const formattedAppointments = data.appointments.map(
-                    (appointment) => ({
-                        ...appointment,
-
-                        // Convert backend field names into the names currently expected by the Admin Dashboard
-                        name: appointment.fullName,
-                        service: appointment.serviceType,
-
-                        // Convert PENDING into Pending, CONFIRMED into Confirmed, etc
-                        status:
-                            appointment.status.charAt(0) +
-                            appointment.status.slice(1).toLowerCase(),
-                    })
-                );
-
-                setAppointments(formattedAppointments);
+                setAppointments(data.appointments.map(formatAppointment));
             } catch (error) {
                 if (isMounted) {
                     setAppointmentsError(
@@ -80,14 +111,54 @@ function useAppointments() {
     };
 
     // Converts YYYY-MM-DD into a readable table date.
-    const formatAppointmentDate = (date) => {
+    // DT-837: history can span years, so it can include the year.
+    const formatAppointmentDate = (date, { withYear = false } = {}) => {
         return new Date(`${date}T00:00:00`).toLocaleDateString(
             "en-US",
             {
                 month: "long",
                 day: "numeric",
+                ...(withYear ? { year: "numeric" } : {}),
             }
         );
+    };
+
+    // DT-837: Current is soonest first; History is newest first and can be
+    // searched by patient name.
+    const currentAppointments = useMemo(
+        () => appointments
+            .filter((appointment) => appointment.section !== "history")
+            .sort((a, b) => compareAppointments(a, b)),
+        [appointments]
+    );
+
+    const historyAppointments = useMemo(() => {
+        const query = historySearch.trim().toLowerCase();
+        return appointments
+            .filter((appointment) => appointment.section === "history")
+            .filter((appointment) => !query || appointment.name.toLowerCase().includes(query))
+            .sort((a, b) => compareAppointments(a, b, -1));
+    }, [appointments, historySearch]);
+
+    // DT-837 / DT-927: change the tag of an appointment in history.
+    const handleChangeHistoryTag = async (appointment, tag) => {
+        if (!tag || tag === appointment.historyTag || tagSavingId) {
+            return;
+        }
+
+        setTagError("");
+        setTagSavingId(appointment.id);
+        try {
+            const data = await apiUpdateHistoryTag(appointment.id, tag);
+            const saved = formatAppointment(data.appointment);
+            setAppointments((current) =>
+                current.map((item) => (item.id === saved.id ? saved : item))
+            );
+        } catch (error) {
+            setTagError(error.message || "Unable to update the tag.");
+        } finally {
+            setTagSavingId(null);
+        }
     };
 
     // Clears all Appointment form fields.
@@ -168,47 +239,18 @@ function useAppointments() {
                       appointmentPayload
                     );
 
-            const savedAppointment = data.appointment;
+            const formattedAppointment = formatAppointment(data.appointment);
 
-            const formattedAppointment = {
-                ...savedAppointment,
-                name: savedAppointment.fullName,
-                service: savedAppointment.serviceType,
-                status:
-                    savedAppointment.status.charAt(0) +
-                    savedAppointment.status.slice(1).toLowerCase(),
-            };
-
-            setAppointments((currentAppointments) => {
-                const updatedAppointments =
-                    editingAppointmentId !== null
-                        ? currentAppointments.map((appointment) =>
-                            appointment.id === editingAppointmentId
-                                ? formattedAppointment
-                                : appointment
-                        )
-                        : [
-                            ...currentAppointments,
-                            formattedAppointment,
-                        ];
-
-                return updatedAppointments.sort(
-                    (firstAppointment, secondAppointment) => {
-                        const dateComparison =
-                            firstAppointment.date.localeCompare(
-                                secondAppointment.date
-                            );
-
-                        if (dateComparison !== 0) {
-                            return dateComparison;
-                        }
-
-                        return firstAppointment.timeSlot.localeCompare(
-                            secondAppointment.timeSlot
-                        );
-                    }
-                );
-            });
+            // DT-837: the Current and History lists sort themselves.
+            setAppointments((currentAppointments) =>
+                editingAppointmentId !== null
+                    ? currentAppointments.map((appointment) =>
+                        appointment.id === editingAppointmentId
+                            ? formattedAppointment
+                            : appointment
+                    )
+                    : [...currentAppointments, formattedAppointment]
+            );
 
             resetAppointmentForm();
             setEditingAppointmentId(null);
@@ -225,13 +267,13 @@ function useAppointments() {
         }
     };
 
-    // Opens the Appointment deletion confirmation.
+    // Opens the Appointment archive confirmation (DT-837: delete archives).
     const handleDeleteAppointment = (appointment) => {
         setAppointmentDeleteError("");
         setAppointmentPendingDelete(appointment);
     };
 
-    // Closes the deletion confirmation without deleting.
+    // Closes the archive confirmation without archiving.
     const handleCancelDeleteAppointment = () => {
         if (appointmentDeleting) {
             return;
@@ -240,13 +282,9 @@ function useAppointments() {
         setAppointmentPendingDelete(null);
     };
 
-    // Permanently deletes the selected appointment from the database.
+    // DT-837 / DT-924: archives the selected appointment. It is hidden from
+    // the dashboard but kept in the database, so history is never lost.
     const handleConfirmDeleteAppointment = async () => {
-        console.log("Delete confirmation clicked", {
-            appointmentPendingDelete,
-            appointmentDeleting,
-        });
-
         if (!appointmentPendingDelete || appointmentDeleting) {
             return;
         }
@@ -269,11 +307,11 @@ function useAppointments() {
 
             setAppointmentPendingDelete(null);
         } catch (error) {
-            console.error("Delete appointment failed:", error);
+            console.error("Archive appointment failed:", error);
 
             setAppointmentDeleteError(
                 error.message ||
-                    "Unable to delete the appointment."
+                    "Unable to archive the appointment."
             );
         } finally {
             setAppointmentDeleting(false);
@@ -309,6 +347,16 @@ function useAppointments() {
         handleCancelDeleteAppointment,
         handleConfirmDeleteAppointment,
         handleCancelAppointment,
+        // DT-837: appointment history
+        appointmentView,
+        setAppointmentView,
+        currentAppointments,
+        historyAppointments,
+        historySearch,
+        setHistorySearch,
+        handleChangeHistoryTag,
+        tagSavingId,
+        tagError,
     };
 }
 

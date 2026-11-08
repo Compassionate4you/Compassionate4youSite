@@ -14,6 +14,12 @@ vi.mock('react-router-dom', async () => {
   return { ...actual, useNavigate: () => mockNavigate }
 })
 
+// DT-811 made the page read the signed-in user to pre-fill the form.
+// These cases book as a signed-out guest, so the form starts empty.
+vi.mock('../../context/AuthContext', () => ({
+  useAuth: () => ({ user: null, isLoading: false })
+}))
+
 vi.mock('../../services/api', () => ({
   apiCreateAppointment: vi.fn(),
   apiGetAvailability: vi.fn()
@@ -182,29 +188,42 @@ describe('B. Happy path (DT-573)', () => {
 // -------------------------------------------------------------- C: validation
 
 describe('C. Validation and bad input (DT-574)', () => {
-  it('C1: empty form shows an error and sends nothing', async () => {
+  // DT-719 changed the form to show one message per field, so an empty form
+  // shows a message for every required field.
+  it('C1: empty form shows an error for each required field and sends nothing', async () => {
     const user = userEvent.setup()
     renderPage()
     await submit(user)
 
-    expect(await screen.findByRole('alert')).toBeInTheDocument()
+    const alerts = (await screen.findAllByRole('alert')).map((el) => el.textContent)
+    expect(alerts).toEqual(expect.arrayContaining([
+      'schedule.errors.fullName',
+      'schedule.errors.phone',
+      'schedule.errors.email',
+      'schedule.errors.serviceType',
+      'schedule.errors.date',
+      'schedule.errors.timeSlot'
+    ]))
     expect(apiCreateAppointment).not.toHaveBeenCalled()
   })
 
+  // DT-719: each missing field gets its own message. Leaving the date out
+  // also leaves the time out (no slots load without a date), so C6 shows both.
   it.each([
-    ['C2: name', { fullName: '' }],
-    ['C3: phone', { phone: '' }],
-    ['C4: email', { email: '' }],
-    ['C5: service', { serviceType: '' }],
-    ['C6: date', { date: '', timeSlot: '' }],
-    ['C7: time', { timeSlot: '' }]
-  ])('%s missing blocks submission', async (_label, overrides) => {
+    ['C2: name', { fullName: '' }, ['schedule.errors.fullName']],
+    ['C3: phone', { phone: '' }, ['schedule.errors.phone']],
+    ['C4: email', { email: '' }, ['schedule.errors.email']],
+    ['C5: service', { serviceType: '' }, ['schedule.errors.serviceType']],
+    ['C6: date', { date: '', timeSlot: '' }, ['schedule.errors.date', 'schedule.errors.timeSlot']],
+    ['C7: time', { timeSlot: '' }, ['schedule.errors.timeSlot']]
+  ])('%s missing blocks submission', async (_label, overrides, expected) => {
     const user = userEvent.setup()
     renderPage()
     await fillValidForm(user, overrides)
     await submit(user)
 
-    expect(await screen.findByRole('alert')).toBeInTheDocument()
+    const alerts = (await screen.findAllByRole('alert')).map((el) => el.textContent)
+    expect(alerts).toEqual(expected)
     expect(apiCreateAppointment).not.toHaveBeenCalled()
   })
 
@@ -218,23 +237,30 @@ describe('C. Validation and bad input (DT-574)', () => {
     expect(apiCreateAppointment).not.toHaveBeenCalled()
   })
 
-  it('C9: editing a field clears the error', async () => {
+  // DT-719: typing in a field clears that field's message only.
+  it('C9: editing a field clears its error', async () => {
     const user = userEvent.setup()
     renderPage()
     await submit(user)
-    expect(await screen.findByRole('alert')).toBeInTheDocument()
+    expect(await screen.findByText('schedule.errors.fullName')).toBeInTheDocument()
 
     await user.type(screen.getByLabelText('schedule.fullName'), 'J')
-    await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument())
+    await waitFor(() => expect(screen.queryByText('schedule.errors.fullName')).not.toBeInTheDocument())
+    expect(screen.getByText('schedule.errors.phone')).toBeInTheDocument()
   })
 })
 
 // ------------------------------------------------------------- D: edge cases
 
 describe('D. Edge cases (DT-574)', () => {
-  it('D1: shows the server message when the slot was just taken', async () => {
+  // DT-719: the server's "just been booked" error (field timeSlot) is shown
+  // as the translated slot-taken message on the time field.
+  it('D1: shows the slot-taken message when the slot was just taken', async () => {
     apiCreateAppointment.mockRejectedValue(
-      new Error('That time has just been booked. Please choose another slot.')
+      Object.assign(
+        new Error('That time has just been booked. Please choose another slot.'),
+        { status: 400, field: 'timeSlot' }
+      )
     )
 
     const user = userEvent.setup()
@@ -242,7 +268,7 @@ describe('D. Edge cases (DT-574)', () => {
     await fillValidForm(user)
     await submit(user)
 
-    expect(await screen.findByRole('alert')).toHaveTextContent(/just been booked/i)
+    expect(await screen.findByRole('alert')).toHaveTextContent('schedule.errors.slotTaken')
   })
 
   it('D2: surfaces a network failure without breaking the page', async () => {

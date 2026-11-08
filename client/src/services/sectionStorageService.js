@@ -202,12 +202,16 @@ export const SectionStorageService = {
           body: JSON.stringify(updates)
         })
         if (!res.ok) throw new Error('Database section update failed')
-        return await res.json()
+        await res.json()
+        return true
       } catch (err) {
         console.error('Database section update error:', err)
+        return false
       }
     }
-    dbUpdateSection(id, updated)
+    // DT-893 Sprint 9 - Gandhar Tare: resolves to false when the database did
+    // not save it, so the editor can say so instead of only "Updated".
+    this.lastSave = dbUpdateSection(id, updated)
 
     return updated
   },

@@ -1,5 +1,6 @@
 //All Appointments tab code
 import { useTranslation } from "react-i18next";
+import { HISTORY_TAG_LABELS } from "../../hooks/admin/useAppointments";
 
 function AppointmentsTab({
     showAppointmentForm,
@@ -18,6 +19,16 @@ function AppointmentsTab({
     onEditAppointment,
     onDeleteAppointment,
     formatAppointmentDate,
+    // DT-837: appointment history
+    appointmentView = "current",
+    onChangeView,
+    currentAppointments = appointments,
+    historyAppointments = [],
+    historySearch = "",
+    onHistorySearchChange,
+    onChangeHistoryTag,
+    tagSavingId = null,
+    tagError = "",
 }) {
     const { t } = useTranslation();
 
@@ -32,7 +43,7 @@ function AppointmentsTab({
                     </p>
                 </div>
 
-                {!showAppointmentForm && (
+                {!showAppointmentForm && appointmentView === "current" && (
                     <button
                         type="button"
                         className="admin-add-button"
@@ -42,6 +53,30 @@ function AppointmentsTab({
                     </button>
                 )}
             </div>
+
+            {/* DT-837: Current appointments and History are kept apart. */}
+            {!showAppointmentForm && (
+                <div className="appointment-view-tabs" role="tablist" aria-label="Appointment lists">
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={appointmentView === "current"}
+                        className={`appointment-view-tab${appointmentView === "current" ? " appointment-view-tab-active" : ""}`}
+                        onClick={() => onChangeView?.("current")}
+                    >
+                        Current ({currentAppointments.length})
+                    </button>
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={appointmentView === "history"}
+                        className={`appointment-view-tab${appointmentView === "history" ? " appointment-view-tab-active" : ""}`}
+                        onClick={() => onChangeView?.("history")}
+                    >
+                        History
+                    </button>
+                </div>
+            )}
 
             {/* Display either the appointment form or table */}
             {showAppointmentForm ? (
@@ -254,9 +289,21 @@ function AppointmentsTab({
                     <p className="admin-table-error">
                         {appointmentsError}
                     </p>
-                ) : appointments.length === 0 ? (
+                ) : appointmentView === "history" ? (
+                    <HistoryTable
+                        appointments={historyAppointments}
+                        search={historySearch}
+                        onSearchChange={onHistorySearchChange}
+                        onChangeTag={onChangeHistoryTag}
+                        onArchive={onDeleteAppointment}
+                        tagSavingId={tagSavingId}
+                        tagError={tagError}
+                        formatAppointmentDate={formatAppointmentDate}
+                        t={t}
+                    />
+                ) : currentAppointments.length === 0 ? (
                     <p className="admin-table-message">
-                        No appointments found.
+                        No current appointments.
                     </p>
                 ) : (
                 <table className="admin-table">
@@ -275,7 +322,7 @@ function AppointmentsTab({
                     </thead>
 
                     <tbody>
-                        {appointments.map((appointment) => (
+                        {currentAppointments.map((appointment) => (
                             <tr key={appointment.id}>
                                 <td>{appointment.name}</td>
                                 <td>{appointment.service}</td>
@@ -308,6 +355,7 @@ function AppointmentsTab({
                                             Edit
                                         </button>
 
+                                        {/* DT-837: archives instead of deleting */}
                                         <button
                                             type="button"
                                             className="appointment-delete-button"
@@ -315,7 +363,7 @@ function AppointmentsTab({
                                                 onDeleteAppointment(appointment)
                                             }
                                         >
-                                            Delete
+                                            Archive
                                         </button>
                                     </div>
                                 </td>
@@ -325,6 +373,121 @@ function AppointmentsTab({
                 </table>
             )}
         </div>
+    );
+}
+
+// DT-837: past, cancelled and completed appointments. Admins can only change
+// the tag (DT-927) or archive a row; the rest is a record of what happened.
+function HistoryTable({
+    appointments,
+    search,
+    onSearchChange,
+    onChangeTag,
+    onArchive,
+    tagSavingId,
+    tagError,
+    formatAppointmentDate,
+    t,
+}) {
+    return (
+        <>
+            <div className="appointment-history-toolbar">
+                <label htmlFor="appointment-history-search" className="appointment-history-search-label">
+                    Search by patient name
+                </label>
+                <input
+                    id="appointment-history-search"
+                    type="search"
+                    className="appointment-history-search"
+                    value={search}
+                    onChange={(event) => onSearchChange?.(event.target.value)}
+                    placeholder="Patient name"
+                />
+            </div>
+
+            {tagError && (
+                <p className="admin-table-error" role="alert">
+                    {tagError}
+                </p>
+            )}
+
+            {appointments.length === 0 ? (
+                <p className="admin-table-message">
+                    {search.trim()
+                        ? "No past appointments match that name."
+                        : "No past appointments yet."}
+                </p>
+            ) : (
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>{t("admin.table.patient")}</th>
+                            <th>{t("admin.table.service")}</th>
+                            <th>{t("admin.table.date")}</th>
+                            <th>Time</th>
+                            <th>Tag</th>
+                            <th className="appointment-actions-heading">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {appointments.map((appointment) => (
+                            <tr key={appointment.id}>
+                                <td>{appointment.name}</td>
+                                <td>{appointment.service}</td>
+                                <td>
+                                    {formatAppointmentDate(appointment.date, { withYear: true })}
+                                </td>
+                                <td>{appointment.timeSlot}</td>
+                                <td>
+                                    <label
+                                        htmlFor={`history-tag-${appointment.id}`}
+                                        className="appointment-visually-hidden"
+                                    >
+                                        Tag for {appointment.name}
+                                    </label>
+                                    <select
+                                        id={`history-tag-${appointment.id}`}
+                                        className="appointment-history-tag"
+                                        value={appointment.historyTag || ""}
+                                        disabled={tagSavingId === appointment.id}
+                                        onChange={(event) =>
+                                            onChangeTag?.(appointment, event.target.value)
+                                        }
+                                    >
+                                        {!appointment.historyTag && (
+                                            <option value="" disabled>
+                                                {appointment.status === "Cancelled"
+                                                    ? "Cancelled (choose who)"
+                                                    : "Choose a tag"}
+                                            </option>
+                                        )}
+                                        {Object.entries(HISTORY_TAG_LABELS).map(([value, label]) => (
+                                            <option key={value} value={value}>
+                                                {label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </td>
+                                <td className="appointment-actions-cell">
+                                    <div className="appointment-row-actions">
+                                        <button
+                                            type="button"
+                                            className="appointment-delete-button"
+                                            onClick={() => onArchive?.(appointment)}
+                                        >
+                                            Archive
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </>
     );
 }
 

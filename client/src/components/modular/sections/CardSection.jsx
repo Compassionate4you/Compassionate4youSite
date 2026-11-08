@@ -9,6 +9,8 @@ import { CardStorageService } from '../../../services/cardStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 import { pickText } from '../cards/CardBase'
 import '../../../styles/components/modular/sections/CardSection.css'
+// DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
+import { typographyStyle } from '../typographyStyle'
 
 // DT-902: Recognized Welcome text cards share the full banner presentation.
 // DT-902: Forward the page colour source to every nested card.
@@ -59,12 +61,7 @@ export default function CardSection ({
   const columns = Number(data.gridCols || data.columns || 3)
   const sectionClassName = ['card-section', BannerIcon ? 'card-section--banners' : '', className].filter(Boolean).join(' ')
   const headerTypo = data.typography?.header || {}
-  const headerStyle = {
-    textAlign: headerTypo.align || undefined,
-    fontFamily: headerTypo.fontFamily && headerTypo.fontFamily !== 'inherit' ? headerTypo.fontFamily : undefined,
-    fontWeight: headerTypo.bold ? 'bold' : undefined,
-    fontStyle: headerTypo.italic ? 'italic' : undefined
-  }
+  const headerStyle = typographyStyle(headerTypo)
 
   return (
     <section className={sectionClassName} style={style} aria-label={title || undefined}>

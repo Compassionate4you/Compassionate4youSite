@@ -129,6 +129,14 @@ export function apiDeleteAdminAppointment(id) {
   })
 }
 
+// DT-837 / DT-927: admin sets the tag of an appointment in history.
+export function apiUpdateHistoryTag(id, tag) {
+  return request(`/appointments/${encodeURIComponent(id)}/history-tag`, {
+    method: 'PATCH',
+    body: { tag }
+  })
+}
+
 // DT-567: contact form.
 export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
@@ -195,6 +203,7 @@ export default {
   apiCreateAdminAppointment,
   apiUpdateAdminAppointment,
   apiDeleteAdminAppointment,
+  apiUpdateHistoryTag,
   apiSignup,
   apiLogin,
   apiLogout,
