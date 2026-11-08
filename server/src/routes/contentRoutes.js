@@ -1,6 +1,6 @@
-// DT-622 DT-618 DT-625 Sprint 8
-// Preston Ball
-// Content management and audit history routes
+// DT-903 DT-921 DT-622 DT-618 DT-625 Sprint 9
+// PBall
+// Content management and audit history routes (Color routes removed in DT-921)
 
 const express = require('express')
 const router = express.Router()
@@ -31,13 +31,6 @@ router.get('/cards/:id', contentController.getCardById)
 router.post('/cards', contentController.createCard)
 router.put('/cards/:id', contentController.updateCard)
 router.delete('/cards/:id', contentController.deleteCard)
-
-// DT-622 Sprint 8 - Preston Ball: Color configuration routes
-router.get('/colors', contentController.getColors)
-router.get('/colors/:id', contentController.getColorById)
-router.post('/colors', contentController.createColor)
-router.put('/colors/:id', contentController.updateColor)
-router.delete('/colors/:id', contentController.deleteColor)
 
 // DT-622 Sprint 8 - Preston Ball: Text entry & translation routes
 router.get('/text-entries', contentController.getTextEntries)

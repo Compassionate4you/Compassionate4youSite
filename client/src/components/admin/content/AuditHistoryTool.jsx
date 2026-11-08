@@ -83,6 +83,17 @@ export default function AuditHistoryTool ({ onNotification }) {
     setShowRawJson((prev) => ({ ...prev, [logId]: !prev[logId] }))
   }
 
+  // DT-922 Sprint 9 - PBall: Format direct { light, dark } color objects or strings safely for audit diffs
+  const formatColorValue = (val) => {
+    if (!val) return 'none'
+    if (typeof val === 'object') {
+      const light = val.light || val.lightModeColor || '—'
+      const dark = val.dark || val.darkModeColor || '—'
+      return `${light} / ${dark}`
+    }
+    return String(val)
+  }
+
   // DT-792 Sprint 8 - Preston Ball: Compute a concise human-readable summary of a change
   const getChangeSummary = (changeContent) => {
     if (!changeContent) return 'System record'
@@ -264,7 +275,7 @@ export default function AuditHistoryTool ({ onNotification }) {
                               {beforeCards.length > 0 && <div><strong>Cards ({beforeCards.length}):</strong> [{beforeCards.join(', ')}]</div>}
                               {before.content?.colors && (
                                 <div style={{ fontSize: '12px' }}>
-                                  <strong>Colors:</strong> BG: {before.content.colors.backgroundColor || 'none'}, Text: {before.content.colors.textColor || 'none'}
+                                  <strong>Colors:</strong> BG: {formatColorValue(before.content.colors.backgroundColor)}, Text: {formatColorValue(before.content.colors.textColor)}
                                 </div>
                               )}
                             </>
@@ -278,7 +289,7 @@ export default function AuditHistoryTool ({ onNotification }) {
                               {before.content?.imageUrl && <div><strong>Image:</strong> {before.content.imageUrl}</div>}
                               {before.content?.colors && (
                                 <div style={{ fontSize: '12px' }}>
-                                  <strong>Colors:</strong> BG: {before.content.colors.backgroundColor || 'none'}, Text: {before.content.colors.textColor || 'none'}
+                                  <strong>Colors:</strong> BG: {formatColorValue(before.content.colors.backgroundColor)}, Text: {formatColorValue(before.content.colors.textColor)}
                                 </div>
                               )}
                             </>
@@ -315,7 +326,7 @@ export default function AuditHistoryTool ({ onNotification }) {
                               {afterCards.length > 0 && <div><strong>Cards ({afterCards.length}):</strong> [{afterCards.join(', ')}]</div>}
                               {after.content?.colors && (
                                 <div style={{ fontSize: '12px' }}>
-                                  <strong>Colors:</strong> BG: {after.content.colors.backgroundColor || 'none'}, Text: {after.content.colors.textColor || 'none'}
+                                  <strong>Colors:</strong> BG: {formatColorValue(after.content.colors.backgroundColor)}, Text: {formatColorValue(after.content.colors.textColor)}
                                 </div>
                               )}
                             </>
@@ -329,7 +340,7 @@ export default function AuditHistoryTool ({ onNotification }) {
                               {after.content?.imageUrl && <div><strong>Image:</strong> {after.content.imageUrl}</div>}
                               {after.content?.colors && (
                                 <div style={{ fontSize: '12px' }}>
-                                  <strong>Colors:</strong> BG: {after.content.colors.backgroundColor || 'none'}, Text: {after.content.colors.textColor || 'none'}
+                                  <strong>Colors:</strong> BG: {formatColorValue(after.content.colors.backgroundColor)}, Text: {formatColorValue(after.content.colors.textColor)}
                                 </div>
                               )}
                             </>

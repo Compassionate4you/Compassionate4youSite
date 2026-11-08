@@ -1,6 +1,6 @@
-// DT-622 Sprint 8
-// Preston Ball
-// Card interpreter dispatching layouts and resolving theme color tokens
+// DT-903 DT-922 Sprint 9
+// PBall
+// Card interpreter dispatching layouts and resolving direct element colors for light/dark themes
 
 import { useTranslation } from 'react-i18next'
 import { pickText } from './CardBase'
@@ -8,7 +8,7 @@ import BannerSection from '../sections/BannerSection'
 import ImageCard from './ImageCard'
 import HeaderParagraphCard from './HeaderParagraphCard'
 import HeaderSymbolCard from './HeaderSymbolCard'
-import { ColorConfigService } from '../../../services/colorConfigService'
+import { resolveElementColor } from '../../admin/content/ColorEditor'
 
 // DT-902: Welcome paragraph cards can render the shared banner without changing other layouts.
 export default function ModularCard ({ card, theme = 'light', colorSource = 'cms', BannerIcon }) {
@@ -19,14 +19,8 @@ export default function ModularCard ({ card, theme = 'light', colorSource = 'cms
   const colors = content.colors || card.colors || {}
   const lang = i18n.language
 
-  const resolveColor = (colorId, fallback) => {
-    if (!colorId) return fallback
-    const c = ColorConfigService.getColorById(colorId)
-    if (!c) return fallback
-    return theme === 'dark' ? c.darkModeColor : c.lightModeColor
-  }
-
   // DT-902: Global mode ignores stored card colours without changing CMS defaults.
+  // DT-922 Sprint 9 - PBall: Resolve colors stored directly within the card element when colorSource is 'cms'
   const customStyles = colorSource === 'global'
     ? {
         '--card-bg': 'var(--color-white)',
@@ -34,9 +28,9 @@ export default function ModularCard ({ card, theme = 'light', colorSource = 'cms
         '--card-text': 'var(--color-white-text)'
       }
     : {
-        '--card-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#1e293b' : '#ffffff'),
-        '--card-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
-        '--card-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155')
+        '--card-bg': resolveElementColor(colors.backgroundColor, theme, theme === 'dark' ? '#1e293b' : '#ffffff'),
+        '--card-header': resolveElementColor(colors.headerColor, theme, theme === 'dark' ? '#f8fafc' : '#0f172a'),
+        '--card-text': resolveElementColor(colors.textColor, theme, theme === 'dark' ? '#cbd5e1' : '#334155')
       }
 
   const commonProps = {

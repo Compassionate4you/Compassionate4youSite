@@ -1,15 +1,15 @@
-// DT-923 DT-622 DT-618 DT-625 Sprint 9
+// DT-903 DT-920 DT-922 DT-923 DT-622 DT-618 DT-625 Sprint 9
 // PBall
-// Card Element Manager component dispatching layout-specific form components with custom typography, element renaming, custom selects, custom modals, and live preview
+// Card Element Manager component dispatching layout-specific form components with inline ColorEditor and direct element color storage
 
 import React, { useState, useEffect } from 'react'
 import { CardStorageService } from '../../../services/cardStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
-import { ColorConfigService } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import ModularCard from '../../modular/cards/ModularCard'
 import CustomModal from './CustomModal'
 import CustomSelect from './CustomSelect'
+import ColorEditor, { DEFAULT_CARD_COLORS, normalizeColorPair } from './ColorEditor'
 import HeaderParagraphLayout from './CardManager/HeaderParagraphLayout'
 import ImageFullWidthLayout from './CardManager/ImageFullWidthLayout'
 import HeaderSymbolLayout from './CardManager/HeaderSymbolLayout'
@@ -33,7 +33,6 @@ const ALIGNMENT_OPTIONS = [
 
 export default function CardManager ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [cards, setCards] = useState(CardStorageService.getCards())
-  const colors = ColorConfigService.getColors()
   const sections = SectionStorageService.getSections()
 
   const [mode, setMode] = useState('create')
@@ -51,9 +50,9 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
   const [imageAlt, setImageAlt] = useState('')
   const [symbol, setSymbol] = useState('Heart')
   const [alignment, setAlignment] = useState('left')
-  const [bgColor, setBgColor] = useState('')
-  const [headerColor, setHeaderColor] = useState('')
-  const [textColor, setTextColor] = useState('')
+  const [bgColor, setBgColor] = useState(DEFAULT_CARD_COLORS.backgroundColor)
+  const [headerColor, setHeaderColor] = useState(DEFAULT_CARD_COLORS.headerColor)
+  const [textColor, setTextColor] = useState(DEFAULT_CARD_COLORS.textColor)
 
   // Manage Mode state
   const [locationFilter, setLocationFilter] = useState('all')
@@ -68,9 +67,9 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
   const [editImageAlt, setEditImageAlt] = useState('')
   const [editSymbol, setEditSymbol] = useState('Heart')
   const [editAlignment, setEditAlignment] = useState('left')
-  const [editBgColor, setEditBgColor] = useState('')
-  const [editHeaderColor, setEditHeaderColor] = useState('')
-  const [editTextColor, setEditTextColor] = useState('')
+  const [editBgColor, setEditBgColor] = useState(DEFAULT_CARD_COLORS.backgroundColor)
+  const [editHeaderColor, setEditHeaderColor] = useState(DEFAULT_CARD_COLORS.headerColor)
+  const [editTextColor, setEditTextColor] = useState(DEFAULT_CARD_COLORS.textColor)
 
   // Custom modal dialog state
   const [modalState, setModalState] = useState({
@@ -121,9 +120,10 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
       setEditImageAlt(data.imageAlt || '')
       setEditSymbol(data.symbol || data.iconName || 'Heart')
       setEditAlignment(data.alignment || data.facing || 'left')
-      setEditBgColor(col.backgroundColor || '')
-      setEditHeaderColor(col.headerColor || '')
-      setEditTextColor(col.textColor || '')
+      // DT-922 Sprint 9 - PBall: Normalize direct card color objects
+      setEditBgColor(normalizeColorPair(col.backgroundColor, DEFAULT_CARD_COLORS.backgroundColor))
+      setEditHeaderColor(normalizeColorPair(col.headerColor, DEFAULT_CARD_COLORS.headerColor))
+      setEditTextColor(normalizeColorPair(col.textColor, DEFAULT_CARD_COLORS.textColor))
     }
   }
 
@@ -181,6 +181,7 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
       const created = CardStorageService.createCard({
         id: trimmedId,
         layout,
+        colors: cardContent.colors,
         content: cardContent
       })
       setCards(CardStorageService.getCards())
@@ -255,6 +256,7 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
 
       const updated = CardStorageService.updateCard(activeId, {
         layout: editLayout,
+        colors: updatedContent.colors,
         content: updatedContent
       })
       setCards(CardStorageService.getCards())
@@ -344,11 +346,6 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
     layout: activeLayout,
     content: activeContent
   }
-
-  const colorOptions = [
-    { value: '', label: 'Default Theme Color' },
-    ...colors.map(c => ({ value: c.id, label: c.id, color: c.lightModeColor }))
-  ]
 
   const locationFilterOptions = [
     { value: 'all', label: 'All Cards' },
@@ -566,21 +563,33 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
             isEdit: false
           })}
 
+          {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor storing light/dark colors directly in card */}
           {activeTab === 'colors' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Background Color</label>
-                <CustomSelect value={bgColor} onChange={(val) => { setBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Background Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                <CustomSelect value={headerColor} onChange={(val) => { setHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Header Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                <CustomSelect value={textColor} onChange={(val) => { setTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Text Color" />
-              </div>
-            </div>
+            <ColorEditor
+              fields={[
+                {
+                  key: 'backgroundColor',
+                  label: 'Card Background Color',
+                  value: bgColor,
+                  defaultPair: DEFAULT_CARD_COLORS.backgroundColor,
+                  onChange: (val) => { setBgColor(val); markDirty() }
+                },
+                {
+                  key: 'headerColor',
+                  label: 'Header Color',
+                  value: headerColor,
+                  defaultPair: DEFAULT_CARD_COLORS.headerColor,
+                  onChange: (val) => { setHeaderColor(val); markDirty() }
+                },
+                {
+                  key: 'textColor',
+                  label: 'Text Color',
+                  value: textColor,
+                  defaultPair: DEFAULT_CARD_COLORS.textColor,
+                  onChange: (val) => { setTextColor(val); markDirty() }
+                }
+              ]}
+            />
           )}
 
           <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -678,21 +687,33 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
                 isEdit: true
               })}
 
+              {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor in card manage mode */}
               {activeTab === 'colors' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Background Color</label>
-                    <CustomSelect value={editBgColor} onChange={(val) => { setEditBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Background Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                    <CustomSelect value={editHeaderColor} onChange={(val) => { setEditHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Header Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                    <CustomSelect value={editTextColor} onChange={(val) => { setEditTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Text Color" />
-                  </div>
-                </div>
+                <ColorEditor
+                  fields={[
+                    {
+                      key: 'backgroundColor',
+                      label: 'Card Background Color',
+                      value: editBgColor,
+                      defaultPair: DEFAULT_CARD_COLORS.backgroundColor,
+                      onChange: (val) => { setEditBgColor(val); markDirty() }
+                    },
+                    {
+                      key: 'headerColor',
+                      label: 'Header Color',
+                      value: editHeaderColor,
+                      defaultPair: DEFAULT_CARD_COLORS.headerColor,
+                      onChange: (val) => { setEditHeaderColor(val); markDirty() }
+                    },
+                    {
+                      key: 'textColor',
+                      label: 'Text Color',
+                      value: editTextColor,
+                      defaultPair: DEFAULT_CARD_COLORS.textColor,
+                      onChange: (val) => { setEditTextColor(val); markDirty() }
+                    }
+                  ]}
+                />
               )}
 
               <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>

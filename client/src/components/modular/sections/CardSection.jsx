@@ -1,6 +1,6 @@
-// DT-622 Sprint 8
-// Preston Ball
-// Modular card section layout loading cards from database via CardStorageService
+// DT-894 DT-917 DT-622 Sprint 9
+// PBall
+// Modular card section layout loading cards from database via CardStorageService with full-width section background and inner grid container
 
 import { useTranslation } from 'react-i18next'
 import { getWelcomeBannerIcon } from './BannerSection'
@@ -68,17 +68,20 @@ export default function CardSection ({
 
   return (
     <section className={sectionClassName} style={style} aria-label={title || undefined}>
-      {title && <h2 className='card-section__title' style={headerStyle}>{title}</h2>}
-      <div className='card-grid' style={{ '--card-columns': Math.min(Math.max(columns, 1), 4) }}>
-        {resolvedCards.map((card, index) => (
-          <ModularCard
-            key={card.id || `card-${index}`}
-            card={card}
-            theme={theme}
-            colorSource={colorSource}
-            BannerIcon={BannerIcon}
-          />
-        ))}
+      {/* DT-917 Sprint 9 - PBall: Inner container matching editor preview and preventing horizontal overflow */}
+      <div className='card-section__inner'>
+        {title && <h2 className='card-section__title' style={headerStyle}>{title}</h2>}
+        <div className='card-grid' style={{ '--card-columns': Math.min(Math.max(columns, 1), 5) }}>
+          {resolvedCards.map((card, index) => (
+            <ModularCard
+              key={card.id || `card-${index}`}
+              card={card}
+              theme={theme}
+              colorSource={colorSource}
+              BannerIcon={BannerIcon}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )

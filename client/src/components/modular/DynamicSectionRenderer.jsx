@@ -1,9 +1,9 @@
-// DT-622 Sprint 8
-// Preston Ball
-// Dynamic modular section renderer dispatching layout components and injecting theme color tokens
+// DT-894 DT-903 DT-918 DT-922 Sprint 9
+// PBall
+// Dynamic modular section renderer dispatching layout components and resolving direct element colors for light/dark themes
 
 import React from 'react'
-import { ColorConfigService } from '../../services/colorConfigService'
+import { resolveElementColor } from '../admin/content/ColorEditor'
 import { SectionStorageService } from '../../services/sectionStorageService'
 import ImageHeaderTextSection from './sections/ImageHeaderTextSection'
 import FullscreenImageHeaderSection from './sections/FullscreenImageHeaderSection'
@@ -36,14 +36,8 @@ export default function DynamicSectionRenderer ({ config, sectionId, theme = 'li
   const content = section.content || {}
   const colors = content.colors || section.colors || {}
 
-  const resolveColor = (colorId, fallback) => {
-    if (!colorId) return fallback
-    const c = ColorConfigService.getColorById(colorId)
-    if (!c) return fallback
-    return theme === 'dark' ? c.darkModeColor : c.lightModeColor
-  }
-
   // DT-902: CSS variables remain live when the root theme or global palette changes.
+  // DT-918 DT-922 Sprint 9 - PBall: Resolve light/dark colors stored directly on the section element when colorSource is 'cms'
   const customStyles = colorSource === 'global'
     ? {
         '--section-bg': 'var(--color-white)',
@@ -52,10 +46,10 @@ export default function DynamicSectionRenderer ({ config, sectionId, theme = 'li
         '--section-accent': 'var(--color-primary)'
       }
     : {
-        '--section-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#0f172a' : '#ffffff'),
-        '--section-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
-        '--section-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155'),
-        '--section-accent': resolveColor(colors.accentColor, '#366454')
+        '--section-bg': resolveElementColor(colors.backgroundColor, theme, theme === 'dark' ? '#0f172a' : '#ffffff'),
+        '--section-header': resolveElementColor(colors.headerColor, theme, theme === 'dark' ? '#f8fafc' : '#0f172a'),
+        '--section-text': resolveElementColor(colors.textColor, theme, theme === 'dark' ? '#cbd5e1' : '#334155'),
+        '--section-accent': resolveElementColor(colors.accentColor, theme, theme === 'dark' ? '#4ade80' : '#366454')
       }
 
   const LayoutComponent = LAYOUT_COMPONENTS[section.layout] || HeaderTextSection

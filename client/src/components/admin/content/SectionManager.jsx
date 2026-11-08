@@ -1,16 +1,16 @@
-// DT-923 DT-622 DT-618 DT-625 Sprint 9
+// DT-903 DT-920 DT-922 DT-923 DT-622 DT-618 DT-625 Sprint 9
 // PBall
-// Section Manager component dispatching layout-specific form components with left/right image toggle, FAQ removal, card reordering, element renaming, typography controls, custom modals, and live preview
+// Section Manager component dispatching layout-specific form components with inline ColorEditor and direct element color storage
 
 import React, { useState, useEffect } from 'react'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 import { PageStorageService } from '../../../services/pageStorageService'
 import { CardStorageService } from '../../../services/cardStorageService'
-import { ColorConfigService } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import DynamicSectionRenderer from '../../modular/DynamicSectionRenderer'
 import CustomModal from './CustomModal'
 import CustomSelect from './CustomSelect'
+import ColorEditor, { DEFAULT_SECTION_COLORS, normalizeColorPair } from './ColorEditor'
 import HeaderTextLayout from './SectionManager/HeaderTextLayout'
 import ImageHeaderTextLayout from './SectionManager/ImageHeaderTextLayout'
 import FullscreenImageHeaderLayout from './SectionManager/FullscreenImageHeaderLayout'
@@ -33,7 +33,6 @@ const LAYOUT_OPTIONS = [
 
 export default function SectionManager ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [sections, setSections] = useState(SectionStorageService.getSections())
-  const colors = ColorConfigService.getColors()
   const pages = PageStorageService.getPages()
   const allCards = CardStorageService.getCards()
 
@@ -67,10 +66,10 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [fax, setFax] = useState('')
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
-  const [bgColor, setBgColor] = useState('')
-  const [headerColor, setHeaderColor] = useState('')
-  const [textColor, setTextColor] = useState('')
-  const [accentColor, setAccentColor] = useState('')
+  const [bgColor, setBgColor] = useState(DEFAULT_SECTION_COLORS.backgroundColor)
+  const [headerColor, setHeaderColor] = useState(DEFAULT_SECTION_COLORS.headerColor)
+  const [textColor, setTextColor] = useState(DEFAULT_SECTION_COLORS.textColor)
+  const [accentColor, setAccentColor] = useState(DEFAULT_SECTION_COLORS.accentColor)
 
   // Manage Mode state
   const [locationFilter, setLocationFilter] = useState('all')
@@ -100,10 +99,10 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [editFax, setEditFax] = useState('')
   const [editAddressLine1, setEditAddressLine1] = useState('')
   const [editAddressLine2, setEditAddressLine2] = useState('')
-  const [editBgColor, setEditBgColor] = useState('')
-  const [editHeaderColor, setEditHeaderColor] = useState('')
-  const [editTextColor, setEditTextColor] = useState('')
-  const [editAccentColor, setEditAccentColor] = useState('')
+  const [editBgColor, setEditBgColor] = useState(DEFAULT_SECTION_COLORS.backgroundColor)
+  const [editHeaderColor, setEditHeaderColor] = useState(DEFAULT_SECTION_COLORS.headerColor)
+  const [editTextColor, setEditTextColor] = useState(DEFAULT_SECTION_COLORS.textColor)
+  const [editAccentColor, setEditAccentColor] = useState(DEFAULT_SECTION_COLORS.accentColor)
 
   // Custom modal state
   const [modalState, setModalState] = useState({
@@ -168,10 +167,11 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       setEditFax(c.fax || '')
       setEditAddressLine1(c.addressLine1 || '')
       setEditAddressLine2(c.addressLine2 || '')
-      setEditBgColor(col.backgroundColor || '')
-      setEditHeaderColor(col.headerColor || '')
-      setEditTextColor(col.textColor || '')
-      setEditAccentColor(col.accentColor || '')
+      // DT-922 Sprint 9 - PBall: Normalize direct section color objects
+      setEditBgColor(normalizeColorPair(col.backgroundColor, DEFAULT_SECTION_COLORS.backgroundColor))
+      setEditHeaderColor(normalizeColorPair(col.headerColor, DEFAULT_SECTION_COLORS.headerColor))
+      setEditTextColor(normalizeColorPair(col.textColor, DEFAULT_SECTION_COLORS.textColor))
+      setEditAccentColor(normalizeColorPair(col.accentColor, DEFAULT_SECTION_COLORS.accentColor))
     }
   }
 
@@ -335,6 +335,7 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
 
       const updated = SectionStorageService.updateSection(activeId, {
         layout: editLayout,
+        colors: updatedContent.colors,
         content: updatedContent
       })
       setSections(SectionStorageService.getSections())
@@ -487,11 +488,6 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     layout: activeLayout,
     content: activeData
   }
-
-  const colorOptions = [
-    { value: '', label: 'Default Theme Color' },
-    ...colors.map(c => ({ value: c.id, label: c.id, color: c.lightModeColor }))
-  ]
 
   const locationFilterOptions = [
     { value: 'all', label: 'All Locations' },
@@ -839,25 +835,40 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             onAddressLine1Change: (val) => { setAddressLine1(val); markDirty() }
           })}
 
+          {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor storing light/dark colors directly in section */}
           {activeTab === 'colors' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Background Color</label>
-                <CustomSelect value={bgColor} onChange={(val) => { setBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Background Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                <CustomSelect value={headerColor} onChange={(val) => { setHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Header Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                <CustomSelect value={textColor} onChange={(val) => { setTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Text Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Accent Color</label>
-                <CustomSelect value={accentColor} onChange={(val) => { setAccentColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Accent Color" />
-              </div>
-            </div>
+            <ColorEditor
+              fields={[
+                {
+                  key: 'backgroundColor',
+                  label: 'Background Color',
+                  value: bgColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.backgroundColor,
+                  onChange: (val) => { setBgColor(val); markDirty() }
+                },
+                {
+                  key: 'headerColor',
+                  label: 'Header Color',
+                  value: headerColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.headerColor,
+                  onChange: (val) => { setHeaderColor(val); markDirty() }
+                },
+                {
+                  key: 'textColor',
+                  label: 'Text Color',
+                  value: textColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.textColor,
+                  onChange: (val) => { setTextColor(val); markDirty() }
+                },
+                {
+                  key: 'accentColor',
+                  label: 'Accent Color',
+                  value: accentColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.accentColor,
+                  onChange: (val) => { setAccentColor(val); markDirty() }
+                }
+              ]}
+            />
           )}
 
           <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -984,25 +995,40 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
                 onAddressLine1Change: (val) => { setEditAddressLine1(val); markDirty() }
               })}
 
+              {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor in section manage mode */}
               {activeTab === 'colors' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Background Color</label>
-                    <CustomSelect value={editBgColor} onChange={(val) => { setEditBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Background Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                    <CustomSelect value={editHeaderColor} onChange={(val) => { setEditHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Header Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                    <CustomSelect value={editTextColor} onChange={(val) => { setEditTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Text Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Accent Color</label>
-                    <CustomSelect value={editAccentColor} onChange={(val) => { setEditAccentColor(val); markDirty() }} options={colorOptions} ariaLabel="Accent Color" />
-                  </div>
-                </div>
+                <ColorEditor
+                  fields={[
+                    {
+                      key: 'backgroundColor',
+                      label: 'Background Color',
+                      value: editBgColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.backgroundColor,
+                      onChange: (val) => { setEditBgColor(val); markDirty() }
+                    },
+                    {
+                      key: 'headerColor',
+                      label: 'Header Color',
+                      value: editHeaderColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.headerColor,
+                      onChange: (val) => { setEditHeaderColor(val); markDirty() }
+                    },
+                    {
+                      key: 'textColor',
+                      label: 'Text Color',
+                      value: editTextColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.textColor,
+                      onChange: (val) => { setEditTextColor(val); markDirty() }
+                    },
+                    {
+                      key: 'accentColor',
+                      label: 'Accent Color',
+                      value: editAccentColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.accentColor,
+                      onChange: (val) => { setEditAccentColor(val); markDirty() }
+                    }
+                  ]}
+                />
               )}
 
               <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -1030,7 +1056,7 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             {themeMode === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
           </button>
         </div>
-        <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '10px', background: '#f8fafc' }}>
+        <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '10px', background: themeMode === 'dark' ? '#0f172a' : '#f8fafc', overflowX: 'hidden' }}>
           <DynamicSectionRenderer config={draftSection} theme={themeMode} />
         </div>
       </div>

@@ -1,10 +1,11 @@
-// DT-622 DT-625 Sprint 8
-// Preston Ball
+// DT-894 DT-917 DT-622 DT-625 Sprint 9
+// PBall
 // Page Manager component allowing administrators to create, edit, rename, reorder pages and sections, delete pages, and preview content with custom modals and custom selects
 
 import React, { useState, useEffect } from 'react'
 import { PageStorageService } from '../../../services/pageStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
+import { CardStorageService } from '../../../services/cardStorageService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import DynamicSectionRenderer from '../../modular/DynamicSectionRenderer'
 import CustomModal from './CustomModal'
@@ -17,9 +18,12 @@ export default function PageManager ({ onNotification, setIsDirty, registerSaveH
   // Load from database on mount
   useEffect(() => {
     async function syncData () {
-      const dbPages = await PageStorageService.loadFromDatabase()
+      const [dbPages, dbSections] = await Promise.all([
+        PageStorageService.loadFromDatabase(),
+        SectionStorageService.loadFromDatabase(),
+        CardStorageService.loadFromDatabase()
+      ])
       setPages(dbPages)
-      const dbSections = await SectionStorageService.loadFromDatabase()
       setSections(dbSections)
     }
     syncData()
@@ -598,7 +602,7 @@ export default function PageManager ({ onNotification, setIsDirty, registerSaveH
               <p style={{ fontSize: '0.85rem' }}>Add modular sections using the form on the left to see live content rendering.</p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', overflowX: 'hidden' }}>
               {activePreviewSectionIds.map((secId) => {
                 const sec = SectionStorageService.getSectionById(secId)
                 if (!sec) {

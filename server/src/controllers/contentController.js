@@ -1,9 +1,23 @@
-// DT-622 DT-618 Sprint 8
-// Preston Ball
-// Content and audit history controller handling dynamic pages, sections, cards, colors, text entries, and change logs
+// DT-903 DT-921 DT-922 DT-622 DT-618 Sprint 9
+// PBall
+// Content and audit history controller handling dynamic pages, sections, cards, text entries, and change logs with direct element color storage
 
 const prisma = require('../config/db')
 const { sendValidationError } = require('../utils/errorResponse')
+
+// DT-922 Sprint 9 - PBall: Default direct color definitions stored inside saved sections and cards
+const DEFAULT_SECTION_COLORS = {
+  backgroundColor: { light: '#ffffff', dark: '#0f172a' },
+  headerColor: { light: '#0f172a', dark: '#f8fafc' },
+  textColor: { light: '#334155', dark: '#cbd5e1' },
+  accentColor: { light: '#366454', dark: '#4ade80' }
+}
+
+const DEFAULT_CARD_COLORS = {
+  backgroundColor: { light: '#ffffff', dark: '#1e293b' },
+  headerColor: { light: '#0f172a', dark: '#f8fafc' },
+  textColor: { light: '#334155', dark: '#cbd5e1' }
+}
 
 // ==========================================
 // Pages (DT-622)
@@ -106,7 +120,7 @@ async function deletePage (req, res, next) {
 // Sections (DT-622)
 // ==========================================
 
-// DT-622 Sprint 8 - Preston Ball: Retrieve all sections with normalized color properties
+// DT-922 DT-622 Sprint 9 - PBall: Retrieve all sections with direct element color properties
 async function getSections (req, res, next) {
   try {
     const sections = await prisma.userCreatedSection.findMany()
@@ -115,7 +129,7 @@ async function getSections (req, res, next) {
       return {
         id: sec.id,
         layout: sec.layout,
-        colors: content.colors || { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' },
+        colors: content.colors || DEFAULT_SECTION_COLORS,
         content
       }
     })
@@ -145,7 +159,7 @@ async function getSectionById (req, res, next) {
   }
 }
 
-// DT-622 Sprint 8 - Preston Ball: Create a new section
+// DT-922 DT-622 Sprint 9 - PBall: Create a new section storing colors directly within the saved element
 async function createSection (req, res, next) {
   try {
     const { id, layout = 'HEADER_TEXT', colors, content = {} } = req.body || {}
@@ -156,7 +170,7 @@ async function createSection (req, res, next) {
 
     const mergedContent = {
       ...content,
-      colors: colors || content.colors || { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' }
+      colors: colors || content.colors || DEFAULT_SECTION_COLORS
     }
 
     const created = await prisma.userCreatedSection.upsert({
@@ -232,7 +246,7 @@ async function deleteSection (req, res, next) {
 // Cards (DT-622)
 // ==========================================
 
-// DT-622 Sprint 8 - Preston Ball: Retrieve all card elements
+// DT-922 DT-622 Sprint 9 - PBall: Retrieve all card elements with direct element color storage
 async function getCards (req, res, next) {
   try {
     const cards = await prisma.userCreatedCard.findMany()
@@ -241,7 +255,7 @@ async function getCards (req, res, next) {
       return {
         id: card.id,
         layout: card.layout,
-        colors: content.colors || { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' },
+        colors: content.colors || DEFAULT_CARD_COLORS,
         content
       }
     })
@@ -271,7 +285,7 @@ async function getCardById (req, res, next) {
   }
 }
 
-// DT-622 Sprint 8 - Preston Ball: Create a new card
+// DT-922 DT-622 Sprint 9 - PBall: Create a new card storing colors directly within the saved element
 async function createCard (req, res, next) {
   try {
     const { id, layout = 'HEADER_TEXT_BOX', colors, content = {} } = req.body || {}
@@ -282,7 +296,7 @@ async function createCard (req, res, next) {
 
     const mergedContent = {
       ...content,
-      colors: colors || content.colors || { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' }
+      colors: colors || content.colors || DEFAULT_CARD_COLORS
     }
 
     const created = await prisma.userCreatedCard.upsert({
@@ -348,100 +362,6 @@ async function deleteCard (req, res, next) {
       return res.status(404).json({ success: false, error: { message: `Card with ID "${id}" not found` } })
     }
     const removed = await prisma.userCreatedCard.delete({ where: { id } })
-    return res.status(200).json(removed)
-  } catch (err) {
-    return next(err)
-  }
-}
-
-// ==========================================
-// Colors (DT-622)
-// ==========================================
-
-// DT-622 Sprint 8 - Preston Ball: Retrieve all colors
-async function getColors (req, res, next) {
-  try {
-    const colors = await prisma.color.findMany()
-    return res.status(200).json(colors)
-  } catch (err) {
-    return next(err)
-  }
-}
-
-// DT-622 Sprint 8 - Preston Ball: Retrieve a single color by ID
-async function getColorById (req, res, next) {
-  try {
-    const { id } = req.params
-    const color = await prisma.color.findUnique({ where: { id } })
-    if (!color) {
-      return res.status(404).json({ success: false, error: { message: `Color with ID "${id}" not found` } })
-    }
-    return res.status(200).json(color)
-  } catch (err) {
-    return next(err)
-  }
-}
-
-// DT-622 Sprint 8 - Preston Ball: Create a new color
-async function createColor (req, res, next) {
-  try {
-    const { id, lightModeColor, darkModeColor } = req.body || {}
-    const trimmedId = String(id || '').trim()
-    if (!trimmedId) {
-      return sendValidationError(res, 'Color ID cannot be empty', 'id')
-    }
-
-    const created = await prisma.color.upsert({
-      where: { id: trimmedId },
-      create: {
-        id: trimmedId,
-        lightModeColor: lightModeColor || '#000000',
-        darkModeColor: darkModeColor || '#ffffff'
-      },
-      update: {
-        lightModeColor: lightModeColor || '#000000',
-        darkModeColor: darkModeColor || '#ffffff'
-      }
-    })
-    return res.status(201).json(created)
-  } catch (err) {
-    return next(err)
-  }
-}
-
-// DT-622 Sprint 8 - Preston Ball: Update an existing color
-async function updateColor (req, res, next) {
-  try {
-    const { id } = req.params
-    const { lightModeColor, darkModeColor } = req.body || {}
-
-    const existing = await prisma.color.findUnique({ where: { id } })
-    if (!existing) {
-      return res.status(404).json({ success: false, error: { message: `Color with ID "${id}" not found` } })
-    }
-
-    const updated = await prisma.color.update({
-      where: { id },
-      data: {
-        lightModeColor: lightModeColor ?? existing.lightModeColor,
-        darkModeColor: darkModeColor ?? existing.darkModeColor
-      }
-    })
-    return res.status(200).json(updated)
-  } catch (err) {
-    return next(err)
-  }
-}
-
-// DT-622 Sprint 8 - Preston Ball: Delete a color
-async function deleteColor (req, res, next) {
-  try {
-    const { id } = req.params
-    const existing = await prisma.color.findUnique({ where: { id } })
-    if (!existing) {
-      return res.status(404).json({ success: false, error: { message: `Color with ID "${id}" not found` } })
-    }
-    const removed = await prisma.color.delete({ where: { id } })
     return res.status(200).json(removed)
   } catch (err) {
     return next(err)
@@ -597,16 +517,6 @@ async function undoAppliedChange (req, res, next) {
           await prisma.userCreatedPage.update({
             where: { id: pageId },
             data: { content: beforePage.content || {} }
-          }).catch(() => {})
-        } else if (key.startsWith('color.')) {
-          const colorId = key.replace('color.', '')
-          const beforeColor = diff.before
-          await prisma.color.update({
-            where: { id: colorId },
-            data: {
-              lightModeColor: beforeColor.lightModeColor,
-              darkModeColor: beforeColor.darkModeColor
-            }
           }).catch(() => {})
         }
       }
@@ -820,11 +730,6 @@ module.exports = {
   updateCard,
   deleteCard,
   renameCard,
-  getColors,
-  getColorById,
-  createColor,
-  updateColor,
-  deleteColor,
   getTextEntries,
   saveTextEntry,
   saveTranslation,

@@ -1,6 +1,6 @@
-// DT-622 DT-618 Sprint 8
-// Preston Ball
-// Database migration and seeding script populating Landing, Home Health, and Hospice content models
+// DT-903 DT-921 DT-922 DT-622 DT-618 Sprint 9
+// PBall
+// Database migration and seeding script populating Landing, Home Health, and Hospice content models with direct element color storage
 
 require('dotenv').config()
 const prisma = require('../src/config/db')
@@ -20,20 +20,24 @@ async function main () {
     { id: 'divider-gray', lightModeColor: '#e2e8f0', darkModeColor: '#334155' }
   ]
 
-  for (const c of colors) {
-    await prisma.color.upsert({
-      where: { id: c.id },
-      create: c,
-      update: c
-    })
+  // DT-921 DT-922 Sprint 9 - PBall: Direct { light, dark } color palette stored in elements
+  const colorPalette = {
+    primaryGreen: { light: '#366454', dark: '#4ade80' },
+    brandDark: { light: '#0f172a', dark: '#f8fafc' },
+    surfaceWhite: { light: '#ffffff', dark: '#1e293b' },
+    surfaceLight: { light: '#f8fafc', dark: '#0f172a' },
+    textMain: { light: '#1e293b', dark: '#f8fafc' },
+    textMuted: { light: '#64748b', dark: '#94a3b8' },
+    accentGold: { light: '#d97706', dark: '#fbbf24' },
+    dividerGray: { light: '#e2e8f0', dark: '#334155' }
   }
-  console.log(`✓ Seeded ${colors.length} theme colors`)
+  console.log('✓ Defined inline theme color palette')
 
-  // 2. Modular Cards (with content.colors)
+  // 1. Modular Cards (with direct content.colors)
   const defaultCardColors = {
-    backgroundColor: 'surface-white',
-    headerColor: 'brand-dark',
-    textColor: 'text-main'
+    backgroundColor: colorPalette.surfaceWhite,
+    headerColor: colorPalette.brandDark,
+    textColor: colorPalette.textMain
   }
 
   const cards = [
@@ -396,18 +400,24 @@ async function main () {
   }
   console.log(`✓ Seeded ${cards.length} modular cards`)
 
-  // 3. Modular Sections (with content.colors)
+  // 2. Modular Sections (with direct content.colors)
   const defaultSectionColors = {
-    backgroundColor: 'surface-white',
-    headerColor: 'brand-dark',
-    textColor: 'text-main',
-    accentColor: 'primary-green'
+    backgroundColor: colorPalette.surfaceWhite,
+    headerColor: colorPalette.brandDark,
+    textColor: colorPalette.textMain,
+    accentColor: colorPalette.primaryGreen
   }
   const altSectionColors = {
-    backgroundColor: 'surface-light',
-    headerColor: 'brand-dark',
-    textColor: 'text-main',
-    accentColor: 'primary-green'
+    backgroundColor: colorPalette.surfaceLight,
+    headerColor: colorPalette.brandDark,
+    textColor: colorPalette.textMain,
+    accentColor: colorPalette.primaryGreen
+  }
+  const heroOverlayColors = {
+    backgroundColor: { light: '#ffffff', dark: '#1e293b' },
+    headerColor: { light: '#ffffff', dark: '#ffffff' },
+    textColor: { light: '#f8fafc', dark: '#f1f5f9' },
+    accentColor: colorPalette.primaryGreen
   }
 
   const sections = [
@@ -514,12 +524,7 @@ async function main () {
         buttonText: 'Schedule Consultation',
         buttonLink: '/schedule',
         icon: '🏡',
-        colors: {
-          backgroundColor: 'surface-white',
-          headerColor: 'surface-white',
-          textColor: 'surface-light',
-          accentColor: 'primary-green'
-        }
+        colors: heroOverlayColors
       }
     },
     {
@@ -573,12 +578,7 @@ async function main () {
         buttonText: 'Schedule Consultation',
         buttonLink: '/schedule',
         icon: '❤️',
-        colors: {
-          backgroundColor: 'surface-white',
-          headerColor: 'surface-white',
-          textColor: 'surface-light',
-          accentColor: 'primary-green'
-        }
+        colors: heroOverlayColors
       }
     },
     {
