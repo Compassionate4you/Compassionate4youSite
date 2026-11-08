@@ -4,12 +4,14 @@
 
 import { useTranslation } from 'react-i18next'
 import { pickText } from './CardBase'
+import BannerSection from '../sections/BannerSection'
 import ImageCard from './ImageCard'
 import HeaderParagraphCard from './HeaderParagraphCard'
 import HeaderSymbolCard from './HeaderSymbolCard'
 import { ColorConfigService } from '../../../services/colorConfigService'
 
-export default function ModularCard ({ card, theme = 'light' }) {
+// DT-902: Welcome paragraph cards can render the shared banner without changing other layouts.
+export default function ModularCard ({ card, theme = 'light', colorSource = 'cms', BannerIcon }) {
   const { i18n } = useTranslation()
   if (!card) return null
 
@@ -24,11 +26,18 @@ export default function ModularCard ({ card, theme = 'light' }) {
     return theme === 'dark' ? c.darkModeColor : c.lightModeColor
   }
 
-  const customStyles = {
-    '--card-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#1e293b' : '#ffffff'),
-    '--card-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
-    '--card-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155')
-  }
+  // DT-902: Global mode ignores stored card colours without changing CMS defaults.
+  const customStyles = colorSource === 'global'
+    ? {
+        '--card-bg': 'var(--color-white)',
+        '--card-header': 'var(--color-white-text)',
+        '--card-text': 'var(--color-white-text)'
+      }
+    : {
+        '--card-bg': resolveColor(colors.backgroundColor, theme === 'dark' ? '#1e293b' : '#ffffff'),
+        '--card-header': resolveColor(colors.headerColor, theme === 'dark' ? '#f8fafc' : '#0f172a'),
+        '--card-text': resolveColor(colors.textColor, theme === 'dark' ? '#cbd5e1' : '#334155')
+      }
 
   const commonProps = {
     header: pickText(content.header ?? card.header, lang),
@@ -43,6 +52,20 @@ export default function ModularCard ({ card, theme = 'light' }) {
   }
 
   const layout = card.layout || card.layoutType || 'HEADER_PARAGRAPH'
+
+  // DT-902: Restrict banners to paragraph cards within recognized Welcome sections.
+  if (BannerIcon && ['HEADER_PARAGRAPH', 'HEADER_TEXT_BOX'].includes(layout)) {
+    return (
+      <BannerSection
+        title={commonProps.header}
+        description={commonProps.paragraph}
+        Icon={BannerIcon}
+        typography={commonProps.typography}
+        style={commonProps.style}
+        formatBody
+      />
+    )
+  }
 
   switch (layout) {
     case 'IMAGE_FULL_WIDTH':

@@ -1,3 +1,4 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
 /*
 DT-622 DT-625 Sprint 8
 Preston Ball
@@ -6,8 +7,8 @@ Modular image header text section stylesheet supporting left/right image positio
 
 .modular-image-header-text-section {
   padding: 4rem 1.5rem;
-  background-color: var(--section-bg, #ffffff);
-  color: var(--section-text, #1e293b);
+  background-color: var(--section-bg, var(--color-white));
+  color: var(--section-text, var(--color-white-text));
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -33,7 +34,7 @@ Modular image header text section stylesheet supporting left/right image positio
   max-height: 480px;
   object-fit: cover;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-black) 10%, transparent);
 }
 
 .modular-image-header-text-section__content-col {
@@ -45,14 +46,14 @@ Modular image header text section stylesheet supporting left/right image positio
   font-weight: 700;
   line-height: 1.2;
   margin: 0 0 1.25rem;
-  color: var(--section-header, #0f172a);
+  color: var(--section-header, var(--color-white-text));
 }
 
 .modular-image-header-text-section__text {
   font-size: 1.15rem;
   line-height: 1.7;
   margin: 0 0 1.5rem;
-  color: var(--section-text, #475569);
+  color: var(--section-text, var(--color-white-text));
   white-space: pre-line;
 }
 
@@ -61,8 +62,8 @@ Modular image header text section stylesheet supporting left/right image positio
   align-items: center;
   gap: 0.5rem;
   padding: 0.85rem 1.75rem;
-  background-color: var(--section-accent, #366454);
-  color: #ffffff;
+  background-color: var(--section-accent, var(--color-primary));
+  color: var(--color-primary-text);
   font-weight: 600;
   font-size: 1rem;
   border-radius: 10px;

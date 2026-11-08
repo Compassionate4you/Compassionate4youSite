@@ -1,3 +1,5 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
+/* DT-902: Follow public page surface/text tokens when no CMS card colors are supplied. */
 /*
 DT-622 Sprint 8
 Preston Ball
@@ -10,16 +12,16 @@ Modular image card layout stylesheet supporting responsive split columns and cus
   align-items: center;
   padding: 0;
   overflow: hidden;
-  background: var(--card-bg, #ffffff);
-  color: var(--card-text, #1e293b);
+  background: var(--card-bg, var(--color-white));
+  color: var(--card-text, var(--color-white-text));
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-black) 8%, transparent);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card--image:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--color-black) 10%, transparent);
 }
 
 .card--image-right {
