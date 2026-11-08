@@ -19,6 +19,7 @@ model User {
   name              String?
   phone             String?
   role              String    @default("customer")
+  birthdate         DateTime? @db.Date
   accountStatus     String    @default("active")
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
