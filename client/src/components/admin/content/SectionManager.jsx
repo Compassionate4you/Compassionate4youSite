@@ -1,16 +1,16 @@
-// DT-923 DT-622 DT-618 DT-625 Sprint 9
+// DT-875 DT-903 DT-920 DT-922 DT-923 DT-622 DT-618 DT-625 Sprint 9
 // PBall
-// Section Manager component dispatching layout-specific form components with left/right image toggle, FAQ removal, card reordering, element renaming, typography controls, custom modals, and live preview
+// Section Manager component dispatching all section layout form components with inline ColorEditor and direct element color storage
 
 import React, { useState, useEffect } from 'react'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 import { PageStorageService } from '../../../services/pageStorageService'
 import { CardStorageService } from '../../../services/cardStorageService'
-import { ColorConfigService } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import DynamicSectionRenderer from '../../modular/DynamicSectionRenderer'
 import CustomModal from './CustomModal'
 import CustomSelect from './CustomSelect'
+import ColorEditor, { DEFAULT_SECTION_COLORS, normalizeColorPair } from './ColorEditor'
 import HeaderTextLayout from './SectionManager/HeaderTextLayout'
 import ImageHeaderTextLayout from './SectionManager/ImageHeaderTextLayout'
 import FullscreenImageHeaderLayout from './SectionManager/FullscreenImageHeaderLayout'
@@ -19,21 +19,31 @@ import MapSectionLayout from './SectionManager/MapSectionLayout'
 import AccountBenefitsLayout from './SectionManager/AccountBenefitsLayout'
 import ContactFormLayout from './SectionManager/ContactFormLayout'
 import FaqSectionLayout from './SectionManager/FaqSectionLayout'
+import HeroSectionLayout from './SectionManager/HeroSectionLayout'
+import HeaderCardsLayout from './SectionManager/HeaderCardsLayout'
+import HeaderStackLayout from './SectionManager/HeaderStackLayout'
+import TimelineSectionLayout from './SectionManager/TimelineSectionLayout'
+import PageCallToActionLayout from './SectionManager/PageCallToActionLayout'
 
+// DT-875 Sprint 9 - PBall: Complete list of available section layouts in the Content Editor
 const LAYOUT_OPTIONS = [
-  { value: 'HEADER_TEXT', label: 'HEADER_TEXT (Editorial title and text)' },
-  { value: 'IMAGE_HEADER_TEXT', label: 'IMAGE_HEADER_TEXT (Hero image, title, text, CTA)' },
-  { value: 'FULLSCREEN_IMAGE_HEADER', label: 'FULLSCREEN_IMAGE_HEADER (Banner overlay with CTA)' },
-  { value: 'CARD_GRID', label: 'CARD_GRID (Responsive card columns)' },
-  { value: 'MAP_SECTION', label: 'MAP_SECTION (Google Maps embed & directions)' },
-  { value: 'ACCOUNT_BENEFITS', label: 'ACCOUNT_BENEFITS (Checklist items)' },
-  { value: 'CONTACT_FORM', label: 'CONTACT_FORM (Contact details & form)' },
-  { value: 'FAQ_SECTION', label: 'FAQ_SECTION (Accordion Q&A items)' }
+  { value: 'HEADER_TEXT', label: 'HEADER_TEXT (Decorative Banner with Icon & Text)' },
+  { value: 'HERO_SECTION', label: 'HERO_SECTION (Split Photo/Panel or Background Hero)' },
+  { value: 'HEADER_CARDS', label: 'HEADER_CARDS (Split Header & Numbered Icon Cards)' },
+  { value: 'HEADER_STACK', label: 'HEADER_STACK (Header & 1-2 Column Stacked Cards)' },
+  { value: 'TIMELINE_SECTION', label: 'TIMELINE_SECTION (Numbered Care Process Steps)' },
+  { value: 'PAGE_CTA', label: 'PAGE_CTA (Closing Call-To-Action & Links)' },
+  { value: 'IMAGE_HEADER_TEXT', label: 'IMAGE_HEADER_TEXT (Hero Image, Title, Text, CTA)' },
+  { value: 'FULLSCREEN_IMAGE_HEADER', label: 'FULLSCREEN_IMAGE_HEADER (Banner Overlay with CTA)' },
+  { value: 'CARD_GRID', label: 'CARD_GRID (Responsive Card Columns 1-5)' },
+  { value: 'MAP_SECTION', label: 'MAP_SECTION (Google Maps Embed & Directions)' },
+  { value: 'ACCOUNT_BENEFITS', label: 'ACCOUNT_BENEFITS (Checklist Items)' },
+  { value: 'CONTACT_FORM', label: 'CONTACT_FORM (Contact Details & Form)' },
+  { value: 'FAQ_SECTION', label: 'FAQ_SECTION (Accordion Q&A Items)' }
 ]
 
 export default function SectionManager ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [sections, setSections] = useState(SectionStorageService.getSections())
-  const colors = ColorConfigService.getColors()
   const pages = PageStorageService.getPages()
   const allCards = CardStorageService.getCards()
 
@@ -44,6 +54,7 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   // Create Mode state
   const [sectionId, setSectionId] = useState('')
   const [layout, setLayout] = useState('HEADER_TEXT')
+  const [label, setLabel] = useState('')
   const [header, setHeader] = useState('')
   const [text, setText] = useState('')
   const [imageUrl, setImageUrl] = useState('')
@@ -52,11 +63,20 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [headerTypography, setHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
   const [textTypography, setTextTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
   const [buttonText, setButtonText] = useState('')
+  const [secondaryButtonText, setSecondaryButtonText] = useState('')
   const [buttonLink, setButtonLink] = useState('')
   const [icon, setIcon] = useState('')
+  const [formatBody, setFormatBody] = useState(false)
+  const [heroVariant, setHeroVariant] = useState('split')
+  const [heroTone, setHeroTone] = useState('teal')
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false)
+  const [surface, setSurface] = useState('')
   const [mapAddress, setMapAddress] = useState('')
   const [embedUrl, setEmbedUrl] = useState('')
   const [directionsUrl, setDirectionsUrl] = useState('')
+  const [directionsText, setDirectionsText] = useState('')
+  const [hideHeading, setHideHeading] = useState(false)
   const [gridCols, setGridCols] = useState(3)
   const [selectedCardIds, setSelectedCardIds] = useState([])
   const [selectedCardToAdd, setSelectedCardToAdd] = useState('')
@@ -67,16 +87,17 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [fax, setFax] = useState('')
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
-  const [bgColor, setBgColor] = useState('')
-  const [headerColor, setHeaderColor] = useState('')
-  const [textColor, setTextColor] = useState('')
-  const [accentColor, setAccentColor] = useState('')
+  const [bgColor, setBgColor] = useState(DEFAULT_SECTION_COLORS.backgroundColor)
+  const [headerColor, setHeaderColor] = useState(DEFAULT_SECTION_COLORS.headerColor)
+  const [textColor, setTextColor] = useState(DEFAULT_SECTION_COLORS.textColor)
+  const [accentColor, setAccentColor] = useState(DEFAULT_SECTION_COLORS.accentColor)
 
   // Manage Mode state
   const [locationFilter, setLocationFilter] = useState('all')
   const [manageSectionId, setManageSectionId] = useState('')
   const [editSectionId, setEditSectionId] = useState('')
   const [editLayout, setEditLayout] = useState('HEADER_TEXT')
+  const [editLabel, setEditLabel] = useState('')
   const [editHeader, setEditHeader] = useState('')
   const [editText, setEditText] = useState('')
   const [editImageUrl, setEditImageUrl] = useState('')
@@ -85,11 +106,20 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [editHeaderTypography, setEditHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
   const [editTextTypography, setEditTextTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
   const [editButtonText, setEditButtonText] = useState('')
+  const [editSecondaryButtonText, setEditSecondaryButtonText] = useState('')
   const [editButtonLink, setEditButtonLink] = useState('')
   const [editIcon, setEditIcon] = useState('')
+  const [editFormatBody, setEditFormatBody] = useState(false)
+  const [editHeroVariant, setEditHeroVariant] = useState('split')
+  const [editHeroTone, setEditHeroTone] = useState('teal')
+  const [editShowOverlay, setEditShowOverlay] = useState(false)
+  const [editShowLanguageSelector, setEditShowLanguageSelector] = useState(false)
+  const [editSurface, setEditSurface] = useState('')
   const [editMapAddress, setEditMapAddress] = useState('')
   const [editEmbedUrl, setEditEmbedUrl] = useState('')
   const [editDirectionsUrl, setEditDirectionsUrl] = useState('')
+  const [editDirectionsText, setEditDirectionsText] = useState('')
+  const [editHideHeading, setEditHideHeading] = useState(false)
   const [editGridCols, setEditGridCols] = useState(3)
   const [editSelectedCardIds, setEditSelectedCardIds] = useState([])
   const [editCardToAdd, setEditCardToAdd] = useState('')
@@ -100,10 +130,10 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [editFax, setEditFax] = useState('')
   const [editAddressLine1, setEditAddressLine1] = useState('')
   const [editAddressLine2, setEditAddressLine2] = useState('')
-  const [editBgColor, setEditBgColor] = useState('')
-  const [editHeaderColor, setEditHeaderColor] = useState('')
-  const [editTextColor, setEditTextColor] = useState('')
-  const [editAccentColor, setEditAccentColor] = useState('')
+  const [editBgColor, setEditBgColor] = useState(DEFAULT_SECTION_COLORS.backgroundColor)
+  const [editHeaderColor, setEditHeaderColor] = useState(DEFAULT_SECTION_COLORS.headerColor)
+  const [editTextColor, setEditTextColor] = useState(DEFAULT_SECTION_COLORS.textColor)
+  const [editAccentColor, setEditAccentColor] = useState(DEFAULT_SECTION_COLORS.accentColor)
 
   // Custom modal state
   const [modalState, setModalState] = useState({
@@ -146,19 +176,29 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       const col = c.colors || sec.colors || {}
       const typo = c.typography || {}
       setEditLayout(sec.layout || 'HEADER_TEXT')
+      setEditLabel(c.label || '')
       setEditHeader(c.header || c.title || '')
-      setEditText(c.text || c.paragraph || c.subtitle || '')
-      setEditImageUrl(c.imageUrl || '')
+      setEditText(c.text || c.paragraph || c.subtitle || c.description || '')
+      setEditImageUrl(c.imageUrl || c.backgroundImageUrl || '')
       setEditImageAlt(c.imageAlt || '')
-      setEditImagePosition(c.imagePosition || 'left')
+      setEditImagePosition(c.imagePosition || c.headerPosition || c.contentPosition || 'left')
       setEditHeaderTypography(typo.header || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
       setEditTextTypography(typo.text || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-      setEditButtonText(c.buttonText || '')
+      setEditButtonText(c.buttonText || c.primaryLabel || '')
+      setEditSecondaryButtonText(c.secondaryButtonText || c.homeLabel || '')
       setEditButtonLink(c.buttonLink || '')
-      setEditIcon(c.icon || '')
+      setEditIcon(c.icon || c.iconName || '')
+      setEditFormatBody(Boolean(c.formatBody))
+      setEditHeroVariant(c.heroVariant || c.variant || 'split')
+      setEditHeroTone(c.heroTone || c.tone || 'teal')
+      setEditShowOverlay(Boolean(c.showOverlay))
+      setEditShowLanguageSelector(Boolean(c.showLanguageSelector))
+      setEditSurface(c.surface || '')
       setEditMapAddress(c.mapAddress || '')
       setEditEmbedUrl(c.embedUrl || '')
       setEditDirectionsUrl(c.directionsUrl || '')
+      setEditDirectionsText(c.directionsText || '')
+      setEditHideHeading(Boolean(c.hideHeading))
       setEditGridCols(Number(c.gridCols || c.columns || 3))
       setEditSelectedCardIds(Array.isArray(c.cardIds) ? c.cardIds : [])
       setEditFaqItems(Array.isArray(c.faqItems) ? c.faqItems : [{ question: '', answer: '' }])
@@ -168,10 +208,11 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       setEditFax(c.fax || '')
       setEditAddressLine1(c.addressLine1 || '')
       setEditAddressLine2(c.addressLine2 || '')
-      setEditBgColor(col.backgroundColor || '')
-      setEditHeaderColor(col.headerColor || '')
-      setEditTextColor(col.textColor || '')
-      setEditAccentColor(col.accentColor || '')
+      // DT-922 Sprint 9 - PBall: Normalize direct section color objects
+      setEditBgColor(normalizeColorPair(col.backgroundColor, DEFAULT_SECTION_COLORS.backgroundColor))
+      setEditHeaderColor(normalizeColorPair(col.headerColor, DEFAULT_SECTION_COLORS.headerColor))
+      setEditTextColor(normalizeColorPair(col.textColor, DEFAULT_SECTION_COLORS.textColor))
+      setEditAccentColor(normalizeColorPair(col.accentColor, DEFAULT_SECTION_COLORS.accentColor))
     }
   }
 
@@ -209,21 +250,33 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     if (!trimmedId) return
     try {
       const sectionContent = {
+        label,
         header,
         text,
         imageUrl,
         imageAlt,
         imagePosition,
+        headerPosition: imagePosition,
+        contentPosition: imagePosition,
         typography: {
           header: headerTypography,
           text: textTypography
         },
         buttonText,
+        secondaryButtonText,
         buttonLink,
         icon,
+        formatBody,
+        heroVariant,
+        heroTone,
+        showOverlay,
+        showLanguageSelector,
+        surface,
         mapAddress,
         embedUrl,
         directionsUrl,
+        directionsText,
+        hideHeading,
         gridCols: Number(gridCols),
         cardIds: selectedCardIds,
         faqItems: faqItems.filter(f => f.question || f.answer),
@@ -301,21 +354,33 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
 
       const updatedContent = {
         ...oldSec.content,
+        label: editLabel,
         header: editHeader,
         text: editText,
         imageUrl: editImageUrl,
         imageAlt: editImageAlt,
         imagePosition: editImagePosition,
+        headerPosition: editImagePosition,
+        contentPosition: editImagePosition,
         typography: {
           header: editHeaderTypography,
           text: editTextTypography
         },
         buttonText: editButtonText,
+        secondaryButtonText: editSecondaryButtonText,
         buttonLink: editButtonLink,
         icon: editIcon,
+        formatBody: editFormatBody,
+        heroVariant: editHeroVariant,
+        heroTone: editHeroTone,
+        showOverlay: editShowOverlay,
+        showLanguageSelector: editShowLanguageSelector,
+        surface: editSurface,
         mapAddress: editMapAddress,
         embedUrl: editEmbedUrl,
         directionsUrl: editDirectionsUrl,
+        directionsText: editDirectionsText,
+        hideHeading: editHideHeading,
         gridCols: Number(editGridCols),
         cardIds: editSelectedCardIds,
         faqItems: editFaqItems.filter(f => f.question || f.answer),
@@ -335,6 +400,7 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
 
       const updated = SectionStorageService.updateSection(activeId, {
         layout: editLayout,
+        colors: updatedContent.colors,
         content: updatedContent
       })
       setSections(SectionStorageService.getSections())
@@ -435,18 +501,30 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   // Live draft representation for preview
   const activeLayout = mode === 'create' ? layout : editLayout
   const activeData = mode === 'create' ? {
+    label,
     header: header || 'Section Header Preview',
     text: text || 'Section description text goes here...',
     imageUrl: imageUrl || '/assets/images/CareImage1.jpeg',
     imageAlt: imageAlt || 'Preview Image',
     imagePosition: imagePosition || 'left',
+    headerPosition: imagePosition || 'left',
+    contentPosition: imagePosition || 'left',
     typography: { header: headerTypography, text: textTypography },
     buttonText: buttonText || 'Learn More',
+    secondaryButtonText: secondaryButtonText || 'Back to Welcome',
     buttonLink: buttonLink || '#',
     icon,
+    formatBody,
+    heroVariant,
+    heroTone,
+    showOverlay,
+    showLanguageSelector,
+    surface,
     mapAddress: mapAddress || '1501 N Broadway, Ste 350A/B, Walnut Creek, CA',
     embedUrl,
     directionsUrl,
+    directionsText,
+    hideHeading,
     gridCols,
     cardIds: selectedCardIds,
     faqItems,
@@ -458,18 +536,30 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     addressLine2,
     colors: { backgroundColor: bgColor, headerColor, textColor, accentColor }
   } : {
+    label: editLabel,
     header: editHeader || 'Section Header',
     text: editText || 'Section text',
     imageUrl: editImageUrl,
     imageAlt: editImageAlt,
     imagePosition: editImagePosition,
+    headerPosition: editImagePosition,
+    contentPosition: editImagePosition,
     typography: { header: editHeaderTypography, text: editTextTypography },
     buttonText: editButtonText,
+    secondaryButtonText: editSecondaryButtonText,
     buttonLink: editButtonLink,
     icon: editIcon,
+    formatBody: editFormatBody,
+    heroVariant: editHeroVariant,
+    heroTone: editHeroTone,
+    showOverlay: editShowOverlay,
+    showLanguageSelector: editShowLanguageSelector,
+    surface: editSurface,
     mapAddress: editMapAddress,
     embedUrl: editEmbedUrl,
     directionsUrl: editDirectionsUrl,
+    directionsText: editDirectionsText,
+    hideHeading: editHideHeading,
     gridCols: editGridCols,
     cardIds: editSelectedCardIds,
     faqItems: editFaqItems,
@@ -488,20 +578,17 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     content: activeData
   }
 
-  const colorOptions = [
-    { value: '', label: 'Default Theme Color' },
-    ...colors.map(c => ({ value: c.id, label: c.id, color: c.lightModeColor }))
-  ]
-
   const locationFilterOptions = [
     { value: 'all', label: 'All Locations' },
     { value: 'unallocated', label: 'Unallocated Sections' },
     ...pages.map(p => ({ value: p.id, label: `Page: ${p.content?.title || p.id} (/${p.id})` }))
   ]
 
-  // DT-923 Sprint 9 - PBall: Dispatch per-layout form component for SectionManager
+  // DT-875 DT-923 Sprint 9 - PBall: Dispatch per-layout form component for SectionManager
   const renderSectionLayoutFields = ({
     currentLayout,
+    currentLabel,
+    onLabelChange,
     currentHeader,
     onHeaderChange,
     currentHeaderTypography,
@@ -518,14 +605,34 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     onImageAltChange,
     currentButtonText,
     onButtonTextChange,
+    currentSecondaryButtonText,
+    onSecondaryButtonTextChange,
     currentButtonLink,
     onButtonLinkChange,
+    currentIcon,
+    onIconChange,
+    currentFormatBody,
+    onFormatBodyChange,
+    currentHeroVariant,
+    onHeroVariantChange,
+    currentHeroTone,
+    onHeroToneChange,
+    currentShowOverlay,
+    onShowOverlayChange,
+    currentShowLanguageSelector,
+    onShowLanguageSelectorChange,
+    currentSurface,
+    onSurfaceChange,
     currentMapAddress,
     onMapAddressChange,
     currentEmbedUrl,
     onEmbedUrlChange,
     currentDirectionsUrl,
     onDirectionsUrlChange,
+    currentDirectionsText,
+    onDirectionsTextChange,
+    currentHideHeading,
+    onHideHeadingChange,
     currentGridCols,
     onGridColsChange,
     currentSelectedCardIds,
@@ -547,9 +654,120 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     currentFax,
     onFaxChange,
     currentAddressLine1,
-    onAddressLine1Change
+    onAddressLine1Change,
+    currentAddressLine2,
+    onAddressLine2Change
   }) => {
     switch (currentLayout) {
+      case 'HERO_SECTION':
+      case 'WELCOME_HERO':
+        return (
+          <HeroSectionLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            heroVariant={currentHeroVariant}
+            onHeroVariantChange={onHeroVariantChange}
+            contentPosition={currentImagePosition}
+            onContentPositionChange={onImagePositionChange}
+            heroTone={currentHeroTone}
+            onHeroToneChange={onHeroToneChange}
+            icon={currentIcon}
+            onIconChange={onIconChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            imageAlt={currentImageAlt}
+            onImageAltChange={onImageAltChange}
+            buttonText={currentButtonText}
+            onButtonTextChange={onButtonTextChange}
+            buttonLink={currentButtonLink}
+            onButtonLinkChange={onButtonLinkChange}
+            showOverlay={currentShowOverlay}
+            onShowOverlayChange={onShowOverlayChange}
+            showLanguageSelector={currentShowLanguageSelector}
+            onShowLanguageSelectorChange={onShowLanguageSelectorChange}
+          />
+        )
+      case 'HEADER_CARDS':
+        return (
+          <HeaderCardsLayout
+            label={currentLabel}
+            onLabelChange={onLabelChange}
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            headerPosition={currentImagePosition}
+            onHeaderPositionChange={onImagePositionChange}
+            surface={currentSurface}
+            onSurfaceChange={onSurfaceChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            selectedCardIds={currentSelectedCardIds}
+            onSelectedCardIdsChange={onSelectedCardIdsChange}
+            cardToAdd={currentCardToAdd}
+            onCardToAddChange={onCardToAddChange}
+            allCards={allCards}
+            onMoveCard={onMoveCard}
+            onRemoveCard={onRemoveCard}
+          />
+        )
+      case 'HEADER_STACK':
+        return (
+          <HeaderStackLayout
+            label={currentLabel}
+            onLabelChange={onLabelChange}
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            gridCols={currentGridCols}
+            onGridColsChange={onGridColsChange}
+            selectedCardIds={currentSelectedCardIds}
+            onSelectedCardIdsChange={onSelectedCardIdsChange}
+            cardToAdd={currentCardToAdd}
+            onCardToAddChange={onCardToAddChange}
+            allCards={allCards}
+            onMoveCard={onMoveCard}
+            onRemoveCard={onRemoveCard}
+            benefitItems={currentBenefitItems}
+            onBenefitItemsChange={onBenefitItemsChange}
+          />
+        )
+      case 'TIMELINE_SECTION':
+        return (
+          <TimelineSectionLayout
+            label={currentLabel}
+            onLabelChange={onLabelChange}
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            selectedCardIds={currentSelectedCardIds}
+            onSelectedCardIdsChange={onSelectedCardIdsChange}
+            cardToAdd={currentCardToAdd}
+            onCardToAddChange={onCardToAddChange}
+            allCards={allCards}
+            onMoveCard={onMoveCard}
+            onRemoveCard={onRemoveCard}
+            benefitItems={currentBenefitItems}
+            onBenefitItemsChange={onBenefitItemsChange}
+          />
+        )
+      case 'PAGE_CTA':
+        return (
+          <PageCallToActionLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            buttonText={currentButtonText}
+            onButtonTextChange={onButtonTextChange}
+            secondaryButtonText={currentSecondaryButtonText}
+            onSecondaryButtonTextChange={onSecondaryButtonTextChange}
+          />
+        )
       case 'IMAGE_HEADER_TEXT':
         return (
           <ImageHeaderTextLayout
@@ -584,6 +802,8 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             onTextChange={onTextChange}
             textTypography={currentTextTypography}
             onTextTypographyChange={onTextTypographyChange}
+            icon={currentIcon}
+            onIconChange={onIconChange}
             imageUrl={currentImageUrl}
             onImageUrlChange={onImageUrlChange}
             imageAlt={currentImageAlt}
@@ -601,12 +821,16 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             onHeaderChange={onHeaderChange}
             headerTypography={currentHeaderTypography}
             onHeaderTypographyChange={onHeaderTypographyChange}
+            hideHeading={currentHideHeading}
+            onHideHeadingChange={onHideHeadingChange}
             mapAddress={currentMapAddress}
             onMapAddressChange={onMapAddressChange}
             embedUrl={currentEmbedUrl}
             onEmbedUrlChange={onEmbedUrlChange}
             directionsUrl={currentDirectionsUrl}
             onDirectionsUrlChange={onDirectionsUrlChange}
+            directionsText={currentDirectionsText}
+            onDirectionsTextChange={onDirectionsTextChange}
           />
         )
       case 'CARD_GRID':
@@ -666,6 +890,8 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             onFaxChange={onFaxChange}
             addressLine1={currentAddressLine1}
             onAddressLine1Change={onAddressLine1Change}
+            addressLine2={currentAddressLine2}
+            onAddressLine2Change={onAddressLine2Change}
           />
         )
       case 'HEADER_TEXT':
@@ -680,6 +906,10 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             onTextChange={onTextChange}
             textTypography={currentTextTypography}
             onTextTypographyChange={onTextTypographyChange}
+            icon={currentIcon}
+            onIconChange={onIconChange}
+            formatBody={currentFormatBody}
+            onFormatBodyChange={onFormatBodyChange}
           />
         )
     }
@@ -788,9 +1018,11 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             </div>
           </div>
 
-          {/* DT-923 Sprint 9 - PBall: Render separated section layout component in create mode */}
+          {/* DT-875 DT-923 Sprint 9 - PBall: Render separated section layout component in create mode */}
           {activeTab === 'content' && renderSectionLayoutFields({
             currentLayout: layout,
+            currentLabel: label,
+            onLabelChange: (val) => { setLabel(val); markDirty() },
             currentHeader: header,
             onHeaderChange: (val) => { setHeader(val); markDirty() },
             currentHeaderTypography: headerTypography,
@@ -807,14 +1039,34 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             onImageAltChange: (val) => { setImageAlt(val); markDirty() },
             currentButtonText: buttonText,
             onButtonTextChange: (val) => { setButtonText(val); markDirty() },
+            currentSecondaryButtonText: secondaryButtonText,
+            onSecondaryButtonTextChange: (val) => { setSecondaryButtonText(val); markDirty() },
             currentButtonLink: buttonLink,
             onButtonLinkChange: (val) => { setButtonLink(val); markDirty() },
+            currentIcon: icon,
+            onIconChange: (val) => { setIcon(val); markDirty() },
+            currentFormatBody: formatBody,
+            onFormatBodyChange: (val) => { setFormatBody(val); markDirty() },
+            currentHeroVariant: heroVariant,
+            onHeroVariantChange: (val) => { setHeroVariant(val); markDirty() },
+            currentHeroTone: heroTone,
+            onHeroToneChange: (val) => { setHeroTone(val); markDirty() },
+            currentShowOverlay: showOverlay,
+            onShowOverlayChange: (val) => { setShowOverlay(val); markDirty() },
+            currentShowLanguageSelector: showLanguageSelector,
+            onShowLanguageSelectorChange: (val) => { setShowLanguageSelector(val); markDirty() },
+            currentSurface: surface,
+            onSurfaceChange: (val) => { setSurface(val); markDirty() },
             currentMapAddress: mapAddress,
             onMapAddressChange: (val) => { setMapAddress(val); markDirty() },
             currentEmbedUrl: embedUrl,
             onEmbedUrlChange: (val) => { setEmbedUrl(val); markDirty() },
             currentDirectionsUrl: directionsUrl,
             onDirectionsUrlChange: (val) => { setDirectionsUrl(val); markDirty() },
+            currentDirectionsText: directionsText,
+            onDirectionsTextChange: (val) => { setDirectionsText(val); markDirty() },
+            currentHideHeading: hideHeading,
+            onHideHeadingChange: (val) => { setHideHeading(val); markDirty() },
             currentGridCols: gridCols,
             onGridColsChange: (val) => { setGridCols(val); markDirty() },
             currentSelectedCardIds: selectedCardIds,
@@ -836,28 +1088,45 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             currentFax: fax,
             onFaxChange: (val) => { setFax(val); markDirty() },
             currentAddressLine1: addressLine1,
-            onAddressLine1Change: (val) => { setAddressLine1(val); markDirty() }
+            onAddressLine1Change: (val) => { setAddressLine1(val); markDirty() },
+            currentAddressLine2: addressLine2,
+            onAddressLine2Change: (val) => { setAddressLine2(val); markDirty() }
           })}
 
+          {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor storing light/dark colors directly in section */}
           {activeTab === 'colors' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Background Color</label>
-                <CustomSelect value={bgColor} onChange={(val) => { setBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Background Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                <CustomSelect value={headerColor} onChange={(val) => { setHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Header Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                <CustomSelect value={textColor} onChange={(val) => { setTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Text Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Accent Color</label>
-                <CustomSelect value={accentColor} onChange={(val) => { setAccentColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Accent Color" />
-              </div>
-            </div>
+            <ColorEditor
+              fields={[
+                {
+                  key: 'backgroundColor',
+                  label: 'Background Color',
+                  value: bgColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.backgroundColor,
+                  onChange: (val) => { setBgColor(val); markDirty() }
+                },
+                {
+                  key: 'headerColor',
+                  label: 'Header Color',
+                  value: headerColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.headerColor,
+                  onChange: (val) => { setHeaderColor(val); markDirty() }
+                },
+                {
+                  key: 'textColor',
+                  label: 'Text Color',
+                  value: textColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.textColor,
+                  onChange: (val) => { setTextColor(val); markDirty() }
+                },
+                {
+                  key: 'accentColor',
+                  label: 'Accent Color',
+                  value: accentColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.accentColor,
+                  onChange: (val) => { setAccentColor(val); markDirty() }
+                }
+              ]}
+            />
           )}
 
           <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -933,9 +1202,11 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
                 />
               </div>
 
-              {/* DT-923 Sprint 9 - PBall: Render separated section layout component in manage mode */}
+              {/* DT-875 DT-923 Sprint 9 - PBall: Render separated section layout component in manage mode */}
               {activeTab === 'content' && renderSectionLayoutFields({
                 currentLayout: editLayout,
+                currentLabel: editLabel,
+                onLabelChange: (val) => { setEditLabel(val); markDirty() },
                 currentHeader: editHeader,
                 onHeaderChange: (val) => { setEditHeader(val); markDirty() },
                 currentHeaderTypography: editHeaderTypography,
@@ -952,14 +1223,34 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
                 onImageAltChange: (val) => { setEditImageAlt(val); markDirty() },
                 currentButtonText: editButtonText,
                 onButtonTextChange: (val) => { setEditButtonText(val); markDirty() },
+                currentSecondaryButtonText: editSecondaryButtonText,
+                onSecondaryButtonTextChange: (val) => { setEditSecondaryButtonText(val); markDirty() },
                 currentButtonLink: editButtonLink,
                 onButtonLinkChange: (val) => { setEditButtonLink(val); markDirty() },
+                currentIcon: editIcon,
+                onIconChange: (val) => { setEditIcon(val); markDirty() },
+                currentFormatBody: editFormatBody,
+                onFormatBodyChange: (val) => { setEditFormatBody(val); markDirty() },
+                currentHeroVariant: editHeroVariant,
+                onHeroVariantChange: (val) => { setEditHeroVariant(val); markDirty() },
+                currentHeroTone: editHeroTone,
+                onHeroToneChange: (val) => { setEditHeroTone(val); markDirty() },
+                currentShowOverlay: editShowOverlay,
+                onShowOverlayChange: (val) => { setEditShowOverlay(val); markDirty() },
+                currentShowLanguageSelector: editShowLanguageSelector,
+                onShowLanguageSelectorChange: (val) => { setEditShowLanguageSelector(val); markDirty() },
+                currentSurface: editSurface,
+                onSurfaceChange: (val) => { setEditSurface(val); markDirty() },
                 currentMapAddress: editMapAddress,
                 onMapAddressChange: (val) => { setEditMapAddress(val); markDirty() },
                 currentEmbedUrl: editEmbedUrl,
                 onEmbedUrlChange: (val) => { setEditEmbedUrl(val); markDirty() },
                 currentDirectionsUrl: editDirectionsUrl,
                 onDirectionsUrlChange: (val) => { setEditDirectionsUrl(val); markDirty() },
+                currentDirectionsText: editDirectionsText,
+                onDirectionsTextChange: (val) => { setEditDirectionsText(val); markDirty() },
+                currentHideHeading: editHideHeading,
+                onHideHeadingChange: (val) => { setEditHideHeading(val); markDirty() },
                 currentGridCols: editGridCols,
                 onGridColsChange: (val) => { setEditGridCols(val); markDirty() },
                 currentSelectedCardIds: editSelectedCardIds,
@@ -981,28 +1272,45 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
                 currentFax: editFax,
                 onFaxChange: (val) => { setEditFax(val); markDirty() },
                 currentAddressLine1: editAddressLine1,
-                onAddressLine1Change: (val) => { setEditAddressLine1(val); markDirty() }
+                onAddressLine1Change: (val) => { setEditAddressLine1(val); markDirty() },
+                currentAddressLine2: editAddressLine2,
+                onAddressLine2Change: (val) => { setEditAddressLine2(val); markDirty() }
               })}
 
+              {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor in section manage mode */}
               {activeTab === 'colors' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Background Color</label>
-                    <CustomSelect value={editBgColor} onChange={(val) => { setEditBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Background Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                    <CustomSelect value={editHeaderColor} onChange={(val) => { setEditHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Header Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                    <CustomSelect value={editTextColor} onChange={(val) => { setEditTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Text Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Accent Color</label>
-                    <CustomSelect value={editAccentColor} onChange={(val) => { setEditAccentColor(val); markDirty() }} options={colorOptions} ariaLabel="Accent Color" />
-                  </div>
-                </div>
+                <ColorEditor
+                  fields={[
+                    {
+                      key: 'backgroundColor',
+                      label: 'Background Color',
+                      value: editBgColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.backgroundColor,
+                      onChange: (val) => { setEditBgColor(val); markDirty() }
+                    },
+                    {
+                      key: 'headerColor',
+                      label: 'Header Color',
+                      value: editHeaderColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.headerColor,
+                      onChange: (val) => { setEditHeaderColor(val); markDirty() }
+                    },
+                    {
+                      key: 'textColor',
+                      label: 'Text Color',
+                      value: editTextColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.textColor,
+                      onChange: (val) => { setEditTextColor(val); markDirty() }
+                    },
+                    {
+                      key: 'accentColor',
+                      label: 'Accent Color',
+                      value: editAccentColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.accentColor,
+                      onChange: (val) => { setEditAccentColor(val); markDirty() }
+                    }
+                  ]}
+                />
               )}
 
               <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -1030,7 +1338,7 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             {themeMode === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
           </button>
         </div>
-        <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '10px', background: '#f8fafc' }}>
+        <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '10px', background: themeMode === 'dark' ? '#0f172a' : '#f8fafc', overflowX: 'hidden' }}>
           <DynamicSectionRenderer config={draftSection} theme={themeMode} />
         </div>
       </div>

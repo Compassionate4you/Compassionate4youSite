@@ -1,9 +1,17 @@
-// DT-923 Sprint 9
+// DT-875 DT-923 Sprint 9
 // PBall
-// Form fields component for the HEADER_TEXT section layout in SectionManager
+// Form fields component for the HEADER_TEXT (BannerSection) layout in SectionManager
 
 import React from 'react'
+import CustomSelect from '../CustomSelect'
 import TypographyControls from '../TypographyControls'
+
+const BANNER_ICON_OPTIONS = [
+  { value: '', label: 'Auto (By Section ID / Heart Default)' },
+  { value: 'Heart', label: 'Heart (Philosophy / General)' },
+  { value: 'HeartHandshake', label: 'HeartHandshake (Caring)' },
+  { value: 'Users', label: 'Users (About / Community)' }
+]
 
 export default function HeaderTextLayout ({
   header,
@@ -13,7 +21,11 @@ export default function HeaderTextLayout ({
   text,
   onTextChange,
   textTypography,
-  onTextTypographyChange
+  onTextTypographyChange,
+  icon = '',
+  onIconChange,
+  formatBody = false,
+  onFormatBodyChange
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -49,6 +61,32 @@ export default function HeaderTextLayout ({
           value={textTypography}
           onChange={onTextTypographyChange}
         />
+      </div>
+
+      {/* DT-875 Sprint 9 - PBall: Decorative banner ornament icon and body list formatting controls */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', alignItems: 'end' }}>
+        {onIconChange && (
+          <div>
+            <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Banner Badge Icon</label>
+            <CustomSelect
+              value={icon}
+              onChange={onIconChange}
+              options={BANNER_ICON_OPTIONS}
+              ariaLabel="Select Banner Badge Icon"
+            />
+          </div>
+        )}
+        {onFormatBodyChange && (
+          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', padding: '10px 0', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={Boolean(formatBody)}
+              onChange={(e) => onFormatBodyChange(e.target.checked)}
+              style={{ width: '16px', height: '16px', accentColor: '#0f172a', cursor: 'pointer' }}
+            />
+            Format multi-paragraphs &amp; &quot;- &quot; bullet lists
+          </label>
+        )}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-// DT-923 Sprint 9
+// DT-875 DT-923 Sprint 9
 // PBall
 // Form fields component for the HEADER_SYMBOL card layout in CardManager
 
@@ -11,6 +11,10 @@ export default function HeaderSymbolLayout ({
   onHeaderChange,
   headerTypography,
   onHeaderTypographyChange,
+  paragraph = '',
+  onParagraphChange,
+  paragraphTypography,
+  onParagraphTypographyChange,
   symbol,
   onSymbolChange,
   symbolOptions,
@@ -40,6 +44,29 @@ export default function HeaderSymbolLayout ({
           onChange={onHeaderTypographyChange}
         />
       </div>
+
+      {/* DT-875 Sprint 9 - PBall: Optional description / bullet items for symbol cards used in HeaderCards sections */}
+      {onParagraphChange && (
+        <div>
+          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>
+            Description / Body Text (Optional — lines starting with &quot;- &quot; render as list items)
+          </label>
+          <textarea
+            rows={3}
+            value={paragraph}
+            onChange={(e) => onParagraphChange(e.target.value)}
+            placeholder="Optional description or bullet points..."
+            style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+          />
+          {onParagraphTypographyChange && (
+            <TypographyControls
+              label="Description Typography"
+              value={paragraphTypography}
+              onChange={onParagraphTypographyChange}
+            />
+          )}
+        </div>
+      )}
 
       {/* DT-923 Sprint 9 - PBall: Symbol icon and alignment selectors */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>

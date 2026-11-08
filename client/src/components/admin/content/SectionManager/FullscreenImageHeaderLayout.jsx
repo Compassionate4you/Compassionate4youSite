@@ -14,6 +14,8 @@ export default function FullscreenImageHeaderLayout ({
   onTextChange,
   textTypography,
   onTextTypographyChange,
+  icon = '',
+  onIconChange,
   imageUrl,
   onImageUrlChange,
   imageAlt,
@@ -59,7 +61,7 @@ export default function FullscreenImageHeaderLayout ({
         />
       </div>
 
-      {/* DT-923 Sprint 9 - PBall: Fullscreen banner image and CTA button fields */}
+      {/* DT-875 DT-923 Sprint 9 - PBall: Fullscreen banner image, decorative icon, and CTA button fields */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div>
           <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image URL</label>
@@ -101,6 +103,18 @@ export default function FullscreenImageHeaderLayout ({
             style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
           />
         </div>
+        {onIconChange && (
+          <div>
+            <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Banner Icon / Emoji (Optional)</label>
+            <input
+              type="text"
+              value={icon}
+              onChange={(e) => onIconChange(e.target.value)}
+              placeholder="e.g. ❤️ or 🏡"
+              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

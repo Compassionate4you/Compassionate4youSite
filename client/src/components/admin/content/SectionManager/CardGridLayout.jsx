@@ -10,7 +10,8 @@ const GRID_COL_OPTIONS = [
   { value: '1', label: '1 Column' },
   { value: '2', label: '2 Columns' },
   { value: '3', label: '3 Columns' },
-  { value: '4', label: '4 Columns' }
+  { value: '4', label: '4 Columns' },
+  { value: '5', label: '5 Columns' }
 ]
 
 export default function CardGridLayout ({
@@ -57,7 +58,7 @@ export default function CardGridLayout ({
       {/* DT-923 Sprint 9 - PBall: CARD_GRID column count and card ordering controls */}
       <div>
         <div style={{ marginBottom: '12px' }}>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Grid Columns (1-4)</label>
+          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Grid Columns (1-5)</label>
           <CustomSelect
             value={String(gridCols)}
             onChange={(val) => onGridColsChange(Number(val))}
