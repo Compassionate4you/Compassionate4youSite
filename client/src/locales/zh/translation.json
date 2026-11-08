@@ -10,7 +10,11 @@
     "admin": "管理员",
     "logout": "退出登录",
     "dashboard": "用户面板",
-    "home": "首页"
+    "home": "欢迎",
+    "menu": "菜单",
+    "close": "关闭",
+    "morePages": "更多页面",
+    "mainNavigation": "主导航"
   },
   "landing": {
     "heroTitle": "为您所爱之人提供充满关爱的照护",
@@ -50,7 +54,18 @@
     "contactFormEmailPlaceholder": "name@example.com",
     "contactFormMessage": "留言",
     "contactFormMessagePlaceholder": "我们能为您做些什么？",
-    "contactFormButton": "发送留言"
+    "contactFormButton": "发送留言",
+    "contactFormRequiredNote": "所有字段均为必填项。",
+    "contactFormSending": "正在发送…",
+    "contactFormSuccess": "感谢您的联系，我们会尽快回复您。",
+    "contactFormError": "您的消息未能发送。请重试或致电我们的办公室。",
+    "contactFormErrors": {
+      "nameRequired": "请输入您的姓名。",
+      "emailRequired": "请输入您的电子邮箱地址。",
+      "emailInvalid": "请输入有效的电子邮箱地址。",
+      "messageRequired": "请输入消息内容。",
+      "messageTooShort": "请提供更多详细信息。"
+    }
   },
   "hospice": {
     "blurb": {
@@ -119,7 +134,9 @@
             "list2": " - 协助处理实际事务，例如寻找额外的居家帮助"
           }
         }
-      }
+      },
+      "label": "充满关怀的支持",
+      "subtitle": "认识护理团队，了解为患者及其家属提供的支持。"
     },
     "comprehensiveServices": {
       "title": "全面支持服务",
@@ -148,7 +165,9 @@
           "title": "如果出现困难情况怎么办？",
           "description": "我们理解照护者可能会面临困难的情况。全天24小时开通的电话热线可让照护者联系到安宁疗护专业护士，护士可通过电话提供建议，必要时也可上门探访。"
         }
-      }
+      },
+      "label": "每一天的支持",
+      "subtitle": "为患者及照护者提供实际、情感和精神方面的支持。"
     },
     "aboveAndBeyond": {
       "title": "卓越的照护",
@@ -166,18 +185,38 @@
     "hospiceProcess": {
       "title": "我们的照护流程",
       "cards": {
-        "card1": { "number": "1", "title": "转介", "description": "由医生、医院或家人启动流程。" },
-        "card2": { "number": "2", "title": "评估", "description": "护士或治疗师评估健康状况、能力和家庭目标。" },
-        "card3": { "number": "3", "title": "照护计划", "description": "个性化计划，包括护理、治疗和支持服务。" },
-        "card4": { "number": "4", "title": "持续支持", "description": "定期访视、远程医疗随访和照护者指导。" },
-        "card5": { "number": "5", "title": "沟通", "description": "患者、家人与照护团队之间的开放交流。" }
+        "card1": {
+          "number": "1",
+          "title": "转介",
+          "description": "由医生、医院或家人启动流程。"
+        },
+        "card2": {
+          "number": "2",
+          "title": "评估",
+          "description": "护士或治疗师评估健康状况、能力和家庭目标。"
+        },
+        "card3": {
+          "number": "3",
+          "title": "照护计划",
+          "description": "个性化计划，包括护理、治疗和支持服务。"
+        },
+        "card4": {
+          "number": "4",
+          "title": "持续支持",
+          "description": "定期访视、远程医疗随访和照护者指导。"
+        },
+        "card5": {
+          "number": "5",
+          "title": "沟通",
+          "description": "患者、家人与照护团队之间的开放交流。"
+        }
       }
     },
     "hospiceContact": {
       "title": "我们随时为您提供帮助",
       "description": "我们充满关爱的安宁疗护团队全天24小时、每周7天随时为您解答问题并提供支持。",
       "contactButton": "立即联系我们",
-      "homeButton": "返回首页"
+      "homeButton": "返回欢迎页面"
     }
   },
   "homeHealth": {
@@ -257,7 +296,7 @@
     "requiredError": "请填写所有必填的预约字段。",
     "slotTaken": "已预订",
     "submitting": "正在预订...",
-        "errors": {
+    "errors": {
       "fullName": "请输入您的全名。",
       "phone": "请输入您的电话号码。",
       "email": "请输入您的电子邮件地址。",
@@ -500,7 +539,19 @@
     "ctaTitle": "今天就开始您的居家医疗照护",
     "ctaDescription": "让我们帮助您或您的亲人在舒适的家中获得应有的优质照护。",
     "ctaSchedule": "预约就诊",
-    "ctaBack": "返回首页"
+    "ctaBack": "返回欢迎页面",
+    "servicesIntro": {
+      "label": "居家护理",
+      "subtitle": "认识为您的居家健康、独立生活和日常护理提供支持的专业人员。"
+    },
+    "advantagesIntro": {
+      "label": "更好的居家护理",
+      "subtitle": "以富有同情心的护理，改善居家和社区生活。"
+    },
+    "specialtiesIntro": {
+      "label": "满足您的护理需求",
+      "subtitle": "了解为您的治疗、康复和日常健康提供支持的专科服务。"
+    }
   },
   "faq": {
     "title": "常见问题",

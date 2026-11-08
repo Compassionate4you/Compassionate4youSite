@@ -1,0 +1,79 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
+/* DT-902: Isolated reference photo cards; no changes to banners or existing image cards. */
+.c4-photo-cards {
+  display: grid;
+  gap: clamp(32px, 4.3vw, 72px);
+  width: 100%;
+  padding: clamp(24px, 4.3vw, 72px);
+}
+
+.c4-photo-card,
+.c4-photo-card * { box-sizing: border-box; }
+
+.c4-photo-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(28px, 4vw, 64px);
+  padding: clamp(24px, 3.5vw, 64px);
+  border: 3px solid var(--color-white-text);
+  border-radius: clamp(24px, 3vw, 48px);
+  /* DT-718: Fill photo/text card interiors with theme-aware light grey. */
+  background: var(--color-light-gray);
+  color: var(--color-light-gray-text);
+  /* Physical photo placement stays consistent while the copy detects its own language direction. */
+  direction: ltr;
+}
+
+.c4-photo-card__image {
+  display: block;
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.85;
+  object-fit: cover;
+  border-radius: clamp(16px, 1.7vw, 28px);
+}
+
+.c4-photo-card__content {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  padding-block: clamp(8px, 1vw, 20px);
+  text-align: center;
+}
+
+.c4-photo-card--right .c4-photo-card__image { grid-column: 2; }
+.c4-photo-card--right .c4-photo-card__content { grid-column: 1; }
+.c4-photo-card--text-only { grid-template-columns: minmax(0, 1fr); }
+.c4-photo-card--text-only .c4-photo-card__content { grid-column: 1; }
+
+.c4-photo-card__title {
+  margin: 0 0 clamp(24px, 2.8vw, 48px);
+  color: inherit;
+  font-family: var(--font-heading, 'Crimson Text', Georgia, serif);
+  font-size: clamp(1.6rem, 2.6vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.c4-photo-card__body {
+  font-family: var(--font-body, Arial, sans-serif);
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.c4-photo-card__body p { margin: 0; }
+.c4-photo-card__body p + p { margin-top: 1.5em; }
+.c4-photo-card__body ul { text-align: start; padding-inline-start: 1.5em; }
+
+/* DT-902: Photos precede text on phones, including the reversed desktop card. */
+@media (max-width: 767px) {
+  .c4-photo-cards { gap: 24px; padding: 24px 16px; }
+  .c4-photo-card { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 20px; border-width: 2px; }
+  .c4-photo-card .c4-photo-card__image { grid-column: 1; grid-row: 1; }
+  .c4-photo-card .c4-photo-card__content { grid-column: 1; grid-row: 2; }
+  .c4-photo-card--text-only .c4-photo-card__content { grid-row: 1; }
+}

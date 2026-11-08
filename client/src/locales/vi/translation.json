@@ -10,7 +10,11 @@
     "admin": "Quản trị viên",
     "logout": "Đăng xuất",
     "dashboard": "Bảng điều khiển người dùng",
-    "home": "Trang chủ"
+    "home": "Chào mừng",
+    "menu": "Trình đơn",
+    "close": "Đóng",
+    "morePages": "Trang khác",
+    "mainNavigation": "Điều hướng chính"
   },
   "landing": {
     "heroTitle": "Chăm sóc tận tâm cho những người thân yêu của quý vị",
@@ -50,7 +54,18 @@
     "contactFormEmailPlaceholder": "email@example.com",
     "contactFormMessage": "Tin nhắn",
     "contactFormMessagePlaceholder": "Chúng tôi có thể giúp gì cho quý vị?",
-    "contactFormButton": "Gửi tin nhắn"
+    "contactFormButton": "Gửi tin nhắn",
+    "contactFormRequiredNote": "Vui lòng điền tất cả các trường.",
+    "contactFormSending": "Đang gửi…",
+    "contactFormSuccess": "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ sớm phản hồi.",
+    "contactFormError": "Không thể gửi tin nhắn. Vui lòng thử lại hoặc gọi đến văn phòng của chúng tôi.",
+    "contactFormErrors": {
+      "nameRequired": "Vui lòng nhập họ tên.",
+      "emailRequired": "Vui lòng nhập địa chỉ email.",
+      "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ.",
+      "messageRequired": "Vui lòng nhập nội dung tin nhắn.",
+      "messageTooShort": "Vui lòng cung cấp thêm một chút thông tin."
+    }
   },
   "hospice": {
     "blurb": {
@@ -119,7 +134,9 @@
             "list2": " - Hỗ trợ các vấn đề thực tế, chẳng hạn như tìm thêm sự giúp đỡ tại nhà"
           }
         }
-      }
+      },
+      "label": "Hỗ trợ tận tâm",
+      "subtitle": "Gặp gỡ đội ngũ chăm sóc và tìm hiểu sự hỗ trợ dành cho người bệnh cùng gia đình."
     },
     "comprehensiveServices": {
       "title": "Dịch vụ hỗ trợ toàn diện",
@@ -148,7 +165,9 @@
           "title": "Nếu xảy ra tình huống khó khăn thì sao?",
           "description": "Chúng tôi hiểu rằng người chăm sóc có thể gặp những tình huống khó khăn. Đường dây điện thoại hoạt động 24 giờ giúp người chăm sóc liên lạc với một y tá chuyên về chăm sóc cuối đời, người có thể tư vấn qua điện thoại hoặc đến thăm tại nhà nếu cần."
         }
-      }
+      },
+      "label": "Hỗ trợ mỗi ngày",
+      "subtitle": "Hỗ trợ thiết thực, tình cảm và tinh thần cho người bệnh và những người chăm sóc họ."
     },
     "aboveAndBeyond": {
       "title": "Sự chăm sóc vượt trên mong đợi",
@@ -166,18 +185,38 @@
     "hospiceProcess": {
       "title": "Quy trình chăm sóc của chúng tôi",
       "cards": {
-        "card1": { "number": "1", "title": "Giới thiệu", "description": "Bác sĩ, bệnh viện hoặc gia đình bắt đầu quy trình." },
-        "card2": { "number": "2", "title": "Đánh giá", "description": "Y tá hoặc chuyên viên trị liệu đánh giá sức khỏe, khả năng và mục tiêu của gia đình." },
-        "card3": { "number": "3", "title": "Kế hoạch chăm sóc", "description": "Kế hoạch cá nhân hóa bao gồm điều dưỡng, trị liệu và các dịch vụ hỗ trợ." },
-        "card4": { "number": "4", "title": "Hỗ trợ liên tục", "description": "Thăm khám định kỳ, theo dõi qua y tế từ xa và hướng dẫn cho người chăm sóc." },
-        "card5": { "number": "5", "title": "Giao tiếp", "description": "Trao đổi cởi mở giữa bệnh nhân, gia đình và đội ngũ chăm sóc." }
+        "card1": {
+          "number": "1",
+          "title": "Giới thiệu",
+          "description": "Bác sĩ, bệnh viện hoặc gia đình bắt đầu quy trình."
+        },
+        "card2": {
+          "number": "2",
+          "title": "Đánh giá",
+          "description": "Y tá hoặc chuyên viên trị liệu đánh giá sức khỏe, khả năng và mục tiêu của gia đình."
+        },
+        "card3": {
+          "number": "3",
+          "title": "Kế hoạch chăm sóc",
+          "description": "Kế hoạch cá nhân hóa bao gồm điều dưỡng, trị liệu và các dịch vụ hỗ trợ."
+        },
+        "card4": {
+          "number": "4",
+          "title": "Hỗ trợ liên tục",
+          "description": "Thăm khám định kỳ, theo dõi qua y tế từ xa và hướng dẫn cho người chăm sóc."
+        },
+        "card5": {
+          "number": "5",
+          "title": "Giao tiếp",
+          "description": "Trao đổi cởi mở giữa bệnh nhân, gia đình và đội ngũ chăm sóc."
+        }
       }
     },
     "hospiceContact": {
       "title": "Chúng tôi luôn sẵn sàng giúp đỡ",
       "description": "Đội ngũ chăm sóc cuối đời tận tâm của chúng tôi luôn sẵn sàng 24 giờ một ngày, 7 ngày một tuần để giải đáp thắc mắc và hỗ trợ quý vị.",
       "contactButton": "Liên hệ với chúng tôi ngay hôm nay",
-      "homeButton": "Về trang chủ"
+      "homeButton": "Quay lại trang Chào mừng"
     }
   },
   "homeHealth": {
@@ -257,7 +296,7 @@
     "requiredError": "Vui lòng điền đầy đủ các trường bắt buộc của lịch hẹn.",
     "slotTaken": "đã đặt",
     "submitting": "Đang đặt lịch...",
-        "errors": {
+    "errors": {
       "fullName": "Vui lòng nhập họ và tên.",
       "phone": "Vui lòng nhập số điện thoại.",
       "email": "Vui lòng nhập địa chỉ email.",
@@ -500,7 +539,19 @@
     "ctaTitle": "Bắt đầu chăm sóc sức khỏe tại nhà ngay hôm nay",
     "ctaDescription": "Hãy để chúng tôi giúp quý vị hoặc người thân nhận được sự chăm sóc chất lượng xứng đáng ngay trong ngôi nhà thoải mái của mình.",
     "ctaSchedule": "Đặt lịch hẹn",
-    "ctaBack": "Về trang chủ"
+    "ctaBack": "Quay lại trang Chào mừng",
+    "servicesIntro": {
+      "label": "Chăm sóc tại nhà",
+      "subtitle": "Gặp gỡ các chuyên gia hỗ trợ sức khỏe, khả năng tự lập và việc chăm sóc hằng ngày của bạn tại nhà."
+    },
+    "advantagesIntro": {
+      "label": "Chăm sóc tại nhà tốt hơn",
+      "subtitle": "Sự chăm sóc tận tâm giúp cải thiện cuộc sống tại nhà và trong cộng đồng."
+    },
+    "specialtiesIntro": {
+      "label": "Chăm sóc theo nhu cầu",
+      "subtitle": "Tìm hiểu các dịch vụ chuyên biệt hỗ trợ điều trị, phục hồi và sức khỏe hằng ngày của bạn."
+    }
   },
   "faq": {
     "title": "Câu hỏi thường gặp",

@@ -1,3 +1,4 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
 /*
 DT-622 Sprint 8
 Preston Ball
@@ -42,11 +43,11 @@ Modular Account Benefits section layout stylesheet
   align-items: flex-start;
   gap: 1.25rem;
   padding: 1.25rem 1.5rem;
-  background: var(--card-bg, #ffffff);
-  color: var(--section-text, #1e293b);
-  border: 1px solid var(--color-divider, #e2e8f0);
+  background: var(--card-bg, var(--color-white));
+  color: var(--section-text, var(--color-white-text));
+  border: 1px solid var(--color-divider);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-black) 5%, transparent);
 }
 
 .account-benefits-section__bullet {
@@ -57,8 +58,8 @@ Modular Account Benefits section layout stylesheet
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--section-accent, #366454);
-  color: #ffffff;
+  background: var(--section-accent, var(--color-primary));
+  color: var(--color-primary-text);
 }
 
 .account-benefits-section__text {
@@ -70,12 +71,12 @@ Modular Account Benefits section layout stylesheet
   font-family: var(--font-heading, inherit);
   font-size: 1.15rem;
   font-weight: 600;
-  color: var(--section-header, #0f172a);
+  color: var(--section-header, var(--color-white-text));
 }
 
 .account-benefits-section__description {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--section-text, #64748b);
+  color: var(--section-text, var(--color-muted-text));
   line-height: 1.6;
 }

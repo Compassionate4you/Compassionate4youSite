@@ -1,5 +1,7 @@
 import SectionHeading, { useSectionTitleId } from './SectionHeading'
-import '../../../styles/section-layouts.css'
+// DT-902: Load the shared foundation and this layout's styles.
+import '../../../styles/components/modular/sections/SectionShared.css'
+import '../../../styles/components/modular/sections/TimelineSection.css'
 
 /** Items: { id, title, description }[]. Numbering always follows array order. */
 export default function TimelineSection ({ title, subtitle, label, items = [] }) {
