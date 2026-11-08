@@ -2,7 +2,7 @@
   "nav": {
     "welcome": "Welcome",
     "homeHealth": "Home Health",
-    "hospice": "Hospice",
+    "hospice": "Hospice Care",
     "locations": "Locations",
     "schedule": "Schedule",
     "login": "Login",
@@ -10,7 +10,11 @@
     "admin": "Admin",
     "logout": "Logout",
     "dashboard": "User Dashboard",
-    "home": "Home"
+    "home": "Welcome",
+    "menu": "Menu",
+    "close": "Close",
+    "morePages": "More pages",
+    "mainNavigation": "Main navigation"
   },
   "landing": {
     "heroTitle": "Compassionate Care for Your Loved Ones",
@@ -153,7 +157,9 @@
             "list2": " - assisting with practical matters, such as finding additional help in the home"
           }
         }
-      }
+      },
+      "label": "Compassionate support",
+      "subtitle": "Meet the care team and explore the support available to patients and their families."
     },
     "comprehensiveServices": {
       "title": "Comprehensive Support Services",
@@ -182,7 +188,9 @@
           "title": "What if a difficult situation arises?",
           "description": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
         }
-      }
+      },
+      "label": "Support for every day",
+      "subtitle": "Practical, emotional, and spiritual support for patients and the people who care for them."
     },
     "aboveAndBeyond": {
       "title": "Above and Beyond Care",
@@ -231,7 +239,7 @@
       "title": "We're Here to Help",
       "description": "Our compassionate hospice team is available 24/7 to answer your questions and provide support.",
       "contactButton": "Contact Us Today",
-      "homeButton": "Back to Home"
+      "homeButton": "Back to Welcome"
     }
   },
   "locations": {
@@ -246,8 +254,8 @@
   },
   "portal": {
     "title": "Customer Portal",
-    "welcome": "Welcome, John Doe",
-    "welcomeBanner": "Welcome back, John Doe!",
+    "welcome": "Welcome, {{name}}",
+    "welcomeBanner": "Welcome back, {{name}}!",
     "welcomeSubtitle": "Manage your appointments and health care information",
     "scheduleCard": "Schedule Appointment",
     "scheduleCardDesc": "Book a new home health or hospice appointment",
@@ -656,7 +664,19 @@
     "ctaTitle": "Start Your Home Health Care Today",
     "ctaDescription": "Let us help you or your loved one receive the quality care you deserve in the comfort of your home.",
     "ctaSchedule": "Schedule Appointment",
-    "ctaBack": "Back to Home"
+    "ctaBack": "Back to Welcome",
+    "servicesIntro": {
+      "label": "Care at home",
+      "subtitle": "Meet the professionals who support your health, independence, and daily care at home."
+    },
+    "advantagesIntro": {
+      "label": "Better care at home",
+      "subtitle": "Compassionate care that improves lives—at home and in the community."
+    },
+    "specialtiesIntro": {
+      "label": "Care for your needs",
+      "subtitle": "Explore specialized services that support your treatment, recovery, and everyday well-being."
+    }
   },
   "faq": {
     "title": "Frequently asked questions",

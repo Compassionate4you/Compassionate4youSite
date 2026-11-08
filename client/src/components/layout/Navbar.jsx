@@ -7,13 +7,17 @@ import './styles/NavBar.css'
 import logo from '../../assets/images/CompassionateLogo.jpeg'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { getContentPageLabel, isWelcomePage } from '../../services/contentPageLabels'
 import { PageStorageService } from '../../services/pageStorageService'
 import { useAuth } from '../../context/AuthContext'
 
+// DT-902: Translate public page labels and show one Welcome link for legacy aliases.
 function Navbar () {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
-  const { logout } = useAuth()
+  const { logout, user, isAuthenticated } = useAuth() //Gets the user DT-826
+
+  // DT-848: get the real signed-in state from AuthContext
   // DT-37: re render Navbar on route change so login check stays updated
   const location = useLocation()
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -92,12 +96,14 @@ function Navbar () {
   if (isAdminPage) {
     return null
   }
+  // DT-848: Use AuthContext instead of localStorage, so nav stays correct after refresh
+  const isLoggedIn = isAuthenticated
+  // DT-755: each role sees only its own dashboard link.
+  const dashboardPath = user?.role === 'admin' ? '/admin' : '/portal'
+  const dashboardLabel = user?.role === 'admin' ? t('nav.admin') : t('nav.dashboard')
 
-  // Check if user is logged in
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
   // Log user out and send them back to login
   function handleLogout () {
-    localStorage.removeItem('isLoggedIn')
     setDropdownOpen(false)
     setMobileMenuOpen(false)
     navigate('/login')
@@ -111,7 +117,8 @@ function Navbar () {
       const orderB = typeof b.content?.order === 'number' ? b.content.order : 999
       return orderA - orderB
     })
-    .filter((p) => p.id !== 'landing')
+    // DT-902: Keep one Welcome link even when multiple legacy alias records coexist.
+    .filter((page, index, all) => !isWelcomePage(page.id) || all.findIndex(item => isWelcomePage(item.id)) === index)
 
   // DT-625 Sprint 8 - Preston Ball: Calculate responsive thresholds
   const isMobile = viewportWidth < 720
@@ -127,20 +134,23 @@ function Navbar () {
   const overflowPages = contentPages.slice(maxVisibleContentPages)
   const showDropdown = !isMobile && (overflowPages.length > 0 || collapseSecondaryToDropdown)
 
+  // DT-902: Welcome links use the canonical path; aliases remain compatible.
   function getPageRoute (pageId) {
+    if (isWelcomePage(pageId)) return '/welcome'
     if (pageId === 'homeHealth') return '/home-health'
     if (pageId === 'hospice') return '/hospice'
     // DT-622 Sprint 8 - Preston Ball: Temporary /content/:pageId routing scheme for dynamic pages
     return `/${pageId}`
   }
 
-  const navAriaLabel = i18n.language.startsWith('es')
-    ? 'Navegación principal'
-    : i18n.language.startsWith('ur')
-      ? 'مرکزی نیویگیشن'
-      : i18n.language.startsWith('pa')
-        ? 'ਮੁੱਖ ਨੈਵੀਗੇਸ਼ਨ'
-        : 'Main navigation'
+  // DT-902: Keep Welcome highlighted on every compatible legacy URL.
+  function isPageCurrent (pageId, route) {
+    return isWelcomePage(pageId)
+      ? ['/', '/welcome', '/home', '/landing'].includes(location.pathname)
+      : location.pathname === route || location.pathname === `/${pageId}`
+  }
+
+  const navAriaLabel = t('nav.mainNavigation')
 
   return (
     <nav className="navbar" ref={navRef} aria-label={navAriaLabel}>
@@ -184,7 +194,7 @@ function Navbar () {
               </li> */}
               {contentPages.map((page) => {
                 const route = getPageRoute(page.id)
-                const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
+                const isCurrent = isPageCurrent(page.id, route)
                 return (
                   <li key={page.id} role="none">
                     <Link
@@ -193,7 +203,7 @@ function Navbar () {
                       aria-current={isCurrent ? 'page' : undefined}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {page.content?.title || page.id}
+                      {getContentPageLabel(page, t)}
                     </Link>
                   </li>
                 )
@@ -212,12 +222,12 @@ function Navbar () {
                 <>
                   <li role="none">
                     <Link
-                      to="/portal"
+                      to={dashboardPath}
                       role="menuitem"
-                      aria-current={location.pathname === '/portal' ? 'page' : undefined}
+                      aria-current={location.pathname === dashboardPath ? 'page' : undefined}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {t('nav.dashboard')}
+                      {dashboardLabel}
                     </Link>
                   </li>
                   <li role="none">
@@ -257,11 +267,11 @@ function Navbar () {
           {/* DT-622 DT-625 Sprint 8 - Preston Ball: Dynamically display visible content pages */}
           {visiblePages.map((page) => {
             const route = getPageRoute(page.id)
-            const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
+            const isCurrent = isPageCurrent(page.id, route)
             return (
               <li key={page.id}>
                 <Link to={route} aria-current={isCurrent ? 'page' : undefined}>
-                  {page.content?.title || page.id}
+                  {getContentPageLabel(page, t)}
                 </Link>
               </li>
             )
@@ -279,8 +289,8 @@ function Navbar () {
             isLoggedIn ? (
               <>
                 <li>
-                  <Link to="/portal" aria-current={location.pathname === '/portal' ? 'page' : undefined}>
-                    {t('nav.dashboard')}
+                  <Link to={dashboardPath} aria-current={location.pathname === dashboardPath ? 'page' : undefined}>
+                    {dashboardLabel}
                   </Link>
                 </li>
                 <li>
@@ -315,7 +325,7 @@ function Navbar () {
                 <ul className="nav-dropdown-menu" role="menu">
                   {overflowPages.map((page) => {
                     const route = getPageRoute(page.id)
-                    const isCurrent = location.pathname === route || location.pathname === `/${page.id}`
+                    const isCurrent = isPageCurrent(page.id, route)
                     return (
                       <li key={page.id} className="nav-dropdown-item" role="none">
                         <Link
@@ -324,7 +334,7 @@ function Navbar () {
                           aria-current={isCurrent ? 'page' : undefined}
                           onClick={() => setDropdownOpen(false)}
                         >
-                          {page.content?.title || page.id}
+                          {getContentPageLabel(page, t)}
                         </Link>
                       </li>
                     )
@@ -334,12 +344,12 @@ function Navbar () {
                       <>
                         <li className="nav-dropdown-item" role="none">
                           <Link
-                            to="/portal"
+                            to={dashboardPath}
                             role="menuitem"
-                            aria-current={location.pathname === '/portal' ? 'page' : undefined}
+                           aria-current={location.pathname === dashboardPath ? 'page' : undefined}
                             onClick={() => setDropdownOpen(false)}
                           >
-                            {t('nav.dashboard')}
+                            {dashboardLabel}
                           </Link>
                         </li>
                         <li className="nav-dropdown-item" role="none">

@@ -10,7 +10,11 @@
     "admin": "منتظم",
     "logout": "لاگ آؤٹ",
     "dashboard": "صارف کا ڈیش بورڈ",
-    "home": "ہوم"
+    "home": "خوش آمدید",
+    "menu": "مینو",
+    "close": "بند کریں",
+    "morePages": "مزید صفحات",
+    "mainNavigation": "مرکزی نیویگیشن"
   },
   "landing": {
     "heroTitle": "آپ کے پیاروں کے لیے ہمدردانہ نگہداشت",
@@ -50,29 +54,40 @@
     "contactFormEmailPlaceholder": "your.email@example.com",
     "contactFormMessage": "پیغام",
     "contactFormMessagePlaceholder": "ہم آپ کی کیا مدد کر سکتے ہیں؟",
-    "contactFormButton": "پیغام بھیجیں"
+    "contactFormButton": "پیغام بھیجیں",
+    "contactFormRequiredNote": "تمام خانے پُر کرنا ضروری ہیں۔",
+    "contactFormSending": "بھیجا جا رہا ہے…",
+    "contactFormSuccess": "رابطہ کرنے کا شکریہ۔ ہم جلد آپ سے رابطہ کریں گے۔",
+    "contactFormError": "آپ کا پیغام بھیجا نہیں جا سکا۔ براہِ کرم دوبارہ کوشش کریں یا ہمارے دفتر کو فون کریں۔",
+    "contactFormErrors": {
+      "nameRequired": "براہِ کرم اپنا نام درج کریں۔",
+      "emailRequired": "براہِ کرم اپنا ای میل پتہ درج کریں۔",
+      "emailInvalid": "براہِ کرم درست ای میل پتہ درج کریں۔",
+      "messageRequired": "براہِ کرم پیغام درج کریں۔",
+      "messageTooShort": "براہِ کرم ہمیں کچھ مزید تفصیل بتائیں۔"
+    }
   },
   "homeHealth": {
     "title": "گھریلو صحت کی خدمات",
     "subtitle": "آپ کے گھر کے آرام اور حفاظت میں فراہم کی جانے والی پیشہ ورانہ صحت کی خدمات، جو خودمختاری اور معیارِ زندگی کو بہتر بناتی ہیں۔",
     "servicesHeading": "ہماری گھریلو صحت کی خدمات",
     "services": {
-      "doctors": "Medical Doctors",
-      "doctorsDesc": "Our MDs develop and review care plans, manage symptoms, and act as a medical resource.",
-      "pt": "Physical Therapists (PT & PTA)",
-      "ptDesc": "Help patients maintain mobility, manage pain, and improve quality of life.",
-      "ot": "Occupational Therapists (OT)",
-      "otDesc": "Assist patients in maintaining independence in daily activities.",
-      "nurses": "Skilled Nurses (RN, LVN)",
-      "nursesDesc": "Collaborate with physicians and provide medical care at home.",
-      "st": "Speech Therapists (ST)",
-      "stDesc": "Help patients improve communication, swallowing, and cognitive function.",
-      "chha": "Certified Home Health Aide (CHHA)",
-      "chhaDesc": "Assist with daily activities like bathing, dressing, and meal prep.",
-      "msw": "Medical Social Workers (MSW)",
-      "mswDesc": "Provide emotional support and connect patients with community resources.",
-      "multilingual": "Multi-Lingual",
-      "multilingualDesc": "Services available in multiple languages to support diverse patient needs."
+      "doctors": "طبی ڈاکٹر",
+      "doctorsDesc": "ہمارے ڈاکٹر نگہداشت کے منصوبے بناتے اور ان کا جائزہ لیتے ہیں، علامات کو سنبھالتے ہیں اور طبی رہنمائی فراہم کرتے ہیں۔",
+      "pt": "فزیکل تھراپسٹ (PT اور PTA)",
+      "ptDesc": "مریضوں کی حرکت برقرار رکھنے، درد کو سنبھالنے اور معیارِ زندگی بہتر بنانے میں مدد کرتے ہیں۔",
+      "ot": "آکوپیشنل تھراپسٹ (OT)",
+      "otDesc": "روزمرہ سرگرمیوں میں خودمختاری برقرار رکھنے میں مریضوں کی مدد کرتے ہیں۔",
+      "nurses": "تربیت یافتہ نرسیں (RN، LVN)",
+      "nursesDesc": "ڈاکٹروں کے ساتھ مل کر گھر پر طبی نگہداشت فراہم کرتی ہیں۔",
+      "st": "اسپیچ تھراپسٹ (ST)",
+      "stDesc": "مریضوں کی گفتگو، نگلنے اور ذہنی صلاحیتوں کو بہتر بنانے میں مدد کرتے ہیں۔",
+      "chha": "تصدیق شدہ گھریلو صحت معاون (CHHA)",
+      "chhaDesc": "نہانے، لباس پہننے اور کھانا تیار کرنے جیسی روزمرہ سرگرمیوں میں مدد کرتے ہیں۔",
+      "msw": "طبی سماجی کارکن (MSW)",
+      "mswDesc": "جذباتی سہارا دیتے ہیں اور مریضوں کو کمیونٹی کے وسائل سے جوڑتے ہیں۔",
+      "multilingual": "متعدد زبانوں میں خدمات",
+      "multilingualDesc": "مریضوں کی مختلف ضروریات پوری کرنے کے لیے متعدد زبانوں میں خدمات دستیاب ہیں۔"
     }
   },
   "hospice": {
@@ -85,24 +100,24 @@
       "title": "ہاسپس کیئر کو سمجھنا",
       "cards": {
         "card1": {
-          "title": "What is Hospice",
-          "description": "Hospice care focuses on providing comfort, quality of life, and support for people nearing the end of life, rather than curing the illness. It is provided by a team of professionals who manage pain and other symptoms, and address emotional, physical, spiritual, and social needs of both the patient and their family through passion. Hospice care can be provided in a person's home, a dedicated hospice facility, and the goal is to help the person live their remaining time with dignity and as peacefully as possible."
+          "title": "ہاسپِس کیا ہے",
+          "description": "ہاسپِس نگہداشت بیماری کو ٹھیک کرنے کے بجائے زندگی کے آخری مرحلے کے قریب افراد کو آرام، بہتر معیارِ زندگی اور سہارا دینے پر توجہ دیتی ہے۔ ماہرین کی ایک ٹیم درد اور دیگر علامات کو سنبھالتی ہے اور مریض اور ان کے اہلِ خانہ کی جذباتی، جسمانی، روحانی اور سماجی ضروریات ہمدردی سے پوری کرتی ہے۔ یہ نگہداشت گھر یا مخصوص ہاسپِس مرکز میں فراہم کی جا سکتی ہے۔ مقصد یہ ہے کہ مریض اپنا باقی وقت وقار اور زیادہ سے زیادہ سکون کے ساتھ گزار سکے۔"
         },
         "card2": {
-          "title": "Who is eligible",
-          "description": "No matter your faith or beliefs, you and your family can receive spiritual and emotional support from our care team."
+          "title": "کون اہل ہے",
+          "description": "آپ کے مذہب یا عقائد سے قطع نظر، آپ اور آپ کے اہلِ خانہ ہماری نگہداشت کی ٹیم سے روحانی اور جذباتی سہارا حاصل کر سکتے ہیں۔"
         },
         "card3": {
-          "title": "How is hospice different?",
-          "description": "Our team provides a compassionate environment for patients and families, so they can feel supported and understood during end-of-life care"
+          "title": "ہاسپِس کیسے مختلف ہے؟",
+          "description": "ہماری ٹیم مریضوں اور اہلِ خانہ کے لیے ہمدردی کا ماحول فراہم کرتی ہے تاکہ زندگی کے آخری مرحلے کی نگہداشت میں انہیں سہارا اور سمجھ بوجھ کا احساس ہو۔"
         },
         "card4": {
-          "title": "Why might I choose?",
-          "description": "Our hospice team provides emotional and spiritual support to families as they navigate end-of-life care."
+          "title": "میں ہاسپِس کا انتخاب کیوں کروں؟",
+          "description": "ہماری ہاسپِس ٹیم زندگی کے آخری مرحلے کی نگہداشت سے گزرنے والے خاندانوں کو جذباتی اور روحانی سہارا فراہم کرتی ہے۔"
         },
         "card5": {
-          "title": "Who provides the care?",
-          "description": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
+          "title": "نگہداشت کون فراہم کرتا ہے؟",
+          "description": "ہماری خدمت کی بنیاد اعلیٰ مہارت اور تربیت یافتہ ماہرین کی ٹیم ہے جو ہر فرد کی منفرد ضروریات کے مطابق ہمدردانہ اور ذاتی نگہداشت فراہم کرتی ہے۔ جامع نگہداشت اور خاندان کی مدد کے لیے ٹیم میں ڈاکٹر، نرسیں، سماجی کارکن، روحانی مشیر اور ہاسپِس معاون شامل ہیں۔ مریض کی مخصوص ضروریات اور ہاسپِس فراہم کنندہ کی ہدایات کے مطابق فزیکل، آکوپیشنل اور اسپیچ تھراپسٹ، رضاکار اور سوگ کے ماہرین بھی شامل ہو سکتے ہیں۔"
         }
       }
     },
@@ -110,80 +125,84 @@
       "title": "ہاسپس کیئر ٹیم اور فوائد",
       "cards": {
         "card1": {
-          "title": "What does hospice provide?",
-          "description": "Hospice offers care from a team of different types of practioners who work together to meet the medical, psychological and spiritual needs of you and your family."
+          "title": "ہاسپِس کیا فراہم کرتا ہے؟",
+          "description": "ہاسپِس مختلف شعبوں کے ماہرین کی ٹیم کے ذریعے نگہداشت فراہم کرتا ہے۔ یہ ماہرین مل کر آپ اور آپ کے اہلِ خانہ کی طبی، نفسیاتی اور روحانی ضروریات پوری کرتے ہیں۔"
         },
         "card2": {
-          "title": "Hours avail when in hospice care...",
-          "description": "Hospice provides you a phone number to call 24 hours a day, 7 days a week, to help answer any questions you may have."
+          "title": "ہاسپِس نگہداشت میں رابطے کے اوقات",
+          "description": "ہاسپِس آپ کو ایک فون نمبر فراہم کرتا ہے جس پر آپ اپنے سوالات کے جواب حاصل کرنے کے لیے دن کے 24 گھنٹے، ہفتے کے ساتوں دن رابطہ کر سکتے ہیں۔"
         },
         "card3": {
-          "title": "What other benefits do patients have when they are under hospicecare",
+          "title": "ہاسپِس نگہداشت میں مریضوں کو مزید کون سے فوائد ملتے ہیں؟",
           "description": {
-            "top": "Once you are admitted into the Hospice Program, you will be provided with:",
-            "list1": " - medical appliances",
-            "list2": " - medical supplies",
-            "list3": " - medications for symptoms and pain relief"
+            "top": "ہاسپِس پروگرام میں داخل ہونے کے بعد آپ کو فراہم کیا جائے گا:",
+            "list1": " - طبی آلات",
+            "list2": " - طبی سامان",
+            "list3": " - علامات اور درد میں آرام کی ادویات"
           }
         },
         "card4": {
-          "title": "Physician",
-          "description": "Your personal physician continues to provide your care while you're in the Hospice Program. A hospice physician works closely with your personal physician and can consult with you."
+          "title": "ڈاکٹر",
+          "description": "ہاسپِس پروگرام کے دوران آپ کے ذاتی ڈاکٹر آپ کی نگہداشت جاری رکھتے ہیں۔ ہاسپِس کے ڈاکٹر آپ کے ذاتی ڈاکٹر کے ساتھ قریبی تعاون کرتے ہیں اور آپ کو مشورہ بھی دے سکتے ہیں۔"
         },
         "card5": {
-          "title": "Nurse",
-          "description": "A nurse visits during the week to instruct your caregiver and to coordinate your care. A nurse informs the hospice physician of your condition on a regular basis."
+          "title": "نرس",
+          "description": "ہفتے کے دوران نرس آپ کی نگہداشت کرنے والے فرد کو ہدایات دینے اور نگہداشت میں ہم آہنگی کے لیے آتی ہے۔ نرس باقاعدگی سے ہاسپِس کے ڈاکٹر کو آپ کی حالت سے آگاہ کرتی ہے۔"
         },
         "card6": {
-          "title": "Social worker",
+          "title": "سماجی کارکن",
           "description": {
-            "top": " - A social worker helps you and your caregiver by:",
-            "list1": " - offering emotional support",
-            "list2": " - assisting with practical matters, such as finding additional help in the home"
+            "top": "سماجی کارکن آپ اور آپ کی نگہداشت کرنے والے فرد کی مدد کرتا ہے:",
+            "list1": " - جذباتی سہارا فراہم کرکے",
+            "list2": " - عملی معاملات میں مدد کرکے، مثلاً گھر میں اضافی مدد تلاش کرنا"
           }
         }
-      }
+      },
+      "label": "ہمدردانہ تعاون",
+      "subtitle": "نگہداشت کی ٹیم سے ملیں اور مریضوں اور ان کے اہلِ خانہ کے لیے دستیاب مدد کے بارے میں جانیں۔"
     },
     "comprehensiveServices": {
       "title": "جامع معاون خدمات",
       "cards": {
         "card1": {
-          "title": "Hospiceaide/homemaker services",
-          "description": "A hospice aide visits during the week as needed to help you and your caregiver with personal care such as changing linens, giving you a bath and helping you get dressed."
+          "title": "ہاسپِس معاون اور گھریلو مدد کی خدمات",
+          "description": "ضرورت کے مطابق ہفتے کے دوران ہاسپِس معاون آتا ہے اور بستر کی چادریں بدلنے، نہلانے اور لباس پہنانے جیسی ذاتی نگہداشت میں آپ اور آپ کی نگہداشت کرنے والے فرد کی مدد کرتا ہے۔"
         },
         "card2": {
-          "title": "Chaplain",
-          "description": "A chaplain is a minister or counselor dedicated to meeting the spiritual needs of you and your family, no matter your religion. You and your family can ask for the chaplain anytime."
+          "title": "روحانی مشیر",
+          "description": "روحانی مشیر ایک مذہبی رہنما یا مشاورت فراہم کرنے والا فرد ہے جو مذہب سے قطع نظر آپ اور آپ کے اہلِ خانہ کی روحانی ضروریات پوری کرنے کے لیے موجود ہے۔ آپ اور آپ کے اہلِ خانہ کسی بھی وقت ان کی مدد مانگ سکتے ہیں۔"
         },
         "card3": {
-          "title": "Volunteer",
-          "description": "A volunteer is someone from the community who has been trained by our Hospice Program to help you and your family. Volunteers provide services under the direction of a hospice staff member."
+          "title": "رضاکار",
+          "description": "رضاکار کمیونٹی کا وہ فرد ہے جسے ہمارے ہاسپِس پروگرام نے آپ اور آپ کے اہلِ خانہ کی مدد کی تربیت دی ہے۔ رضاکار ہاسپِس عملے کے ایک رکن کی نگرانی میں خدمات فراہم کرتے ہیں۔"
         },
         "card4": {
-          "title": "What about medical appointments?",
-          "description": "Your personal physician is in charge of your care, even after you're admitted to our Hospice Program. A hospice physician will work with your personal physician to provide the care your need."
+          "title": "طبی ملاقاتوں کا کیا ہوگا؟",
+          "description": "ہاسپِس پروگرام میں داخل ہونے کے بعد بھی آپ کی نگہداشت کی ذمہ داری آپ کے ذاتی ڈاکٹر کے پاس رہتی ہے۔ ہاسپِس کا ڈاکٹر ضروری نگہداشت فراہم کرنے کے لیے آپ کے ذاتی ڈاکٹر کے ساتھ کام کرے گا۔"
         },
         "card5": {
-          "title": "What kind of help might I need?",
-          "description": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
+          "title": "مجھے کس قسم کی مدد کی ضرورت ہو سکتی ہے؟",
+          "description": "کسی مرحلے پر آپ بستر تک محدود ہو سکتے ہیں اور مدد کے بغیر کروٹ بدلنے یا کھانے کے قابل نہ رہیں۔ آپ کی نگہداشت کرنے والے فرد کو ڈائپر اور چادریں بدلنے اور بستر کے زخموں سے بچانے کے لیے جلد کی دیکھ بھال کرنے کی ضرورت پڑ سکتی ہے۔ ہاسپِس نرسیں یہ کام کرنے کی تربیت دیں گی۔"
         },
         "card6": {
-          "title": "What if a difficult situation arises?",
-          "description": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
+          "title": "اگر کوئی مشکل صورتِ حال پیدا ہو جائے تو کیا ہوگا؟",
+          "description": "ہم سمجھتے ہیں کہ نگہداشت کرنے والوں کو مشکل حالات کا سامنا ہو سکتا ہے۔ 24 گھنٹے دستیاب فون لائن انہیں ہاسپِس کی تربیت یافتہ نرس سے ملاتی ہے، جو فون پر مشورہ دے سکتی ہے یا ضرورت پڑنے پر گھر آ سکتی ہے۔"
         }
-      }
+      },
+      "label": "ہر دن کے لیے مدد",
+      "subtitle": "مریضوں اور ان کی نگہداشت کرنے والوں کے لیے عملی، جذباتی اور روحانی مدد۔"
     },
     "aboveAndBeyond": {
       "title": "معمول سے بڑھ کر نگہداشت",
-      "description": "We understand that hospice care affects the entire family. Our approach goes beyond medical care to provide emotional, spiritual, and practical support for everyone involved. From the initial consultation through bereavement, we walk alongside you with understanding and care.",
+      "description": "ہم سمجھتے ہیں کہ ہاسپِس نگہداشت پورے خاندان کو متاثر کرتی ہے۔ ہمارا طریقہ طبی نگہداشت سے آگے بڑھ کر تمام متعلقہ افراد کو جذباتی، روحانی اور عملی سہارا دیتا ہے۔ ابتدائی مشاورت سے لے کر سوگ کے مرحلے تک ہم سمجھ بوجھ اور ہمدردی کے ساتھ آپ کے ساتھ رہتے ہیں۔",
       "cards": {
-        "card1": "Pain and Symptom Control",
-        "card2": "Emotional and Spiritual Support",
-        "card3": "Caregiver Guidance",
-        "card4": "Volunteer & Companionship Services",
-        "card5": "Chaplain",
-        "card6": "Grief & Bereavement Support",
-        "card7": "Hospice Aide Services"
+        "card1": "درد اور علامات کا انتظام",
+        "card2": "جذباتی اور روحانی سہارا",
+        "card3": "نگہداشت کرنے والوں کی رہنمائی",
+        "card4": "رضاکارانہ اور رفاقت کی خدمات",
+        "card5": "روحانی مشیر",
+        "card6": "غم اور سوگ میں مدد",
+        "card7": "ہاسپِس معاون کی خدمات"
       }
     },
     "hospiceProcess": {
@@ -191,36 +210,36 @@
       "cards": {
         "card1": {
           "number": "1",
-          "title": "Referral",
-          "description": "Doctor, Hospital, or family starts the process."
+          "title": "حوالہ",
+          "description": "ڈاکٹر، ہسپتال یا اہلِ خانہ اس عمل کا آغاز کرتے ہیں۔"
         },
         "card2": {
           "number": "2",
-          "title": "Assessment",
-          "description": "Nurse or therapist evaluates health, abilities, and family goals."
+          "title": "جائزہ",
+          "description": "نرس یا تھراپسٹ صحت، صلاحیتوں اور خاندان کے اہداف کا جائزہ لیتے ہیں۔"
         },
         "card3": {
           "number": "3",
-          "title": "Care Plan",
-          "description": "Customized plan including nursing, therapy, and supporting services."
+          "title": "نگہداشت کا منصوبہ",
+          "description": "نرسنگ، تھراپی اور معاون خدمات پر مشتمل ذاتی منصوبہ۔"
         },
         "card4": {
           "number": "4",
-          "title": "Ongoing Support",
-          "description": "Regular visits, telehealth check-ins, and caregiver guidance."
+          "title": "مسلسل مدد",
+          "description": "باقاعدہ دورے، ٹیلی ہیلتھ کے ذریعے رابطے اور نگہداشت کرنے والوں کی رہنمائی۔"
         },
         "card5": {
           "number": "5",
-          "title": "Communication",
-          "description": "Open dialogue between patient, family, and care team."
+          "title": "رابطہ",
+          "description": "مریض، خاندان اور نگہداشت کی ٹیم کے درمیان کھلی بات چیت۔"
         }
       }
     },
     "hospiceContact": {
       "title": "ہم مدد کے لیے موجود ہیں",
-      "description": "Our compassionate hospice team is available 24/7 to answer your questions and provide support.",
+      "description": "ہماری ہمدرد ہاسپِس ٹیم آپ کے سوالات کے جواب دینے اور مدد فراہم کرنے کے لیے ہر وقت، ہفتے کے ساتوں دن دستیاب ہے۔",
       "contactButton": "آج ہی رابطہ کریں",
-      "homeButton": "ہوم پر واپس جائیں"
+      "homeButton": "خوش آمدید صفحے پر واپس جائیں"
     }
   },
   "locations": {
@@ -235,8 +254,8 @@
   },
   "portal": {
     "title": "کسٹمر پورٹل",
-    "welcome": "خوش آمدید، جان ڈو",
-    "welcomeBanner": "واپس خوش آمدید، جان ڈو!",
+    "welcome": "خوش آمدید، {{name}}",
+    "welcomeBanner": "واپس خوش آمدید، {{name}}!",
     "welcomeSubtitle": "اپنی ملاقاتوں اور صحت کی معلومات کا انتظام کریں",
     "scheduleCard": "ملاقات کا وقت مقرر کریں",
     "scheduleCardDesc": "گھریلو صحت یا ہاسپس کی نئی ملاقات بک کریں",
@@ -477,5 +496,72 @@
       "required": "براہِ کرم تمام خانے پُر کریں۔",
       "passwordMismatch": "پاس ورڈ ایک جیسے نہیں ہیں۔"
     }
+  },
+  "homeHealthPage": {
+    "scheduleConsultation": "مشاورت کا وقت طے کریں",
+    "advantagesTitle": "گھر پر صحت کی دیکھ بھال کے فوائد",
+    "advantages": [
+      "ہم تنخواہوں، ٹیکسوں اور معاوضے سے متعلق آجر کی تمام ذمہ داریاں سنبھالتے ہیں",
+      "ہسپتال میں داخلے کے مقابلے میں زیادہ کم خرچ",
+      "مریضوں کی صحت میں تیز تر بہتری",
+      "مریضوں کو اپنی نگہداشت کے منصوبے میں حصہ لینے کا حق حاصل ہے",
+      "خدمات مریض کی رہائش گاہ پر فراہم کی جاتی ہیں",
+      "ہسپتال سے لگنے والے انفیکشن سے بچاؤ",
+      "نگہداشت کی منتقلی، گرنے سے بچاؤ اور طبی آلات کی تربیت"
+    ],
+    "specialtyTitle": "خصوصی خدمات",
+    "specialties": [
+      "دل کی احتقانی ناکامی (CHF)",
+      "دائمی رکاوٹی پھیپھڑوں کی بیماری (COPD)",
+      "ہڈیوں کی سرجری کے بعد تھراپی (جوڑ کی تبدیلی)",
+      "زخم کی دیکھ بھال",
+      "وریدی (I.V.) انفیوژن",
+      "فزیکل، آکوپیشنل اور اسپیچ تھراپی",
+      "ادویات کا انتظام",
+      "کیتھیٹر کی دیکھ بھال",
+      "غذا، ورزش اور غذائیت کی تعلیم",
+      "لیبارٹری ٹیسٹ (PT/INR، خون کا نمونہ)"
+    ],
+    "ctaTitle": "آج ہی گھر پر صحت کی دیکھ بھال شروع کریں",
+    "ctaDescription": "ہم آپ یا آپ کے عزیز کو گھر کے آرام میں ضروری معیاری نگہداشت حاصل کرنے میں مدد فراہم کریں۔",
+    "ctaSchedule": "ملاقات کا وقت طے کریں",
+    "ctaBack": "خوش آمدید صفحے پر واپس جائیں",
+    "servicesIntro": {
+      "label": "گھر پر نگہداشت",
+      "subtitle": "ان ماہرین سے ملیں جو گھر پر آپ کی صحت، خودمختاری اور روزمرہ نگہداشت میں مدد کرتے ہیں۔"
+    },
+    "advantagesIntro": {
+      "label": "گھر پر بہتر نگہداشت",
+      "subtitle": "ہمدردانہ نگہداشت جو گھر اور معاشرے میں زندگی کو بہتر بناتی ہے۔"
+    },
+    "specialtiesIntro": {
+      "label": "آپ کی ضروریات کے مطابق نگہداشت",
+      "subtitle": "ان خصوصی خدمات کے بارے میں جانیں جو آپ کے علاج، صحت یابی اور روزمرہ تندرستی میں مدد کرتی ہیں۔"
+    }
+  },
+  "faq": {
+    "title": "اکثر پوچھے جانے والے سوالات",
+    "items": [
+      {
+        "question": "ہاسپِس کیا فراہم کرتا ہے؟",
+        "answer": "ہاسپِس مختلف شعبوں کے ماہرین کی ٹیم کے ذریعے نگہداشت فراہم کرتا ہے۔ یہ ماہرین مل کر آپ اور آپ کے اہلِ خانہ کی طبی، نفسیاتی اور روحانی ضروریات پوری کرتے ہیں۔"
+      },
+      {
+        "question": "ہاسپِس نگہداشت میں مریضوں کو مزید کون سے فوائد ملتے ہیں؟",
+        "answer": "ہاسپِس پروگرام میں داخل ہونے کے بعد آپ کو طبی آلات، طبی سامان اور علامات و درد میں آرام کی ادویات فراہم کی جاتی ہیں۔"
+      },
+      {
+        "question": "نگہداشت کون فراہم کرتا ہے؟",
+        "answer": "ہماری خدمت کی بنیاد اعلیٰ مہارت اور تربیت یافتہ ماہرین کی ٹیم ہے جو ہر فرد کی منفرد ضروریات کے مطابق ہمدردانہ اور ذاتی نگہداشت فراہم کرتی ہے۔ جامع نگہداشت اور خاندان کی مدد کے لیے ٹیم میں ڈاکٹر، نرسیں، سماجی کارکن، روحانی مشیر اور ہاسپِس معاون شامل ہیں۔ مریض کی مخصوص ضروریات اور ہاسپِس فراہم کنندہ کی ہدایات کے مطابق فزیکل، آکوپیشنل اور اسپیچ تھراپسٹ، رضاکار اور سوگ کے ماہرین بھی شامل ہو سکتے ہیں۔"
+      },
+      {
+        "question": "مجھے کس قسم کی مدد کی ضرورت ہو سکتی ہے؟",
+        "answer": "کسی مرحلے پر آپ بستر تک محدود ہو سکتے ہیں اور مدد کے بغیر کروٹ بدلنے یا کھانے کے قابل نہ رہیں۔ آپ کی نگہداشت کرنے والے فرد کو ڈائپر اور چادریں بدلنے اور بستر کے زخموں سے بچانے کے لیے جلد کی دیکھ بھال کرنے کی ضرورت پڑ سکتی ہے۔ ہاسپِس نرسیں یہ کام کرنے کی تربیت دیں گی۔"
+      },
+      {
+        "question": "اگر کوئی مشکل صورتِ حال پیدا ہو جائے تو کیا ہوگا؟",
+        "answer": "ہم سمجھتے ہیں کہ نگہداشت کرنے والوں کو مشکل حالات کا سامنا ہو سکتا ہے۔ 24 گھنٹے دستیاب فون لائن انہیں ہاسپِس کی تربیت یافتہ نرس سے ملاتی ہے، جو فون پر مشورہ دے سکتی ہے یا ضرورت پڑنے پر گھر آ سکتی ہے۔"
+      }
+    ]
   }
 }
