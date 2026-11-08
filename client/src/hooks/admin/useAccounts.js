@@ -51,13 +51,13 @@ function useAccounts() {
 
 
     const [accountForm, setAccountForm] = useState({
-        name: "", birthdate: "", email: "", role: "", status: "",
+        name: "", birthdate: "", email: "", phone: "", role: "", status: "",
     });
 
     // Clears all Account form fields upon Cancel
     const resetAccountForm = () => {
         setAccountForm({
-            name: "", birthdate: "", email: "", role: "", status: "",
+            name: "", birthdate: "", email: "", phone: "", role: "", status: "",
         });
     };
 
@@ -117,6 +117,7 @@ function useAccounts() {
                 const updateData = {
                     name: accountName,
                     email: accountEmail,
+                    phone: accountForm.phone.trim(),
                     role: accountForm.role.toLowerCase(),
                     accountStatus: accountForm.status.toLowerCase(),
                 };
@@ -134,6 +135,7 @@ function useAccounts() {
                               name: accountName,
                               birthdate: accountForm.birthdate,
                               email: accountEmail,
+                              phone: accountForm.phone.trim(),
                               role: accountForm.role,
                               status: accountForm.status,
                           }
@@ -160,6 +162,7 @@ function useAccounts() {
             name: account.name,
             birthdate: account.birthdate,
             email: account.email,
+            phone: account.phone || "",
             role: account.role,
             status: account.status,
         });
