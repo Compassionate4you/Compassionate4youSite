@@ -86,6 +86,10 @@ const AdminDashboard = () => {
         handleOpenAddLocation,
         handleCancelAddLocation,
         handleAddLocation,
+        handleDeleteLocation,
+        locationPendingDelete,
+        handleCancelDeleteLocation,
+        handleConfirmDeleteLocation,
     } = useLocations();
         // DT-755: really sign out (user, test login and server session), then leave the dashboard.
     const handleConfirmLogout = () => {
@@ -165,6 +169,7 @@ const AdminDashboard = () => {
                         onEditFormChange={handleEditFormChange}
                         onSaveLocation={handleSaveLocation}
                         onCancelEdit={handleCancelEdit}
+                        onDeleteLocation={handleDeleteLocation}
                     />
                 )}
             </main>
@@ -221,6 +226,24 @@ const AdminDashboard = () => {
                 onCancel={handleCancelDeleteAccount}
                 onConfirm={handleConfirmDeleteAccount}
             />
+
+
+
+            {/* Location Deletion Confirmation */}
+            <ConfirmModal
+                isOpen={locationPendingDelete !== null}
+                title="Delete Location"
+                message={
+                    <>
+                        Are you sure you want to delete the location{" "}
+                        <strong>{locationPendingDelete?.name}</strong>?
+                    </>
+                }
+                onCancel={handleCancelDeleteLocation}
+                onConfirm={handleConfirmDeleteLocation}
+            />
+
+
         </div>
     );
 };

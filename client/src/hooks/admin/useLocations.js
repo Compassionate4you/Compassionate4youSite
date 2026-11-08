@@ -1,6 +1,7 @@
 // Add Location handlers
 import { useEffect, useState} from "react";
-import {apiGetLocations, apiCreateLocation, apiUpdateLocation} from "../../services/api";
+import {apiGetLocations, apiCreateLocation, apiUpdateLocation, apiDeleteLocation} from "../../services/api";
+
 
 
 
@@ -8,6 +9,10 @@ function useLocations() {
     const [locations, setLocations] = useState([]);
 
     const [error, setError] = useState(""); //stores an error message if loading locations fail
+
+
+    // Stores the location selected for deletion
+    const [locationPendingDelete, setLocationPendingDelete] = useState(null);
 
 
     //Loads locations from the backend when the page first opens
@@ -212,6 +217,51 @@ const handleAddLocation = async (event) => {
     }
 };
 
+
+   // Opens the confirmation popup for the selected location
+    const handleDeleteLocation = (id) => {
+         const location = locations.find((location) => location.id === id);
+         if (location) {
+             setLocationPendingDelete(location);
+         }
+};
+
+
+
+    // Closes the confirmation popup without deleting
+    const handleCancelDeleteLocation = () => {
+        setLocationPendingDelete(null);
+    };
+
+    // Deletes the location after confirmation
+    const handleConfirmDeleteLocation = async () => {
+        if (!locationPendingDelete) return;
+
+        try {
+            setError("");
+
+            // Delete the location from Supabase through the backend
+            await apiDeleteLocation(locationPendingDelete.id);
+
+            // Remove the deleted location from the dashboard
+            setLocations((currentLocations) =>
+                currentLocations.filter(
+                    (location) => location.id !== locationPendingDelete.id
+                )
+            );
+
+            // Close the edit form and confirmation popup
+            setEditingLocationId(null);
+            setLocationPendingDelete(null);
+        } catch (err) {
+            // Show an error if deletion fails
+            setError(err.message);
+            console.error("Failed to delete location:", err);
+        }
+    };
+
+
+
     return {
         locations,
         error,
@@ -227,6 +277,10 @@ const handleAddLocation = async (event) => {
         handleOpenAddLocation,
         handleCancelAddLocation,
         handleAddLocation,
+        handleDeleteLocation,
+        locationPendingDelete,
+        handleCancelDeleteLocation,
+        handleConfirmDeleteLocation
     };
 }
 

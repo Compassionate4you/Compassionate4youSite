@@ -13,6 +13,7 @@ function LocationsTab({
     onEditFormChange,
     onSaveLocation,
     onCancelEdit,
+    onDeleteLocation,
 }) {
     return (
         <div className="admin-locations-section">
@@ -262,6 +263,18 @@ function LocationsTab({
                                     >
                                         Cancel
                                     </button>
+
+
+                                    {/* Delete the selected location */}
+                                    <button
+                                         type="button"
+                                         className="admin-location-delete-button"
+                                         onClick={() => onDeleteLocation(location.id)}
+                                    >
+                                         Delete
+                                    </button>
+
+
                                 </div>
                             </div>
                         ) : (
