@@ -1,4 +1,4 @@
-// DT-923 Sprint 9
+// DT-875 DT-923 Sprint 9
 // PBall
 // Form fields component for the MAP_SECTION section layout in SectionManager
 
@@ -10,18 +10,35 @@ export default function MapSectionLayout ({
   onHeaderChange,
   headerTypography,
   onHeaderTypographyChange,
+  hideHeading = false,
+  onHideHeadingChange,
   mapAddress,
   onMapAddressChange,
   embedUrl,
   onEmbedUrlChange,
   directionsUrl,
-  onDirectionsUrlChange
+  onDirectionsUrlChange,
+  directionsText = '',
+  onDirectionsTextChange
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {/* DT-923 Sprint 9 - PBall: Section title and typography controls */}
       <div>
-        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Title / Header</label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+          <label style={{ fontWeight: '600', fontSize: '13px' }}>Title / Header</label>
+          {onHideHeadingChange && (
+            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '600', color: '#475569', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={Boolean(hideHeading)}
+                onChange={(e) => onHideHeadingChange(e.target.checked)}
+                style={{ width: '15px', height: '15px', accentColor: '#0f172a', cursor: 'pointer' }}
+              />
+              Hide Heading on Page
+            </label>
+          )}
+        </div>
         <input
           type="text"
           value={header}
@@ -36,7 +53,7 @@ export default function MapSectionLayout ({
         />
       </div>
 
-      {/* DT-923 Sprint 9 - PBall: Map address, embed URL, and directions URL inputs */}
+      {/* DT-875 DT-923 Sprint 9 - PBall: Map address, embed URL, directions URL, and directions button label */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div>
           <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Office Address Text</label>
@@ -58,15 +75,29 @@ export default function MapSectionLayout ({
             style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
           />
         </div>
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Directions URL</label>
-          <input
-            type="text"
-            value={directionsUrl}
-            onChange={(e) => onDirectionsUrlChange(e.target.value)}
-            placeholder="https://www.google.com/maps/dir/?..."
-            style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-          />
+        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '10px' }}>
+          <div>
+            <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Directions URL</label>
+            <input
+              type="text"
+              value={directionsUrl}
+              onChange={(e) => onDirectionsUrlChange(e.target.value)}
+              placeholder="https://www.google.com/maps/dir/?..."
+              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+            />
+          </div>
+          {onDirectionsTextChange && (
+            <div>
+              <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Directions Button Text</label>
+              <input
+                type="text"
+                value={directionsText}
+                onChange={(e) => onDirectionsTextChange(e.target.value)}
+                placeholder="Get Directions"
+                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -122,3 +122,49 @@ Remove the standalone Text Config and Color Config tools from the Content Editor
 - [x] No regression in accessibility attributes (ARIA labels, roles).  
 - [x] Binary files restricted to assets directory.
 - [x] Zero compile or lint errors reported by `problems`.
+- [x] Merged cleanly with upstream `DT-902` / `DT-731` / `DT-732` public page adapters (`colorSource="global"` vs `colorSource="cms"`, `BannerSection` integration, and `ColorConfigService` fallback support) and verified with Jest (`contentController.test.js`: 20/20 passing) and `git diff --check`.
+
+---
+
+## [2026-11-08 02:05 UTC] Task: DT-875 - Update Content Manager for All Section and Card Layouts and Editable Fields
+
+- **Agent / Model**: Copilot SDK in VS Code
+- **Sprint**: Sprint 9
+- **Author / Driver**: PBall
+- **Status**: Complete
+
+### Context & Intent  
+Update `SectionManager` and `CardManager` (and their underlying layout components and dynamic renderers) to reflect all new and updated section and card layouts introduced in Sprint 9, ensuring every layout exposes all of its editable fields within the Content Editor.
+
+### Changes Implemented  
+- **Added**:  
+  - `client/src/components/admin/content/SectionManager/HeroSectionLayout.jsx`: Editor form component for `HERO_SECTION` / `WELCOME_HERO` (variant, content position, surface tone, badge icon, image URL/alt, CTA button text/link, overlay toggle, language selector toggle).
+  - `client/src/components/admin/content/SectionManager/HeaderCardsLayout.jsx`: Editor form component for `HEADER_CARDS` (eyebrow label, title, subtitle, header placement, surface variant, decorative background image URL, and ordered card list).
+  - `client/src/components/admin/content/SectionManager/HeaderStackLayout.jsx`: Editor form component for `HEADER_STACK` (eyebrow label, title, subtitle, 1–2 stack columns, assigned cards, and inline stack items with reordering/removal).
+  - `client/src/components/admin/content/SectionManager/TimelineSectionLayout.jsx`: Editor form component for `TIMELINE_SECTION` (eyebrow label, title, subtitle, assigned step cards, and inline timeline steps with reordering/removal).
+  - `client/src/components/admin/content/SectionManager/PageCallToActionLayout.jsx`: Editor form component for `PAGE_CTA` (title, description, primary `/schedule` action label, and `/welcome` home action label).
+  - `client/src/components/admin/content/CardManager/PhotoTextCardLayout.jsx`: Editor form component for `PHOTO_TEXT_CARD` (header, multi-paragraph/bullet body, visual left/right photo placement toggle, photo URL, and alt text).
+  - `docs/sprint9/DT-875-content-manager-layouts.md`: Sprint 9 documentation for DT-875.
+- **Modified**:  
+  - `client/src/components/admin/content/SectionManager/HeaderTextLayout.jsx` & `client/src/components/modular/sections/HeaderTextSection.jsx`: Added banner badge icon selector (`Auto`, `Heart`, `HeartHandshake`, `Users`) and `formatBody` bullet/paragraph toggle.
+  - `client/src/components/admin/content/SectionManager/FullscreenImageHeaderLayout.jsx`: Added `icon` (Banner Icon / Emoji) field.
+  - `client/src/components/admin/content/SectionManager/CardGridLayout.jsx`: Expanded grid column options to `1`–`5`.
+  - `client/src/components/admin/content/SectionManager/MapSectionLayout.jsx`: Added `hideHeading` toggle and `directionsText` field.
+  - `client/src/components/admin/content/SectionManager/AccountBenefitsLayout.jsx`: Added move up/down and remove controls for benefit items.
+  - `client/src/components/admin/content/SectionManager/ContactFormLayout.jsx`: Added field labels and `addressLine2` input.
+  - `client/src/components/admin/content/CardManager/HeaderSymbolLayout.jsx` & `client/src/components/modular/cards/HeaderSymbolCard.jsx`: Added optional description/body field and expanded supported Lucide icons to 38 symbols matching `SectionIcon.jsx`.
+  - `client/src/components/admin/content/SectionManager.jsx` & `client/src/components/admin/content/CardManager.jsx`: Wired all new layouts and fields across Create mode, Manage mode, and Live Preview.
+  - `client/src/components/modular/DynamicSectionRenderer.jsx` & `client/src/components/modular/cards/ModularCard.jsx`: Added runtime and preview rendering support for `HERO_SECTION`, `WELCOME_HERO`, `HEADER_CARDS`, `HEADER_STACK`, `TIMELINE_SECTION`, `PAGE_CTA`, and `PHOTO_TEXT_CARD`.
+- **Removed**:  
+  - None.
+
+### Prompts & AI Assistance  
+- **User Request**: "Could you now update the content manager to reflect the changes to the available section/card layouts? Each layout should have all of its editable fields present within the editor."
+- **Agent Action**: Audited every section and card component in `client/src/components/modular/`, created dedicated per-layout editor components for all new layouts, added all missing editable fields to existing layout components, and wired them into `SectionManager`, `CardManager`, `DynamicSectionRenderer`, and `ModularCard`.
+
+### Validation & Verification  
+- [x] Conforms to Standard JS / JSX syntax conventions.  
+- [x] Top-of-file headers and inline task comments added.  
+- [x] No regression in accessibility attributes (ARIA labels, roles).  
+- [x] Binary files restricted to assets directory.
+- [x] Zero compile or lint errors reported by `problems`.

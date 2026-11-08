@@ -13,16 +13,22 @@ import ColorEditor, { DEFAULT_CARD_COLORS, normalizeColorPair } from './ColorEdi
 import HeaderParagraphLayout from './CardManager/HeaderParagraphLayout'
 import ImageFullWidthLayout from './CardManager/ImageFullWidthLayout'
 import HeaderSymbolLayout from './CardManager/HeaderSymbolLayout'
+import PhotoTextCardLayout from './CardManager/PhotoTextCardLayout'
 
+// DT-875 Sprint 9 - PBall: Complete icon symbol options matching SectionIcon and HeaderSymbolCard
 const SYMBOL_OPTIONS = [
-  'Heart', 'Check', 'Home', 'Stethoscope', 'Users', 'Phone',
-  'Pill', 'Activity', 'Star', 'Shield', 'ShieldCheck', 'Award', 'Smile'
+  'Heart', 'HeartHandshake', 'HeartPulse', 'Check', 'Home', 'House', 'Stethoscope', 'Users', 'Phone',
+  'Pill', 'Activity', 'Star', 'Shield', 'ShieldCheck', 'Award', 'Smile',
+  'Accessibility', 'Apple', 'Bandage', 'Bone', 'BriefcaseMedical', 'CalendarDays', 'Church',
+  'ClipboardCheck', 'ClipboardList', 'Clock', 'Coins', 'Cross', 'Droplets', 'FileCheck',
+  'FlaskConical', 'GraduationCap', 'HandHelping', 'Languages', 'Speech', 'TestTube', 'TrendingUp', 'Wind'
 ]
 
 const CARD_LAYOUT_OPTIONS = [
   { value: 'HEADER_PARAGRAPH', label: 'HEADER_PARAGRAPH (Title & bullet text)' },
   { value: 'IMAGE_FULL_WIDTH', label: 'IMAGE_FULL_WIDTH (Split image and content)' },
-  { value: 'HEADER_SYMBOL', label: 'HEADER_SYMBOL (Icon badge & title)' }
+  { value: 'PHOTO_TEXT_CARD', label: 'PHOTO_TEXT_CARD (Bordered photo & text card)' },
+  { value: 'HEADER_SYMBOL', label: 'HEADER_SYMBOL (Icon badge, title & description)' }
 ]
 
 const ALIGNMENT_OPTIONS = [
@@ -377,6 +383,23 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
     isEdit = false
   }) => {
     switch (currentLayout) {
+      case 'PHOTO_TEXT_CARD':
+      case 'PHOTO_TEXT':
+        return (
+          <PhotoTextCardLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            paragraph={currentParagraph}
+            onParagraphChange={onParagraphChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            imageAlt={currentImageAlt}
+            onImageAltChange={onImageAltChange}
+            imagePosition={currentAlignment}
+            onImagePositionChange={onAlignmentChange}
+            imageUrlPlaceholder={isEdit ? '/images/older_couple_smiling.jpeg' : '/images/working_a_puzzle_together.jpeg'}
+          />
+        )
       case 'IMAGE_FULL_WIDTH':
         return (
           <ImageFullWidthLayout
@@ -404,6 +427,10 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
             onHeaderChange={onHeaderChange}
             headerTypography={currentHeaderTypography}
             onHeaderTypographyChange={onHeaderTypographyChange}
+            paragraph={currentParagraph}
+            onParagraphChange={onParagraphChange}
+            paragraphTypography={currentParagraphTypography}
+            onParagraphTypographyChange={onParagraphTypographyChange}
             symbol={currentSymbol}
             onSymbolChange={onSymbolChange}
             symbolOptions={symbolDropdownOptions}

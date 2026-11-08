@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { pickText } from './CardBase'
 import BannerSection from '../sections/BannerSection'
 import ImageCard from './ImageCard'
+import PhotoTextCard from './PhotoTextCard'
 import HeaderParagraphCard from './HeaderParagraphCard'
 import HeaderSymbolCard from './HeaderSymbolCard'
 import { resolveElementColor } from '../../admin/content/ColorEditor'
@@ -62,6 +63,17 @@ export default function ModularCard ({ card, theme = 'light', colorSource = 'cms
   }
 
   switch (layout) {
+    case 'PHOTO_TEXT_CARD':
+    case 'PHOTO_TEXT':
+      return (
+        <PhotoTextCard
+          header={commonProps.header}
+          paragraph={commonProps.paragraph}
+          imageUrl={commonProps.imageUrl}
+          imageAlt={commonProps.imageAlt}
+          imagePosition={content.imagePosition || commonProps.alignment}
+        />
+      )
     case 'IMAGE_FULL_WIDTH':
     case 'IMAGE_CARD':
     case 'FULL_WIDTH_SPLIT':
