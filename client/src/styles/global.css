@@ -193,3 +193,29 @@ h1, h2, h3 {
     color: #64748b;
     font-size: 1rem;
 }
+
+/* Accessibility text size. The Accessibility Tools set data-text-size on
+   <html>. Smaller screens get a gentler scale: 250% of 16px is 40px,
+   which leaves only ~9 characters per line on a 375px phone.    */
+html[data-text-size="default"] { font-size: 100%; }
+html[data-text-size="large"] { font-size: 175%; }
+html[data-text-size="extra-large"] { font-size: 250%; }
+
+@media (max-width: 900px) {
+    html[data-text-size="large"] { font-size: 150%; }
+    html[data-text-size="extra-large"] { font-size: 200%; }
+}
+
+@media (max-width: 600px) {
+    html[data-text-size="large"] { font-size: 130%; }
+    html[data-text-size="extra-large"] { font-size: 160%; }
+}
+
+/* Large text must wrap instead of overflowing or being clipped. */
+main h1, main h2, main h3, main h4, main p, main li, main label, footer a, footer p, footer li {
+    overflow-wrap: anywhere;
+}
+
+main img, main video, main iframe {
+    max-width: 100%;
+}
