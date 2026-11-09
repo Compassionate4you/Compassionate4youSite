@@ -1,0 +1,65 @@
+/*
+DT-894 DT-917 DT-918 Sprint 9
+PBall
+Modular card grid section stylesheet supporting full-width section background, dynamic column scaling, and responsive overflow containment
+*/
+
+.card-section {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 4rem 1.5rem;
+  background-color: var(--section-bg, #ffffff);
+  color: var(--section-text, #1e293b);
+  box-sizing: border-box;
+  overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* DT-917 Sprint 9 - PBall: Constrain card grid inside centered inner wrapper */
+.card-section__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.card-section.card-section--banners .card-section__inner {
+  max-width: none;
+}
+
+.card-section__title {
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  margin: 0 0 2.5rem;
+  color: var(--section-header, inherit);
+}
+
+.card-section .card-grid {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  grid-template-columns: repeat(var(--card-columns, 3), minmax(0, 1fr));
+}
+
+.card-section .card-grid > * {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .card-section .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .card-section .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

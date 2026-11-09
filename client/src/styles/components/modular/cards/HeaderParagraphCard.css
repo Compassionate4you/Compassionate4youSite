@@ -1,0 +1,51 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
+/*
+DT-622 Sprint 8
+Preston Ball
+Modular header paragraph card layout stylesheet with configurable alignment and theme variables
+*/
+
+.card--text {
+  background: var(--card-bg, var(--color-white));
+  color: var(--card-text, var(--color-white-text));
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-black) 8%, transparent);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card--text:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--color-black) 10%, transparent);
+}
+
+.card--text h3 {
+  margin: 0 0 0.75rem;
+  color: var(--card-header, inherit);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.card--text p {
+  margin: 0 0 0.75rem;
+  line-height: 1.6;
+}
+
+.card--text .card-list {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+.card--text.card--align-left {
+  text-align: left;
+}
+
+.card--text.card--align-center {
+  text-align: center;
+}
+
+.card--text.card--align-right {
+  text-align: right;
+}

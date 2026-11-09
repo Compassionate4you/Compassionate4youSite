@@ -1,0 +1,580 @@
+{
+  "Home_Health": [
+    {
+      "tag": "h1",
+      "text": "Home Health"
+    },
+    {
+      "tag": "p",
+      "text": "Professional healthcare services delivered in the comfort and safety of your home, promoting independence and quality of life."
+    },
+    {
+      "tag": "button",
+      "text": "Schedule a Consultation"
+    },
+    {
+      "tag": "h2",
+      "text": "Our Home Health Services"
+    },
+    {
+      "tag": "h2",
+      "text": "Our Home Health Services"
+    },
+    {
+      "tag": "h3",
+      "text": "Medical Doctors"
+    },
+    {
+      "tag": "h3",
+      "text": "Physical Therapists (PT & PTA)"
+    },
+    {
+      "tag": "h3",
+      "text": "Occupational Therapists (OT)"
+    },
+    {
+      "tag": "h3",
+      "text": "Skilled Nurses (RN, LVN)"
+    },
+    {
+      "tag": "h3",
+      "text": "Speech Therapists (ST)"
+    },
+    {
+      "tag": "h3",
+      "text": "Certified Home Health Aide (CHHA)"
+    },
+    {
+      "tag": "h3",
+      "text": "Medical Social Workers (MSW)"
+    },
+    {
+      "tag": "h3",
+      "text": "Multi-Lingual"
+    },
+    {
+      "tag": "h2",
+      "text": "Home Health Advantages"
+    },
+    {
+      "tag": "p",
+      "text": "We manage all employer obligations in payroll, taxes and compensation"
+    },
+    {
+      "tag": "p",
+      "text": "More cost efficient than hospitalization"
+    },
+    {
+      "tag": "p",
+      "text": "Faster rate of client recovery"
+    },
+    {
+      "tag": "p",
+      "text": "Clients have the right to participate in their plan of care"
+    },
+    {
+      "tag": "p",
+      "text": "Services are rendered in the client's place of residence"
+    },
+    {
+      "tag": "p",
+      "text": "Avoidance of hospital acquired infections"
+    },
+    {
+      "tag": "p",
+      "text": "Care transition, fall prevention and medical equipment training"
+    },
+    {
+      "tag": "h2",
+      "text": "Specialty Services"
+    },
+    {
+      "tag": "p",
+      "text": "CHF"
+    },
+    {
+      "tag": "p",
+      "text": "COPD"
+    },
+    {
+      "tag": "p",
+      "text": "Orthopedic Post-Surgical Therapy (Joint Replacement)"
+    },
+    {
+      "tag": "p",
+      "text": "Wound Care"
+    },
+    {
+      "tag": "p",
+      "text": "I.V. Infusion"
+    },
+    {
+      "tag": "p",
+      "text": "Physical, Occupational, Speech Therapy"
+    },
+    {
+      "tag": "p",
+      "text": "Medication Management"
+    },
+    {
+      "tag": "p",
+      "text": "Catheter Care"
+    },
+    {
+      "tag": "p",
+      "text": "Diet, Exercise, Nutrition Education"
+    },
+    {
+      "tag": "p",
+      "text": "Labs (PT/INR, Blood Draw)"
+    },
+    {
+      "tag": "h2",
+      "text": "Start Your Home Health Care Today"
+    },
+    {
+      "tag": "p",
+      "text": "Let us help you or your loved one receive the quality care you deserve in the comfort of your home."
+    },
+    {
+      "tag": "button",
+      "text": "Schedule Appointment"
+    },
+    {
+      "tag": "button",
+      "text": "Back to Home"
+    }
+  ],
+  "Hospice": [
+    {
+      "tag": "h1",
+      "text": "Hospice Care"
+    },
+    {
+      "tag": "p",
+      "text": "Providing comfort, dignity, and compassionate support during life's final journey. We're here for patients and their families every step of the way."
+    },
+    {
+      "tag": "a",
+      "text": "Contact Our Team",
+      "href": "http://localhost:5173/schedule"
+    },
+    {
+      "tag": "h2",
+      "text": "Understanding Hospice Care"
+    },
+    {
+      "tag": "h3",
+      "text": "What is Hospice"
+    },
+    {
+      "tag": "p",
+      "text": "Hospice care focuses on providing comfort, quality of life, and support for people nearing the end of life, rather than curing the illness. It is provided by a team of professionals who manage pain and other symptoms, and address emotional, physical, spiritual, and social needs of both the patient and their family through passion. Hospice care can be provided in a person's home, a dedicated hospice facility, and the goal is to help the person live their remaining time with dignity and as peacefully as possible."
+    },
+    {
+      "tag": "h3",
+      "text": "Who is eligible"
+    },
+    {
+      "tag": "p",
+      "text": "No matter your faith or beliefs, you and your family can receive spiritual and emotional support from our care team."
+    },
+    {
+      "tag": "h3",
+      "text": "How is hospice different?"
+    },
+    {
+      "tag": "p",
+      "text": "Our team provides a compassionate environment for patients and families, so they can feel supported and understood during end-of-life care"
+    },
+    {
+      "tag": "h3",
+      "text": "Why might I choose?"
+    },
+    {
+      "tag": "p",
+      "text": "Our hospice team provides emotional and spiritual support to families as they navigate end-of-life care."
+    },
+    {
+      "tag": "h3",
+      "text": "Who provides the care?"
+    },
+    {
+      "tag": "p",
+      "text": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
+    },
+    {
+      "tag": "h2",
+      "text": "Hospice Care Team & Benefits"
+    },
+    {
+      "tag": "h3",
+      "text": "What does hospice provide?"
+    },
+    {
+      "tag": "p",
+      "text": "Hospice offers care from a team of different types of practioners who work together to meet the medical, psychological and spiritual needs of you and your family."
+    },
+    {
+      "tag": "h3",
+      "text": "Hours avail when in hospice care..."
+    },
+    {
+      "tag": "p",
+      "text": "Hospice provides you a phone number to call 24 hours a day, 7 days a week, to help answer any questions you may have."
+    },
+    {
+      "tag": "h3",
+      "text": "What other benefits do patients have when they are under hospicecare"
+    },
+    {
+      "tag": "p",
+      "text": "Once you are admitted into the Hospice Program, you will be provided with:"
+    },
+    {
+      "tag": "li",
+      "text": "medical appliances"
+    },
+    {
+      "tag": "li",
+      "text": "medical supplies"
+    },
+    {
+      "tag": "li",
+      "text": "medications for symptoms and pain relief"
+    },
+    {
+      "tag": "h3",
+      "text": "Physician"
+    },
+    {
+      "tag": "p",
+      "text": "Your personal physician continues to provide your care while you're in the Hospice Program. A hospice physician works closely with your personal physician and can consult with you."
+    },
+    {
+      "tag": "h3",
+      "text": "Nurse"
+    },
+    {
+      "tag": "p",
+      "text": "A nurse visits during the week to instruct your caregiver and to coordinate your care. A nurse informs the hospice physician of your condition on a regular basis."
+    },
+    {
+      "tag": "h3",
+      "text": "Social worker"
+    },
+    {
+      "tag": "p",
+      "text": "A social worker helps you and your caregiver by:"
+    },
+    {
+      "tag": "li",
+      "text": "offering emotional support"
+    },
+    {
+      "tag": "li",
+      "text": "assisting with practical matters, such as finding additional help in the home"
+    },
+    {
+      "tag": "h2",
+      "text": "Comprehensive Support Services"
+    },
+    {
+      "tag": "h3",
+      "text": "Hospiceaide/homemaker services"
+    },
+    {
+      "tag": "p",
+      "text": "A hospice aide visits during the week as needed to help you and your caregiver with personal care such as changing linens, giving you a bath and helping you get dressed."
+    },
+    {
+      "tag": "h3",
+      "text": "Chaplain"
+    },
+    {
+      "tag": "p",
+      "text": "A chaplain is a minister or counselor dedicated to meeting the spiritual needs of you and your family, no matter your religion. You and your family can ask for the chaplain anytime."
+    },
+    {
+      "tag": "h3",
+      "text": "Volunteer"
+    },
+    {
+      "tag": "p",
+      "text": "A volunteer is someone from the community who has been trained by our Hospice Program to help you and your family. Volunteers provide services under the direction of a hospice staff member."
+    },
+    {
+      "tag": "h3",
+      "text": "What about medical appointments?"
+    },
+    {
+      "tag": "p",
+      "text": "Your personal physician is in charge of your care, even after you're admitted to our Hospice Program. A hospice physician will work with your personal physician to provide the care your need."
+    },
+    {
+      "tag": "h3",
+      "text": "What kind of help might I need?"
+    },
+    {
+      "tag": "p",
+      "text": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
+    },
+    {
+      "tag": "h3",
+      "text": "What if a difficult situation arises?"
+    },
+    {
+      "tag": "p",
+      "text": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
+    },
+    {
+      "tag": "h2",
+      "text": "Above and Beyond Care"
+    },
+    {
+      "tag": "p",
+      "text": "We understand that hospice care affects the entire family. Our approach goes beyond medical care to provide emotional, spiritual, and practical support for everyone involved. From the initial consultation through bereavement, we walk alongside you with understanding and care."
+    },
+    {
+      "tag": "span",
+      "text": "Pain and Symptom Control"
+    },
+    {
+      "tag": "span",
+      "text": "Emotional and Spiritual Support"
+    },
+    {
+      "tag": "span",
+      "text": "Caregiver Guidance"
+    },
+    {
+      "tag": "span",
+      "text": "Volunteer & Companionship Services"
+    },
+    {
+      "tag": "span",
+      "text": "Chaplain"
+    },
+    {
+      "tag": "span",
+      "text": "Grief & Bereavement Support"
+    },
+    {
+      "tag": "span",
+      "text": "Hospice Aide Services"
+    },
+    {
+      "tag": "h2",
+      "text": "Our Care Process"
+    },
+    {
+      "tag": "h3",
+      "text": "Referral"
+    },
+    {
+      "tag": "p",
+      "text": "Doctor, Hospital, or family starts the process."
+    },
+    {
+      "tag": "h3",
+      "text": "Assessment"
+    },
+    {
+      "tag": "p",
+      "text": "Nurse or therapist evaluates health, abilities, and family goals."
+    },
+    {
+      "tag": "h3",
+      "text": "Care Plan"
+    },
+    {
+      "tag": "p",
+      "text": "Customized plan including nursing, therapy, and supporting services."
+    },
+    {
+      "tag": "h3",
+      "text": "Ongoing Support"
+    },
+    {
+      "tag": "p",
+      "text": "Regular visits, telehealth check-ins, and caregiver guidance."
+    },
+    {
+      "tag": "h3",
+      "text": "Communication"
+    },
+    {
+      "tag": "p",
+      "text": "Open dialogue between patient, family, and care team."
+    },
+    {
+      "tag": "h2",
+      "text": "We're Here to Help"
+    },
+    {
+      "tag": "p",
+      "text": "Our compassionate hospice team is available 24/7 to answer your questions and provide support."
+    },
+    {
+      "tag": "a",
+      "text": "Contact Us Today",
+      "href": "http://localhost:5173/schedule"
+    },
+    {
+      "tag": "a",
+      "text": "Back to Home",
+      "href": "http://localhost:5173/"
+    }
+  ],
+  "Welcome": [
+    {
+      "tag": "h1",
+      "text": "Compassionate Care for Your Loved Ones"
+    },
+    {
+      "tag": "p",
+      "text": "Professional home health and hospice services dedicated to providing quality care with dignity and respect."
+    },
+    {
+      "tag": "h3",
+      "text": "Our Philosophy"
+    },
+    {
+      "tag": "p",
+      "text": "We believe in treating our patients with dignity, respect, and empathy. We strive to make their end-of-life journey as comfortable and meaningful as possible."
+    },
+    {
+      "tag": "h3",
+      "text": "Caring Since 2021"
+    },
+    {
+      "tag": "p",
+      "text": "Providing compassionate care in the comfort of your home since 2021."
+    },
+    {
+      "tag": "h3",
+      "text": "Medicare Home Health Criteria"
+    },
+    {
+      "tag": "p",
+      "text": "To qualify for Medicare home health services, a patient must be confined to the home and be under physician care who is a doctor of medicine, a doctor of osteopathy, or a doctor of podiatric medicine, and enrolled in the Medicare Program."
+    },
+    {
+      "tag": "h3",
+      "text": "Specialty Services"
+    },
+    {
+      "tag": "p",
+      "text": "To provide comprehensive, high quality home-care services to our patients by creating strong partnerships with their families, case managers, discharge planners and physicians."
+    },
+    {
+      "tag": "p",
+      "text": "We believe in creating a team of caring professionals whose goal is the care and support of our patients."
+    },
+    {
+      "tag": "h3",
+      "text": "About"
+    },
+    {
+      "tag": "p",
+      "text": "Compassionate Home Health & Hospice is a family-owned and operated business founded by Jane Smith, RN. With over 15 years of experience in healthcare, Jane started this company to provide personalized, compassionate care to patients in their homes. Our team of dedicated professionals is committed to enhancing the quality of life for our patients and their families through comprehensive home health and hospice services."
+    },
+    {
+      "tag": "h2",
+      "text": "Contact"
+    },
+    {
+      "tag": "h3",
+      "text": "Phone"
+    },
+    {
+      "tag": "p",
+      "text": "(925) 425-7104"
+    },
+    {
+      "tag": "h3",
+      "text": "Email"
+    },
+    {
+      "tag": "p",
+      "text": "compassionateforall@gmail.com"
+    },
+    {
+      "tag": "h3",
+      "text": "Fax"
+    },
+    {
+      "tag": "p",
+      "text": "(844) 361-1170"
+    },
+    {
+      "tag": "h3",
+      "text": "Address"
+    },
+    {
+      "tag": "p",
+      "text": "1501 N Broadway, Ste 350A/B"
+    },
+    {
+      "tag": "p",
+      "text": "Walnut Creek, CA 94596"
+    },
+    {
+      "tag": "button",
+      "text": "Send Message"
+    },
+    {
+      "tag": "p",
+      "text": "1501 N Broadway, Ste 350A/B"
+    },
+    {
+      "tag": "a",
+      "text": "Get Directions",
+      "href": "https://www.google.com/maps/dir/?api=1&destination=1501+N+Broadway+Ste+350,+Walnut+Creek,+CA+94596"
+    },
+    {
+      "tag": "h2",
+      "text": "Frequently asked questions"
+    },
+    {
+      "tag": "button",
+      "text": "What does hospice provide?"
+    },
+    {
+      "tag": "p",
+      "text": "Hospice offers care from a team of different types of practitioners who work together to meet the medical, psychological and spiritual needs of you and your family."
+    },
+    {
+      "tag": "button",
+      "text": "What other benefits do patients have when they are under hospice care?"
+    },
+    {
+      "tag": "p",
+      "text": "Once you're admitted into the Hospice Program, you will be provided with medical appliances, medical supplies and medication for symptoms and pain relief."
+    },
+    {
+      "tag": "button",
+      "text": "Who provides the care?"
+    },
+    {
+      "tag": "p",
+      "text": "The foundation of our service is a team of highly skilled and trained professionals providing compassionate and personalized care tailored to the unique needs of each individual. We have a disciplinary team of various professionals, including physicians, nurses, social workers, chaplains, and hospice aides, to provide comprehensive care and support to patients and their families. Other disciplines like physical, occupational, and speech therapists, as well as volunteers and bereavement specialists, may also be involved, depending on the patient's individualized specific needs and the hospice provider's orders."
+    },
+    {
+      "tag": "button",
+      "text": "What kind of help might I need?"
+    },
+    {
+      "tag": "p",
+      "text": "At some point, you may become confined to bed and unable to turn over or eat without help. Your caregiver may need to change your diapers and linens and care for your skin to prevent bedsores. Hospice nurses will teach caregivers how to perform these tasks."
+    },
+    {
+      "tag": "button",
+      "text": "What if a difficult situation arises?"
+    },
+    {
+      "tag": "p",
+      "text": "We understand that caregivers may face difficult situations. A 24-hour phone line puts the caregiver in touch with a hospice-trained nurse who can give advice over the phone or make a home visit if necessary."
+    }
+  ]
+}

@@ -4,12 +4,15 @@ const {
     signup,
     login,
     forgotPassword,
+    verifyResetToken,
     resetPassword,
     logout,
     me,
 } = require('../controllers/authController');
 
 router.post('/reset-password', resetPassword);
+// DT-781: checks a reset link before the new-password form is shown.
+router.post('/reset-password/verify', verifyResetToken);
 router.post('/signup', signup);
 router.post('/login', login);
 router.post('/forgot-password', forgotPassword);

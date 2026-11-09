@@ -10,7 +10,11 @@
     "admin": "Quản trị viên",
     "logout": "Đăng xuất",
     "dashboard": "Bảng điều khiển người dùng",
-    "home": "Trang chủ"
+    "home": "Chào mừng",
+    "menu": "Trình đơn",
+    "close": "Đóng",
+    "morePages": "Trang khác",
+    "mainNavigation": "Điều hướng chính"
   },
   "landing": {
     "heroTitle": "Chăm sóc tận tâm cho những người thân yêu của quý vị",
@@ -20,6 +24,18 @@
     "philosophyText": "Chúng tôi tin vào việc đối xử với bệnh nhân bằng phẩm giá, sự tôn trọng và lòng đồng cảm. Chúng tôi nỗ lực giúp hành trình cuối đời của quý vị thoải mái và ý nghĩa nhất có thể.",
     "caringSinceTitle": "Tận tâm chăm sóc từ năm 2021",
     "caringSinceText": "Mang đến sự chăm sóc tận tâm ngay tại ngôi nhà thoải mái của quý vị từ năm 2021.",
+    "infoCards": {
+      "card1": {
+        "imageAlt": "Mọi người cùng nhau xếp hình",
+        "header": "Tiêu chí Medicare về chăm sóc sức khỏe tại nhà",
+        "paragraph": "Để đủ điều kiện nhận dịch vụ chăm sóc sức khỏe tại nhà của Medicare, bệnh nhân phải bị hạn chế trong nhà, đang được bác sĩ (bác sĩ y khoa, bác sĩ nắn xương hoặc bác sĩ chuyên khoa bàn chân) chăm sóc và đã tham gia chương trình Medicare."
+      },
+      "card2": {
+        "imageAlt": "Cặp vợ chồng lớn tuổi mỉm cười bên nhau",
+        "header": "Dịch vụ chuyên khoa",
+        "paragraph": "Cung cấp dịch vụ chăm sóc tại nhà toàn diện, chất lượng cao cho bệnh nhân bằng cách xây dựng mối quan hệ hợp tác chặt chẽ với gia đình, nhân viên quản lý ca bệnh, người lập kế hoạch xuất viện và bác sĩ của họ.\n\nChúng tôi tin vào việc xây dựng một đội ngũ chuyên gia tận tâm với mục tiêu chăm sóc và hỗ trợ bệnh nhân của chúng tôi."
+      }
+    },
     "aboutTitle": "Giới thiệu",
     "aboutText": "Compassionate Home Health & Hospice là doanh nghiệp gia đình do Jane Smith, RN sáng lập và điều hành. Với hơn 15 năm kinh nghiệm trong lĩnh vực y tế, Jane thành lập công ty này để mang đến sự chăm sóc cá nhân hóa và tận tâm cho bệnh nhân ngay tại nhà. Đội ngũ chuyên gia tận tụy của chúng tôi cam kết nâng cao chất lượng cuộc sống của bệnh nhân và gia đình họ thông qua các dịch vụ chăm sóc sức khỏe tại nhà và chăm sóc cuối đời toàn diện.",
     "contactTitle": "Liên hệ",
@@ -38,7 +54,18 @@
     "contactFormEmailPlaceholder": "email@example.com",
     "contactFormMessage": "Tin nhắn",
     "contactFormMessagePlaceholder": "Chúng tôi có thể giúp gì cho quý vị?",
-    "contactFormButton": "Gửi tin nhắn"
+    "contactFormButton": "Gửi tin nhắn",
+    "contactFormRequiredNote": "Vui lòng điền tất cả các trường.",
+    "contactFormSending": "Đang gửi…",
+    "contactFormSuccess": "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ sớm phản hồi.",
+    "contactFormError": "Không thể gửi tin nhắn. Vui lòng thử lại hoặc gọi đến văn phòng của chúng tôi.",
+    "contactFormErrors": {
+      "nameRequired": "Vui lòng nhập họ tên.",
+      "emailRequired": "Vui lòng nhập địa chỉ email.",
+      "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ.",
+      "messageRequired": "Vui lòng nhập nội dung tin nhắn.",
+      "messageTooShort": "Vui lòng cung cấp thêm một chút thông tin."
+    }
   },
   "hospice": {
     "blurb": {
@@ -107,7 +134,9 @@
             "list2": " - Hỗ trợ các vấn đề thực tế, chẳng hạn như tìm thêm sự giúp đỡ tại nhà"
           }
         }
-      }
+      },
+      "label": "Hỗ trợ tận tâm",
+      "subtitle": "Gặp gỡ đội ngũ chăm sóc và tìm hiểu sự hỗ trợ dành cho người bệnh cùng gia đình."
     },
     "comprehensiveServices": {
       "title": "Dịch vụ hỗ trợ toàn diện",
@@ -136,7 +165,9 @@
           "title": "Nếu xảy ra tình huống khó khăn thì sao?",
           "description": "Chúng tôi hiểu rằng người chăm sóc có thể gặp những tình huống khó khăn. Đường dây điện thoại hoạt động 24 giờ giúp người chăm sóc liên lạc với một y tá chuyên về chăm sóc cuối đời, người có thể tư vấn qua điện thoại hoặc đến thăm tại nhà nếu cần."
         }
-      }
+      },
+      "label": "Hỗ trợ mỗi ngày",
+      "subtitle": "Hỗ trợ thiết thực, tình cảm và tinh thần cho người bệnh và những người chăm sóc họ."
     },
     "aboveAndBeyond": {
       "title": "Sự chăm sóc vượt trên mong đợi",
@@ -154,18 +185,38 @@
     "hospiceProcess": {
       "title": "Quy trình chăm sóc của chúng tôi",
       "cards": {
-        "card1": { "number": "1", "title": "Giới thiệu", "description": "Bác sĩ, bệnh viện hoặc gia đình bắt đầu quy trình." },
-        "card2": { "number": "2", "title": "Đánh giá", "description": "Y tá hoặc chuyên viên trị liệu đánh giá sức khỏe, khả năng và mục tiêu của gia đình." },
-        "card3": { "number": "3", "title": "Kế hoạch chăm sóc", "description": "Kế hoạch cá nhân hóa bao gồm điều dưỡng, trị liệu và các dịch vụ hỗ trợ." },
-        "card4": { "number": "4", "title": "Hỗ trợ liên tục", "description": "Thăm khám định kỳ, theo dõi qua y tế từ xa và hướng dẫn cho người chăm sóc." },
-        "card5": { "number": "5", "title": "Giao tiếp", "description": "Trao đổi cởi mở giữa bệnh nhân, gia đình và đội ngũ chăm sóc." }
+        "card1": {
+          "number": "1",
+          "title": "Giới thiệu",
+          "description": "Bác sĩ, bệnh viện hoặc gia đình bắt đầu quy trình."
+        },
+        "card2": {
+          "number": "2",
+          "title": "Đánh giá",
+          "description": "Y tá hoặc chuyên viên trị liệu đánh giá sức khỏe, khả năng và mục tiêu của gia đình."
+        },
+        "card3": {
+          "number": "3",
+          "title": "Kế hoạch chăm sóc",
+          "description": "Kế hoạch cá nhân hóa bao gồm điều dưỡng, trị liệu và các dịch vụ hỗ trợ."
+        },
+        "card4": {
+          "number": "4",
+          "title": "Hỗ trợ liên tục",
+          "description": "Thăm khám định kỳ, theo dõi qua y tế từ xa và hướng dẫn cho người chăm sóc."
+        },
+        "card5": {
+          "number": "5",
+          "title": "Giao tiếp",
+          "description": "Trao đổi cởi mở giữa bệnh nhân, gia đình và đội ngũ chăm sóc."
+        }
       }
     },
     "hospiceContact": {
       "title": "Chúng tôi luôn sẵn sàng giúp đỡ",
       "description": "Đội ngũ chăm sóc cuối đời tận tâm của chúng tôi luôn sẵn sàng 24 giờ một ngày, 7 ngày một tuần để giải đáp thắc mắc và hỗ trợ quý vị.",
       "contactButton": "Liên hệ với chúng tôi ngay hôm nay",
-      "homeButton": "Về trang chủ"
+      "homeButton": "Quay lại trang Chào mừng"
     }
   },
   "homeHealth": {
@@ -203,8 +254,8 @@
   },
   "portal": {
     "title": "Cổng thông tin khách hàng",
-    "welcome": "Chào mừng, John Doe",
-    "welcomeBanner": "Chào mừng quay lại, John Doe!",
+    "welcome": "Chào mừng, {{name}}",
+    "welcomeBanner": "Chào mừng quay lại, {{name}}!",
     "welcomeSubtitle": "Quản lý lịch hẹn và thông tin chăm sóc sức khỏe của quý vị",
     "scheduleCard": "Đặt lịch hẹn",
     "scheduleCardDesc": "Đặt lịch hẹn chăm sóc sức khỏe tại nhà hoặc chăm sóc cuối đời mới",
@@ -244,7 +295,19 @@
     },
     "requiredError": "Vui lòng điền đầy đủ các trường bắt buộc của lịch hẹn.",
     "slotTaken": "đã đặt",
-    "submitting": "Đang đặt lịch..."
+    "submitting": "Đang đặt lịch...",
+    "errors": {
+      "fullName": "Vui lòng nhập họ và tên.",
+      "phone": "Vui lòng nhập số điện thoại.",
+      "email": "Vui lòng nhập địa chỉ email.",
+      "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ.",
+      "serviceType": "Vui lòng chọn dịch vụ.",
+      "date": "Vui lòng chọn ngày.",
+      "timeSlot": "Vui lòng chọn giờ còn trống.",
+      "datePast": "Vui lòng chọn ngày trong tương lai.",
+      "slotTaken": "Khung giờ này vừa được đặt. Vui lòng chọn khung giờ khác.",
+      "generic": "Chúng tôi không thể đặt lịch hẹn. Vui lòng thử lại."
+    }
   },
   "login": {
     "title": "Đăng nhập",
@@ -270,10 +333,37 @@
       "submit": "Gửi liên kết đặt lại",
       "sending": "Đang gửi…",
       "backToLogin": "← Quay lại đăng nhập",
-      "confirmation": "Nếu tài khoản đó tồn tại, chúng tôi đã gửi cho quý vị liên kết đặt lại mật khẩu. Vui lòng kiểm tra email hoặc tin nhắn của quý vị.",
+      "confirmation": "Nếu tài khoản đó tồn tại, chúng tôi đã gửi liên kết đặt lại mật khẩu đến địa chỉ email của tài khoản.",
       "errors": {
         "required": "Vui lòng nhập email hoặc số điện thoại của quý vị.",
-        "invalid": "Vui lòng nhập email hoặc số điện thoại hợp lệ."
+        "invalid": "Vui lòng nhập email hoặc số điện thoại hợp lệ.",
+        "confirmEmailRequired": "Vui lòng nhập địa chỉ email của tài khoản.",
+        "confirmEmailInvalid": "Vui lòng nhập địa chỉ email hợp lệ.",
+        "network": "Không thể kết nối với máy chủ. Vui lòng thử lại."
+      },
+      "confirmEmailPrompt": "Có nhiều tài khoản dùng số điện thoại này. Vui lòng nhập địa chỉ email của tài khoản để chúng tôi biết cần đặt lại tài khoản nào.",
+      "confirmEmail": "Địa chỉ email của tài khoản",
+      "confirmEmailPlaceholder": "you@example.com"
+    },
+    "passwordUpdated": "Mật khẩu của quý vị đã được cập nhật. Vui lòng đăng nhập bằng mật khẩu mới.",
+    "resetPage": {
+      "title": "Chọn mật khẩu mới",
+      "checking": "Đang kiểm tra liên kết đặt lại…",
+      "accountFor": "Đặt lại mật khẩu cho {{name}}",
+      "invalidTitle": "Liên kết này đã hết hạn hoặc không hợp lệ",
+      "invalidText": "Liên kết đặt lại có hiệu lực trong 1 giờ và chỉ dùng được một lần. Vui lòng yêu cầu liên kết mới để tiếp tục.",
+      "requestNew": "Yêu cầu liên kết mới",
+      "newPassword": "Mật khẩu mới",
+      "newPasswordPlaceholder": "Tạo mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu mới",
+      "confirmPasswordPlaceholder": "Nhập lại mật khẩu mới",
+      "submit": "Cập nhật mật khẩu",
+      "submitting": "Đang cập nhật…",
+      "errors": {
+        "required": "Vui lòng điền cả hai ô mật khẩu.",
+        "weak": "Mật khẩu phải có ít nhất 8 ký tự, gồm một chữ hoa, một chữ thường, một chữ số và một ký tự đặc biệt.",
+        "mismatch": "Mật khẩu không khớp.",
+        "network": "Không thể kết nối với máy chủ. Vui lòng thử lại."
       }
     }
   },
@@ -363,7 +453,8 @@
       "hospice": "Đến trang Chăm sóc cuối đời",
       "locations": "Đến trang Địa điểm",
       "schedule": "Đến trang Đặt lịch hẹn"
-    }
+    },
+    "clearHighlights": "Bỏ đánh dấu"
   },
   "confirmation": {
     "title": "Đã đặt lịch hẹn!",
@@ -448,7 +539,19 @@
     "ctaTitle": "Bắt đầu chăm sóc sức khỏe tại nhà ngay hôm nay",
     "ctaDescription": "Hãy để chúng tôi giúp quý vị hoặc người thân nhận được sự chăm sóc chất lượng xứng đáng ngay trong ngôi nhà thoải mái của mình.",
     "ctaSchedule": "Đặt lịch hẹn",
-    "ctaBack": "Về trang chủ"
+    "ctaBack": "Quay lại trang Chào mừng",
+    "servicesIntro": {
+      "label": "Chăm sóc tại nhà",
+      "subtitle": "Gặp gỡ các chuyên gia hỗ trợ sức khỏe, khả năng tự lập và việc chăm sóc hằng ngày của bạn tại nhà."
+    },
+    "advantagesIntro": {
+      "label": "Chăm sóc tại nhà tốt hơn",
+      "subtitle": "Sự chăm sóc tận tâm giúp cải thiện cuộc sống tại nhà và trong cộng đồng."
+    },
+    "specialtiesIntro": {
+      "label": "Chăm sóc theo nhu cầu",
+      "subtitle": "Tìm hiểu các dịch vụ chuyên biệt hỗ trợ điều trị, phục hồi và sức khỏe hằng ngày của bạn."
+    }
   },
   "faq": {
     "title": "Câu hỏi thường gặp",

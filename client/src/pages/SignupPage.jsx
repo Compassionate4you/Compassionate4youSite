@@ -13,6 +13,11 @@ function SignupPage () {
   const { signup } = useAuth()
   const navigate = useNavigate()
 
+
+  //DT-747 storing users fullname and phone number
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -29,7 +34,7 @@ function SignupPage () {
     setServerError(null)
     setErrorField(null)
 
-    if (!email.trim() || !password || !confirmPassword) {
+    if (!email.trim() || !password || !confirmPassword || !fullName.trim() || !phone.trim() ) {
       setErrorKey('signup.errors.required')
       return
     }
@@ -42,7 +47,7 @@ function SignupPage () {
 
     setIsSubmitting(true)
     try {
-      const result = await signup(email, password)
+      const result = await signup(email, password, fullName, phone)
       if (result.ok) {
         navigate('/portal')
       } else {
@@ -70,6 +75,35 @@ function SignupPage () {
 
         <div className='login-card'>
           <form onSubmit={handleSubmit} noValidate>
+
+            {/* DT-747: Full Name input */}
+            <div className='field'>
+              <label htmlFor='signup-fullname'>Full Name</label>
+              {/* Stores what the user types in the fullName state */}
+              <input
+                id='signup-fullname'
+                type='text'
+                autoComplete='name'
+                placeholder='Enter your full name'
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+            </div>
+
+            {/* DT-747: Phone Number input */}
+            <div className='field'>
+              <label htmlFor='signup-phone'>Phone Number</label>
+              {/* Stores the phone number in state, supports mobile phone keyboards */}
+              <input
+                id='signup-phone'
+                type='tel'
+                autoComplete='tel'
+                placeholder='Enter your phone number'
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+
             <div className={`field${isEmailError ? ' field--error' : ''}`}>
               <label htmlFor='signup-email'>{t('signup.email')}</label>
               <input

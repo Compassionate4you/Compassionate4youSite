@@ -364,3 +364,13 @@ html[dir="rtl"] .section-label {
 html[dir="rtl"] .a11y-toggle svg {
   flex-shrink: 0;
 }
+/*DT-709*/
+html .a11y-toggle.a11y-toggle--open {
+  visibility: hidden !important;
+  pointer-events: none;
+}
+/* DT-902: Closed controls must not sweep across the page when language direction changes. */
+.a11y-panel[aria-hidden='true'] {
+  visibility: hidden;
+  pointer-events: none;
+}

@@ -64,7 +64,8 @@ function AccessibilityPanel() {
             <button
                 ref={toggleRef}
                 type="button"
-                className="a11y-toggle"
+                /* DT-709 Accessibility Tab adjustment*/
+                className={`a11y-toggle${isOpen ? ' a11y-toggle--open' : ''}`}
                 onClick={() => setIsOpen((open) => !open)}
                 aria-label={t('accessibility.openPanel')}
                 aria-expanded={isOpen}

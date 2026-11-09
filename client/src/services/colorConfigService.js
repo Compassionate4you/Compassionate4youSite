@@ -1,6 +1,8 @@
-// DT-510 Sprint 7
-// PBall
-// Service handling color configurations with in-memory persistence and database integration placeholders
+// DT-622 Sprint 8
+// Preston Ball
+// Service handling color configurations with database persistence and fallback cache
+
+import { API_BASE_URL } from './api'
 
 const STORAGE_KEY = 'cms_color_config_store'
 
@@ -31,6 +33,45 @@ export function getLuminance (hex) {
   return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b)
 }
 
+// DT-622 Sprint 8 - Preston Ball: Utility to categorize a hex color into general color families
+export function getGeneralColor (hex) {
+  if (!hex || typeof hex !== 'string') return 'other'
+  const cleanHex = hex.replace('#', '').trim()
+  if (cleanHex.length !== 3 && cleanHex.length !== 6) return 'other'
+  let r, g, b
+  if (cleanHex.length === 3) {
+    r = parseInt(cleanHex[0] + cleanHex[0], 16) / 255
+    g = parseInt(cleanHex[1] + cleanHex[1], 16) / 255
+    b = parseInt(cleanHex[2] + cleanHex[2], 16) / 255
+  } else {
+    r = parseInt(cleanHex.substring(0, 2), 16) / 255
+    g = parseInt(cleanHex.substring(2, 4), 16) / 255
+    b = parseInt(cleanHex.substring(4, 6), 16) / 255
+  }
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+  const d = max - min
+
+  if (l >= 0.92) return 'white'
+  if (l <= 0.12) return 'black'
+  if (d <= 0.15) return 'gray'
+
+  let h = 0
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60
+  else if (max === g) h = ((b - r) / d + 2) * 60
+  else h = ((r - g) / d + 4) * 60
+
+  if (h < 15 || h >= 345) return 'red'
+  if (h < 45) return 'orange'
+  if (h < 70) return 'yellow'
+  if (h < 165) return 'green'
+  if (h < 195) return 'cyan'
+  if (h < 260) return 'blue'
+  if (h < 315) return 'purple'
+  return 'pink'
+}
+
 export const ColorConfigService = {
   data: (() => {
     try {
@@ -42,6 +83,23 @@ export const ColorConfigService = {
   })(),
 
   getColors () {
+    return [...this.data]
+  },
+
+  // DT-622 Sprint 8 - Preston Ball: Load colors from backend database
+  async loadFromDatabase () {
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/content/colors`)
+      if (res.ok) {
+        const remoteColors = await res.json()
+        if (Array.isArray(remoteColors) && remoteColors.length > 0) {
+          this.data = remoteColors
+          this._persist()
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load colors from database:', err)
+    }
     return [...this.data]
   },
 
@@ -67,19 +125,21 @@ export const ColorConfigService = {
     this.data.push(newColor)
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbCreateColor (color) {
-     *   const res = await fetch('/api/admin/content/colors', {
-     *     method: 'POST',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(color)
-     *   })
-     *   if (!res.ok) throw new Error('Database color creation failed')
-     *   return await res.json()
-     * }
-     * await dbCreateColor(newColor)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Persist color to database
+    async function dbCreateColor (color) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/colors`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(color)
+        })
+        if (!res.ok) throw new Error('Database color creation failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database color creation error:', err)
+      }
+    }
+    dbCreateColor(newColor)
 
     return newColor
   },
@@ -99,19 +159,21 @@ export const ColorConfigService = {
     this.data[index] = updated
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbUpdateColor (colorId, updates) {
-     *   const res = await fetch(`/api/admin/content/colors/${colorId}`, {
-     *     method: 'PUT',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(updates)
-     *   })
-     *   if (!res.ok) throw new Error('Database color update failed')
-     *   return await res.json()
-     * }
-     * await dbUpdateColor(id, updated)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Update color in database
+    async function dbUpdateColor (colorId, updates) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/colors/${colorId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        })
+        if (!res.ok) throw new Error('Database color update failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database color update error:', err)
+      }
+    }
+    dbUpdateColor(id, updated)
 
     return updated
   },
@@ -125,17 +187,19 @@ export const ColorConfigService = {
     const removed = this.data.splice(index, 1)[0]
     this._persist()
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbDeleteColor (colorId) {
-     *   const res = await fetch(`/api/admin/content/colors/${colorId}`, {
-     *     method: 'DELETE'
-     *   })
-     *   if (!res.ok) throw new Error('Database color deletion failed')
-     *   return await res.json()
-     * }
-     * await dbDeleteColor(id)
-     */
+    // DT-622 Sprint 8 - Preston Ball: Delete color from database
+    async function dbDeleteColor (colorId) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/colors/${colorId}`, {
+          method: 'DELETE'
+        })
+        if (!res.ok) throw new Error('Database color deletion failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database color deletion error:', err)
+      }
+    }
+    dbDeleteColor(id)
 
     return removed
   },

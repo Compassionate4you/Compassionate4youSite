@@ -1,8 +1,9 @@
 /* Chatbot floating launcher button (DT-326). Uses brand palette. */
 
 :root {
-    --chatbot-btn-size: 60px;
-    --chatbot-btn-font-size: 26px;
+    /* DT-628: sized in rem so the launcher grows with the text-size tools. */
+    --chatbot-btn-size: 3.75rem;
+    --chatbot-btn-font-size: 1.6rem;
     --chatbot-btn-color: var(--color-green, #366454);
     --chatbot-btn-hover-color: var(--color-teal, #3A5F5F);
     --chatbot-btn-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
@@ -46,7 +47,18 @@
     outline-offset: 3px;
 }
 
+/* DT-626: launcher follows the shared brand tokens. */
+:root {
+    --chatbot-btn-color: var(--color-primary, #366454);
+    --chatbot-btn-hover-color: var(--color-primary-hover, #294f42);
+}
 
+/* DT-628: the floating button keeps its contrast in dark mode. */
+:root[data-theme="dark"] .chatbot-toggle-btn {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+/* Touch target and mobile placement. */
 .chatbot-toggle-btn {
     min-width: 56px;
     min-height: 56px;
@@ -54,7 +66,7 @@
 }
 
 .chatbot-toggle-btn:focus-visible {
-    outline: 3px solid #00aec5;
+    outline: 3px solid var(--color-link-highlight, #00aec5);
     outline-offset: 4px;
 }
 
@@ -89,4 +101,75 @@
 html[dir="rtl"] .chatbot-widget {
     right: auto;
     left: max(20px, env(safe-area-inset-left));
+}
+
+/* DT-808: text the chatbot highlights after taking the user to a page.
+   Light green from the brand palette with black text in light mode; a
+   darker green with white text in dark mode. Both meet WCAG AA contrast. */
+:root {
+    --chatbot-highlight-bg: var(--color-light-green, #DBE4C3);
+    --chatbot-highlight-text: #000000;
+    --chatbot-highlight-outline: var(--color-primary, #366454);
+}
+
+:root[data-theme="dark"] {
+    --chatbot-highlight-bg: #2f5d4d;
+    --chatbot-highlight-text: #ffffff;
+    --chatbot-highlight-outline: var(--color-light-green, #DBE4C3);
+}
+
+:root.high-contrast {
+    --chatbot-highlight-bg: #ffff00;
+    --chatbot-highlight-text: #000000;
+    --chatbot-highlight-outline: #000000;
+}
+
+::highlight(chatbot-highlight) {
+    background-color: var(--chatbot-highlight-bg);
+    color: var(--chatbot-highlight-text);
+}
+
+/* Browsers without the CSS Highlight API get an outline instead. */
+.chatbot-highlight-fallback {
+    outline: 3px solid var(--chatbot-highlight-outline);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* DT-808: floating button to dismiss the chatbot highlights. Bottom centre,
+   clear of the chat launcher in the bottom-right corner. */
+.chatbot-clear-highlights {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1100;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 2px solid var(--chatbot-highlight-outline);
+    border-radius: 999px;
+    background-color: var(--color-white, #ffffff);
+    color: var(--color-primary, #366454);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: bold;
+    box-shadow: var(--chatbot-btn-shadow);
+    cursor: pointer;
+}
+
+.chatbot-clear-highlights:hover {
+    background-color: var(--chatbot-highlight-bg);
+    color: var(--chatbot-highlight-text);
+}
+
+.chatbot-clear-highlights:focus-visible {
+    outline: 3px solid var(--color-link-highlight, #00aec5);
+    outline-offset: 2px;
+}
+
+:root[data-theme="dark"] .chatbot-clear-highlights {
+    background-color: var(--color-dark-surface-raised, #2a302d);
+    color: #ffffff;
 }

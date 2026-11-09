@@ -1,6 +1,8 @@
-// DT-515 Sprint 7
-// PBall
-// Service handling applied change audit records and safe rollbacks / undo functionality
+// DT-618 Sprint 8
+// Preston Ball
+// Service handling applied change audit records and safe rollbacks / undo functionality with database persistence
+
+import { API_BASE_URL } from './api'
 
 const AUDIT_STORAGE_KEY = 'cms_applied_change_audit_logs'
 
@@ -12,6 +14,23 @@ export const AuditHistoryService = {
     } catch {
       return []
     }
+  },
+
+  // DT-618 Sprint 8 - Preston Ball: Load applied change logs from backend database
+  async loadFromDatabase () {
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/content/applied-changes`)
+      if (res.ok) {
+        const remoteLogs = await res.json()
+        if (Array.isArray(remoteLogs)) {
+          localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(remoteLogs))
+          return remoteLogs
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load applied changes from database:', err)
+    }
+    return this.getLogs()
   },
 
   recordAppliedChange ({ additions = [], deletions = [], edits = {}, userId = 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d', status = 'applied' }) {
@@ -38,24 +57,26 @@ export const AuditHistoryService = {
       console.error('Failed to persist applied change audit log:', err)
     }
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbRecordAppliedChange (logData) {
-     *   const res = await fetch('/api/admin/content/applied-changes', {
-     *     method: 'POST',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(logData)
-     *   })
-     *   if (!res.ok) throw new Error('Database audit record failed')
-     *   return await res.json()
-     * }
-     * await dbRecordAppliedChange(logEntry)
-     */
+    // DT-618 Sprint 8 - Preston Ball: Persist applied change to database
+    async function dbRecordAppliedChange (logData) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/content/applied-changes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(logData)
+        })
+        if (!res.ok) throw new Error('Database audit record failed')
+        return await res.json()
+      } catch (err) {
+        console.error('Database audit record error:', err)
+      }
+    }
+    dbRecordAppliedChange(logEntry)
 
     return logEntry
   },
 
-  undoAppliedChange (logId) {
+  async undoAppliedChange (logId) {
     const logs = this.getLogs()
     const targetLog = logs.find(l => l.id === logId)
     if (!targetLog) {
@@ -71,17 +92,17 @@ export const AuditHistoryService = {
     const updatedLogs = logs.map(l => l.id === logId ? { ...l, status: 'undone' } : l)
     localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(updatedLogs))
 
-    /*
-     * DATABASE INTEGRATION (COMMENTED OUT UNTIL SITE RESTRUCTURING IS COMPLETED)
-     * async function dbUndoChange (changeId) {
-     *   const res = await fetch(`/api/admin/content/applied-changes/${changeId}/undo`, {
-     *     method: 'POST'
-     *   })
-     *   if (!res.ok) throw new Error('Database undo transaction failed')
-     *   return await res.json()
-     * }
-     * await dbUndoChange(logId)
-     */
+    // DT-618 Sprint 8 - Preston Ball: Send undo request to database
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/content/applied-changes/${logId}/undo`, {
+        method: 'POST'
+      })
+      if (!res.ok) {
+        console.warn('Database undo transaction returned non-ok status:', res.status)
+      }
+    } catch (err) {
+      console.error('Database undo transaction error:', err)
+    }
 
     return { success: true, undoneId: logId, additions, deletions, edits }
   },

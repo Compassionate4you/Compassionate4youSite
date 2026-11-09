@@ -75,13 +75,6 @@
     --color-sage: #9da191;
     --color-black: #ffffff;
 
-    /* Dark Mode Cool Tones - Cool tones in dark mode. */
-    --color-teal: #000000;
-    --color-blue-gray: #000000;
-    --color-green: #000000;
-    --color-purple: #000000;
-    --color-lavender: #000000;
-
     /* Dark Mode Primary Text Colors - Primary text colors in dark mode. */
     --color-white-text: #ffffff;
     --color-black-text: #000000;
@@ -156,6 +149,14 @@ h1, h2, h3 {
 /*}*/
 :root[data-theme="dark"] {
     color-scheme: dark;
+
+    /* DT-628: dark surface tokens, so components can theme from one place
+       instead of each hard-coding its own dark palette. */
+    --color-dark-surface: #1f2422;
+    --color-dark-surface-raised: #2a302d;
+    --color-dark-text: #f0f2ee;
+    --color-dark-muted-text: #a8b0ab;
+    --color-dark-divider: #3a423e;
 }
 :root.high-contrast {
     filter: contrast(1.4);

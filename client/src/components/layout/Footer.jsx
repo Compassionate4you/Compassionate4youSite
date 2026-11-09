@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import './styles/footer.css';
-import './styles/resetfooter.css';
 import { useLocation } from "react-router-dom";
 
+// DT-902: Use the translated Welcome label and canonical destination.
+// DT-718: Group horizontal contact details and hours with the copyright below.
 function Footer() {
     const { t } = useTranslation();
     const location = useLocation();
@@ -17,20 +18,6 @@ function Footer() {
       <div className='footer__inner'>
         <div className='footer__grid'>
 
-          <div>
-            <h3 className='footer__heading'>Compassionate Home Health &amp; Hospice</h3>
-            <p className='footer__about-text'>{t('footer.tagline')}</p>
-          </div>
-
-          <div>
-            <h4 className='footer__subheading'>{t('footer.quickLinks')}</h4>
-            <ul className='footer__links'>
-              <li><a href='/' className='footer__link'>{t('nav.home')}</a></li>
-              <li><a href='/home-health' className='footer__link'>{t('nav.homeHealth')}</a></li>
-              <li><a href='/hospice' className='footer__link'>{t('nav.hospice')}</a></li>
-              <li><a href='/schedule' className='footer__link'>{t('nav.schedule')}</a></li>
-            </ul>
-          </div>
           {/* DT-160: User can view the location of the company in the footer */}
           <div>
             <h4 className='footer__subheading'>{t('footer.contactUs')}</h4>
@@ -39,7 +26,13 @@ function Footer() {
                 <svg className='footer__contact-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
                   <path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z' />
                 </svg>
-                <span className='footer__contact-text'>{t('footer.phone')}</span>
+                {/* DT-72: User can click on phone number to call that location*/}
+                <a
+                  href='tel:+19254257104'
+                  className='footer__contact-text footer__phone-link'
+                >
+                  {t('footer.phone')}
+                </a>
               </li>
               <li className='footer__contact-item'>
                 <svg className='footer__contact-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
@@ -51,10 +44,22 @@ function Footer() {
                 <svg className='footer__contact-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
                   <path d='M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11z' /><circle cx='12' cy='10' r='3' />
                 </svg>
-                <address className='footer__location-address' style={{ fontStyle: 'normal' }}>
-                  {t('footer.address1')}<br />
-                  {t('footer.address2')}
-                </address>
+                {/* DT-73: User can click on address to open navigations to that location*/}
+                <a
+                  href='https://www.google.com/maps/dir/?api=1&destination=1501+N+Broadway+Ste+350,+Walnut+Creek,+CA+94596'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='footer__location-link'
+                  aria-label='Open office address in Google Maps'
+                >
+                  <address
+                    className='footer__location-address'
+                    style={{ fontStyle: 'normal' }}
+                  >
+                    {t('footer.address1')}<br />
+                    {t('footer.address2')}
+                  </address>
+                </a>
               </li>
             </ul>
           </div>
@@ -68,17 +73,17 @@ function Footer() {
                 </svg>
                 <span className='footer__hours-text'>{t('footer.weekdays')}<br />{t('footer.weekdayHours')}</span>
               </li>
-              <li className='footer__hours-indent'>
+              <li className='footer__hours-item'>
                 <span className='footer__hours-text'>{t('footer.saturday')}<br />{t('footer.saturdayHours')}</span>
               </li>
-              <li className='footer__hours-indent'>
+              <li className='footer__hours-item'>
                 <span className='footer__hours-text'>{t('footer.sunday')}<br />{t('footer.sundayClosed')}</span>
               </li>
             </ul>
           </div>
 
         </div>
-
+        {/* DT-718: Retain the translated copyright beneath both footer columns. */}
         <div className='footer__bottom'>
           <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}</p>
         </div>

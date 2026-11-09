@@ -13,6 +13,7 @@ function LocationsTab({
     onEditFormChange,
     onSaveLocation,
     onCancelEdit,
+    onDeleteLocation,
 }) {
     return (
         <div className="admin-locations-section">
@@ -90,46 +91,60 @@ function LocationsTab({
                             />
                         </div>
 
+                       {/* Street address */}
                         <div className="admin-location-form-field admin-location-address-field">
-                            <label htmlFor="location-address">
-                                Full address
-                            </label>
-
+                            <label htmlFor="location-street">Street address</label>
                             <input
-                                id="location-address"
+                                id="location-street"
                                 type="text"
-                                name="address"
-                                value={locationForm.address}
+                                name="streetAddress"
+                                value={locationForm.streetAddress}
                                 onChange={onLocationFormChange}
-                                placeholder="Street, suite, city, state, and ZIP code"
+                                placeholder="Example: 123 Main Street"
                                 required
                             />
                         </div>
 
+                        {/* City */}
                         <div className="admin-location-form-field">
-                            <label htmlFor="location-status">
-                                Status
-                            </label>
-
-                            <select
-                                id="location-status"
-                                name="status"
-                                value={locationForm.status}
+                            <label htmlFor="location-city">City</label>
+                            <input
+                                id="location-city"
+                                type="text"
+                                name="city"
+                                value={locationForm.city}
                                 onChange={onLocationFormChange}
+                                placeholder="Example: Sacramento"
                                 required
-                            >
-                                <option value="">
-                                    Select a status
-                                </option>
+                            />
+                        </div>
 
-                                <option value="Active">
-                                    Active
-                                </option>
+                        {/* State */}
+                        <div className="admin-location-form-field">
+                            <label htmlFor="location-state">State</label>
+                            <input
+                                id="location-state"
+                                type="text"
+                                name="state"
+                                value={locationForm.state}
+                                onChange={onLocationFormChange}
+                                placeholder="Example: CA"
+                                required
+                            />
+                        </div>
 
-                                <option value="Inactive">
-                                    Inactive
-                                </option>
-                            </select>
+                        {/* ZIP code */}
+                        <div className="admin-location-form-field">
+                            <label htmlFor="location-zip">ZIP code</label>
+                            <input
+                                id="location-zip"
+                                type="text"
+                                name="zipCode"
+                                value={locationForm.zipCode}
+                                onChange={onLocationFormChange}
+                                placeholder="Example: 95814"
+                                required
+                            />
                         </div>
                     </div>
                     {/* New Form Add and cancel buttons */}
@@ -173,16 +188,47 @@ function LocationsTab({
                                     className="admin-location-form-control"
                                 />
 
+                                {/* Street address */}
                                 <input
                                     type="text"
-                                    value={editForm.address}
+                                    value={editForm.streetAddress}
                                     onChange={(event) =>
-                                        onEditFormChange(
-                                            "address",
-                                            event.target.value
-                                        )
+                                        onEditFormChange("streetAddress", event.target.value)
                                     }
-                                    placeholder="Address"
+                                    placeholder="Street address"
+                                    className="admin-location-form-control"
+                                />
+
+                                {/* City */}
+                                <input
+                                    type="text"
+                                    value={editForm.city}
+                                    onChange={(event) =>
+                                        onEditFormChange("city", event.target.value)
+                                    }
+                                    placeholder="City"
+                                    className="admin-location-form-control"
+                                />
+
+                                {/* State */}
+                                <input
+                                    type="text"
+                                    value={editForm.state}
+                                    onChange={(event) =>
+                                        onEditFormChange("state", event.target.value)
+                                    }
+                                    placeholder="State"
+                                    className="admin-location-form-control"
+                                />
+
+                                {/* ZIP code */}
+                                <input
+                                    type="text"
+                                    value={editForm.zipCode}
+                                    onChange={(event) =>
+                                        onEditFormChange("zipCode", event.target.value)
+                                    }
+                                    placeholder="ZIP code"
                                     className="admin-location-form-control"
                                 />
 
@@ -198,26 +244,7 @@ function LocationsTab({
                                     placeholder="Phone"
                                     className="admin-location-form-control"
                                 />
-                                {/* Drop down menu for Inactive or Active choice */}
-                                <select
-                                    value={editForm.status}
-                                    onChange={(event) =>
-                                        onEditFormChange(
-                                            "status",
-                                            event.target.value
-                                        )
-                                    }
-                                    className="admin-location-form-control"
-                                >
-                                    <option value="Active">
-                                        Active
-                                    </option>
-
-                                    <option value="Inactive">
-                                        Inactive
-                                    </option>
-                                </select>
-                                    {/* Edit Save button */}
+                                {/* Edit Save button */}
                                 <div className="admin-location-form-actions">
                                     <button
                                         type="button"
@@ -236,6 +263,18 @@ function LocationsTab({
                                     >
                                         Cancel
                                     </button>
+
+
+                                    {/* Delete the selected location */}
+                                    <button
+                                         type="button"
+                                         className="admin-location-delete-button"
+                                         onClick={() => onDeleteLocation(location.id)}
+                                    >
+                                         Delete
+                                    </button>
+
+
                                 </div>
                             </div>
                         ) : (
@@ -264,12 +303,6 @@ function LocationsTab({
                                     <p className="admin-location-phone">
                                         Phone: {location.phone}
                                     </p>
-
-                                    <span
-                                        className={`admin-location-status admin-location-status-${location.status.toLowerCase()}`}
-                                    >
-                                        {location.status}
-                                    </span>
                                 </div>
                                 {/* Edit Location button */}
                                 <button
