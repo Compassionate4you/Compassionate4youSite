@@ -5,6 +5,7 @@ import HeroSection from './sections/HeroSection'
 // DT-902: Use the young Asian caregiver photo for the Home Health hero.
 import careImage from '../../assets/images/asian-young-caregiver-caring-her-elderly-patient-senior-daycare-handicap-patient-wheelchair-hospital-talking-friendly-nurse-looking-cheerful-nurse-wheeling-senior-patient_609648-3125.jpeg'
 import PageCallToAction from './sections/PageCallToAction'
+import TypographyScope from './TypographyScope'
 
 // DT-731: Keep the eight screenshot service names in their original reading order.
 const SERVICE_KEYS = ['doctors', 'pt', 'ot', 'nurses', 'st', 'chha', 'msw', 'multilingual']
@@ -30,7 +31,7 @@ const SPECIALTY_ICONS = ['HeartPulse', 'Wind', 'Bone', 'Bandage', 'Droplets', 'A
 export default function HomeHealthSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
 
-  return sections.map(section => {
+  const renderSection = section => {
     // DT-902: Match Welcome’s split hero geometry with page-specific colors and photo placement.
     if (section.id === 'sec-hh-hero') {
       return (
@@ -71,5 +72,12 @@ export default function HomeHealthSections ({ sections, theme = 'light' }) {
       return <HeaderCardsSection key={section.id} title={t('homeHealthPage.specialtyTitle')} label={t('homeHealthPage.specialtiesIntro.label')} subtitle={t('homeHealthPage.specialtiesIntro.subtitle')} surface='white' items={items} />
     }
     return <DynamicSectionRenderer key={section.id} config={section} colorSource='global' theme={theme} />
-  })
+  }
+  // DT-893: apply each section's saved formatting (from the content editor)
+  // to its title and description. Sections without any render unchanged.
+  return sections.map(section => (
+    <TypographyScope key={section.id} typography={section.content?.typography}>
+      {renderSection(section)}
+    </TypographyScope>
+  ))
 }

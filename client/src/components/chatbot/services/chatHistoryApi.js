@@ -23,15 +23,20 @@ export async function loadHistory (clientSessionId) {
   return Array.isArray(data.messages) ? data.messages : []
 }
 
+// DT-906: also saves what the message is (translation key, FAQ id, buttons)
+// so it can be shown in another language after a reload.
 export async function saveMessage (clientSessionId, message) {
-  return request('/chatbot/history', {
-    method: 'POST',
-    body: {
-      clientSessionId,
-      sender: message.sender,
-      body: message.text || ''
-    }
-  })
+  const body = {
+    clientSessionId,
+    sender: message.sender,
+    body: message.text || ''
+  }
+  if (message.textKey) body.textKey = message.textKey
+  if (message.faqId) body.faqId = message.faqId
+  if (Array.isArray(message.actionButtons) && message.actionButtons.length > 0) {
+    body.actionButtons = message.actionButtons
+  }
+  return request('/chatbot/history', { method: 'POST', body })
 }
 
 export default { loadHistory, saveMessage }

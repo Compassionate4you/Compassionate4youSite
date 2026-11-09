@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react'
 import MessageBubble from './MessageBubble'
 
-function MessageList ({ messages }) {
+function MessageList ({ messages, onOpenFaq }) {
   const bottomRef = useRef(null)
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function MessageList ({ messages }) {
   return (
     <div className='chat-messages' role='log' aria-live='polite'>
       {messages.map((m) => (
-        <MessageBubble key={m.id} message={m} />
+        <MessageBubble key={m.id} message={m} onOpenFaq={onOpenFaq} />
       ))}
       <div ref={bottomRef} />
     </div>

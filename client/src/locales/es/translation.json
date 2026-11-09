@@ -445,7 +445,8 @@
       "toggleLightMode": "Haga clic abajo para volver al modo claro.",
       "toggleHighContrast": "Haga clic abajo para alternar el alto contraste.",
       "error": "No se pudo conectar con el servidor. Inténtelo de nuevo en un momento.",
-      "placeholder": "Recibimos su mensaje. Las respuestas completas del chat estarán disponibles pronto."
+      "greeting": "¡Hola! ¿En qué puedo ayudarle hoy? Puede preguntar sobre nuestros servicios, ubicaciones, horarios o citas, o tocar Preguntas frecuentes.",
+      "noMatch": "Lo siento, no entendí eso. Intente preguntarlo de otra forma o toque Preguntas frecuentes para ver en qué puedo ayudarle."
     },
     "faqButton": "Preguntas frecuentes",
     "faqIntro": "Estas son algunas preguntas que nos hacen con frecuencia:",

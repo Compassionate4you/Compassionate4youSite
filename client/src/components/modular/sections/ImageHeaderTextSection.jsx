@@ -5,6 +5,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import '../../../styles/components/modular/sections/ImageHeaderTextSection.css'
+// DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
+import { typographyStyle } from '../typographyStyle'
 
 export default function ImageHeaderTextSection ({
   config,
@@ -26,19 +28,9 @@ export default function ImageHeaderTextSection ({
   const headerTypography = typography.header || {}
   const textTypography = typography.text || {}
 
-  const headerStyle = {
-    textAlign: headerTypography.align || undefined,
-    fontFamily: headerTypography.fontFamily && headerTypography.fontFamily !== 'inherit' ? headerTypography.fontFamily : undefined,
-    fontWeight: headerTypography.bold ? 'bold' : undefined,
-    fontStyle: headerTypography.italic ? 'italic' : undefined
-  }
+  const headerStyle = typographyStyle(headerTypography)
 
-  const textStyle = {
-    textAlign: textTypography.align || undefined,
-    fontFamily: textTypography.fontFamily && textTypography.fontFamily !== 'inherit' ? textTypography.fontFamily : undefined,
-    fontWeight: textTypography.bold ? 'bold' : undefined,
-    fontStyle: textTypography.italic ? 'italic' : undefined
-  }
+  const textStyle = typographyStyle(textTypography)
 
   return (
     <section className="modular-image-header-text-section" style={style}>

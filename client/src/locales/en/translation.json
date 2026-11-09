@@ -387,7 +387,8 @@
       "toggleLightMode": "Click below to switch back to light mode.",
       "toggleHighContrast": "Click below to toggle high contrast.",
       "error": "Couldn't reach the server. Try again in a moment.",
-      "placeholder": "Got your message. Full chatbot responses coming soon."
+      "greeting": "Hello! How can I help you today? You can ask about our services, locations, hours or scheduling, or tap Common questions.",
+      "noMatch": "Sorry, I didn't understand that. Try asking another way, or tap Common questions to see what I can help with."
     },
     "faqButton": "Common questions",
     "faqIntro": "Here are some questions people often ask:",

@@ -964,3 +964,72 @@
 .admin-location-submit-button:hover {
   background-color: #294f42;
 }
+/* DT-837: Current / History tabs inside the Appointments tab */
+.appointment-view-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.appointment-view-tab {
+  padding: 8px 16px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--color-muted-text);
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.appointment-view-tab:hover,
+.appointment-view-tab:focus-visible {
+  color: var(--color-primary);
+}
+
+.appointment-view-tab-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* DT-837: history search and tag dropdown */
+.appointment-history-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 16px;
+}
+
+.appointment-history-search-label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.appointment-history-search,
+.appointment-history-tag {
+  padding: 8px 10px;
+  border: 1px solid var(--color-input-border, var(--color-divider));
+  border-radius: var(--radius-md);
+  background-color: var(--color-white);
+  color: var(--color-white-text);
+  font: inherit;
+}
+
+.appointment-history-search {
+  min-width: 240px;
+}
+
+.appointment-history-tag:disabled {
+  opacity: 0.6;
+}
+
+.appointment-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

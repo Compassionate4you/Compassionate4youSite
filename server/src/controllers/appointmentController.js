@@ -22,25 +22,134 @@ const TIME_SLOTS = [
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+// DT-837 / DT-927: the labels an admin can give an appointment in history.
+const HISTORY_TAGS = [
+    'COMPLETED',
+    'NO_SHOW',
+    'CANCELLED_BY_PATIENT',
+    'CANCELLED_BY_STAFF',
+    'NOT_CONFIRMED',
+];
+
+// DT-837 / DT-925: "has this appointment happened yet" is judged in the
+// office's time zone, not the server's.
+const OFFICE_TIME_ZONE = 'America/Los_Angeles';
+
+// DT-837 / DT-924: value of activeSlot while an appointment holds its slot.
+function slotKey(date, timeSlot) {
+    return `${date}|${timeSlot}`;
+}
+
+// DT-837: today's date (YYYY-MM-DD) and minutes since midnight in the office.
+function officeNow(now = new Date()) {
+    const parts = Object.fromEntries(
+        new Intl.DateTimeFormat('en-CA', {
+            timeZone: OFFICE_TIME_ZONE,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hourCycle: 'h23',
+        })
+            .formatToParts(now)
+            .map((p) => [p.type, p.value])
+    );
+    return {
+        date: `${parts.year}-${parts.month}-${parts.day}`,
+        minutes: Number(parts.hour) * 60 + Number(parts.minute),
+    };
+}
+
+// DT-837: '10:00 AM' -> 600. Unknown formats count as the start of the day.
+function slotStartMinutes(timeSlot) {
+    const match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(String(timeSlot || '').trim());
+    if (!match) return 0;
+    let hours = Number(match[1]) % 12;
+    if (match[3].toUpperCase() === 'PM') hours += 12;
+    return hours * 60 + Number(match[2]);
+}
+
+// DT-837 / DT-925: true once the appointment's start time has passed.
+function hasStarted(appointment, now = new Date()) {
+    const office = officeNow(now);
+    if (appointment.date < office.date) return true;
+    if (appointment.date > office.date) return false;
+    return slotStartMinutes(appointment.timeSlot) <= office.minutes;
+}
+
+// DT-837 / DT-926: an appointment belongs in history once it has happened,
+// or as soon as it is cancelled or completed.
+function isInHistory(appointment, now = new Date()) {
+    return (
+        appointment.status === 'CANCELLED' ||
+        appointment.status === 'COMPLETED' ||
+        hasStarted(appointment, now)
+    );
+}
+
+// DT-837 / DT-925 / DT-926: give past appointments their history label.
+// Confirmed ones become Completed; ones nobody confirmed are tagged
+// Not confirmed and keep their Pending status. Runs whenever appointments are
+// listed, so no scheduled job is needed.
+async function settlePastAppointments(now = new Date()) {
+    const office = officeNow(now);
+    const candidates = await prisma.appointment.findMany({
+        where: {
+            archivedAt: null,
+            historyTag: null,
+            status: { in: ['PENDING', 'CONFIRMED', 'COMPLETED'] },
+            date: { lte: office.date },
+        },
+        select: { id: true, date: true, timeSlot: true, status: true },
+    });
+
+    const toComplete = [];
+    const notConfirmed = [];
+    for (const appt of candidates) {
+        if (appt.status === 'COMPLETED') toComplete.push(appt.id);
+        else if (hasStarted(appt, now)) {
+            (appt.status === 'CONFIRMED' ? toComplete : notConfirmed).push(appt.id);
+        }
+    }
+
+    if (toComplete.length > 0) {
+        await prisma.appointment.updateMany({
+            where: { id: { in: toComplete } },
+            data: { status: 'COMPLETED', historyTag: 'COMPLETED' },
+        });
+    }
+    if (notConfirmed.length > 0) {
+        await prisma.appointment.updateMany({
+            where: { id: { in: notConfirmed } },
+            data: { historyTag: 'NOT_CONFIRMED' },
+        });
+    }
+}
+
+// DT-837: history fields are admin-only, so customers never receive them.
+function forCustomer(appointment) {
+    const { historyTag, archivedAt, activeSlot, ...rest } = appointment;
+    return rest;
+}
+
+// DT-837: the history label that goes with a status an admin sets.
+// Pending and Confirmed have none until the appointment is in the past.
+function historyTagForStatus(status) {
+    if (status === 'CANCELLED') return 'CANCELLED_BY_STAFF';
+    if (status === 'COMPLETED') return 'COMPLETED';
+    return null;
+}
+
 function isPastDate(date) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return new Date(`${date}T00:00:00`) < today;
 }
 
-// DT-278 (724): The database only allows one appointment per date and time,
-// even a cancelled one. Before booking or rescheduling into a slot, delete any
-// cancelled appointment still holding it so the slot can be used again.
-async function freeCancelledSlot(date, timeSlot, excludeId){
-    await prisma.appointment.deleteMany({
-        where: {
-            date,
-            timeSlot,
-            status: 'CANCELLED',
-            ...(excludeId ? { id: { not: excludeId } } : {}),
-        },
-    });
-}
+// DT-278 (724) used to delete a cancelled appointment when its slot was
+// booked again. DT-837 replaced that: cancelled appointments give up their
+// activeSlot instead, so the slot frees up and the appointment stays in history.
 
 // GET /api/appointments/availability?date=YYYY-MM-DD
 async function getAvailability(req, res, next) {
@@ -51,8 +160,10 @@ async function getAvailability(req, res, next) {
             return sendValidationError(res, 'A date in YYYY-MM-DD format is required.', 'date');
         }
 
+        // DT-837: only appointments still holding their slot count as taken
+        // (cancelled and archived ones have activeSlot cleared).
         const taken = await prisma.appointment.findMany({
-            where: { date, status: { not: 'CANCELLED' } },
+            where: { date, activeSlot: { not: null } },
             select: { timeSlot: true },
         });
 
@@ -96,7 +207,7 @@ async function createAppointment(req, res, next) {
 
         // DT-563: reject a slot that is already taken.
         const clash = await prisma.appointment.findFirst({
-            where: { date, timeSlot, status: { not: 'CANCELLED' } },
+            where: { activeSlot: slotKey(date, timeSlot) },
         });
         if (clash) {
             return sendValidationError(
@@ -106,11 +217,10 @@ async function createAppointment(req, res, next) {
             );
         }
 
-        // DT-278 (724): Free the slot if a cancelled appointment is still holding it
-        await freeCancelledSlot(date, timeSlot);
-
         const appointment = await prisma.appointment.create({
             data: {
+                // DT-837: the new booking holds its slot.
+                activeSlot: slotKey(date, timeSlot),
                 userId: req.user?.id ?? null,
                 fullName: fullName.trim(),
                 email: email.trim(),
@@ -132,7 +242,7 @@ async function createAppointment(req, res, next) {
 
         return res.status(201).json({ success: true, appointment });
     } catch (err) {
-        // Unique constraint on (date, timeSlot) - someone booked between the
+        // Unique constraint on activeSlot - someone booked between the
         // check above and the insert.
         if (err.code === 'P2002') {
             return sendValidationError(
@@ -148,27 +258,42 @@ async function createAppointment(req, res, next) {
 // GET /api/appointments/mine
 async function getMyAppointments(req, res, next) {
     try {
+        // DT-837: mark past appointments Completed before showing them.
+        await settlePastAppointments();
         const appointments = await prisma.appointment.findMany({
-            where: { userId: req.user.id },
+            // DT-924: an appointment the office archived is hidden from the
+            // patient too, as it was when archiving was a delete.
+            where: { userId: req.user.id, archivedAt: null },
             orderBy: [{ date: 'asc' }, { timeSlot: 'asc' }],
         });
-        return res.status(200).json({ appointments });
+        return res.status(200).json({ appointments: appointments.map(forCustomer) });
     } catch (err) {
         return next(err);
     }
 }
 
 // Returns every appointment for the Admin Dashboard.
+// DT-837: archived appointments are left out, and each one says whether it
+// belongs in the Current or History tab.
 async function getAllAppointments(req, res, next) {
     try {
+        await settlePastAppointments();
+
         const appointments = await prisma.appointment.findMany({
+            where: { archivedAt: null },
             orderBy: [
                 { date: 'asc' },
                 { timeSlot: 'asc' },
             ],
         });
 
-        return res.status(200).json({ appointments });
+        const now = new Date();
+        return res.status(200).json({
+            appointments: appointments.map((appointment) => ({
+                ...appointment,
+                section: isInHistory(appointment, now) ? 'history' : 'current',
+            })),
+        });
     } catch (err) {
         return next(err);
     }
@@ -247,13 +372,12 @@ async function createAdminAppointment(req, res, next) {
             );
         }
 
-        const clash = await prisma.appointment.findFirst({
-            where: {
-                date,
-                timeSlot,
-                status: { not: 'CANCELLED' },
-            },
-        });
+        // DT-837: a cancelled appointment does not take up the slot.
+        const clash = normalizedStatus === 'CANCELLED'
+            ? null
+            : await prisma.appointment.findFirst({
+                where: { activeSlot: slotKey(date, timeSlot) },
+            });
 
         if (clash) {
             return sendValidationError(
@@ -282,6 +406,9 @@ async function createAdminAppointment(req, res, next) {
                 date,
                 timeSlot,
                 status: normalizedStatus,
+                // DT-837: slot and history label follow the status.
+                activeSlot: normalizedStatus === 'CANCELLED' ? null : slotKey(date, timeSlot),
+                historyTag: historyTagForStatus(normalizedStatus),
                 notes:
                     typeof notes === 'string' && notes.trim() !== ''
                         ? notes.trim()
@@ -297,7 +424,8 @@ async function createAdminAppointment(req, res, next) {
         await notifyAppointmentChange(null, appointment);
         return res.status(201).json({
             success: true,
-            appointment,
+            // DT-837: tells the dashboard which tab the appointment belongs in.
+            appointment: { ...appointment, section: isInHistory(appointment) ? 'history' : 'current' },
         });
     } catch (err) {
         if (err.code === 'P2002') {
@@ -334,7 +462,7 @@ async function updateAdminAppointment(req, res, next) {
                 where: { id },
             });
 
-        if (!existingAppointment) {
+        if (!existingAppointment || existingAppointment.archivedAt) {
             return res.status(404).json({
                 success: false,
                 error: {
@@ -342,6 +470,16 @@ async function updateAdminAppointment(req, res, next) {
                     field: null,
                 },
             });
+        }
+
+        // DT-837: appointments in history are a record of what happened.
+        // Only their tag can change (PATCH /:id/history-tag).
+        if (isInHistory(existingAppointment)) {
+            return sendValidationError(
+                res,
+                'Appointments in history can only have their tag changed.',
+                null
+            );
         }
 
         if (
@@ -400,14 +538,15 @@ async function updateAdminAppointment(req, res, next) {
 
         // Exclude the appointment currently being edited when
         // checking for another appointment at the same date and time.
-        const clash = await prisma.appointment.findFirst({
-            where: {
-                id: { not: id },
-                date,
-                timeSlot,
-                status: { not: 'CANCELLED' },
-            },
-        });
+        // DT-837: cancelling it frees the slot, so there is nothing to check.
+        const clash = normalizedStatus === 'CANCELLED'
+            ? null
+            : await prisma.appointment.findFirst({
+                where: {
+                    id: { not: id },
+                    activeSlot: slotKey(date, timeSlot),
+                },
+            });
 
         if (clash) {
             return sendValidationError(
@@ -440,6 +579,10 @@ async function updateAdminAppointment(req, res, next) {
                     date,
                     timeSlot,
                     status: normalizedStatus,
+                    // DT-837: an admin cancelling is tagged Cancelled by staff
+                    // and gives up the slot.
+                    activeSlot: normalizedStatus === 'CANCELLED' ? null : slotKey(date, timeSlot),
+                    historyTag: historyTagForStatus(normalizedStatus),
                     notes:
                         typeof notes === 'string' &&
                         notes.trim() !== ''
@@ -453,7 +596,11 @@ async function updateAdminAppointment(req, res, next) {
         await notifyAppointmentChange(existingAppointment, updatedAppointment);
         return res.status(200).json({
             success: true,
-            appointment: updatedAppointment,
+            // DT-837: an appointment cancelled or completed here moves to History.
+            appointment: {
+                ...updatedAppointment,
+                section: isInHistory(updatedAppointment) ? 'history' : 'current',
+            },
         });
     } catch (err) {
         if (err.code === 'P2002') {
@@ -469,7 +616,8 @@ async function updateAdminAppointment(req, res, next) {
 }
 
 // DELETE /api/appointments/:id
-// Permanently deletes an appointment.
+// DT-837 / DT-924: archives the appointment instead of deleting it, so the
+// history is kept. It disappears from the admin lists and frees its slot.
 async function deleteAdminAppointment(req, res, next) {
     try {
         const { id } = req.params;
@@ -479,7 +627,7 @@ async function deleteAdminAppointment(req, res, next) {
                 where: { id },
             });
 
-        if (!existingAppointment) {
+        if (!existingAppointment || existingAppointment.archivedAt) {
             return res.status(404).json({
                 success: false,
                 error: {
@@ -489,8 +637,9 @@ async function deleteAdminAppointment(req, res, next) {
             });
         }
 
-        await prisma.appointment.delete({
+        await prisma.appointment.update({
             where: { id },
+            data: { archivedAt: new Date(), activeSlot: null },
         });
 
         return res.status(200).json({
@@ -498,7 +647,7 @@ async function deleteAdminAppointment(req, res, next) {
             appointmentId: id,
         });
     } catch (err) {
-        // The appointment may have been deleted by another request
+        // The appointment may have been removed by another request
         // after the initial existence check.
         if (err.code === 'P2025') {
             return res.status(404).json({
@@ -535,7 +684,7 @@ async function cancelAppointment(req, res, next) {
 
         // Already cancelled, so there's nothing to change
         if (appointment.status === 'CANCELLED') {
-            return res.status(200).json({ success: true, appointment });
+            return res.status(200).json({ success: true, appointment: forCustomer(appointment) });
         }
 
         // Can't cancel an appointment that already happened
@@ -545,15 +694,17 @@ async function cancelAppointment(req, res, next) {
 
         // Mark it as cancelled instead of deleting it,
         // so it still shows in the Past tab on the customer portal
+        // DT-837: tagged Cancelled by patient for the admin history, and the
+        // slot is freed for someone else.
         const updated = await prisma.appointment.update({
             where: { id: appointment.id },
-            data: { status: 'CANCELLED' },
+            data: { status: 'CANCELLED', historyTag: 'CANCELLED_BY_PATIENT', activeSlot: null },
         });
                 
         // Tell the person it was cancelled. Never throws.
         await notifyAppointmentChange(appointment, updated);
         // Send back the updated appointment so the portal can show the new status
-        return res.status(200).json({ success: true, appointment: updated });
+        return res.status(200).json({ success: true, appointment: forCustomer(updated) });
     } catch (err) {
         return next(err);
     }
@@ -601,7 +752,7 @@ async function rescheduleAppointment(req,res,next){
 
         // Nothing to change if they picked the same date and time
         if (appointment.date === date && appointment.timeSlot === timeSlot){
-            return res.status(200).json({ success: true, appointment });
+            return res.status(200).json({ success: true, appointment: forCustomer(appointment) });
         }
 
         // DT-278 (722): Make sure the new slot isn't taken.
@@ -609,36 +760,72 @@ async function rescheduleAppointment(req,res,next){
         const clash = await prisma.appointment.findFirst({
             where: {
                 id: { not: appointment.id },
-                date,
-                timeSlot,
-                status: { not: 'CANCELLED' },
+                activeSlot: slotKey(date, timeSlot),
             },
         });
         if(clash){
             return sendValidationError(res,'That time is already booked. Please choose another time slot.', 'timeSlot');
         }
 
-        // DT-278 (724): Free the slot if a cancelled appointment is still holding it
-        await freeCancelledSlot(date, timeSlot, appointment.id);
-
         // Save the new date and time. Status goes back to PENDING
         // so staff/admin can confirm the new time.
+        // DT-837: the appointment now holds the new slot.
         const updated=await prisma.appointment.update({
             where: { id: appointment.id },
-            data: { date, timeSlot, status: 'PENDING' },
+            data: { date, timeSlot, status: 'PENDING', activeSlot: slotKey(date, timeSlot) },
         });
         // Tell the person the new date and time. Never throws.
         await notifyAppointmentChange(appointment, updated);
         // Send back the updated appointment so the portal can show the new date and time
-        return res.status(200).json({ success: true, appointment: updated });
+        return res.status(200).json({ success: true, appointment: forCustomer(updated) });
     } catch (err) {
-        // Unique rule on (date, timeSlot). This also happens when a cancelled
-        // appointment still holds the slot (DT-724).
+        // Unique rule on activeSlot - someone took the slot between the
+        // check above and the update.
         if (err.code === 'P2002') {
             return sendValidationError(res, 'That time is already booked. Please choose another slot.', 'timeSlot');
         }
         return next(err);
     }   
+}
+
+// DT-837 / DT-927: PATCH /api/appointments/:id/history-tag
+// Body: { tag: 'NO_SHOW' }. Changes only the tag of an appointment in
+// history. No email is sent: the tag is for staff only.
+async function updateHistoryTag(req, res, next) {
+    try {
+        const tag = String(req.body?.tag || '').toUpperCase();
+        if (!HISTORY_TAGS.includes(tag)) {
+            return sendValidationError(res, 'Please choose a valid tag.', 'tag');
+        }
+
+        const appointment = await prisma.appointment.findUnique({
+            where: { id: req.params.id },
+        });
+        if (!appointment || appointment.archivedAt) {
+            return res.status(404).json({
+                success: false,
+                error: { message: 'Appointment not found.', field: null },
+            });
+        }
+        if (!isInHistory(appointment)) {
+            return sendValidationError(
+                res,
+                'Only appointments in history can be tagged.',
+                'tag'
+            );
+        }
+
+        const updated = await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { historyTag: tag },
+        });
+        return res.status(200).json({
+            success: true,
+            appointment: { ...updated, section: 'history' },
+        });
+    } catch (err) {
+        return next(err);
+    }
 }
 
 module.exports = {
@@ -653,6 +840,14 @@ module.exports = {
     cancelAppointment,
     // DT-278 (722): reschedule route
     rescheduleAppointment,
+    // DT-837: appointment history
+    updateHistoryTag,
+    settlePastAppointments,
+    isInHistory,
+    hasStarted,
+    officeNow,
+    slotStartMinutes,
+    HISTORY_TAGS,
     TIME_SLOTS,
     SERVICE_TYPES,
 };

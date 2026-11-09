@@ -47,6 +47,15 @@ enum AppointmentStatus {
   COMPLETED
 }
 
+// DT-837 / DT-927: label an admin gives an appointment once it is in history.
+enum AppointmentHistoryTag {
+  COMPLETED
+  NO_SHOW
+  CANCELLED_BY_PATIENT
+  CANCELLED_BY_STAFF
+  NOT_CONFIRMED
+}
+
 model Appointment {
   id String @id @default(uuid())
 
@@ -69,11 +78,24 @@ model Appointment {
   notes  String?
   status AppointmentStatus @default(PENDING)
 
+  // DT-837 / DT-927: one history tag per appointment, set automatically when
+  // the appointment moves to history and changeable by an admin.
+  historyTag AppointmentHistoryTag? @map("history_tag")
+
+  // DT-837 / DT-924: admin "delete" archives instead of erasing, so the
+  // appointment history is never lost. Archived appointments are hidden.
+  archivedAt DateTime? @map("archived_at")
+
+  // DT-837 / DT-924: "date|timeSlot" while the appointment holds its slot,
+  // null once it is cancelled or archived. The unique rule lives here so a
+  // cancelled appointment can stay in history without blocking the slot.
+  activeSlot String? @unique @map("active_slot")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  // DT-563: one slot per day cannot be booked twice.
-  @@unique([date, timeSlot])
+  // DT-563: one slot per day cannot be booked twice. DT-837 moved this rule
+  // to activeSlot so cancelled and archived appointments are kept.
   @@index([userId])
   @@index([date])
   @@map("appointments")
@@ -108,6 +130,15 @@ model ChatMessage {
   // 'user' or 'bot'
   sender String
   body   String
+
+  // DT-904 / DT-906: what the message is, not just the words shown, so it can
+  // be shown again in whatever language the visitor picks.
+  // textKey: translation key of a bot reply (e.g. chatbot.faq.contact.answer).
+  // faqId: the FAQ question a user picked from the list.
+  // actionButtons: the reply's buttons (labels are translation keys too).
+  textKey       String? @map("text_key")
+  faqId         String? @map("faq_id")
+  actionButtons Json?   @map("action_buttons")
 
   createdAt DateTime @default(now()) @map("created_at")
 
