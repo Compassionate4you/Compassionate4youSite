@@ -103,17 +103,32 @@ describe('buttons (DT-807)', () => {
     ])
   })
 
+  // DT-808 Sprint 9: Home, Home Health and Hospice are now served by one
+  // CMS route ('/:pageId', with '/' redirecting to '/welcome'), so a link is
+  // valid if it has its own route or is one of the CMS pages.
+  const CMS_PAGES = ['/', '/welcome', '/home-health', '/hospice']
+  const routesSource = () => fs.readFileSync(path.join(srcDir, 'routes/AppRoutes.jsx'), 'utf8')
+  const hasRoute = (routes, to) =>
+    routes.includes(`path='${to}'`) ||
+    (CMS_PAGES.includes(to) && routes.includes("path='/:pageId'"))
+
+  it('the CMS route that serves Home, Home Health and Hospice still exists', () => {
+    const routes = routesSource()
+    expect(routes).toContain("path='/:pageId'")
+    expect(routes).toContain("<Navigate to='/welcome'")
+  })
+
   it('every page links to a route that exists in AppRoutes', () => {
-    const routes = fs.readFileSync(path.join(srcDir, 'routes/AppRoutes.jsx'), 'utf8')
+    const routes = routesSource()
     for (const page of pages) {
-      expect(routes, page.id).toContain(`path='${page.to}'`)
+      expect(hasRoute(routes, page.to), page.id).toBe(true)
     }
   })
 
   it('every FAQ link goes to a route that exists in AppRoutes', () => {
-    const routes = fs.readFileSync(path.join(srcDir, 'routes/AppRoutes.jsx'), 'utf8')
+    const routes = routesSource()
     for (const entry of faq.filter((e) => e.link?.to)) {
-      expect(routes, entry.id).toContain(`path='${entry.link.to}'`)
+      expect(hasRoute(routes, entry.link.to), entry.id).toBe(true)
     }
   })
 
@@ -139,7 +154,10 @@ describe('highlights (DT-808)', () => {
       const spec = highlights[entry.link.highlight]
       expect(spec, entry.id).toBeDefined()
       // Each entry highlights something: short elements, phrases, or both.
-      expect(spec.selectors.length > 0 || spec.phrases === true, entry.id).toBe(true)
+      expect(
+        spec.selectors.length > 0 || spec.phrases === true || (spec.phraseKeys || []).length > 0,
+        entry.id
+      ).toBe(true)
     }
   })
 
@@ -282,5 +300,30 @@ describe('highlight phrases (DT-808)', () => {
   it.each(['en', 'es', 'pa', 'hi', 'ur', 'vi', 'zh'])('the clear highlights button is labelled in %s', (locale) => {
     const t = JSON.parse(fs.readFileSync(path.join(srcDir, 'locales', locale, 'translation.json'), 'utf8'))
     expect(t.chatbot.clearHighlights, locale).toBeTruthy()
+  })
+})
+
+describe('highlights built from translation keys (DT-808 Sprint 9)', () => {
+  const lookupIn = (t, key) => key.split('.').reduce((node, part) => node?.[part], t)
+
+  it.each(LOCALES)('every phraseKeys entry has text in %s', (locale) => {
+    const t = JSON.parse(fs.readFileSync(path.join(srcDir, 'locales', locale, 'translation.json'), 'utf8'))
+    const en = JSON.parse(fs.readFileSync(path.join(srcDir, 'locales', 'en', 'translation.json'), 'utf8'))
+    for (const [id, spec] of Object.entries(highlights)) {
+      for (const key of spec.phraseKeys || []) {
+        // A language without the key falls back to English on the page.
+        const value = lookupIn(t, key) ?? lookupIn(en, key)
+        const ok = (typeof value === 'string' && value.trim() !== '') ||
+          (Array.isArray(value) && value.length > 0)
+        expect(ok, `${locale}: ${id}: ${key}`).toBe(true)
+      }
+    }
+  })
+
+  it('the services question highlights the eight service names and the specialties', () => {
+    const keys = highlights.homeHealthServices.phraseKeys
+    expect(keys).toHaveLength(9)
+    expect(keys).toContain('homeHealth.services.nurses')
+    expect(keys).toContain('homeHealthPage.specialties')
   })
 })

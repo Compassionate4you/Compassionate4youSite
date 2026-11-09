@@ -50,8 +50,8 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
   const [layout, setLayout] = useState('HEADER_PARAGRAPH')
   const [header, setHeader] = useState('')
   const [paragraph, setParagraph] = useState('')
-  const [headerTypography, setHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [paragraphTypography, setParagraphTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [headerTypography, setHeaderTypography] = useState({})
+  const [paragraphTypography, setParagraphTypography] = useState({})
   const [imageUrl, setImageUrl] = useState('')
   const [imageAlt, setImageAlt] = useState('')
   const [symbol, setSymbol] = useState('Heart')
@@ -67,8 +67,8 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
   const [editLayout, setEditLayout] = useState('HEADER_PARAGRAPH')
   const [editHeader, setEditHeader] = useState('')
   const [editParagraph, setEditParagraph] = useState('')
-  const [editHeaderTypography, setEditHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [editParagraphTypography, setEditParagraphTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [editHeaderTypography, setEditHeaderTypography] = useState({})
+  const [editParagraphTypography, setEditParagraphTypography] = useState({})
   const [editImageUrl, setEditImageUrl] = useState('')
   const [editImageAlt, setEditImageAlt] = useState('')
   const [editSymbol, setEditSymbol] = useState('Heart')
@@ -120,8 +120,8 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
       setEditLayout(c.layout || c.layoutType || 'HEADER_PARAGRAPH')
       setEditHeader(data.header || '')
       setEditParagraph(data.paragraph || data.text || '')
-      setEditHeaderTypography(typo.header || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-      setEditParagraphTypography(typo.paragraph || typo.text || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+      setEditHeaderTypography(typo.header || {})
+      setEditParagraphTypography(typo.paragraph || typo.text || {})
       setEditImageUrl(data.imageUrl || '')
       setEditImageAlt(data.imageAlt || '')
       setEditSymbol(data.symbol || data.iconName || 'Heart')
@@ -272,6 +272,18 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
       })
       markClean()
       onNotification(`Updated card "${activeId}"`)
+      // DT-893 Sprint 9 - Gandhar Tare: warn if the database did not save it.
+      CardStorageService.lastSave?.then((saved) => {
+        if (saved !== false) return
+        setModalState({
+          isOpen: true,
+          title: 'Card Not Saved',
+          message: 'Your changes are shown here but could not be saved to the database, so the live site will not show them. Please try again.',
+          type: 'alert',
+          confirmText: 'OK',
+          onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+        })
+      })
     } catch (err) {
       setModalState({
         isOpen: true,

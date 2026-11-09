@@ -2,6 +2,10 @@
 // intents (caller falls back to backend).
 import { faqAnswerKey } from '../data/faq'
 import { navButtonKey, navReplyKey } from '../data/navigation'
+import { GREETING_REPLY_KEY } from '../data/greetings'
+
+// A button in a reply that opens the "Common questions" list.
+export const OPEN_FAQ_BUTTON = { labelKey: 'chatbot.faqButton', actionId: 'openFaq' }
 
 export function buildResponse (intent) {
   if (!intent) return null
@@ -51,6 +55,14 @@ export function buildResponse (intent) {
           to: page.to
         }
       ]
+    }
+  }
+
+  // "hi", "hello" and other greetings: say hello and offer help.
+  if (intent.kind === 'greeting') {
+    return {
+      textKey: GREETING_REPLY_KEY,
+      actionButtons: [OPEN_FAQ_BUTTON]
     }
   }
 

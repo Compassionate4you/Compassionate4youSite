@@ -1,5 +1,6 @@
 // DT-628: every piece of chatbot text must follow the site's language,
-// including the FAQ question bank and the backend placeholder reply.
+// including the FAQ question bank, the greeting reply and the backend
+// "didn't understand" reply.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -122,9 +123,13 @@ describe('FAQ list selection works in any language', () => {
   })
 })
 
-describe('backend placeholder reply is translatable', () => {
-  it.each(LOCALES)('resolves in %s', (locale) => {
-    expect(lookup(locale, 'chatbot.responses.placeholder')).toBeTruthy()
+describe('greeting and "didn\'t understand" replies are translatable', () => {
+  it.each(LOCALES)('greeting resolves in %s', (locale) => {
+    expect(lookup(locale, 'chatbot.responses.greeting')).toBeTruthy()
+  })
+
+  it.each(LOCALES)('"didn\'t understand" resolves in %s', (locale) => {
+    expect(lookup(locale, 'chatbot.responses.noMatch')).toBeTruthy()
   })
 
   it('the controller returns a key instead of English text', () => {
@@ -132,8 +137,14 @@ describe('backend placeholder reply is translatable', () => {
       path.resolve(here, '../../../../../server/src/controllers/chatbotController.js'),
       'utf8'
     )
-    expect(controller).toContain('chatbot.responses.placeholder')
-    expect(controller).not.toContain('Got your message.')
+    expect(controller).toContain('chatbot.responses.noMatch')
+    expect(controller).not.toContain("didn't understand")
+  })
+
+  it('the old "coming soon" placeholder is gone', () => {
+    for (const locale of LOCALES) {
+      expect(lookup(locale, 'chatbot.responses.placeholder'), locale).toBeUndefined()
+    }
   })
 })
 

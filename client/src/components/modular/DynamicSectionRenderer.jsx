@@ -22,6 +22,7 @@ import HeaderCardsSection from './sections/HeaderCardsSection'
 import HeaderStackSection from './sections/HeaderStackSection'
 import TimelineSection from './sections/TimelineSection'
 import PageCallToAction from './sections/PageCallToAction'
+import TypographyScope from './TypographyScope'
 
 const LAYOUT_COMPONENTS = {
   IMAGE_HEADER_TEXT: ImageHeaderTextSection,
@@ -79,8 +80,20 @@ function resolveSectionItems (content = {}, lang = 'en', stripStepNumbers = fals
   return resolvedFromCards.length > 0 ? [...resolvedFromCards, ...inlineItems] : inlineItems
 }
 
+// DT-893: applies the section's saved formatting to its title and
+// description for every layout, including ones that do not read it
+// themselves (fullscreen header, map, contact form, FAQ, account benefits).
+export default function DynamicSectionRenderer (props) {
+  const section = props.config || (props.sectionId ? SectionStorageService.getSectionById(props.sectionId) : null)
+  return (
+    <TypographyScope typography={section?.content?.typography}>
+      <SectionBody {...props} />
+    </TypographyScope>
+  )
+}
+
 // DT-902: Public pages can bypass CMS palettes while other callers retain them.
-export default function DynamicSectionRenderer ({ config, sectionId, theme = 'light', colorSource = 'cms' }) {
+function SectionBody ({ config, sectionId, theme = 'light', colorSource = 'cms' }) {
   const { i18n } = useTranslation()
   const section = config || (sectionId ? SectionStorageService.getSectionById(sectionId) : null)
   if (!section) return null

@@ -45,6 +45,8 @@ import {
 } from 'lucide-react'
 import CardBody from './CardBase'
 import '../../../styles/components/modular/cards/HeaderSymbolCard.css'
+// DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
+import { typographyStyle } from '../typographyStyle'
 
 const ICONS = {
   accessibility: Accessibility,
@@ -101,18 +103,8 @@ export default function HeaderSymbolCard ({
   const alignClass = `card--align-${alignment || 'center'}`
   const headerTypo = typography.header || {}
   const textTypo = typography.paragraph || typography.text || {}
-  const headerStyle = {
-    textAlign: headerTypo.align || undefined,
-    fontFamily: headerTypo.fontFamily && headerTypo.fontFamily !== 'inherit' ? headerTypo.fontFamily : undefined,
-    fontWeight: headerTypo.bold ? 'bold' : undefined,
-    fontStyle: headerTypo.italic ? 'italic' : undefined
-  }
-  const textStyle = {
-    textAlign: textTypo.align || undefined,
-    fontFamily: textTypo.fontFamily && textTypo.fontFamily !== 'inherit' ? textTypo.fontFamily : undefined,
-    fontWeight: textTypo.bold ? 'bold' : undefined,
-    fontStyle: textTypo.italic ? 'italic' : undefined
-  }
+  const headerStyle = typographyStyle(headerTypo)
+  const textStyle = typographyStyle(textTypo)
 
   return (
     <article className={`card--symbol ${alignClass}`} style={style}>

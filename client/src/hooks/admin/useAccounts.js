@@ -8,6 +8,8 @@ function useAccounts() {
     const [editingAccountId, setEditingAccountId] = useState(null);
     const [accountPendingDelete, setAccountPendingDelete] = useState(null);
     const [accounts, setAccounts] = useState([]);
+    // DT-825: Controls the Admin role confirmation popup
+    const [showPromoteConfirm, setShowPromoteConfirm] = useState(false);
 
 
     //Retrieve accounts when the dashboard loads
@@ -97,7 +99,7 @@ function useAccounts() {
     };
 
     // Adds a new Account or saves changes to an existing Account.
-    const handleAddAccount = async (event) => {
+    const handleAddAccount = async (event, confirmed = false) => {
         event.preventDefault();
         const accountName = accountForm.name.trim();
         const accountEmail =
@@ -112,6 +114,16 @@ function useAccounts() {
             return;
         }
         if (editingAccountId !== null) {
+
+                // DT-825: Confirm before promoting a customer to Admin
+                const existingAccount = accounts.find(
+                    (account) => account.id === editingAccountId
+                );
+
+                if (!confirmed && existingAccount?.role === "Customer" && accountForm.role === "Admin") {
+                    setShowPromoteConfirm(true);
+                    return;
+                }
 
             try {
                 //Convert dashboard values to database values
@@ -156,6 +168,17 @@ function useAccounts() {
         resetAccountForm();
         setEditingAccountId(null);
         setShowAccountForm(false);
+    };
+
+    // DT-825: Cancel the Admin role change
+    const handleCancelPromote = () => {
+        setShowPromoteConfirm(false);
+    };
+
+    // DT-825: Confirm the Admin role change
+    const handleConfirmPromote = async () => {
+        setShowPromoteConfirm(false);
+        await handleAddAccount({ preventDefault: () => {} }, true);
     };
 
     // Opens the form with an existing Account's information
@@ -208,6 +231,9 @@ function useAccounts() {
     return {
         showAccountForm,
         editingAccountId,
+        showPromoteConfirm,
+        handleCancelPromote,
+        handleConfirmPromote,
         accountPendingDelete,
         accounts,
         accountForm,

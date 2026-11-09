@@ -183,12 +183,16 @@ export const CardStorageService = {
           body: JSON.stringify(updates)
         })
         if (!res.ok) throw new Error('Database card update failed')
-        return await res.json()
+        await res.json()
+        return true
       } catch (err) {
         console.error('Database card update error:', err)
+        return false
       }
     }
-    dbUpdateCard(id, updated)
+    // DT-893 Sprint 9 - Gandhar Tare: resolves to false when the database did
+    // not save it, so the editor can say so instead of only "Updated".
+    this.lastSave = dbUpdateCard(id, updated)
 
     return updated
   },

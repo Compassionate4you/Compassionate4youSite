@@ -4,6 +4,8 @@
 
 import '../../../styles/components/modular/cards/HeaderParagraphCard.css'
 import CardBody from './CardBase'
+// DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
+import { typographyStyle } from '../typographyStyle'
 
 export default function HeaderParagraphCard ({
   header,
@@ -16,18 +18,8 @@ export default function HeaderParagraphCard ({
   const headerTypo = typography.header || {}
   const textTypo = typography.paragraph || typography.text || {}
 
-  const headerStyle = {
-    textAlign: headerTypo.align || undefined,
-    fontFamily: headerTypo.fontFamily && headerTypo.fontFamily !== 'inherit' ? headerTypo.fontFamily : undefined,
-    fontWeight: headerTypo.bold ? 'bold' : undefined,
-    fontStyle: headerTypo.italic ? 'italic' : undefined
-  }
-  const textStyle = {
-    textAlign: textTypo.align || undefined,
-    fontFamily: textTypo.fontFamily && textTypo.fontFamily !== 'inherit' ? textTypo.fontFamily : undefined,
-    fontWeight: textTypo.bold ? 'bold' : undefined,
-    fontStyle: textTypo.italic ? 'italic' : undefined
-  }
+  const headerStyle = typographyStyle(headerTypo)
+  const textStyle = typographyStyle(textTypo)
 
   return (
     <article className={`card--text ${alignClass}`} style={style}>

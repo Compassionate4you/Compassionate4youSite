@@ -7,6 +7,7 @@ import HeroSection from './sections/HeroSection'
 // DT-902: Use compassion_image3 for the Hospice Care hero.
 import compassionImage from '../../assets/images/compassion_image3.jpeg'
 import PageCallToAction from './sections/PageCallToAction'
+import TypographyScope from './TypographyScope'
 
 // DT-902: Keep card icons aligned with the established translated card order.
 const BENEFIT_ICONS = ['HeartHandshake', 'Clock', 'BriefcaseMedical', 'Stethoscope', 'Cross', 'Users']
@@ -34,7 +35,7 @@ function referenceItems (t, base, count) {
 // DT-902: Fallback CMS sections use global colours on this public page.
 export default function HospiceSections ({ sections, theme = 'light' }) {
   const { t } = useTranslation()
-  return sections.map(section => {
+  const renderSection = section => {
     const key = section.id
     // DT-902: Match Welcome’s split hero geometry with page-specific colors and photo placement.
     if (key === 'sec-hospice-hero') {
@@ -69,5 +70,12 @@ export default function HospiceSections ({ sections, theme = 'light' }) {
       return <TimelineSection key={key} title={t('hospice.hospiceProcess.title')} items={referenceItems(t, 'hospice.hospiceProcess', 5)} />
     }
     return <DynamicSectionRenderer key={key} config={section} colorSource='global' theme={theme} />
-  })
+  }
+  // DT-893: apply each section's saved formatting (from the content editor)
+  // to its title and description. Sections without any render unchanged.
+  return sections.map(section => (
+    <TypographyScope key={section.id} typography={section.content?.typography}>
+      {renderSection(section)}
+    </TypographyScope>
+  ))
 }
