@@ -315,7 +315,7 @@ html[theme='dark'] .notice {
   }
 }
 
-/* Urdu uses RTL reading order without blindly mirroring the entire site. */
+/* Urdu uses RTL reading order without blindly mirroring the entire site. The Accessibility Tools tab/panel stay on the left and the chatbot stays on the right in every language. */
 html[dir="rtl"] body {
   direction: rtl;
   text-align: right;
@@ -332,24 +332,6 @@ html[dir="rtl"] .footer__contact-list {
 
 html[dir="rtl"] .nav-links {
   flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .a11y-toggle {
-  left: auto;
-  right: 0;
-  border-left: 2px solid #000;
-  border-right: none;
-  border-radius: 11px 0 0 11px;
-}
-
-html[dir="rtl"] .a11y-panel {
-  left: auto;
-  right: 0;
-  transform: translateX(100%);
-}
-
-html[dir="rtl"] .a11y-panel.open {
-  transform: translateX(0);
 }
 
 html[dir="rtl"] .opt-btn {

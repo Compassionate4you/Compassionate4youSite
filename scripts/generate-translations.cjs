@@ -1,191 +1,143 @@
-/**
- * Task: DT-503
- * Author: PBall
- * Sprint: Sprint 6
- */
-/* ---------- delete line if undoing 1 of 3
-//DT-492 Content Editor - Preston Ball: Core Node.js file system module for reading, writing, and checking translation files
-const fs = require('fs');
-//DT-492 Content Editor - Preston Ball: Path module to safely construct cross-platform file and directory paths
-const path = require('path');
-
-//DT-492 Content Editor - Preston Ball: Absolute path pointing to the frontend locales directory
-const LOCALES_DIR = path.resolve(__dirname, '../client/src/locales');
-//DT-492 Content Editor - Preston Ball: Source-of-truth locale code from which all other translations originate
-const CANONICAL_LOCALE = 'en';
-//DT-492 Content Editor - Preston Ball: List of target locale directories to keep synchronized with the source dictionary
-const TARGET_LOCALES = ['es', 'pa'];
-
-/**
- * Deep merge canonical dictionary into target dictionary.
- * Preserves existing target translations and flags missing keys.
- */
-  /* --------------------- delete line if undoing 2 of 3
-//DT-492 Content Editor - Preston Ball: Recursively synchronizes key trees from the canonical locale into a target locale object
-function syncDictionaries(canonical, target, locale) {
-  //DT-492 Content Editor - Preston Ball: Maintain structure compatibility by mirroring array or object root container types
-  const result = Array.isArray(canonical) ? [] : {};
-
-  //DT-492 Content Editor - Preston Ball: Iterate through each key present in the canonical dictionary
-  for (const key of Object.keys(canonical)) {
-    const canonicalVal = canonical[key];
-    const targetVal = target ? target[key] : undefined;
-
-    //DT-492 Content Editor - Preston Ball: If current key is a nested object, recurse deeper into the dictionary tree
-    if (
-      canonicalVal !== null &&
-      typeof canonicalVal === 'object' &&
-      !Array.isArray(canonicalVal)
-    ) {
-      result[key] = syncDictionaries(
-        canonicalVal,
-        typeof targetVal === 'object' && targetVal !== null ? targetVal : {},
-        locale
-      );
-    } else {
-      //DT-492 Content Editor - Preston Ball: Preserve existing translation if already present and non-empty
-      if (targetVal !== undefined && targetVal !== null && targetVal !== '') {
-        result[key] = targetVal;
-      } else {
-        // Backfill with untranslated tag
-        //DT-492 Content Editor - Preston Ball: Append untranslated locale prefix to canonical text when target string is missing
-        result[key] = `[UNTRANSLATED: ${locale}] ${canonicalVal}`;
-      }
-    }
-  }
-
-  //DT-492 Content Editor - Preston Ball: Return the deeply merged dictionary result for serialization
-  return result;
-}
-
-//DT-492 Content Editor - Preston Ball: Main execution routine to read canonical translations and synchronize across all target locale files
-function runTranslationGenerator() {
-  //DT-492 Content Editor - Preston Ball: Resolve file path for the canonical English translation file
-  const canonicalPath = path.join(LOCALES_DIR, CANONICAL_LOCALE, 'translation.json');
-
-  //DT-492 Content Editor - Preston Ball: Validate existence of canonical dictionary file before proceeding
-  if (!fs.existsSync(canonicalPath)) {
-    console.error(`Canonical translation file missing at: ${canonicalPath}`);
-    process.exit(1);
-  }
-
-  //DT-492 Content Editor - Preston Ball: Read and parse the base canonical JSON dictionary into memory
-  const canonicalContent = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
-  console.log(`Ingested canonical dictionary (${CANONICAL_LOCALE}) successfully.`);
-
-  //DT-492 Content Editor - Preston Ball: Process each target locale defined in TARGET_LOCALES sequentially
-  for (const locale of TARGET_LOCALES) {
-    const localeDir = path.join(LOCALES_DIR, locale);
-    const localeFilePath = path.join(localeDir, 'translation.json');
-
-    //DT-492 Content Editor - Preston Ball: Create target directory recursively if it does not yet exist
-    if (!fs.existsSync(localeDir)) {
-      fs.mkdirSync(localeDir, { recursive: true });
-    }
-
-    //DT-492 Content Editor - Preston Ball: Load existing translations if present to avoid overwriting previously localized values
-    let existingLocaleContent = {};
-    if (fs.existsSync(localeFilePath)) {
-      try {
-        existingLocaleContent = JSON.parse(fs.readFileSync(localeFilePath, 'utf8'));
-      } catch (e) {
-        //DT-492 Content Editor - Preston Ball: Catch corrupted or unparseable JSON files and fallback to an empty target
-        console.warn(`Could not parse existing translation for ${locale}, starting fresh.`);
-      }
-    }
-
-    //DT-492 Content Editor - Preston Ball: Merge dictionaries and write formatted JSON with 2-space indentation back to disk
-    const mergedContent = syncDictionaries(canonicalContent, existingLocaleContent, locale);
-    fs.writeFileSync(localeFilePath, JSON.stringify(mergedContent, null, 2), 'utf8');
-    console.log(`Synchronized locale file: ${localeFilePath}`);
-  }
-
-  //DT-492 Content Editor - Preston Ball: Log overall task completion message
-  console.log('Automated translation generation complete.');
-}
-
-//DT-492 Content Editor - Preston Ball: Trigger generator entrypoint
-runTranslationGenerator();
-
-*/ //------------------ delete line if undo 3 of 3
-
-/*
-DT 650 script to generate language files
-Generate/synchronize locale JSON files from the main English file.
-Default mode is offline and free: it synchronizes keys and preserves existing translations. Missing values are marked for review.
-Optional real translation mode uses a LibreTranslate-compatible endpoint: ++++++++++++++
-LIBRETRANSLATE_URL=http://localhost:5000 npm run generate:translations -- --translate-missing
-A locally hosted LibreTranslate server can avoid per-character API fees. A public endpoint may have rate limits or availability restrictions.
-*/
-
 const fs = require('node:fs');
 const path = require('node:path');
 
 const LOCALES_DIR = path.resolve(__dirname, '../client/src/locales');
+const REPORT_PATH = path.resolve(__dirname, 'translation-report.json');
 const CANONICAL_LOCALE = 'en';
-const TARGET_LOCALES = ['es', 'pa', 'ur'];
-const SHOULD_TRANSLATE = process.argv.includes('--translate-missing');
-const OVERWRITE_EXISTING = process.argv.includes('--overwrite');
+const DEFAULT_LOCALES = ['es', 'pa', 'ur'];
+
+const args = process.argv.slice(2);
+const flag = (name) => args.includes(`--${name}`);
+const option = (name) => {
+  const hit = args.find((a) => a.startsWith(`--${name}=`));
+  return hit ? hit.slice(name.length + 3) : undefined;
+};
+
+const SHOULD_TRANSLATE = flag('translate-missing');
+const OVERWRITE_EXISTING = flag('overwrite');
+const DRY_RUN = flag('dry-run');
+const CHECK_ONLY = flag('check');
+const MARK_UNTRANSLATED = flag('mark-untranslated');
+const LIST_LANGUAGES = flag('list-languages');
+const ALL_SUPPORTED = flag('all-supported');
 const TRANSLATE_URL = (process.env.LIBRETRANSLATE_URL || '').replace(/\/$/, '');
 const API_KEY = process.env.LIBRETRANSLATE_API_KEY;
+const DELAY_MS = Number(process.env.LIBRETRANSLATE_DELAY_MS || 0);
+const CODE_MAP = (() => {
+  try { return JSON.parse(process.env.LIBRETRANSLATE_CODE_MAP || '{}'); } catch { return {}; }
+})();
+
+// Keys that must never be machine translated. The chatbot highlight phrases have to match the page text word for word, so a separate machine translation would never match; those lists are curated by hand per language.
+const SKIP_KEY_PATTERNS = [/^chatbot\.highlightPhrases\./, /(^|\.)(email|phone|fax)$/i, /(^|\.)(address\d*|contactAddressLine\d+)$/i];
 
 function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
-function isMissingTranslation(value) {
+function isMissing(value) {
   return value === undefined || value === null || value === '' ||
     (typeof value === 'string' && value.startsWith('[UNTRANSLATED:'));
 }
 
-async function translateText(text, locale) {
-  if (!TRANSLATE_URL) {
-    throw new Error('Set LIBRETRANSLATE_URL to a LibreTranslate-compatible endpoint to enable actual translation.');
-  }
-  const body = {
-    q: String(text),
-    source: 'en',
-    target: locale,
-    format: 'text',
-  };
-  if (API_KEY) body.api_key = API_KEY;
+// Text that has no words to translate (phone numbers, emails, URLs, addresses).
+function isTranslatable(text) {
+  return /[A-Za-z]{3,}/.test(text) && !/@|https?:\/\//i.test(text);
+}
 
-  const response = await fetch(`${TRANSLATE_URL}/translate`, {
+// Placeholders such as {{name}} and $t(other.key) must survive translation. They are swapped for sentinels before sending and restored afterwards.
+const PLACEHOLDER = /\{\{[^}]+\}\}|\$t\([^)]+\)|<[^>]+>/g;
+
+function protect(text) {
+  const saved = [];
+  const masked = String(text).replace(PLACEHOLDER, (match) => {
+    saved.push(match);
+    return `XQ${saved.length - 1}X`;
+  });
+  return { masked, saved };
+}
+
+function restore(text, saved) {
+  let out = text;
+  for (let i = 0; i < saved.length; i += 1) {
+    const token = new RegExp(`XQ\\s*${i}\\s*X`);
+    if (!token.test(out)) throw new Error(`placeholder ${saved[i]} was lost in translation`);
+    out = out.replace(token, saved[i]);
+  }
+  return out;
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function api(pathname, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 30000);
+  try {
+    const response = await fetch(`${TRANSLATE_URL}${pathname}`, { ...options, signal: controller.signal });
+    if (!response.ok) {
+      const detail = await response.text().catch(() => '');
+      throw new Error(`HTTP ${response.status} ${detail.slice(0, 120)}`.trim());
+    }
+    return await response.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+const endpointCode = (locale) => CODE_MAP[locale] || locale;
+
+async function translateText(text, locale) {
+  const { masked, saved } = protect(text);
+  const body = { q: masked, source: CANONICAL_LOCALE, target: endpointCode(locale), format: 'text' };
+  if (API_KEY) body.api_key = API_KEY;
+  const result = await api('/translate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  if (!response.ok) throw new Error(`Translation service returned HTTP ${response.status}`);
-  const result = await response.json();
   if (!result || typeof result.translatedText !== 'string' || !result.translatedText.trim()) {
-    throw new Error('Translation service returned an empty translation.');
+    throw new Error('empty translation returned');
   }
-  return result.translatedText;
+  if (DELAY_MS) await sleep(DELAY_MS);
+  return restore(result.translatedText, saved);
 }
 
-async function syncDictionaries(source, existing, locale, stats, keyPath = '') {
-  const result = Array.isArray(source) ? [] : {};
+function needsWork(oldValue, sourceValue) {
+  if (typeof sourceValue !== 'string') return isMissing(oldValue);
+  const englishCopy = typeof oldValue === 'string' && oldValue === sourceValue && isTranslatable(oldValue);
+  return isMissing(oldValue) || englishCopy;
+}
 
-  for (const key of Object.keys(source)) {
+// Walks the English tree. Objects and arrays recurse; strings are the leaves.
+async function sync(source, existing, locale, stats, keyPath = '') {
+  const isArray = Array.isArray(source);
+  const result = isArray ? [] : {};
+  const keys = isArray ? source.map((_, i) => i) : Object.keys(source);
+
+  for (const key of keys) {
     const sourceValue = source[key];
     const oldValue = existing?.[key];
-    const currentPath = keyPath ? `${keyPath}.${key}` : key;
+    const currentPath = keyPath ? `${keyPath}.${key}` : String(key);
 
-    if (isObject(sourceValue)) {
-      result[key] = await syncDictionaries(
-        sourceValue,
-        isObject(oldValue) ? oldValue : {},
-        locale,
-        stats,
-        currentPath
-      );
+    if (isObject(sourceValue) || Array.isArray(sourceValue)) {
+      const child = await sync(sourceValue, isObject(oldValue) || Array.isArray(oldValue) ? oldValue : undefined, locale, stats, currentPath);
+      // A branch whose strings were all skipped is left out so i18next falls back to English.
+      if (countLeaves(child) === 0 && countLeaves(sourceValue) > 0) continue;
+      result[key] = child;
       continue;
     }
 
-    const untranslatedEnglishCopy = SHOULD_TRANSLATE &&
-      typeof oldValue === 'string' && oldValue === sourceValue && /[A-Za-z]{3,}/.test(oldValue) &&
-      !/@|https?:\/\//i.test(oldValue);
-    const missing = isMissingTranslation(oldValue) || untranslatedEnglishCopy;
+    if (typeof sourceValue !== 'string') { result[key] = oldValue ?? sourceValue; continue; }
+
+    const skip = SKIP_KEY_PATTERNS.some((p) => p.test(currentPath)) || !isTranslatable(sourceValue);
+    const missing = needsWork(oldValue, sourceValue);
+
+    if (skip) {
+      // Keep what is there; fall back to the English value for things like emails.
+      result[key] = isMissing(oldValue) ? (isTranslatable(sourceValue) ? undefined : sourceValue) : oldValue;
+      if (result[key] === undefined) { delete result[key]; if (missing) stats.skipped.push(currentPath); }
+      continue;
+    }
+
     if (!missing && !OVERWRITE_EXISTING) {
       result[key] = oldValue;
       stats.preserved += 1;
@@ -195,85 +147,117 @@ async function syncDictionaries(source, existing, locale, stats, keyPath = '') {
     if (SHOULD_TRANSLATE) {
       try {
         result[key] = await translateText(sourceValue, locale);
-        stats.translated += 1;
+        stats.translated.push(currentPath);
       } catch (error) {
-        result[key] = `[UNTRANSLATED: ${locale}] ${sourceValue}`;
-        stats.missing.push(currentPath);
+        if (!isMissing(oldValue)) result[key] = oldValue; // never lose an existing value
+        else if (MARK_UNTRANSLATED) result[key] = `[UNTRANSLATED: ${locale}] ${sourceValue}`;
         stats.errors.push(`${currentPath}: ${error.message}`);
       }
+    } else if (MARK_UNTRANSLATED && isMissing(oldValue)) {
+      result[key] = `[UNTRANSLATED: ${locale}] ${sourceValue}`;
+      stats.missing.push(currentPath);
     } else {
-      result[key] = missing
-        ? `[UNTRANSLATED: ${locale}] ${sourceValue}`
-        : sourceValue;
-      if (missing) stats.missing.push(currentPath);
-      else stats.preserved += 1;
+      // Offline / check mode: leave the key absent so i18next falls back to English instead of showing "[UNTRANSLATED]" text on the website.
+      if (!isMissing(oldValue)) result[key] = oldValue;
+      stats.missing.push(currentPath);
     }
   }
-  return result;
+  return isArray ? result.filter((v) => v !== undefined) : result;
+}
+
+function countLeaves(value) {
+  if (!isObject(value) && !Array.isArray(value)) return 1;
+  if (Array.isArray(value) && value.length === 0) return 0;
+  return Object.values(value).reduce((sum, child) => sum + countLeaves(child), 0);
+}
+
+async function supportedLanguages() {
+  const list = await api('/languages');
+  return new Map(list.map((l) => [l.code, l]));
 }
 
 async function main() {
-  const sourcePath = path.join(LOCALES_DIR, CANONICAL_LOCALE, 'translation.json');
-  if (!fs.existsSync(sourcePath)) {
-    console.error(`English source file not found: ${sourcePath}`);
+  if ((SHOULD_TRANSLATE || LIST_LANGUAGES || ALL_SUPPORTED) && !TRANSLATE_URL) {
+    console.error('Set LIBRETRANSLATE_URL to a LibreTranslate-compatible endpoint (for example http://localhost:5000).');
     process.exitCode = 1;
     return;
   }
-
   if (OVERWRITE_EXISTING && !SHOULD_TRANSLATE) {
-    console.error('--overwrite requires --translate-missing so existing translations are not replaced with English text.');
+    console.error('--overwrite requires --translate-missing (it replaces hand-written text with machine translation).');
     process.exitCode = 1;
     return;
   }
 
-  if (SHOULD_TRANSLATE && !TRANSLATE_URL) {
-    console.error('Translation mode requested, but LIBRETRANSLATE_URL is not set.');
-    console.error('Run without --translate-missing to synchronize keys offline, or configure a LibreTranslate-compatible endpoint.');
-    process.exitCode = 1;
+  let languages = null;
+  if (TRANSLATE_URL && (SHOULD_TRANSLATE || LIST_LANGUAGES || ALL_SUPPORTED)) {
+    try {
+      languages = await supportedLanguages();
+    } catch (error) {
+      console.error(`Could not reach ${TRANSLATE_URL}/languages: ${error.message}`);
+      process.exitCode = 1;
+      return;
+    }
+  }
+
+  if (LIST_LANGUAGES) {
+    console.log(`${languages.size} languages at ${TRANSLATE_URL}:`);
+    for (const [code, lang] of languages) console.log(`  ${code.padEnd(8)} ${lang.name}`);
     return;
   }
 
+  const existingFolders = fs.readdirSync(LOCALES_DIR).filter((d) => d !== CANONICAL_LOCALE && fs.existsSync(path.join(LOCALES_DIR, d, 'translation.json')));
+  let targets = option('locales') ? option('locales').split(',').map((s) => s.trim()).filter(Boolean) : DEFAULT_LOCALES;
+  if (ALL_SUPPORTED) {
+    targets = [...new Set([...existingFolders, ...[...languages.keys()].filter((c) => c !== CANONICAL_LOCALE)])];
+  }
+
+  const sourcePath = path.join(LOCALES_DIR, CANONICAL_LOCALE, 'translation.json');
   const source = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
-  const sourceKeyCount = countLeaves(source);
-  console.log(`Loaded ${sourceKeyCount} English translation keys.`);
+  console.log(`Loaded ${countLeaves(source)} English strings.`);
 
+  const report = { generatedAt: new Date().toISOString(), endpoint: TRANSLATE_URL || null, locales: {} };
   let hasErrors = false;
-  for (const locale of TARGET_LOCALES) {
+
+  for (const locale of targets) {
+    if (SHOULD_TRANSLATE && languages && !languages.has(endpointCode(locale))) {
+      console.warn(`\n${locale}: not supported by this endpoint (see --list-languages). Skipped.`);
+      report.locales[locale] = { skipped: 'unsupported by endpoint' };
+      continue;
+    }
+
     const directory = path.join(LOCALES_DIR, locale);
     const targetPath = path.join(directory, 'translation.json');
-    fs.mkdirSync(directory, { recursive: true });
-
     let existing = {};
     if (fs.existsSync(targetPath)) {
       try {
         existing = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
       } catch (error) {
-        console.error(`Could not parse ${targetPath}: ${error.message}`);
-        console.error('No changes were written to this language file.');
+        console.error(`\n${locale}: cannot parse ${targetPath}: ${error.message}. Nothing written.`);
         hasErrors = true;
         continue;
       }
     }
 
-    const stats = { translated: 0, preserved: 0, missing: [], errors: [] };
-    const merged = await syncDictionaries(source, existing, locale, stats);
-    fs.writeFileSync(targetPath, `${JSON.stringify(merged, null, 2)}\n`, 'utf8');
-    console.log(`\n${locale}: updated ${path.relative(process.cwd(), targetPath)}`);
-    console.log(`  Translated: ${stats.translated}; preserved: ${stats.preserved}; missing/review: ${stats.missing.length}`);
-    if (stats.missing.length) console.log(`  First missing keys: ${stats.missing.slice(0, 8).join(', ')}`);
-    if (stats.errors.length) {
-      hasErrors = true;
-      console.warn(`  Translation errors: ${stats.errors.slice(0, 5).join(' | ')}`);
+    const stats = { translated: [], preserved: 0, missing: [], skipped: [], errors: [] };
+    const merged = await sync(source, existing, locale, stats);
+
+    const writes = SHOULD_TRANSLATE || MARK_UNTRANSLATED;
+    if (writes && !DRY_RUN && !CHECK_ONLY) {
+      fs.mkdirSync(directory, { recursive: true });
+      fs.writeFileSync(targetPath, `${JSON.stringify(merged, null, 2)}\n`, 'utf8');
     }
+
+    console.log(`\n${locale}: translated ${stats.translated.length}, kept ${stats.preserved}, still missing ${stats.missing.length}, skipped (not machine-translatable) ${stats.skipped.length}, errors ${stats.errors.length}`);
+    if (stats.missing.length) console.log(`  first missing: ${stats.missing.slice(0, 6).join(', ')}`);
+    if (stats.errors.length) { hasErrors = true; console.warn(`  errors: ${stats.errors.slice(0, 4).join(' | ')}`); }
+    report.locales[locale] = { translated: stats.translated, missing: stats.missing, skipped: stats.skipped, errors: stats.errors };
   }
 
+  if (SHOULD_TRANSLATE && !DRY_RUN) {
+    fs.writeFileSync(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+    console.log(`\nMachine-translated keys are listed in ${path.relative(process.cwd(), REPORT_PATH)} so a fluent speaker can review them.`);
+  }
   if (hasErrors) process.exitCode = 1;
-  console.log('\nLanguage-file generation finished. Review any [UNTRANSLATED: ...] entries before publishing.');
-}
-
-function countLeaves(value) {
-  if (!isObject(value) && !Array.isArray(value)) return 1;
-  return Object.values(value).reduce((sum, child) => sum + countLeaves(child), 0);
 }
 
 main().catch((error) => {

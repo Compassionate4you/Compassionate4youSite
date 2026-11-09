@@ -23,6 +23,11 @@ export function AccessibilityProvider ({ children }) {
   useEffect(() => {
     const root = document.documentElement
 
+    // Text size is applied through [data-text-size] (see global.css) so the
+    // scale can be reduced on narrow screens instead of a fixed 175%/250%.
+    root.style.removeProperty('font-size')
+    root.dataset.textSize = settings.textSize
+/*
     // Preserve the site's existing text-size behavior:
     // default = 100%, large = 175%, extra-large = 250%.
     if (settings.textSize === 'default') {
@@ -32,6 +37,7 @@ export function AccessibilityProvider ({ children }) {
     } else if (settings.textSize === 'extra-large') {
       root.style.fontSize = '250%'
     }
+*/
 
     root.setAttribute('theme', settings.theme)
     root.dataset.theme = settings.theme
