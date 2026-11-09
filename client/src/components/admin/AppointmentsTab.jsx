@@ -78,6 +78,7 @@ function AppointmentsTab({
                                 value={appointmentForm.name}
                                 onChange={onAppointmentInputChange}
                                 placeholder="Enter patient name"
+                                readOnly={editingAppointmentId !== null}
                                 required
                             />
                         </div>
@@ -94,6 +95,7 @@ function AppointmentsTab({
                                 value={appointmentForm.email}
                                 onChange={onAppointmentInputChange}
                                 placeholder="Enter patient email"
+                                readOnly={editingAppointmentId !== null}
                                 required
                             />
                         </div>
@@ -110,6 +112,7 @@ function AppointmentsTab({
                                 value={appointmentForm.phone}
                                 onChange={onAppointmentInputChange}
                                 placeholder="Enter phone number"
+                                readOnly={editingAppointmentId !== null}
                             />
                         </div>
 
