@@ -64,18 +64,12 @@ function useAccounts() {
         });
     };
 
-    // Opens an empty form for a new Account.
-    const handleOpenAddAccount = () => {
-        resetAccountForm();
-        setEditingAccountId(null);
-        setShowAccountForm(true);
-    };
-
     // Discards form changes and returns to the table.
     const handleCancelAccount = () => {
         resetAccountForm();
         setEditingAccountId(null);
         setShowAccountForm(false);
+        setShowPromoteConfirm(false);
     };
 
     // Updates the matching Account form field.
@@ -99,21 +93,24 @@ function useAccounts() {
     };
 
     // Adds a new Account or saves changes to an existing Account.
-    const handleAddAccount = async (event, confirmed = false) => {
+    const handleUpdateAccount = async (event, confirmed = false) => {
         event.preventDefault();
+
+        if (editingAccountId === null) {
+            return;
+        }
+
         const accountName = accountForm.name.trim();
-        const accountEmail =
-            accountForm.email.trim().toLowerCase();
+        const accountEmail = accountForm.email.trim().toLowerCase();
+
         if (
             !accountName ||
-            //!accountForm.birthdate ||
             !accountEmail ||
             !accountForm.role ||
             !accountForm.status
         ) {
             return;
         }
-        if (editingAccountId !== null) {
 
                 // DT-825: Confirm before promoting a customer to Admin
                 const existingAccount = accounts.find(
@@ -140,6 +137,7 @@ function useAccounts() {
                 await apiUpdateAccount(editingAccountId, updateData);
             
 
+            await apiUpdateAccount(editingAccountId, updateData);
 
             setAccounts((currentAccounts) =>
                 currentAccounts.map((account) =>
@@ -156,18 +154,13 @@ function useAccounts() {
                         : account
                 )
             );
-        }catch (err) {
-            //show an error if saving to supabase fails
+
+            resetAccountForm();
+            setEditingAccountId(null);
+            setShowAccountForm(false);
+        } catch (err) {
             console.error("Failed to update account:", err);
-            return;
         }
-        } else {
-            console.error("Creating account is not supported here.");
-            return;
-        }
-        resetAccountForm();
-        setEditingAccountId(null);
-        setShowAccountForm(false);
     };
 
     // DT-825: Cancel the Admin role change
@@ -177,9 +170,13 @@ function useAccounts() {
 
     // DT-825: Confirm the Admin role change
     const handleConfirmPromote = async () => {
-        setShowPromoteConfirm(false);
-        await handleAddAccount({ preventDefault: () => {} }, true);
-    };
+    setShowPromoteConfirm(false);
+
+    await handleUpdateAccount(
+        { preventDefault: () => {} },
+        true
+    );
+};
 
     // Opens the form with an existing Account's information
     const handleEditAccount = (account) => {
@@ -237,11 +234,10 @@ function useAccounts() {
         accountPendingDelete,
         accounts,
         accountForm,
-        handleOpenAddAccount,
+        handleUpdateAccount,
         handleCancelAccount,
         handleAccountInputChange,
         formatAccountBirthdate,
-        handleAddAccount,
         handleEditAccount,
         handleDeleteAccount,
         handleCancelDeleteAccount,

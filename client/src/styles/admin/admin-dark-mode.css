@@ -1,0 +1,235 @@
+/* All dark mode and high contrast styling */
+html[theme='dark'] .admin-table-card {
+  border-color: var(--color-dark-divider);
+  background-color: var(--color-dark-surface-raised);
+  color: var(--color-dark-text);
+}
+
+html[theme='dark'] .admin-table th {
+  border-bottom-color: #66706b;
+  color: var(--color-dark-muted-text);
+}
+
+html[theme='dark'] .admin-table td {
+  border-bottom-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}
+
+html[theme='dark'] .admin-table-description,
+html[theme='dark'] .admin-table-card > div p {
+  color: var(--color-dark-muted-text);
+}
+
+html[theme='dark'] .appointment-row-actions button,
+html[theme='dark'] .admin-table-action {
+  border-color: #69736e;
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text);
+}
+
+html[theme='dark'] .appointment-edit-button {
+  border-color: #7fbfa6;
+  color: #9ed6c0;
+}
+
+html[theme='dark'] .appointment-delete-button,
+html[theme='dark'] .admin-table-delete {
+  border-color: #f87171;
+  color: #fca5a5;
+}
+/* Forms Dark-Mode  */
+html[theme='dark'] .appointment-form-field input,
+html[theme='dark'] .appointment-form-field select,
+html[theme='dark'] .appointment-form-field textarea,
+html[theme='dark'] .account-form-field input,
+html[theme='dark'] .account-form-field select {
+  border-color: var(--color-input-border);
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text);
+}
+
+html[theme='dark'] .appointment-cancel-button,
+html[theme='dark'] .account-cancel-button {
+  border-color: #69736e;
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text);
+}
+
+/* High Contrast Fix */
+
+html.high-contrast .admin-table-card {
+  border: 2px solid #000;
+}
+
+html.high-contrast .admin-table th,
+html.high-contrast .admin-table td {
+  border-bottom: 2px solid #000;
+}
+
+/* Use white outlines when high contrast and dark mode are both enabled. */
+html[theme='dark'].high-contrast .admin-table-card {
+  border-color: #fff;
+}
+
+html[theme='dark'].high-contrast .admin-table th,
+html[theme='dark'].high-contrast .admin-table td {
+  border-bottom-color: #fff;
+}
+
+/* ---------- Admin Header: Dark Mode ---------- */
+
+:root[data-theme="dark"] .topbar {
+  background-color: var(--color-dark-surface-raised);
+  color: var(--color-dark-text);
+  border-bottom-color: var(--color-dark-divider);
+}
+
+:root[data-theme="dark"] .header-text h1,
+:root[data-theme="dark"] .header-text p {
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .logout-button {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-divider);
+}
+
+/* ---------- Locations: Dark Mode ---------- */
+
+:root[data-theme="dark"] .admin-locations-section {
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .admin-location-card,
+:root[data-theme="dark"] .admin-location-add-form {
+  background-color: var(--color-dark-surface-raised);
+  border-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .admin-location-name {
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .admin-location-address,
+:root[data-theme="dark"] .admin-location-phone,
+:root[data-theme="dark"] .admin-location-form-heading p {
+  color: var(--color-dark-muted-text);
+}
+
+:root[data-theme="dark"] .admin-location-edit-button,
+:root[data-theme="dark"] .admin-location-cancel-button {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .admin-location-form-control,
+:root[data-theme="dark"] .admin-location-form-field input,
+:root[data-theme="dark"] .admin-location-form-field select {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-input-border);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .admin-location-form-control::placeholder,
+:root[data-theme="dark"] .admin-location-form-field input::placeholder {
+  color: var(--color-dark-muted-text);
+}
+
+/* ---------- Confirmation Modals: Dark Mode ---------- */
+
+:root[data-theme="dark"] .logout-modal {
+  background-color: var(--color-dark-surface-raised);
+  border-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .logout-modal h2,
+:root[data-theme="dark"] .logout-modal p {
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .logout-no-button {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-divider);
+  color: var(--color-dark-text);
+}
+
+:root[data-theme="dark"] .logout-no-button:hover {
+  background-color: var(--color-dark-surface-raised);
+}
+
+:root[data-theme="dark"] .logout-yes-button {
+  border-color: #f87171;
+}
+
+/* ---------- Delete Buttons: Dark Mode ---------- */
+
+:root[data-theme="dark"] .appointment-delete-button,
+:root[data-theme="dark"] .admin-table-delete,
+:root[data-theme="dark"] .admin-location-delete-button {
+  background-color: transparent;
+  border: 1px solid #f87171;
+  color: #f87171;
+}
+
+:root[data-theme="dark"] .appointment-delete-button:hover,
+:root[data-theme="dark"] .admin-table-delete:hover,
+:root[data-theme="dark"] .admin-location-delete-button:hover {
+  background-color: rgba(248, 113, 113, 0.14);
+  border-color: #fca5a5;
+  color: #fca5a5;
+}
+
+/* ---------- Locations: High Contrast ---------- */
+
+html.high-contrast .admin-location-card,
+html.high-contrast .admin-location-add-form,
+html.high-contrast .admin-location-form-control,
+html.high-contrast .admin-location-form-field input,
+html.high-contrast .admin-location-form-field select,
+html.high-contrast .admin-location-edit-button,
+html.high-contrast .admin-location-cancel-button {
+  border-color: #000;
+  border-width: 2px;
+}
+
+/* White borders when dark mode and high contrast are both active. */
+html[theme="dark"].high-contrast .admin-location-card,
+html[theme="dark"].high-contrast .admin-location-add-form,
+html[theme="dark"].high-contrast .admin-location-form-control,
+html[theme="dark"].high-contrast .admin-location-form-field input,
+html[theme="dark"].high-contrast .admin-location-form-field select,
+html[theme="dark"].high-contrast .admin-location-edit-button,
+html[theme="dark"].high-contrast .admin-location-cancel-button {
+  border-color: #fff;
+}
+
+/* ---------- Content Editor: High Contrast ---------- */
+
+html.high-contrast .content-editor-tabs,
+html.high-contrast .content-editor-tab,
+html.high-contrast .content-editor-card,
+html.high-contrast .content-editor-field input,
+html.high-contrast .content-editor-field textarea,
+html.high-contrast .content-editor-upload-area,
+html.high-contrast .content-editor-preview,
+html.high-contrast .content-editor-changelog-button,
+html.high-contrast .content-editor-cancel-button {
+  border-color: #000 !important;
+  border-width: 2px;
+}
+
+/* White borders when dark mode and high contrast are both active. */
+html[theme="dark"].high-contrast .content-editor-tabs,
+html[theme="dark"].high-contrast .content-editor-tab,
+html[theme="dark"].high-contrast .content-editor-card,
+html[theme="dark"].high-contrast .content-editor-field input,
+html[theme="dark"].high-contrast .content-editor-field textarea,
+html[theme="dark"].high-contrast .content-editor-upload-area,
+html[theme="dark"].high-contrast .content-editor-preview,
+html[theme="dark"].high-contrast .content-editor-changelog-button,
+html[theme="dark"].high-contrast .content-editor-cancel-button {
+  border-color: #fff !important;
+}

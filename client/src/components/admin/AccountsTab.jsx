@@ -1,10 +1,8 @@
 // Accounts Tab functionality
 function AccountsTab({
     showAccountForm,
-    editingAccountId,
     accountForm,
     accounts,
-    onOpenAddAccount,
     onAccountInputChange,
     onSubmitAccount,
     onCancelAccount,
@@ -19,16 +17,6 @@ function AccountsTab({
                     <h2>Account Management</h2>
                     <p>Manage user accounts</p>
                 </div>
-
-                {!showAccountForm && (
-                    <button
-                        type="button"
-                        className="admin-add-button"
-                        onClick={onOpenAddAccount}
-                    >
-                        Add Account
-                    </button>
-                )}
             </div>
 
             {showAccountForm ? (
@@ -36,14 +24,10 @@ function AccountsTab({
                     className="account-form"
                     onSubmit={onSubmitAccount}
                 >
-                    <h2>
-                        {editingAccountId === null
-                            ? "Add Account"
-                            : "Edit Account"}
-                    </h2>
+                    <h2>Edit Account</h2>
 
                     <p className="account-form-description">
-                        Complete every field to add an account.
+                        Update the selected account information.
                     </p>
 
                     <div className="account-form-grid">
@@ -176,9 +160,7 @@ function AccountsTab({
                             type="submit"
                             className="account-submit-button"
                         >
-                            {editingAccountId === null
-                                ? "Add Account"
-                                : "Save Changes"}
+                            Save Changes
                         </button>
                     </div>
                 </form>
