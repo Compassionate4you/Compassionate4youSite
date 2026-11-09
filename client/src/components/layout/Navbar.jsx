@@ -2,20 +2,22 @@
 // Preston Ball
 // Navbar component dynamically displaying ordered pages with responsive priority-collapse dropdown, mobile hamburger menu, and protected logo scaling
 
-import { useState, useEffect, useRef } from 'react'
-import './styles/NavBar.css'
-import logo from '../../assets/images/CompassionateLogo.jpeg'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import logo from '../../assets/images/CompassionateLogo.jpeg'
+import { useAccessibility } from '../../context/AccessibilityContext' //checks textSize here
+import { useAuth } from '../../context/AuthContext'
 import { getContentPageLabel, isWelcomePage } from '../../services/contentPageLabels'
 import { PageStorageService } from '../../services/pageStorageService'
-import { useAuth } from '../../context/AuthContext'
+import './styles/NavBar.css'
 
 // DT-902: Translate public page labels and show one Welcome link for legacy aliases.
 function Navbar () {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { logout, user, isAuthenticated } = useAuth() //Gets the user DT-826
+  const { textSize } = useAccessibility() //checks textSize here
 
   // DT-848: get the real signed-in state from AuthContext
   // DT-37: re render Navbar on route change so login check stays updated
@@ -53,14 +55,17 @@ function Navbar () {
   useEffect(() => {
     function updateWidth () {
       const measured = navRef.current?.offsetWidth || window.innerWidth
-      setViewportWidth(measured || window.innerWidth)
+      // Divide by the root font scale so larger accessibility text sizes
+      // collapse the menu earlier instead of overflowing the header.
+      const rootPx = parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16 //checks textSize 16
+      setViewportWidth((measured || window.innerWidth) / (rootPx / 16)) //checks textSizeby rootPx
     }
     updateWidth()
     window.addEventListener('resize', updateWidth)
     return () => {
       window.removeEventListener('resize', updateWidth)
     }
-  }, [])
+  }, [textSize]) //adjusts to textSize
 
   // DT-625 Sprint 8 - Preston Ball: Close dropdown and mobile menu on outside click or Escape key
   useEffect(() => {
