@@ -167,14 +167,16 @@ html[theme='dark'].high-contrast .admin-table td {
 /* ---------- Delete Buttons: Dark Mode ---------- */
 
 :root[data-theme="dark"] .appointment-delete-button,
-:root[data-theme="dark"] .admin-table-delete {
+:root[data-theme="dark"] .admin-table-delete,
+:root[data-theme="dark"] .admin-location-delete-button {
   background-color: transparent;
   border: 1px solid #f87171;
   color: #f87171;
 }
 
 :root[data-theme="dark"] .appointment-delete-button:hover,
-:root[data-theme="dark"] .admin-table-delete:hover {
+:root[data-theme="dark"] .admin-table-delete:hover,
+:root[data-theme="dark"] .admin-location-delete-button:hover {
   background-color: rgba(248, 113, 113, 0.14);
   border-color: #fca5a5;
   color: #fca5a5;

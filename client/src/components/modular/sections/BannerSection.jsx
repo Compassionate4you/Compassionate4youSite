@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { Heart, HeartHandshake, Users } from 'lucide-react'
 import CardBody from '../cards/CardBase'
 import '../../../styles/components/modular/sections/BannerSection.css'
+import { typographyStyle } from '../typographyStyle'
 
 // DT-902: Resolve decorative Welcome icons from stable section identifiers.
 const welcomeIcons = {
@@ -16,14 +17,7 @@ export function getWelcomeBannerIcon (...identifiers) {
 }
 
 // DT-902 / DT-625: Preserve editable typography over the banner's default centered styles.
-function typographyStyle (typography = {}) {
-  return {
-    textAlign: typography.align || undefined,
-    fontFamily: typography.fontFamily && typography.fontFamily !== 'inherit' ? typography.fontFamily : undefined,
-    fontWeight: typography.bold ? 'bold' : undefined,
-    fontStyle: typography.italic ? 'italic' : undefined
-  }
-}
+// DT-893: now uses the shared rules in ../typographyStyle.
 
 // DT-902: Shared full DT-861 banner, including accessible headings and decorative icon dividers.
 export default function BannerSection ({

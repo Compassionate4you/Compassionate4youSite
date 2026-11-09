@@ -1,9 +1,10 @@
 // Intent matcher. Handles accessibility commands (DT-335), the FAQ question
 // bank (DT-423) and page navigation (DT-171). Returns an intent object or
-// null (null = send to backend).
+// null (null = send to backend). Also recognises plain greetings.
 import { accessibilityCommands } from '../data/accessibilityCommands'
 import { faq } from '../data/faq'
 import { navigationCues, pages } from '../data/navigation'
+import { greetingFillers, greetings } from '../data/greetings'
 
 // Extra weight for a page match when the message asks to go somewhere.
 const NAVIGATION_CUE_BONUS = 10
@@ -77,6 +78,35 @@ function matchPage (text) {
   return best ? { kind: 'navigate', page: best, score: bestScore } : null
 }
 
+// A message that is only a greeting ("hi", "hello there!", "hey, how are
+// you?"), so the chatbot can say hello back. A greeting followed by a real
+// question ("hi, what are your hours?") is not one, so the question still
+// gets answered.
+const GREETING_PARTS = [
+  ...greetings.map((phrase) => ({ phrase, isGreeting: true })),
+  ...greetingFillers.map((phrase) => ({ phrase, isGreeting: false }))
+].sort((a, b) => b.phrase.length - a.phrase.length)
+
+export function isGreeting (message) {
+  // Punctuation and emoji become spaces; letters (any script), their accent
+  // marks, digits and apostrophes are kept.
+  let rest = normalize(message)
+    .replace(/[^\p{L}\p{M}\p{N}'\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  let sawGreeting = false
+
+  while (rest) {
+    const part = GREETING_PARTS.find(({ phrase }) =>
+      rest === phrase || rest.startsWith(`${phrase} `)
+    )
+    if (!part) return false
+    sawGreeting = sawGreeting || part.isGreeting
+    rest = rest.slice(part.phrase.length).trim()
+  }
+  return sawGreeting
+}
+
 function hasNavigationCue (text) {
   return navigationCues.some((cue) => containsPhrase(text, cue))
 }
@@ -104,7 +134,10 @@ export function matchIntent (message) {
   if (!text) return null
 
   // Accessibility commands take priority - they are direct instructions.
-  const intent = matchAccessibility(text) || chooseFaqOrPage(text)
+  // A plain greeting gets a hello back.
+  const intent = matchAccessibility(text) ||
+    (isGreeting(text) ? { kind: 'greeting' } : null) ||
+    chooseFaqOrPage(text)
   if (!intent) return null
 
   // The score is only used for choosing.

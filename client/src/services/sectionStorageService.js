@@ -1,16 +1,28 @@
-// DT-622 Sprint 8
-// Preston Ball
-// Service handling user-created sections with database persistence and fallback cache
+// DT-903 DT-922 DT-622 Sprint 9
+// PBall
+// Service handling user-created sections with database persistence and direct element color storage
 
 import { API_BASE_URL } from './api'
 
 const STORAGE_KEY = 'cms_user_sections_store'
 
+const DEFAULT_SECTION_COLORS = {
+  backgroundColor: { light: '#ffffff', dark: '#0f172a' },
+  headerColor: { light: '#0f172a', dark: '#f8fafc' },
+  textColor: { light: '#334155', dark: '#cbd5e1' },
+  accentColor: { light: '#366454', dark: '#4ade80' }
+}
+
 const INITIAL_SECTIONS = [
   {
     id: 'sec-hero',
     layout: 'IMAGE_HEADER_TEXT',
-    colors: { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' },
+    colors: {
+      backgroundColor: { light: '#262626', dark: '#ffffff' },
+      headerColor: { light: '#DBE4C3', dark: '#2d3748' },
+      textColor: { light: '#595959', dark: '#f1f5f9' },
+      accentColor: { light: '#0f3460', dark: '#60a5fa' }
+    },
     content: {
       header: 'Compassionate Care for Your Loved Ones',
       text: 'Professional home health and hospice services dedicated to providing quality care with dignity and respect.',
@@ -18,13 +30,24 @@ const INITIAL_SECTIONS = [
       gridCols: 3,
       cardIds: ['card-nurse'],
       faqItems: [],
-      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596'
+      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596',
+      colors: {
+        backgroundColor: { light: '#262626', dark: '#ffffff' },
+        headerColor: { light: '#DBE4C3', dark: '#2d3748' },
+        textColor: { light: '#595959', dark: '#f1f5f9' },
+        accentColor: { light: '#0f3460', dark: '#60a5fa' }
+      }
     }
   },
   {
     id: 'sec-cards',
     layout: 'CARD_GRID',
-    colors: { backgroundColor: 'color-sage', headerColor: 'color-charcoal', textColor: 'color-charcoal', accentColor: 'color-light-green' },
+    colors: {
+      backgroundColor: { light: '#9DA191', dark: '#1e293b' },
+      headerColor: { light: '#262626', dark: '#ffffff' },
+      textColor: { light: '#262626', dark: '#ffffff' },
+      accentColor: { light: '#DBE4C3', dark: '#2d3748' }
+    },
     content: {
       header: 'Our Core Services',
       text: 'Explore our comprehensive range of specialized medical and personal support services.',
@@ -32,13 +55,24 @@ const INITIAL_SECTIONS = [
       gridCols: 2,
       cardIds: ['card-nurse', 'card-specialty'],
       faqItems: [],
-      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596'
+      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596',
+      colors: {
+        backgroundColor: { light: '#9DA191', dark: '#1e293b' },
+        headerColor: { light: '#262626', dark: '#ffffff' },
+        textColor: { light: '#262626', dark: '#ffffff' },
+        accentColor: { light: '#DBE4C3', dark: '#2d3748' }
+      }
     }
   },
   {
     id: 'sec-faq-demo',
     layout: 'FAQ_SECTION',
-    colors: { backgroundColor: 'color-light-green', headerColor: 'color-navy', textColor: 'color-charcoal', accentColor: 'color-navy' },
+    colors: {
+      backgroundColor: { light: '#DBE4C3', dark: '#2d3748' },
+      headerColor: { light: '#0f3460', dark: '#60a5fa' },
+      textColor: { light: '#262626', dark: '#ffffff' },
+      accentColor: { light: '#0f3460', dark: '#60a5fa' }
+    },
     content: {
       header: 'Frequently Asked Questions',
       text: 'Find answers to common questions about our home health and hospice care services.',
@@ -49,7 +83,13 @@ const INITIAL_SECTIONS = [
         { q: 'What services do you offer?', a: 'We provide home health care and hospice care.' },
         { q: 'What areas do you serve?', a: 'We serve the Walnut Creek and greater Bay Area.' }
       ],
-      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596'
+      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596',
+      colors: {
+        backgroundColor: { light: '#DBE4C3', dark: '#2d3748' },
+        headerColor: { light: '#0f3460', dark: '#60a5fa' },
+        textColor: { light: '#262626', dark: '#ffffff' },
+        accentColor: { light: '#0f3460', dark: '#60a5fa' }
+      }
     }
   }
 ]
@@ -96,12 +136,15 @@ export const SectionStorageService = {
       throw new Error(`Section ID "${trimmedId}" already exists`)
     }
 
+    const resolvedColors = section.colors || section.content?.colors || DEFAULT_SECTION_COLORS
+
     const newSection = {
       id: trimmedId,
       layout: section.layout || 'HEADER_TEXT',
-      colors: section.colors || section.content?.colors || { backgroundColor: 'color-charcoal', headerColor: 'color-light-green', textColor: 'color-slate', accentColor: 'color-navy' },
+      colors: resolvedColors,
       content: {
         ...(section.content || {}),
+        colors: resolvedColors,
         header: section.content?.header || '',
         text: section.content?.text || '',
         imageUrl: section.content?.imageUrl || '',
@@ -159,12 +202,16 @@ export const SectionStorageService = {
           body: JSON.stringify(updates)
         })
         if (!res.ok) throw new Error('Database section update failed')
-        return await res.json()
+        await res.json()
+        return true
       } catch (err) {
         console.error('Database section update error:', err)
+        return false
       }
     }
-    dbUpdateSection(id, updated)
+    // DT-893 Sprint 9 - Gandhar Tare: resolves to false when the database did
+    // not save it, so the editor can say so instead of only "Updated".
+    this.lastSave = dbUpdateSection(id, updated)
 
     return updated
   },

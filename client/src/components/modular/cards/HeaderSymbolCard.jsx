@@ -1,45 +1,99 @@
-// DT-622 Sprint 8
-// Preston Ball
-// Modular header symbol card component supporting icon badges and alignment
+// DT-875 DT-622 Sprint 9
+// PBall
+// Modular header symbol card component supporting expanded Lucide icon set, optional description, and alignment
 
 import React from 'react'
 import {
-  Heart,
+  Accessibility,
+  Activity,
+  Apple,
+  Award,
+  Bandage,
+  Bone,
+  BriefcaseMedical,
+  CalendarDays,
   Check,
+  Church,
+  ClipboardCheck,
+  ClipboardList,
+  Clock,
+  Coins,
+  Cross,
+  Droplets,
+  FileCheck,
+  FlaskConical,
+  GraduationCap,
+  HandHelping,
+  Heart,
+  HeartHandshake,
+  HeartPulse,
   Home,
-  Stethoscope,
-  Users,
+  House,
+  Languages,
   Phone,
   Pill,
-  Activity,
-  Star,
   Shield,
   ShieldCheck,
-  Award,
-  Smile
+  Smile,
+  Speech,
+  Star,
+  Stethoscope,
+  TestTube,
+  TrendingUp,
+  Users,
+  Wind
 } from 'lucide-react'
+import CardBody from './CardBase'
 import '../../../styles/components/modular/cards/HeaderSymbolCard.css'
+// DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
+import { typographyStyle } from '../typographyStyle'
 
 const ICONS = {
-  heart: Heart,
+  accessibility: Accessibility,
+  activity: Activity,
+  apple: Apple,
+  award: Award,
+  bandage: Bandage,
+  bone: Bone,
+  briefcasemedical: BriefcaseMedical,
+  calendardays: CalendarDays,
   check: Check,
+  church: Church,
+  clipboardcheck: ClipboardCheck,
+  clipboardlist: ClipboardList,
+  clock: Clock,
+  coins: Coins,
+  cross: Cross,
+  droplets: Droplets,
+  filecheck: FileCheck,
+  flaskconical: FlaskConical,
+  graduationcap: GraduationCap,
+  handhelping: HandHelping,
+  heart: Heart,
+  hearthandshake: HeartHandshake,
+  heartpulse: HeartPulse,
   home: Home,
-  stethoscope: Stethoscope,
-  users: Users,
+  house: House,
+  languages: Languages,
   phone: Phone,
   pill: Pill,
-  activity: Activity,
-  star: Star,
   shield: Shield,
   shieldcheck: ShieldCheck,
-  award: Award,
-  smile: Smile
+  smile: Smile,
+  speech: Speech,
+  star: Star,
+  stethoscope: Stethoscope,
+  testtube: TestTube,
+  trendingup: TrendingUp,
+  users: Users,
+  wind: Wind
 }
 
 export const SYMBOL_NAMES = Object.keys(ICONS)
 
 export default function HeaderSymbolCard ({
   header,
+  paragraph,
   symbol,
   alignment = 'center',
   typography = {},
@@ -48,12 +102,9 @@ export default function HeaderSymbolCard ({
   const Icon = typeof symbol === 'string' ? ICONS[symbol.toLowerCase()] : null
   const alignClass = `card--align-${alignment || 'center'}`
   const headerTypo = typography.header || {}
-  const headerStyle = {
-    textAlign: headerTypo.align || undefined,
-    fontFamily: headerTypo.fontFamily && headerTypo.fontFamily !== 'inherit' ? headerTypo.fontFamily : undefined,
-    fontWeight: headerTypo.bold ? 'bold' : undefined,
-    fontStyle: headerTypo.italic ? 'italic' : undefined
-  }
+  const textTypo = typography.paragraph || typography.text || {}
+  const headerStyle = typographyStyle(headerTypo)
+  const textStyle = typographyStyle(textTypo)
 
   return (
     <article className={`card--symbol ${alignClass}`} style={style}>
@@ -61,6 +112,11 @@ export default function HeaderSymbolCard ({
         {Icon ? <Icon size={32} /> : <span>{symbol || '✦'}</span>}
       </div>
       {header && <h3 style={headerStyle}>{header}</h3>}
+      {paragraph && (
+        <div style={textStyle}>
+          <CardBody text={paragraph} />
+        </div>
+      )}
     </article>
   )
 }

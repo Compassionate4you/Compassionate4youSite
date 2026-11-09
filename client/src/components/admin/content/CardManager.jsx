@@ -1,28 +1,34 @@
-// DT-923 DT-622 DT-618 DT-625 Sprint 9
+// DT-903 DT-920 DT-922 DT-923 DT-622 DT-618 DT-625 Sprint 9
 // PBall
-// Card Element Manager component dispatching layout-specific form components with custom typography, element renaming, custom selects, custom modals, and live preview
+// Card Element Manager component dispatching layout-specific form components with inline ColorEditor and direct element color storage
 
 import React, { useState, useEffect } from 'react'
 import { CardStorageService } from '../../../services/cardStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
-import { ColorConfigService } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import ModularCard from '../../modular/cards/ModularCard'
 import CustomModal from './CustomModal'
 import CustomSelect from './CustomSelect'
+import ColorEditor, { DEFAULT_CARD_COLORS, normalizeColorPair } from './ColorEditor'
 import HeaderParagraphLayout from './CardManager/HeaderParagraphLayout'
 import ImageFullWidthLayout from './CardManager/ImageFullWidthLayout'
 import HeaderSymbolLayout from './CardManager/HeaderSymbolLayout'
+import PhotoTextCardLayout from './CardManager/PhotoTextCardLayout'
 
+// DT-875 Sprint 9 - PBall: Complete icon symbol options matching SectionIcon and HeaderSymbolCard
 const SYMBOL_OPTIONS = [
-  'Heart', 'Check', 'Home', 'Stethoscope', 'Users', 'Phone',
-  'Pill', 'Activity', 'Star', 'Shield', 'ShieldCheck', 'Award', 'Smile'
+  'Heart', 'HeartHandshake', 'HeartPulse', 'Check', 'Home', 'House', 'Stethoscope', 'Users', 'Phone',
+  'Pill', 'Activity', 'Star', 'Shield', 'ShieldCheck', 'Award', 'Smile',
+  'Accessibility', 'Apple', 'Bandage', 'Bone', 'BriefcaseMedical', 'CalendarDays', 'Church',
+  'ClipboardCheck', 'ClipboardList', 'Clock', 'Coins', 'Cross', 'Droplets', 'FileCheck',
+  'FlaskConical', 'GraduationCap', 'HandHelping', 'Languages', 'Speech', 'TestTube', 'TrendingUp', 'Wind'
 ]
 
 const CARD_LAYOUT_OPTIONS = [
   { value: 'HEADER_PARAGRAPH', label: 'HEADER_PARAGRAPH (Title & bullet text)' },
   { value: 'IMAGE_FULL_WIDTH', label: 'IMAGE_FULL_WIDTH (Split image and content)' },
-  { value: 'HEADER_SYMBOL', label: 'HEADER_SYMBOL (Icon badge & title)' }
+  { value: 'PHOTO_TEXT_CARD', label: 'PHOTO_TEXT_CARD (Bordered photo & text card)' },
+  { value: 'HEADER_SYMBOL', label: 'HEADER_SYMBOL (Icon badge, title & description)' }
 ]
 
 const ALIGNMENT_OPTIONS = [
@@ -33,7 +39,6 @@ const ALIGNMENT_OPTIONS = [
 
 export default function CardManager ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [cards, setCards] = useState(CardStorageService.getCards())
-  const colors = ColorConfigService.getColors()
   const sections = SectionStorageService.getSections()
 
   const [mode, setMode] = useState('create')
@@ -45,15 +50,15 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
   const [layout, setLayout] = useState('HEADER_PARAGRAPH')
   const [header, setHeader] = useState('')
   const [paragraph, setParagraph] = useState('')
-  const [headerTypography, setHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [paragraphTypography, setParagraphTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [headerTypography, setHeaderTypography] = useState({})
+  const [paragraphTypography, setParagraphTypography] = useState({})
   const [imageUrl, setImageUrl] = useState('')
   const [imageAlt, setImageAlt] = useState('')
   const [symbol, setSymbol] = useState('Heart')
   const [alignment, setAlignment] = useState('left')
-  const [bgColor, setBgColor] = useState('')
-  const [headerColor, setHeaderColor] = useState('')
-  const [textColor, setTextColor] = useState('')
+  const [bgColor, setBgColor] = useState(DEFAULT_CARD_COLORS.backgroundColor)
+  const [headerColor, setHeaderColor] = useState(DEFAULT_CARD_COLORS.headerColor)
+  const [textColor, setTextColor] = useState(DEFAULT_CARD_COLORS.textColor)
 
   // Manage Mode state
   const [locationFilter, setLocationFilter] = useState('all')
@@ -62,15 +67,15 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
   const [editLayout, setEditLayout] = useState('HEADER_PARAGRAPH')
   const [editHeader, setEditHeader] = useState('')
   const [editParagraph, setEditParagraph] = useState('')
-  const [editHeaderTypography, setEditHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [editParagraphTypography, setEditParagraphTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [editHeaderTypography, setEditHeaderTypography] = useState({})
+  const [editParagraphTypography, setEditParagraphTypography] = useState({})
   const [editImageUrl, setEditImageUrl] = useState('')
   const [editImageAlt, setEditImageAlt] = useState('')
   const [editSymbol, setEditSymbol] = useState('Heart')
   const [editAlignment, setEditAlignment] = useState('left')
-  const [editBgColor, setEditBgColor] = useState('')
-  const [editHeaderColor, setEditHeaderColor] = useState('')
-  const [editTextColor, setEditTextColor] = useState('')
+  const [editBgColor, setEditBgColor] = useState(DEFAULT_CARD_COLORS.backgroundColor)
+  const [editHeaderColor, setEditHeaderColor] = useState(DEFAULT_CARD_COLORS.headerColor)
+  const [editTextColor, setEditTextColor] = useState(DEFAULT_CARD_COLORS.textColor)
 
   // Custom modal dialog state
   const [modalState, setModalState] = useState({
@@ -115,15 +120,16 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
       setEditLayout(c.layout || c.layoutType || 'HEADER_PARAGRAPH')
       setEditHeader(data.header || '')
       setEditParagraph(data.paragraph || data.text || '')
-      setEditHeaderTypography(typo.header || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-      setEditParagraphTypography(typo.paragraph || typo.text || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+      setEditHeaderTypography(typo.header || {})
+      setEditParagraphTypography(typo.paragraph || typo.text || {})
       setEditImageUrl(data.imageUrl || '')
       setEditImageAlt(data.imageAlt || '')
       setEditSymbol(data.symbol || data.iconName || 'Heart')
       setEditAlignment(data.alignment || data.facing || 'left')
-      setEditBgColor(col.backgroundColor || '')
-      setEditHeaderColor(col.headerColor || '')
-      setEditTextColor(col.textColor || '')
+      // DT-922 Sprint 9 - PBall: Normalize direct card color objects
+      setEditBgColor(normalizeColorPair(col.backgroundColor, DEFAULT_CARD_COLORS.backgroundColor))
+      setEditHeaderColor(normalizeColorPair(col.headerColor, DEFAULT_CARD_COLORS.headerColor))
+      setEditTextColor(normalizeColorPair(col.textColor, DEFAULT_CARD_COLORS.textColor))
     }
   }
 
@@ -181,6 +187,7 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
       const created = CardStorageService.createCard({
         id: trimmedId,
         layout,
+        colors: cardContent.colors,
         content: cardContent
       })
       setCards(CardStorageService.getCards())
@@ -255,6 +262,7 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
 
       const updated = CardStorageService.updateCard(activeId, {
         layout: editLayout,
+        colors: updatedContent.colors,
         content: updatedContent
       })
       setCards(CardStorageService.getCards())
@@ -264,6 +272,18 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
       })
       markClean()
       onNotification(`Updated card "${activeId}"`)
+      // DT-893 Sprint 9 - Gandhar Tare: warn if the database did not save it.
+      CardStorageService.lastSave?.then((saved) => {
+        if (saved !== false) return
+        setModalState({
+          isOpen: true,
+          title: 'Card Not Saved',
+          message: 'Your changes are shown here but could not be saved to the database, so the live site will not show them. Please try again.',
+          type: 'alert',
+          confirmText: 'OK',
+          onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+        })
+      })
     } catch (err) {
       setModalState({
         isOpen: true,
@@ -345,11 +365,6 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
     content: activeContent
   }
 
-  const colorOptions = [
-    { value: '', label: 'Default Theme Color' },
-    ...colors.map(c => ({ value: c.id, label: c.id, color: c.lightModeColor }))
-  ]
-
   const locationFilterOptions = [
     { value: 'all', label: 'All Cards' },
     { value: 'unallocated', label: 'Unallocated Cards' },
@@ -380,6 +395,23 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
     isEdit = false
   }) => {
     switch (currentLayout) {
+      case 'PHOTO_TEXT_CARD':
+      case 'PHOTO_TEXT':
+        return (
+          <PhotoTextCardLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            paragraph={currentParagraph}
+            onParagraphChange={onParagraphChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            imageAlt={currentImageAlt}
+            onImageAltChange={onImageAltChange}
+            imagePosition={currentAlignment}
+            onImagePositionChange={onAlignmentChange}
+            imageUrlPlaceholder={isEdit ? '/images/older_couple_smiling.jpeg' : '/images/working_a_puzzle_together.jpeg'}
+          />
+        )
       case 'IMAGE_FULL_WIDTH':
         return (
           <ImageFullWidthLayout
@@ -407,6 +439,10 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
             onHeaderChange={onHeaderChange}
             headerTypography={currentHeaderTypography}
             onHeaderTypographyChange={onHeaderTypographyChange}
+            paragraph={currentParagraph}
+            onParagraphChange={onParagraphChange}
+            paragraphTypography={currentParagraphTypography}
+            onParagraphTypographyChange={onParagraphTypographyChange}
             symbol={currentSymbol}
             onSymbolChange={onSymbolChange}
             symbolOptions={symbolDropdownOptions}
@@ -566,21 +602,33 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
             isEdit: false
           })}
 
+          {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor storing light/dark colors directly in card */}
           {activeTab === 'colors' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Background Color</label>
-                <CustomSelect value={bgColor} onChange={(val) => { setBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Background Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                <CustomSelect value={headerColor} onChange={(val) => { setHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Header Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                <CustomSelect value={textColor} onChange={(val) => { setTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Text Color" />
-              </div>
-            </div>
+            <ColorEditor
+              fields={[
+                {
+                  key: 'backgroundColor',
+                  label: 'Card Background Color',
+                  value: bgColor,
+                  defaultPair: DEFAULT_CARD_COLORS.backgroundColor,
+                  onChange: (val) => { setBgColor(val); markDirty() }
+                },
+                {
+                  key: 'headerColor',
+                  label: 'Header Color',
+                  value: headerColor,
+                  defaultPair: DEFAULT_CARD_COLORS.headerColor,
+                  onChange: (val) => { setHeaderColor(val); markDirty() }
+                },
+                {
+                  key: 'textColor',
+                  label: 'Text Color',
+                  value: textColor,
+                  defaultPair: DEFAULT_CARD_COLORS.textColor,
+                  onChange: (val) => { setTextColor(val); markDirty() }
+                }
+              ]}
+            />
           )}
 
           <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -678,21 +726,33 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
                 isEdit: true
               })}
 
+              {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor in card manage mode */}
               {activeTab === 'colors' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Card Background Color</label>
-                    <CustomSelect value={editBgColor} onChange={(val) => { setEditBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Background Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                    <CustomSelect value={editHeaderColor} onChange={(val) => { setEditHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Header Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                    <CustomSelect value={editTextColor} onChange={(val) => { setEditTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Card Text Color" />
-                  </div>
-                </div>
+                <ColorEditor
+                  fields={[
+                    {
+                      key: 'backgroundColor',
+                      label: 'Card Background Color',
+                      value: editBgColor,
+                      defaultPair: DEFAULT_CARD_COLORS.backgroundColor,
+                      onChange: (val) => { setEditBgColor(val); markDirty() }
+                    },
+                    {
+                      key: 'headerColor',
+                      label: 'Header Color',
+                      value: editHeaderColor,
+                      defaultPair: DEFAULT_CARD_COLORS.headerColor,
+                      onChange: (val) => { setEditHeaderColor(val); markDirty() }
+                    },
+                    {
+                      key: 'textColor',
+                      label: 'Text Color',
+                      value: editTextColor,
+                      defaultPair: DEFAULT_CARD_COLORS.textColor,
+                      onChange: (val) => { setEditTextColor(val); markDirty() }
+                    }
+                  ]}
+                />
               )}
 
               <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>

@@ -1,6 +1,6 @@
-// DT-622 Sprint 8
-// Preston Ball
-// Modular card section layout loading cards from database via CardStorageService
+// DT-894 DT-917 DT-622 Sprint 9
+// PBall
+// Modular card section layout loading cards from database via CardStorageService with full-width section background and inner grid container
 
 import { useTranslation } from 'react-i18next'
 import { getWelcomeBannerIcon } from './BannerSection'
@@ -9,6 +9,8 @@ import { CardStorageService } from '../../../services/cardStorageService'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 import { pickText } from '../cards/CardBase'
 import '../../../styles/components/modular/sections/CardSection.css'
+// DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
+import { typographyStyle } from '../typographyStyle'
 
 // DT-902: Recognized Welcome text cards share the full banner presentation.
 // DT-902: Forward the page colour source to every nested card.
@@ -59,26 +61,24 @@ export default function CardSection ({
   const columns = Number(data.gridCols || data.columns || 3)
   const sectionClassName = ['card-section', BannerIcon ? 'card-section--banners' : '', className].filter(Boolean).join(' ')
   const headerTypo = data.typography?.header || {}
-  const headerStyle = {
-    textAlign: headerTypo.align || undefined,
-    fontFamily: headerTypo.fontFamily && headerTypo.fontFamily !== 'inherit' ? headerTypo.fontFamily : undefined,
-    fontWeight: headerTypo.bold ? 'bold' : undefined,
-    fontStyle: headerTypo.italic ? 'italic' : undefined
-  }
+  const headerStyle = typographyStyle(headerTypo)
 
   return (
     <section className={sectionClassName} style={style} aria-label={title || undefined}>
-      {title && <h2 className='card-section__title' style={headerStyle}>{title}</h2>}
-      <div className='card-grid' style={{ '--card-columns': Math.min(Math.max(columns, 1), 4) }}>
-        {resolvedCards.map((card, index) => (
-          <ModularCard
-            key={card.id || `card-${index}`}
-            card={card}
-            theme={theme}
-            colorSource={colorSource}
-            BannerIcon={BannerIcon}
-          />
-        ))}
+      {/* DT-917 Sprint 9 - PBall: Inner container matching editor preview and preventing horizontal overflow */}
+      <div className='card-section__inner'>
+        {title && <h2 className='card-section__title' style={headerStyle}>{title}</h2>}
+        <div className='card-grid' style={{ '--card-columns': Math.min(Math.max(columns, 1), 5) }}>
+          {resolvedCards.map((card, index) => (
+            <ModularCard
+              key={card.id || `card-${index}`}
+              card={card}
+              theme={theme}
+              colorSource={colorSource}
+              BannerIcon={BannerIcon}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )

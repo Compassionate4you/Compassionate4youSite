@@ -25,15 +25,28 @@ export const WATCH_MS = 5000
 
 // Phrases for the current language, plus English ones for any part of the
 // page that is still showing English text.
-function phrasesFor (spec, id, t, i18n) {
-  if (!spec.phrases) return []
-  const key = highlightPhrasesKey(id)
+// DT-808 Sprint 9: also the full translated text of each `phraseKeys` entry.
+export function phrasesFor (spec, id, t, i18n) {
   const asList = (value) => (Array.isArray(value) ? value : [])
-  const current = asList(t(key, { returnObjects: true }))
-  const english = typeof i18n?.getFixedT === 'function'
-    ? asList(i18n.getFixedT('en')(key, { returnObjects: true }))
-    : []
-  return [...new Set([...current, ...english])]
+  const english = typeof i18n?.getFixedT === 'function' ? i18n.getFixedT('en') : null
+  const found = []
+
+  if (spec.phrases) {
+    const key = highlightPhrasesKey(id)
+    found.push(...asList(t(key, { returnObjects: true })))
+    if (english) found.push(...asList(english(key, { returnObjects: true })))
+  }
+
+  for (const key of spec.phraseKeys || []) {
+    for (const translate of english ? [t, english] : [t]) {
+      const value = translate(key, { returnObjects: true })
+      // A missing key comes back as the key itself; skip it.
+      if (Array.isArray(value)) found.push(...value)
+      else if (typeof value === 'string' && value !== key) found.push(value)
+    }
+  }
+
+  return [...new Set(found.filter((p) => typeof p === 'string' && p.trim()))]
 }
 
 export function usePageHighlight () {

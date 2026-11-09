@@ -1,13 +1,12 @@
-// DT-622 Sprint 8
-// Preston Ball
-// Dynamic Content Page displaying client-created pages and sections from the database
+// DT-894 DT-917 DT-918 DT-921 Sprint 9
+// PBall
+// Dynamic Content Page displaying client-created pages and sections with dark/light theme synchronization
 
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { PageStorageService } from '../services/pageStorageService'
 import { SectionStorageService } from '../services/sectionStorageService'
 import { CardStorageService } from '../services/cardStorageService'
-import { ColorConfigService } from '../services/colorConfigService'
 import DynamicSectionRenderer from '../components/modular/DynamicSectionRenderer'
 import HospiceSections from '../components/modular/HospiceSections'
 import HomeHealthSections from '../components/modular/HomeHealthSections'
@@ -45,8 +44,7 @@ export default function ContentPage ({ defaultPageId }) {
         await Promise.all([
           PageStorageService.loadFromDatabase(),
           SectionStorageService.loadFromDatabase(),
-          CardStorageService.loadFromDatabase(),
-          ColorConfigService.loadFromDatabase()
+          CardStorageService.loadFromDatabase()
         ])
       } catch (err) {
         console.error('Error loading content page data:', err)
@@ -85,7 +83,7 @@ export default function ContentPage ({ defaultPageId }) {
   // DT-902: Loading text follows the global palette.
   if (loading) {
     return (
-      <main id="main-content" className="content-page" style={{ padding: '60px 20px', textAlign: 'center' }}>
+      <main id="main-content" className="content-page" data-theme={theme} style={{ padding: '60px 20px', textAlign: 'center' }}>
         <p style={{ color: 'var(--color-muted-text)', fontSize: '1.1rem' }}>Loading content...</p>
       </main>
     )
@@ -106,7 +104,7 @@ export default function ContentPage ({ defaultPageId }) {
     : (normalizedPageId === 'hospice' ? HospiceSections : (normalizedPageId === 'landing' ? WelcomeSections : null))
 
   return (
-    <main id="main-content" className={`content-page${PageSections ? ' content-page--standard' : ''}`}>
+    <main id="main-content" className={`content-page${PageSections ? ' content-page--standard' : ''}`} data-theme={theme}>
       {/* DT-622 Sprint 8 - Preston Ball: Render page header if not landing */}
       {!PageSections && normalizedPageId !== 'landing' && (
         <div className="content-page-hero">
@@ -114,7 +112,7 @@ export default function ContentPage ({ defaultPageId }) {
         </div>
       )}
 
-      {/* DT-622 Sprint 8 - Preston Ball: Render all configured modular sections */}
+      {/* DT-918 Sprint 9 - PBall: Render configured modular sections with active accessibility theme */}
       <div className="content-page-sections">
         {resolvedSections.length > 0 ? (
           PageSections ? <PageSections sections={resolvedSections} theme={theme} /> : resolvedSections.map((sec) => (

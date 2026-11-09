@@ -13,6 +13,7 @@ function LocationsTab({
     onEditFormChange,
     onSaveLocation,
     onCancelEdit,
+    onDeleteLocation,
 }) {
     return (
         <div className="admin-locations-section">
@@ -145,32 +146,6 @@ function LocationsTab({
                                 required
                             />
                         </div>
-
-                        <div className="admin-location-form-field">
-                            <label htmlFor="location-status">
-                                Status
-                            </label>
-
-                            <select
-                                id="location-status"
-                                name="status"
-                                value={locationForm.status}
-                                onChange={onLocationFormChange}
-                                required
-                            >
-                                <option value="">
-                                    Select a status
-                                </option>
-
-                                <option value="Active">
-                                    Active
-                                </option>
-
-                                <option value="Inactive">
-                                    Inactive
-                                </option>
-                            </select>
-                        </div>
                     </div>
                     {/* New Form Add and cancel buttons */}
                     <div className="admin-location-add-actions">
@@ -269,26 +244,7 @@ function LocationsTab({
                                     placeholder="Phone"
                                     className="admin-location-form-control"
                                 />
-                                {/* Drop down menu for Inactive or Active choice */}
-                                <select
-                                    value={editForm.status}
-                                    onChange={(event) =>
-                                        onEditFormChange(
-                                            "status",
-                                            event.target.value
-                                        )
-                                    }
-                                    className="admin-location-form-control"
-                                >
-                                    <option value="Active">
-                                        Active
-                                    </option>
-
-                                    <option value="Inactive">
-                                        Inactive
-                                    </option>
-                                </select>
-                                    {/* Edit Save button */}
+                                {/* Edit Save button */}
                                 <div className="admin-location-form-actions">
                                     <button
                                         type="button"
@@ -307,6 +263,18 @@ function LocationsTab({
                                     >
                                         Cancel
                                     </button>
+
+
+                                    {/* Delete the selected location */}
+                                    <button
+                                         type="button"
+                                         className="admin-location-delete-button"
+                                         onClick={() => onDeleteLocation(location.id)}
+                                    >
+                                         Delete
+                                    </button>
+
+
                                 </div>
                             </div>
                         ) : (
@@ -335,12 +303,6 @@ function LocationsTab({
                                     <p className="admin-location-phone">
                                         Phone: {location.phone}
                                     </p>
-
-                                    <span
-                                        className={`admin-location-status admin-location-status-${location.status.toLowerCase()}`}
-                                    >
-                                        {location.status}
-                                    </span>
                                 </div>
                                 {/* Edit Location button */}
                                 <button

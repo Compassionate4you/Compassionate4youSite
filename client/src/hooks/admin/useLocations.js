@@ -1,6 +1,7 @@
 // Add Location handlers
 import { useEffect, useState} from "react";
-import {apiGetLocations, apiCreateLocation, apiUpdateLocation} from "../../services/api";
+import {apiGetLocations, apiCreateLocation, apiUpdateLocation, apiDeleteLocation} from "../../services/api";
+
 
 
 
@@ -8,6 +9,10 @@ function useLocations() {
     const [locations, setLocations] = useState([]);
 
     const [error, setError] = useState(""); //stores an error message if loading locations fail
+
+
+    // Stores the location selected for deletion
+    const [locationPendingDelete, setLocationPendingDelete] = useState(null);
 
 
     //Loads locations from the backend when the page first opens
@@ -27,7 +32,6 @@ function useLocations() {
                     location.zipCode,
                 ].filter(Boolean).join(", "),
                 phone: location.phone || "", 
-                status: location.active === false ? "Inactive" : "Active",
 
             }));
 
@@ -50,13 +54,13 @@ function useLocations() {
         useState(null);
 
     const [editForm, setEditForm] = useState({
-        name: "", streetAddress: "", phone: "", status: "", city: "", state: "", zipCode: ""
+        name: "", streetAddress: "", phone: "", city: "", state: "", zipCode: ""
     });
 
     const [showLocationForm, setShowLocationForm] = useState(false);
 
     const [locationForm, setLocationForm] = useState({
-        name: "", streetAddress: "", city: "", state: "", phone: "", status: "", zipCode: "",
+        name: "", streetAddress: "", city: "", state: "", phone: "", zipCode: "",
     });
 
     // Opens the edit form with an existing Location's information
@@ -70,7 +74,6 @@ function useLocations() {
             zipCode: location.zipCode || "",
 
             phone: location.phone || "",
-            status: location.status || "",
         });
     };
 
@@ -94,6 +97,7 @@ const handleSaveLocation = async (id) => {
             city: editForm.city.trim(),
             state: editForm.state.trim(),
             zipCode: editForm.zipCode.trim(),
+            phone: editForm.phone.trim(),
         });
 
         // Formats the updated location for the dashboard
@@ -106,7 +110,6 @@ const handleSaveLocation = async (id) => {
                 data.location.zipCode,
             ].filter(Boolean).join(", "),
             phone: data.location.phone || "",
-            status: data.location.active === false ? "Inactive" : "Active",
         };
 
         // Updates the displayed location after the database saves successfully
@@ -134,7 +137,7 @@ const handleSaveLocation = async (id) => {
     // Clears the Add Location form upon Cancel
     const resetLocationForm = () => {
         setLocationForm({
-            name: "", streetAddress: "", phone: "", status: "", city: "", state: "", zipCode: "", 
+            name: "", streetAddress: "", phone: "", city: "", state: "", zipCode: "",
         });
     };
 
@@ -170,6 +173,7 @@ const handleAddLocation = async (event) => {
     const city = locationForm.city.trim();
     const state = locationForm.state.trim();
     const zipCode = locationForm.zipCode.trim();
+    const phone = locationForm.phone.trim();
 
     // Makes sure all required database fields are filled out
     if (!locationName || !streetAddress || !city || !state || !zipCode) {
@@ -187,14 +191,14 @@ const handleAddLocation = async (event) => {
             city,
             state,
             zipCode,
+            phone,
         });
 
         // Adds the saved location to the dashboard
         const newLocation = {
             ...data.location,
             address: [streetAddress, city, state, zipCode].join(", "),
-            phone: "",
-            status: "Active",
+            phone: data.location.phone || "", // Display the phone returned from the database
         };
 
         setLocations((currentLocations) => [
@@ -213,6 +217,51 @@ const handleAddLocation = async (event) => {
     }
 };
 
+
+   // Opens the confirmation popup for the selected location
+    const handleDeleteLocation = (id) => {
+         const location = locations.find((location) => location.id === id);
+         if (location) {
+             setLocationPendingDelete(location);
+         }
+};
+
+
+
+    // Closes the confirmation popup without deleting
+    const handleCancelDeleteLocation = () => {
+        setLocationPendingDelete(null);
+    };
+
+    // Deletes the location after confirmation
+    const handleConfirmDeleteLocation = async () => {
+        if (!locationPendingDelete) return;
+
+        try {
+            setError("");
+
+            // Delete the location from Supabase through the backend
+            await apiDeleteLocation(locationPendingDelete.id);
+
+            // Remove the deleted location from the dashboard
+            setLocations((currentLocations) =>
+                currentLocations.filter(
+                    (location) => location.id !== locationPendingDelete.id
+                )
+            );
+
+            // Close the edit form and confirmation popup
+            setEditingLocationId(null);
+            setLocationPendingDelete(null);
+        } catch (err) {
+            // Show an error if deletion fails
+            setError(err.message);
+            console.error("Failed to delete location:", err);
+        }
+    };
+
+
+
     return {
         locations,
         error,
@@ -228,6 +277,10 @@ const handleAddLocation = async (event) => {
         handleOpenAddLocation,
         handleCancelAddLocation,
         handleAddLocation,
+        handleDeleteLocation,
+        locationPendingDelete,
+        handleCancelDeleteLocation,
+        handleConfirmDeleteLocation
     };
 }
 

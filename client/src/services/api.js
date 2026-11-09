@@ -129,6 +129,14 @@ export function apiDeleteAdminAppointment(id) {
   })
 }
 
+// DT-837 / DT-927: admin sets the tag of an appointment in history.
+export function apiUpdateHistoryTag(id, tag) {
+  return request(`/appointments/${encodeURIComponent(id)}/history-tag`, {
+    method: 'PATCH',
+    body: { tag }
+  })
+}
+
 // DT-567: contact form.
 export function apiSubmitContactForm (payload) {
   return request('/contact', { method: 'POST', body: payload })
@@ -189,12 +197,22 @@ export function apiCancelAppointment(id){
 export function apiRescheduleAppointment(id, date, timeSlot){
   return request(`/appointments/${encodeURIComponent(id)}/reschedule`, { method: 'PATCH', body: { date, timeSlot } })}
 
+// DT-846: load and save the signed-in user's profile (Profile Settings on the customer portal)
+export function apiGetProfile () {
+  return request('/portal/profile')
+}
+
+export function apiUpdateProfile (profile) {
+  return request('/portal/profile', { method: 'PUT', body: profile })
+}
+
 export default {
   sendChatMessage,
   apiSubmitContactForm,
   apiCreateAdminAppointment,
   apiUpdateAdminAppointment,
   apiDeleteAdminAppointment,
+  apiUpdateHistoryTag,
   apiSignup,
   apiLogin,
   apiLogout,
@@ -213,5 +231,7 @@ export default {
   apiRescheduleAppointment,
   apiGetAccounts,
   apiUpdateAccount,
-  apiDeleteAccount
+  apiDeleteAccount,
+  apiGetProfile,
+  apiUpdateProfile
 }

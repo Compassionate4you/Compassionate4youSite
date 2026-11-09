@@ -8,6 +8,8 @@ function useAccounts() {
     const [editingAccountId, setEditingAccountId] = useState(null);
     const [accountPendingDelete, setAccountPendingDelete] = useState(null);
     const [accounts, setAccounts] = useState([]);
+    // DT-825: Controls the Admin role confirmation popup
+    const [showPromoteConfirm, setShowPromoteConfirm] = useState(false);
 
 
     //Retrieve accounts when the dashboard loads
@@ -32,8 +34,9 @@ function useAccounts() {
                     year: "2-digit",
                 }),
 
+                birthdate: account.birthdate ? account.birthdate.slice(0, 10) : "", // Load birthdate from supabase
+
                 // These fields are not currently stored in the User table
-                birthdate: "",
                 lastLogin: "",
             }));
 
@@ -51,13 +54,13 @@ function useAccounts() {
 
 
     const [accountForm, setAccountForm] = useState({
-        name: "", birthdate: "", email: "", role: "", status: "",
+        name: "", birthdate: "", email: "", phone: "", role: "", status: "",
     });
 
     // Clears all Account form fields upon Cancel
     const resetAccountForm = () => {
         setAccountForm({
-            name: "", birthdate: "", email: "", role: "", status: "",
+            name: "", birthdate: "", email: "", phone: "", role: "", status: "",
         });
     };
 
@@ -66,6 +69,7 @@ function useAccounts() {
         resetAccountForm();
         setEditingAccountId(null);
         setShowAccountForm(false);
+        setShowPromoteConfirm(false);
     };
 
     // Updates the matching Account form field.
@@ -79,17 +83,17 @@ function useAccounts() {
 
     // Formats YYYY-MM-DD for display in the Account table.
     const formatAccountBirthdate = (birthdate) => {
-        return new Date(
-            `${birthdate}T00:00:00`
-        ).toLocaleDateString("en-US", {
+        if(!birthdate) return "-";
+
+        return new Date(`${birthdate}T00:00:00`).toLocaleDateString("en-US", {
             month: "short",
             day: "2-digit",
             year: "2-digit",
         });
     };
 
-    // Saves changes to an existing account.
-    const handleUpdateAccount = async (event) => {
+    // Adds a new Account or saves changes to an existing Account.
+    const handleUpdateAccount = async (event, confirmed = false) => {
         event.preventDefault();
 
         if (editingAccountId === null) {
@@ -108,13 +112,30 @@ function useAccounts() {
             return;
         }
 
-        try {
-            const updateData = {
-                name: accountName,
-                email: accountEmail,
-                role: accountForm.role.toLowerCase(),
-                accountStatus: accountForm.status.toLowerCase(),
-            };
+                // DT-825: Confirm before promoting a customer to Admin
+                const existingAccount = accounts.find(
+                    (account) => account.id === editingAccountId
+                );
+
+                if (!confirmed && existingAccount?.role === "Customer" && accountForm.role === "Admin") {
+                    setShowPromoteConfirm(true);
+                    return;
+                }
+
+            try {
+                //Convert dashboard values to database values
+                const updateData = {
+                    name: accountName,
+                    email: accountEmail,
+                    phone: accountForm.phone.trim(),
+                    role: accountForm.role.toLowerCase(),
+                    birthdate: accountForm.birthdate, // save birthdate to supabase
+                    accountStatus: accountForm.status.toLowerCase(),
+                };
+
+                //save changes to supabase before updating the dashboard
+                await apiUpdateAccount(editingAccountId, updateData);
+            
 
             await apiUpdateAccount(editingAccountId, updateData);
 
@@ -122,13 +143,14 @@ function useAccounts() {
                 currentAccounts.map((account) =>
                     account.id === editingAccountId
                         ? {
-                            ...account,
-                            name: accountName,
-                            birthdate: accountForm.birthdate,
-                            email: accountEmail,
-                            role: accountForm.role,
-                            status: accountForm.status,
-                        }
+                              ...account,
+                              name: accountName,
+                              birthdate: accountForm.birthdate,
+                              email: accountEmail,
+                              phone: accountForm.phone.trim(),
+                              role: accountForm.role,
+                              status: accountForm.status,
+                          }
                         : account
                 )
             );
@@ -141,12 +163,28 @@ function useAccounts() {
         }
     };
 
+    // DT-825: Cancel the Admin role change
+    const handleCancelPromote = () => {
+        setShowPromoteConfirm(false);
+    };
+
+    // DT-825: Confirm the Admin role change
+    const handleConfirmPromote = async () => {
+    setShowPromoteConfirm(false);
+
+    await handleUpdateAccount(
+        { preventDefault: () => {} },
+        true
+    );
+};
+
     // Opens the form with an existing Account's information
     const handleEditAccount = (account) => {
         setAccountForm({
             name: account.name,
             birthdate: account.birthdate,
             email: account.email,
+            phone: account.phone || "",
             role: account.role,
             status: account.status,
         });
@@ -190,6 +228,9 @@ function useAccounts() {
     return {
         showAccountForm,
         editingAccountId,
+        showPromoteConfirm,
+        handleCancelPromote,
+        handleConfirmPromote,
         accountPendingDelete,
         accounts,
         accountForm,
