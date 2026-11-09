@@ -8,6 +8,8 @@ function useAccounts() {
     const [editingAccountId, setEditingAccountId] = useState(null);
     const [accountPendingDelete, setAccountPendingDelete] = useState(null);
     const [accounts, setAccounts] = useState([]);
+    // DT-825: Controls the Admin role confirmation popup
+    const [showPromoteConfirm, setShowPromoteConfirm] = useState(false);
 
 
     //Retrieve accounts when the dashboard loads
@@ -32,8 +34,9 @@ function useAccounts() {
                     year: "2-digit",
                 }),
 
+                birthdate: account.birthdate ? account.birthdate.slice(0, 10) : "", // Load birthdate from supabase
+
                 // These fields are not currently stored in the User table
-                birthdate: "",
                 lastLogin: "",
             }));
 
@@ -51,21 +54,14 @@ function useAccounts() {
 
 
     const [accountForm, setAccountForm] = useState({
-        name: "", birthdate: "", email: "", role: "", status: "",
+        name: "", birthdate: "", email: "", phone: "", role: "", status: "",
     });
 
     // Clears all Account form fields upon Cancel
     const resetAccountForm = () => {
         setAccountForm({
-            name: "", birthdate: "", email: "", role: "", status: "",
+            name: "", birthdate: "", email: "", phone: "", role: "", status: "",
         });
-    };
-
-    // Opens an empty form for a new Account.
-    const handleOpenAddAccount = () => {
-        resetAccountForm();
-        setEditingAccountId(null);
-        setShowAccountForm(true);
     };
 
     // Discards form changes and returns to the table.
@@ -73,6 +69,7 @@ function useAccounts() {
         resetAccountForm();
         setEditingAccountId(null);
         setShowAccountForm(false);
+        setShowPromoteConfirm(false);
     };
 
     // Updates the matching Account form field.
@@ -86,9 +83,9 @@ function useAccounts() {
 
     // Formats YYYY-MM-DD for display in the Account table.
     const formatAccountBirthdate = (birthdate) => {
-        return new Date(
-            `${birthdate}T00:00:00`
-        ).toLocaleDateString("en-US", {
+        if(!birthdate) return "-";
+
+        return new Date(`${birthdate}T00:00:00`).toLocaleDateString("en-US", {
             month: "short",
             day: "2-digit",
             year: "2-digit",
@@ -96,28 +93,43 @@ function useAccounts() {
     };
 
     // Adds a new Account or saves changes to an existing Account.
-    const handleAddAccount = async (event) => {
+    const handleUpdateAccount = async (event, confirmed = false) => {
         event.preventDefault();
+
+        if (editingAccountId === null) {
+            return;
+        }
+
         const accountName = accountForm.name.trim();
-        const accountEmail =
-            accountForm.email.trim().toLowerCase();
+        const accountEmail = accountForm.email.trim().toLowerCase();
+
         if (
             !accountName ||
-            //!accountForm.birthdate ||
             !accountEmail ||
             !accountForm.role ||
             !accountForm.status
         ) {
             return;
         }
-        if (editingAccountId !== null) {
+
+                // DT-825: Confirm before promoting a customer to Admin
+                const existingAccount = accounts.find(
+                    (account) => account.id === editingAccountId
+                );
+
+                if (!confirmed && existingAccount?.role === "Customer" && accountForm.role === "Admin") {
+                    setShowPromoteConfirm(true);
+                    return;
+                }
 
             try {
                 //Convert dashboard values to database values
                 const updateData = {
                     name: accountName,
                     email: accountEmail,
+                    phone: accountForm.phone.trim(),
                     role: accountForm.role.toLowerCase(),
+                    birthdate: accountForm.birthdate, // save birthdate to supabase
                     accountStatus: accountForm.status.toLowerCase(),
                 };
 
@@ -125,6 +137,7 @@ function useAccounts() {
                 await apiUpdateAccount(editingAccountId, updateData);
             
 
+            await apiUpdateAccount(editingAccountId, updateData);
 
             setAccounts((currentAccounts) =>
                 currentAccounts.map((account) =>
@@ -134,25 +147,36 @@ function useAccounts() {
                               name: accountName,
                               birthdate: accountForm.birthdate,
                               email: accountEmail,
+                              phone: accountForm.phone.trim(),
                               role: accountForm.role,
                               status: accountForm.status,
                           }
                         : account
                 )
             );
-        }catch (err) {
-            //show an error if saving to supabase fails
+
+            resetAccountForm();
+            setEditingAccountId(null);
+            setShowAccountForm(false);
+        } catch (err) {
             console.error("Failed to update account:", err);
-            return;
         }
-        } else {
-            console.error("Creating account is not supported here.");
-            return;
-        }
-        resetAccountForm();
-        setEditingAccountId(null);
-        setShowAccountForm(false);
     };
+
+    // DT-825: Cancel the Admin role change
+    const handleCancelPromote = () => {
+        setShowPromoteConfirm(false);
+    };
+
+    // DT-825: Confirm the Admin role change
+    const handleConfirmPromote = async () => {
+    setShowPromoteConfirm(false);
+
+    await handleUpdateAccount(
+        { preventDefault: () => {} },
+        true
+    );
+};
 
     // Opens the form with an existing Account's information
     const handleEditAccount = (account) => {
@@ -160,6 +184,7 @@ function useAccounts() {
             name: account.name,
             birthdate: account.birthdate,
             email: account.email,
+            phone: account.phone || "",
             role: account.role,
             status: account.status,
         });
@@ -203,14 +228,16 @@ function useAccounts() {
     return {
         showAccountForm,
         editingAccountId,
+        showPromoteConfirm,
+        handleCancelPromote,
+        handleConfirmPromote,
         accountPendingDelete,
         accounts,
         accountForm,
-        handleOpenAddAccount,
+        handleUpdateAccount,
         handleCancelAccount,
         handleAccountInputChange,
         formatAccountBirthdate,
-        handleAddAccount,
         handleEditAccount,
         handleDeleteAccount,
         handleCancelDeleteAccount,

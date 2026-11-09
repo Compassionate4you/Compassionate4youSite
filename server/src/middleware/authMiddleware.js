@@ -51,5 +51,32 @@ async function requireAdmin(req, res, next) {
         return next(err);
     }
 }
+// Customer-only routes (the user dashboard). Admin accounts are rejected so
+// an account promoted to admin no longer reaches the user dashboard's data.
+async function requireCustomer(req, res, next) {
+    if (!req.user) {
+        return res.status(401).json({
+            success: false,
+            error: { message: 'You must be signed in to do that.', field: null },
+        });
+    }
 
-module.exports = { attachUser, requireAuth, requireAdmin };
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.id },
+            select: { role: true },
+        });
+
+        if (!user || String(user.role).toLowerCase() !== 'customer') {
+            return res.status(403).json({
+                success: false,
+                error: { message: 'Customer access required.', field: null },
+            });
+        }
+
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+}
+module.exports = { attachUser, requireAuth, requireAdmin, requireCustomer };

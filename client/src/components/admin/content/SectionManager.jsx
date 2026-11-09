@@ -1,34 +1,49 @@
-// DT-622 DT-618 DT-625 Sprint 8
-// Preston Ball
-// Section Manager component supporting layout-specific dynamic fields, left/right image toggle, FAQ removal, card reordering, element renaming, typography controls, custom modals, and live preview
+// DT-875 DT-903 DT-920 DT-922 DT-923 DT-622 DT-618 DT-625 Sprint 9
+// PBall
+// Section Manager component dispatching all section layout form components with inline ColorEditor and direct element color storage
 
 import React, { useState, useEffect } from 'react'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 import { PageStorageService } from '../../../services/pageStorageService'
 import { CardStorageService } from '../../../services/cardStorageService'
-import { ColorConfigService } from '../../../services/colorConfigService'
 import { AuditHistoryService } from '../../../services/auditHistoryService'
 import DynamicSectionRenderer from '../../modular/DynamicSectionRenderer'
 import CustomModal from './CustomModal'
 import CustomSelect from './CustomSelect'
-import TypographyControls from './TypographyControls'
-import layoutImageLeft from '../../../assets/images/layout-image-left.svg'
-import layoutImageRight from '../../../assets/images/layout-image-right.svg'
+import ColorEditor, { DEFAULT_SECTION_COLORS, normalizeColorPair } from './ColorEditor'
+import HeaderTextLayout from './SectionManager/HeaderTextLayout'
+import ImageHeaderTextLayout from './SectionManager/ImageHeaderTextLayout'
+import FullscreenImageHeaderLayout from './SectionManager/FullscreenImageHeaderLayout'
+import CardGridLayout from './SectionManager/CardGridLayout'
+import MapSectionLayout from './SectionManager/MapSectionLayout'
+import AccountBenefitsLayout from './SectionManager/AccountBenefitsLayout'
+import ContactFormLayout from './SectionManager/ContactFormLayout'
+import FaqSectionLayout from './SectionManager/FaqSectionLayout'
+import HeroSectionLayout from './SectionManager/HeroSectionLayout'
+import HeaderCardsLayout from './SectionManager/HeaderCardsLayout'
+import HeaderStackLayout from './SectionManager/HeaderStackLayout'
+import TimelineSectionLayout from './SectionManager/TimelineSectionLayout'
+import PageCallToActionLayout from './SectionManager/PageCallToActionLayout'
 
+// DT-875 Sprint 9 - PBall: Complete list of available section layouts in the Content Editor
 const LAYOUT_OPTIONS = [
-  { value: 'HEADER_TEXT', label: 'HEADER_TEXT (Editorial title and text)' },
-  { value: 'IMAGE_HEADER_TEXT', label: 'IMAGE_HEADER_TEXT (Hero image, title, text, CTA)' },
-  { value: 'FULLSCREEN_IMAGE_HEADER', label: 'FULLSCREEN_IMAGE_HEADER (Banner overlay with CTA)' },
-  { value: 'CARD_GRID', label: 'CARD_GRID (Responsive card columns)' },
-  { value: 'MAP_SECTION', label: 'MAP_SECTION (Google Maps embed & directions)' },
-  { value: 'ACCOUNT_BENEFITS', label: 'ACCOUNT_BENEFITS (Checklist items)' },
-  { value: 'CONTACT_FORM', label: 'CONTACT_FORM (Contact details & form)' },
-  { value: 'FAQ_SECTION', label: 'FAQ_SECTION (Accordion Q&A items)' }
+  { value: 'HEADER_TEXT', label: 'HEADER_TEXT (Decorative Banner with Icon & Text)' },
+  { value: 'HERO_SECTION', label: 'HERO_SECTION (Split Photo/Panel or Background Hero)' },
+  { value: 'HEADER_CARDS', label: 'HEADER_CARDS (Split Header & Numbered Icon Cards)' },
+  { value: 'HEADER_STACK', label: 'HEADER_STACK (Header & 1-2 Column Stacked Cards)' },
+  { value: 'TIMELINE_SECTION', label: 'TIMELINE_SECTION (Numbered Care Process Steps)' },
+  { value: 'PAGE_CTA', label: 'PAGE_CTA (Closing Call-To-Action & Links)' },
+  { value: 'IMAGE_HEADER_TEXT', label: 'IMAGE_HEADER_TEXT (Hero Image, Title, Text, CTA)' },
+  { value: 'FULLSCREEN_IMAGE_HEADER', label: 'FULLSCREEN_IMAGE_HEADER (Banner Overlay with CTA)' },
+  { value: 'CARD_GRID', label: 'CARD_GRID (Responsive Card Columns 1-5)' },
+  { value: 'MAP_SECTION', label: 'MAP_SECTION (Google Maps Embed & Directions)' },
+  { value: 'ACCOUNT_BENEFITS', label: 'ACCOUNT_BENEFITS (Checklist Items)' },
+  { value: 'CONTACT_FORM', label: 'CONTACT_FORM (Contact Details & Form)' },
+  { value: 'FAQ_SECTION', label: 'FAQ_SECTION (Accordion Q&A Items)' }
 ]
 
 export default function SectionManager ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [sections, setSections] = useState(SectionStorageService.getSections())
-  const colors = ColorConfigService.getColors()
   const pages = PageStorageService.getPages()
   const allCards = CardStorageService.getCards()
 
@@ -39,19 +54,29 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   // Create Mode state
   const [sectionId, setSectionId] = useState('')
   const [layout, setLayout] = useState('HEADER_TEXT')
+  const [label, setLabel] = useState('')
   const [header, setHeader] = useState('')
   const [text, setText] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [imageAlt, setImageAlt] = useState('')
   const [imagePosition, setImagePosition] = useState('left')
-  const [headerTypography, setHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [textTypography, setTextTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [headerTypography, setHeaderTypography] = useState({})
+  const [textTypography, setTextTypography] = useState({})
   const [buttonText, setButtonText] = useState('')
+  const [secondaryButtonText, setSecondaryButtonText] = useState('')
   const [buttonLink, setButtonLink] = useState('')
   const [icon, setIcon] = useState('')
+  const [formatBody, setFormatBody] = useState(false)
+  const [heroVariant, setHeroVariant] = useState('split')
+  const [heroTone, setHeroTone] = useState('teal')
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false)
+  const [surface, setSurface] = useState('')
   const [mapAddress, setMapAddress] = useState('')
   const [embedUrl, setEmbedUrl] = useState('')
   const [directionsUrl, setDirectionsUrl] = useState('')
+  const [directionsText, setDirectionsText] = useState('')
+  const [hideHeading, setHideHeading] = useState(false)
   const [gridCols, setGridCols] = useState(3)
   const [selectedCardIds, setSelectedCardIds] = useState([])
   const [selectedCardToAdd, setSelectedCardToAdd] = useState('')
@@ -62,29 +87,39 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [fax, setFax] = useState('')
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
-  const [bgColor, setBgColor] = useState('')
-  const [headerColor, setHeaderColor] = useState('')
-  const [textColor, setTextColor] = useState('')
-  const [accentColor, setAccentColor] = useState('')
+  const [bgColor, setBgColor] = useState(DEFAULT_SECTION_COLORS.backgroundColor)
+  const [headerColor, setHeaderColor] = useState(DEFAULT_SECTION_COLORS.headerColor)
+  const [textColor, setTextColor] = useState(DEFAULT_SECTION_COLORS.textColor)
+  const [accentColor, setAccentColor] = useState(DEFAULT_SECTION_COLORS.accentColor)
 
   // Manage Mode state
   const [locationFilter, setLocationFilter] = useState('all')
   const [manageSectionId, setManageSectionId] = useState('')
   const [editSectionId, setEditSectionId] = useState('')
   const [editLayout, setEditLayout] = useState('HEADER_TEXT')
+  const [editLabel, setEditLabel] = useState('')
   const [editHeader, setEditHeader] = useState('')
   const [editText, setEditText] = useState('')
   const [editImageUrl, setEditImageUrl] = useState('')
   const [editImageAlt, setEditImageAlt] = useState('')
   const [editImagePosition, setEditImagePosition] = useState('left')
-  const [editHeaderTypography, setEditHeaderTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-  const [editTextTypography, setEditTextTypography] = useState({ align: 'left', fontFamily: 'inherit', bold: false, italic: false })
+  const [editHeaderTypography, setEditHeaderTypography] = useState({})
+  const [editTextTypography, setEditTextTypography] = useState({})
   const [editButtonText, setEditButtonText] = useState('')
+  const [editSecondaryButtonText, setEditSecondaryButtonText] = useState('')
   const [editButtonLink, setEditButtonLink] = useState('')
   const [editIcon, setEditIcon] = useState('')
+  const [editFormatBody, setEditFormatBody] = useState(false)
+  const [editHeroVariant, setEditHeroVariant] = useState('split')
+  const [editHeroTone, setEditHeroTone] = useState('teal')
+  const [editShowOverlay, setEditShowOverlay] = useState(false)
+  const [editShowLanguageSelector, setEditShowLanguageSelector] = useState(false)
+  const [editSurface, setEditSurface] = useState('')
   const [editMapAddress, setEditMapAddress] = useState('')
   const [editEmbedUrl, setEditEmbedUrl] = useState('')
   const [editDirectionsUrl, setEditDirectionsUrl] = useState('')
+  const [editDirectionsText, setEditDirectionsText] = useState('')
+  const [editHideHeading, setEditHideHeading] = useState(false)
   const [editGridCols, setEditGridCols] = useState(3)
   const [editSelectedCardIds, setEditSelectedCardIds] = useState([])
   const [editCardToAdd, setEditCardToAdd] = useState('')
@@ -95,10 +130,10 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   const [editFax, setEditFax] = useState('')
   const [editAddressLine1, setEditAddressLine1] = useState('')
   const [editAddressLine2, setEditAddressLine2] = useState('')
-  const [editBgColor, setEditBgColor] = useState('')
-  const [editHeaderColor, setEditHeaderColor] = useState('')
-  const [editTextColor, setEditTextColor] = useState('')
-  const [editAccentColor, setEditAccentColor] = useState('')
+  const [editBgColor, setEditBgColor] = useState(DEFAULT_SECTION_COLORS.backgroundColor)
+  const [editHeaderColor, setEditHeaderColor] = useState(DEFAULT_SECTION_COLORS.headerColor)
+  const [editTextColor, setEditTextColor] = useState(DEFAULT_SECTION_COLORS.textColor)
+  const [editAccentColor, setEditAccentColor] = useState(DEFAULT_SECTION_COLORS.accentColor)
 
   // Custom modal state
   const [modalState, setModalState] = useState({
@@ -141,19 +176,29 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       const col = c.colors || sec.colors || {}
       const typo = c.typography || {}
       setEditLayout(sec.layout || 'HEADER_TEXT')
+      setEditLabel(c.label || '')
       setEditHeader(c.header || c.title || '')
-      setEditText(c.text || c.paragraph || c.subtitle || '')
-      setEditImageUrl(c.imageUrl || '')
+      setEditText(c.text || c.paragraph || c.subtitle || c.description || '')
+      setEditImageUrl(c.imageUrl || c.backgroundImageUrl || '')
       setEditImageAlt(c.imageAlt || '')
-      setEditImagePosition(c.imagePosition || 'left')
-      setEditHeaderTypography(typo.header || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-      setEditTextTypography(typo.text || { align: 'left', fontFamily: 'inherit', bold: false, italic: false })
-      setEditButtonText(c.buttonText || '')
+      setEditImagePosition(c.imagePosition || c.headerPosition || c.contentPosition || 'left')
+      setEditHeaderTypography(typo.header || {})
+      setEditTextTypography(typo.text || {})
+      setEditButtonText(c.buttonText || c.primaryLabel || '')
+      setEditSecondaryButtonText(c.secondaryButtonText || c.homeLabel || '')
       setEditButtonLink(c.buttonLink || '')
-      setEditIcon(c.icon || '')
+      setEditIcon(c.icon || c.iconName || '')
+      setEditFormatBody(Boolean(c.formatBody))
+      setEditHeroVariant(c.heroVariant || c.variant || 'split')
+      setEditHeroTone(c.heroTone || c.tone || 'teal')
+      setEditShowOverlay(Boolean(c.showOverlay))
+      setEditShowLanguageSelector(Boolean(c.showLanguageSelector))
+      setEditSurface(c.surface || '')
       setEditMapAddress(c.mapAddress || '')
       setEditEmbedUrl(c.embedUrl || '')
       setEditDirectionsUrl(c.directionsUrl || '')
+      setEditDirectionsText(c.directionsText || '')
+      setEditHideHeading(Boolean(c.hideHeading))
       setEditGridCols(Number(c.gridCols || c.columns || 3))
       setEditSelectedCardIds(Array.isArray(c.cardIds) ? c.cardIds : [])
       setEditFaqItems(Array.isArray(c.faqItems) ? c.faqItems : [{ question: '', answer: '' }])
@@ -163,10 +208,11 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       setEditFax(c.fax || '')
       setEditAddressLine1(c.addressLine1 || '')
       setEditAddressLine2(c.addressLine2 || '')
-      setEditBgColor(col.backgroundColor || '')
-      setEditHeaderColor(col.headerColor || '')
-      setEditTextColor(col.textColor || '')
-      setEditAccentColor(col.accentColor || '')
+      // DT-922 Sprint 9 - PBall: Normalize direct section color objects
+      setEditBgColor(normalizeColorPair(col.backgroundColor, DEFAULT_SECTION_COLORS.backgroundColor))
+      setEditHeaderColor(normalizeColorPair(col.headerColor, DEFAULT_SECTION_COLORS.headerColor))
+      setEditTextColor(normalizeColorPair(col.textColor, DEFAULT_SECTION_COLORS.textColor))
+      setEditAccentColor(normalizeColorPair(col.accentColor, DEFAULT_SECTION_COLORS.accentColor))
     }
   }
 
@@ -204,21 +250,33 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     if (!trimmedId) return
     try {
       const sectionContent = {
+        label,
         header,
         text,
         imageUrl,
         imageAlt,
         imagePosition,
+        headerPosition: imagePosition,
+        contentPosition: imagePosition,
         typography: {
           header: headerTypography,
           text: textTypography
         },
         buttonText,
+        secondaryButtonText,
         buttonLink,
         icon,
+        formatBody,
+        heroVariant,
+        heroTone,
+        showOverlay,
+        showLanguageSelector,
+        surface,
         mapAddress,
         embedUrl,
         directionsUrl,
+        directionsText,
+        hideHeading,
         gridCols: Number(gridCols),
         cardIds: selectedCardIds,
         faqItems: faqItems.filter(f => f.question || f.answer),
@@ -296,21 +354,33 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
 
       const updatedContent = {
         ...oldSec.content,
+        label: editLabel,
         header: editHeader,
         text: editText,
         imageUrl: editImageUrl,
         imageAlt: editImageAlt,
         imagePosition: editImagePosition,
+        headerPosition: editImagePosition,
+        contentPosition: editImagePosition,
         typography: {
           header: editHeaderTypography,
           text: editTextTypography
         },
         buttonText: editButtonText,
+        secondaryButtonText: editSecondaryButtonText,
         buttonLink: editButtonLink,
         icon: editIcon,
+        formatBody: editFormatBody,
+        heroVariant: editHeroVariant,
+        heroTone: editHeroTone,
+        showOverlay: editShowOverlay,
+        showLanguageSelector: editShowLanguageSelector,
+        surface: editSurface,
         mapAddress: editMapAddress,
         embedUrl: editEmbedUrl,
         directionsUrl: editDirectionsUrl,
+        directionsText: editDirectionsText,
+        hideHeading: editHideHeading,
         gridCols: Number(editGridCols),
         cardIds: editSelectedCardIds,
         faqItems: editFaqItems.filter(f => f.question || f.answer),
@@ -330,6 +400,7 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
 
       const updated = SectionStorageService.updateSection(activeId, {
         layout: editLayout,
+        colors: updatedContent.colors,
         content: updatedContent
       })
       setSections(SectionStorageService.getSections())
@@ -339,6 +410,18 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
       })
       markClean()
       onNotification(`Updated section "${activeId}"`)
+      // DT-893 Sprint 9 - Gandhar Tare: warn if the database did not save it.
+      SectionStorageService.lastSave?.then((saved) => {
+        if (saved !== false) return
+        setModalState({
+          isOpen: true,
+          title: 'Section Not Saved',
+          message: 'Your changes are shown here but could not be saved to the database, so the live site will not show them. Please try again.',
+          type: 'alert',
+          confirmText: 'OK',
+          onConfirm: () => setModalState((prev) => ({ ...prev, isOpen: false }))
+        })
+      })
     } catch (err) {
       setModalState({
         isOpen: true,
@@ -430,18 +513,30 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
   // Live draft representation for preview
   const activeLayout = mode === 'create' ? layout : editLayout
   const activeData = mode === 'create' ? {
+    label,
     header: header || 'Section Header Preview',
     text: text || 'Section description text goes here...',
     imageUrl: imageUrl || '/assets/images/CareImage1.jpeg',
     imageAlt: imageAlt || 'Preview Image',
     imagePosition: imagePosition || 'left',
+    headerPosition: imagePosition || 'left',
+    contentPosition: imagePosition || 'left',
     typography: { header: headerTypography, text: textTypography },
     buttonText: buttonText || 'Learn More',
+    secondaryButtonText: secondaryButtonText || 'Back to Welcome',
     buttonLink: buttonLink || '#',
     icon,
+    formatBody,
+    heroVariant,
+    heroTone,
+    showOverlay,
+    showLanguageSelector,
+    surface,
     mapAddress: mapAddress || '1501 N Broadway, Ste 350A/B, Walnut Creek, CA',
     embedUrl,
     directionsUrl,
+    directionsText,
+    hideHeading,
     gridCols,
     cardIds: selectedCardIds,
     faqItems,
@@ -453,18 +548,30 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     addressLine2,
     colors: { backgroundColor: bgColor, headerColor, textColor, accentColor }
   } : {
+    label: editLabel,
     header: editHeader || 'Section Header',
     text: editText || 'Section text',
     imageUrl: editImageUrl,
     imageAlt: editImageAlt,
     imagePosition: editImagePosition,
+    headerPosition: editImagePosition,
+    contentPosition: editImagePosition,
     typography: { header: editHeaderTypography, text: editTextTypography },
     buttonText: editButtonText,
+    secondaryButtonText: editSecondaryButtonText,
     buttonLink: editButtonLink,
     icon: editIcon,
+    formatBody: editFormatBody,
+    heroVariant: editHeroVariant,
+    heroTone: editHeroTone,
+    showOverlay: editShowOverlay,
+    showLanguageSelector: editShowLanguageSelector,
+    surface: editSurface,
     mapAddress: editMapAddress,
     embedUrl: editEmbedUrl,
     directionsUrl: editDirectionsUrl,
+    directionsText: editDirectionsText,
+    hideHeading: editHideHeading,
     gridCols: editGridCols,
     cardIds: editSelectedCardIds,
     faqItems: editFaqItems,
@@ -483,16 +590,342 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
     content: activeData
   }
 
-  const colorOptions = [
-    { value: '', label: 'Default Theme Color' },
-    ...colors.map(c => ({ value: c.id, label: c.id, color: c.lightModeColor }))
-  ]
-
   const locationFilterOptions = [
     { value: 'all', label: 'All Locations' },
     { value: 'unallocated', label: 'Unallocated Sections' },
     ...pages.map(p => ({ value: p.id, label: `Page: ${p.content?.title || p.id} (/${p.id})` }))
   ]
+
+  // DT-875 DT-923 Sprint 9 - PBall: Dispatch per-layout form component for SectionManager
+  const renderSectionLayoutFields = ({
+    currentLayout,
+    currentLabel,
+    onLabelChange,
+    currentHeader,
+    onHeaderChange,
+    currentHeaderTypography,
+    onHeaderTypographyChange,
+    currentText,
+    onTextChange,
+    currentTextTypography,
+    onTextTypographyChange,
+    currentImagePosition,
+    onImagePositionChange,
+    currentImageUrl,
+    onImageUrlChange,
+    currentImageAlt,
+    onImageAltChange,
+    currentButtonText,
+    onButtonTextChange,
+    currentSecondaryButtonText,
+    onSecondaryButtonTextChange,
+    currentButtonLink,
+    onButtonLinkChange,
+    currentIcon,
+    onIconChange,
+    currentFormatBody,
+    onFormatBodyChange,
+    currentHeroVariant,
+    onHeroVariantChange,
+    currentHeroTone,
+    onHeroToneChange,
+    currentShowOverlay,
+    onShowOverlayChange,
+    currentShowLanguageSelector,
+    onShowLanguageSelectorChange,
+    currentSurface,
+    onSurfaceChange,
+    currentMapAddress,
+    onMapAddressChange,
+    currentEmbedUrl,
+    onEmbedUrlChange,
+    currentDirectionsUrl,
+    onDirectionsUrlChange,
+    currentDirectionsText,
+    onDirectionsTextChange,
+    currentHideHeading,
+    onHideHeadingChange,
+    currentGridCols,
+    onGridColsChange,
+    currentSelectedCardIds,
+    onSelectedCardIdsChange,
+    currentCardToAdd,
+    onCardToAddChange,
+    onMoveCard,
+    onRemoveCard,
+    currentFaqItems,
+    onFaqItemsChange,
+    onMoveFaqItem,
+    onRemoveFaqItem,
+    currentBenefitItems,
+    onBenefitItemsChange,
+    currentPhone,
+    onPhoneChange,
+    currentEmail,
+    onEmailChange,
+    currentFax,
+    onFaxChange,
+    currentAddressLine1,
+    onAddressLine1Change,
+    currentAddressLine2,
+    onAddressLine2Change
+  }) => {
+    switch (currentLayout) {
+      case 'HERO_SECTION':
+      case 'WELCOME_HERO':
+        return (
+          <HeroSectionLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            heroVariant={currentHeroVariant}
+            onHeroVariantChange={onHeroVariantChange}
+            contentPosition={currentImagePosition}
+            onContentPositionChange={onImagePositionChange}
+            heroTone={currentHeroTone}
+            onHeroToneChange={onHeroToneChange}
+            icon={currentIcon}
+            onIconChange={onIconChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            imageAlt={currentImageAlt}
+            onImageAltChange={onImageAltChange}
+            buttonText={currentButtonText}
+            onButtonTextChange={onButtonTextChange}
+            buttonLink={currentButtonLink}
+            onButtonLinkChange={onButtonLinkChange}
+            showOverlay={currentShowOverlay}
+            onShowOverlayChange={onShowOverlayChange}
+            showLanguageSelector={currentShowLanguageSelector}
+            onShowLanguageSelectorChange={onShowLanguageSelectorChange}
+          />
+        )
+      case 'HEADER_CARDS':
+        return (
+          <HeaderCardsLayout
+            label={currentLabel}
+            onLabelChange={onLabelChange}
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            headerPosition={currentImagePosition}
+            onHeaderPositionChange={onImagePositionChange}
+            surface={currentSurface}
+            onSurfaceChange={onSurfaceChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            selectedCardIds={currentSelectedCardIds}
+            onSelectedCardIdsChange={onSelectedCardIdsChange}
+            cardToAdd={currentCardToAdd}
+            onCardToAddChange={onCardToAddChange}
+            allCards={allCards}
+            onMoveCard={onMoveCard}
+            onRemoveCard={onRemoveCard}
+          />
+        )
+      case 'HEADER_STACK':
+        return (
+          <HeaderStackLayout
+            label={currentLabel}
+            onLabelChange={onLabelChange}
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            gridCols={currentGridCols}
+            onGridColsChange={onGridColsChange}
+            selectedCardIds={currentSelectedCardIds}
+            onSelectedCardIdsChange={onSelectedCardIdsChange}
+            cardToAdd={currentCardToAdd}
+            onCardToAddChange={onCardToAddChange}
+            allCards={allCards}
+            onMoveCard={onMoveCard}
+            onRemoveCard={onRemoveCard}
+            benefitItems={currentBenefitItems}
+            onBenefitItemsChange={onBenefitItemsChange}
+          />
+        )
+      case 'TIMELINE_SECTION':
+        return (
+          <TimelineSectionLayout
+            label={currentLabel}
+            onLabelChange={onLabelChange}
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            selectedCardIds={currentSelectedCardIds}
+            onSelectedCardIdsChange={onSelectedCardIdsChange}
+            cardToAdd={currentCardToAdd}
+            onCardToAddChange={onCardToAddChange}
+            allCards={allCards}
+            onMoveCard={onMoveCard}
+            onRemoveCard={onRemoveCard}
+            benefitItems={currentBenefitItems}
+            onBenefitItemsChange={onBenefitItemsChange}
+          />
+        )
+      case 'PAGE_CTA':
+        return (
+          <PageCallToActionLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            buttonText={currentButtonText}
+            onButtonTextChange={onButtonTextChange}
+            secondaryButtonText={currentSecondaryButtonText}
+            onSecondaryButtonTextChange={onSecondaryButtonTextChange}
+          />
+        )
+      case 'IMAGE_HEADER_TEXT':
+        return (
+          <ImageHeaderTextLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            textTypography={currentTextTypography}
+            onTextTypographyChange={onTextTypographyChange}
+            imagePosition={currentImagePosition}
+            onImagePositionChange={onImagePositionChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            imageAlt={currentImageAlt}
+            onImageAltChange={onImageAltChange}
+            buttonText={currentButtonText}
+            onButtonTextChange={onButtonTextChange}
+            buttonLink={currentButtonLink}
+            onButtonLinkChange={onButtonLinkChange}
+          />
+        )
+      case 'FULLSCREEN_IMAGE_HEADER':
+        return (
+          <FullscreenImageHeaderLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            textTypography={currentTextTypography}
+            onTextTypographyChange={onTextTypographyChange}
+            icon={currentIcon}
+            onIconChange={onIconChange}
+            imageUrl={currentImageUrl}
+            onImageUrlChange={onImageUrlChange}
+            imageAlt={currentImageAlt}
+            onImageAltChange={onImageAltChange}
+            buttonText={currentButtonText}
+            onButtonTextChange={onButtonTextChange}
+            buttonLink={currentButtonLink}
+            onButtonLinkChange={onButtonLinkChange}
+          />
+        )
+      case 'MAP_SECTION':
+        return (
+          <MapSectionLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            hideHeading={currentHideHeading}
+            onHideHeadingChange={onHideHeadingChange}
+            mapAddress={currentMapAddress}
+            onMapAddressChange={onMapAddressChange}
+            embedUrl={currentEmbedUrl}
+            onEmbedUrlChange={onEmbedUrlChange}
+            directionsUrl={currentDirectionsUrl}
+            onDirectionsUrlChange={onDirectionsUrlChange}
+            directionsText={currentDirectionsText}
+            onDirectionsTextChange={onDirectionsTextChange}
+          />
+        )
+      case 'CARD_GRID':
+        return (
+          <CardGridLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            gridCols={currentGridCols}
+            onGridColsChange={onGridColsChange}
+            selectedCardIds={currentSelectedCardIds}
+            onSelectedCardIdsChange={onSelectedCardIdsChange}
+            cardToAdd={currentCardToAdd}
+            onCardToAddChange={onCardToAddChange}
+            allCards={allCards}
+            onMoveCard={onMoveCard}
+            onRemoveCard={onRemoveCard}
+          />
+        )
+      case 'FAQ_SECTION':
+        return (
+          <FaqSectionLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            faqItems={currentFaqItems}
+            onFaqItemsChange={onFaqItemsChange}
+            onMoveFaqItem={onMoveFaqItem}
+            onRemoveFaqItem={onRemoveFaqItem}
+          />
+        )
+      case 'ACCOUNT_BENEFITS':
+        return (
+          <AccountBenefitsLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            benefitItems={currentBenefitItems}
+            onBenefitItemsChange={onBenefitItemsChange}
+          />
+        )
+      case 'CONTACT_FORM':
+        return (
+          <ContactFormLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            phone={currentPhone}
+            onPhoneChange={onPhoneChange}
+            email={currentEmail}
+            onEmailChange={onEmailChange}
+            fax={currentFax}
+            onFaxChange={onFaxChange}
+            addressLine1={currentAddressLine1}
+            onAddressLine1Change={onAddressLine1Change}
+            addressLine2={currentAddressLine2}
+            onAddressLine2Change={onAddressLine2Change}
+          />
+        )
+      case 'HEADER_TEXT':
+      default:
+        return (
+          <HeaderTextLayout
+            header={currentHeader}
+            onHeaderChange={onHeaderChange}
+            headerTypography={currentHeaderTypography}
+            onHeaderTypographyChange={onHeaderTypographyChange}
+            text={currentText}
+            onTextChange={onTextChange}
+            textTypography={currentTextTypography}
+            onTextTypographyChange={onTextTypographyChange}
+            icon={currentIcon}
+            onIconChange={onIconChange}
+            formatBody={currentFormatBody}
+            onFormatBodyChange={onFormatBodyChange}
+          />
+        )
+    }
+  }
 
   return (
     <div className="content-editor-card">
@@ -597,363 +1030,115 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             </div>
           </div>
 
-          {activeTab === 'content' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Title / Header</label>
-                <input
-                  type="text"
-                  value={header}
-                  onChange={(e) => { setHeader(e.target.value); markDirty() }}
-                  placeholder="Primary section header"
-                  style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                />
-                <TypographyControls
-                  label="Header Typography & Alignment"
-                  value={headerTypography}
-                  onChange={(val) => { setHeaderTypography(val); markDirty() }}
-                />
-              </div>
+          {/* DT-875 DT-923 Sprint 9 - PBall: Render separated section layout component in create mode */}
+          {activeTab === 'content' && renderSectionLayoutFields({
+            currentLayout: layout,
+            currentLabel: label,
+            onLabelChange: (val) => { setLabel(val); markDirty() },
+            currentHeader: header,
+            onHeaderChange: (val) => { setHeader(val); markDirty() },
+            currentHeaderTypography: headerTypography,
+            onHeaderTypographyChange: (val) => { setHeaderTypography(val); markDirty() },
+            currentText: text,
+            onTextChange: (val) => { setText(val); markDirty() },
+            currentTextTypography: textTypography,
+            onTextTypographyChange: (val) => { setTextTypography(val); markDirty() },
+            currentImagePosition: imagePosition,
+            onImagePositionChange: (val) => { setImagePosition(val); markDirty() },
+            currentImageUrl: imageUrl,
+            onImageUrlChange: (val) => { setImageUrl(val); markDirty() },
+            currentImageAlt: imageAlt,
+            onImageAltChange: (val) => { setImageAlt(val); markDirty() },
+            currentButtonText: buttonText,
+            onButtonTextChange: (val) => { setButtonText(val); markDirty() },
+            currentSecondaryButtonText: secondaryButtonText,
+            onSecondaryButtonTextChange: (val) => { setSecondaryButtonText(val); markDirty() },
+            currentButtonLink: buttonLink,
+            onButtonLinkChange: (val) => { setButtonLink(val); markDirty() },
+            currentIcon: icon,
+            onIconChange: (val) => { setIcon(val); markDirty() },
+            currentFormatBody: formatBody,
+            onFormatBodyChange: (val) => { setFormatBody(val); markDirty() },
+            currentHeroVariant: heroVariant,
+            onHeroVariantChange: (val) => { setHeroVariant(val); markDirty() },
+            currentHeroTone: heroTone,
+            onHeroToneChange: (val) => { setHeroTone(val); markDirty() },
+            currentShowOverlay: showOverlay,
+            onShowOverlayChange: (val) => { setShowOverlay(val); markDirty() },
+            currentShowLanguageSelector: showLanguageSelector,
+            onShowLanguageSelectorChange: (val) => { setShowLanguageSelector(val); markDirty() },
+            currentSurface: surface,
+            onSurfaceChange: (val) => { setSurface(val); markDirty() },
+            currentMapAddress: mapAddress,
+            onMapAddressChange: (val) => { setMapAddress(val); markDirty() },
+            currentEmbedUrl: embedUrl,
+            onEmbedUrlChange: (val) => { setEmbedUrl(val); markDirty() },
+            currentDirectionsUrl: directionsUrl,
+            onDirectionsUrlChange: (val) => { setDirectionsUrl(val); markDirty() },
+            currentDirectionsText: directionsText,
+            onDirectionsTextChange: (val) => { setDirectionsText(val); markDirty() },
+            currentHideHeading: hideHeading,
+            onHideHeadingChange: (val) => { setHideHeading(val); markDirty() },
+            currentGridCols: gridCols,
+            onGridColsChange: (val) => { setGridCols(val); markDirty() },
+            currentSelectedCardIds: selectedCardIds,
+            onSelectedCardIdsChange: (val) => { setSelectedCardIds(val); markDirty() },
+            currentCardToAdd: selectedCardToAdd,
+            onCardToAddChange: (val) => setSelectedCardToAdd(val),
+            onMoveCard: (idx, dir) => moveCard(selectedCardIds, setSelectedCardIds, idx, dir),
+            onRemoveCard: (idx) => removeCardFromList(selectedCardIds, setSelectedCardIds, idx),
+            currentFaqItems: faqItems,
+            onFaqItemsChange: (val) => { setFaqItems(val); markDirty() },
+            onMoveFaqItem: (idx, dir) => moveFaqItem(faqItems, setFaqItems, idx, dir),
+            onRemoveFaqItem: (idx) => removeFaqItem(faqItems, setFaqItems, idx),
+            currentBenefitItems: benefitItems,
+            onBenefitItemsChange: (val) => { setBenefitItems(val); markDirty() },
+            currentPhone: phone,
+            onPhoneChange: (val) => { setPhone(val); markDirty() },
+            currentEmail: email,
+            onEmailChange: (val) => { setEmail(val); markDirty() },
+            currentFax: fax,
+            onFaxChange: (val) => { setFax(val); markDirty() },
+            currentAddressLine1: addressLine1,
+            onAddressLine1Change: (val) => { setAddressLine1(val); markDirty() },
+            currentAddressLine2: addressLine2,
+            onAddressLine2Change: (val) => { setAddressLine2(val); markDirty() }
+          })}
 
-              {['HEADER_TEXT', 'IMAGE_HEADER_TEXT', 'FULLSCREEN_IMAGE_HEADER'].includes(layout) && (
-                <div>
-                  <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Body Text / Description</label>
-                  <textarea
-                    rows={4}
-                    value={text}
-                    onChange={(e) => { setText(e.target.value); markDirty() }}
-                    placeholder="Enter section description..."
-                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                  />
-                  <TypographyControls
-                    label="Body Text Typography & Alignment"
-                    value={textTypography}
-                    onChange={(val) => { setTextTypography(val); markDirty() }}
-                  />
-                </div>
-              )}
-
-              {/* DT-625 Sprint 8 - Preston Ball: Image Left/Right Toggle with SVGs */}
-              {layout === 'IMAGE_HEADER_TEXT' && (
-                <div style={{ marginTop: '6px', marginBottom: '10px' }}>
-                  <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '6px' }}>
-                    Image Layout Position (Switch Left or Right)
-                  </label>
-                  <div style={{ display: 'flex', gap: '12px' }}>
-                    <button
-                      type="button"
-                      onClick={() => { setImagePosition('left'); markDirty() }}
-                      style={{
-                        flex: 1,
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: imagePosition === 'left' ? '2px solid #0f172a' : '1px solid #cbd5e1',
-                        background: imagePosition === 'left' ? '#f1f5f9' : '#ffffff',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '8px'
-                      }}
-                    >
-                      <img src={layoutImageLeft} alt="Image on Left" style={{ width: '100%', maxWidth: '140px', height: 'auto', borderRadius: '4px' }} />
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: imagePosition === 'left' ? '#0f172a' : '#64748b' }}>
-                        Image on Left
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setImagePosition('right'); markDirty() }}
-                      style={{
-                        flex: 1,
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: imagePosition === 'right' ? '2px solid #0f172a' : '1px solid #cbd5e1',
-                        background: imagePosition === 'right' ? '#f1f5f9' : '#ffffff',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '8px'
-                      }}
-                    >
-                      <img src={layoutImageRight} alt="Image on Right" style={{ width: '100%', maxWidth: '140px', height: 'auto', borderRadius: '4px' }} />
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: imagePosition === 'right' ? '#0f172a' : '#64748b' }}>
-                        Image on Right
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {['IMAGE_HEADER_TEXT', 'FULLSCREEN_IMAGE_HEADER'].includes(layout) && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image URL</label>
-                    <input
-                      type="text"
-                      value={imageUrl}
-                      onChange={(e) => { setImageUrl(e.target.value); markDirty() }}
-                      placeholder="/assets/images/CareImage1.jpeg"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alt Text</label>
-                    <input
-                      type="text"
-                      value={imageAlt}
-                      onChange={(e) => { setImageAlt(e.target.value); markDirty() }}
-                      placeholder="Descriptive image text"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Button Text</label>
-                    <input
-                      type="text"
-                      value={buttonText}
-                      onChange={(e) => { setButtonText(e.target.value); markDirty() }}
-                      placeholder="e.g. Schedule Consultation"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Button Link</label>
-                    <input
-                      type="text"
-                      value={buttonLink}
-                      onChange={(e) => { setButtonLink(e.target.value); markDirty() }}
-                      placeholder="/schedule"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {layout === 'MAP_SECTION' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Office Address Text</label>
-                    <input
-                      type="text"
-                      value={mapAddress}
-                      onChange={(e) => { setMapAddress(e.target.value); markDirty() }}
-                      placeholder="1501 N Broadway, Ste 350A/B, Walnut Creek, CA"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Google Maps Embed URL</label>
-                    <input
-                      type="text"
-                      value={embedUrl}
-                      onChange={(e) => { setEmbedUrl(e.target.value); markDirty() }}
-                      placeholder="https://www.google.com/maps/embed?..."
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Directions URL</label>
-                    <input
-                      type="text"
-                      value={directionsUrl}
-                      onChange={(e) => { setDirectionsUrl(e.target.value); markDirty() }}
-                      placeholder="https://www.google.com/maps/dir/?..."
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* DT-625 Sprint 8 - Preston Ball: CARD_GRID with +/- and reorder buttons */}
-              {layout === 'CARD_GRID' && (
-                <div>
-                  <div style={{ marginBottom: '12px' }}>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Grid Columns (1-4)</label>
-                    <CustomSelect
-                      value={String(gridCols)}
-                      onChange={(val) => { setGridCols(Number(val)); markDirty() }}
-                      options={[
-                        { value: '1', label: '1 Column' },
-                        { value: '2', label: '2 Columns' },
-                        { value: '3', label: '3 Columns' },
-                        { value: '4', label: '4 Columns' }
-                      ]}
-                      style={{ width: '140px' }}
-                      ariaLabel="Select column count"
-                    />
-                  </div>
-                  <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '6px' }}>Section Cards &amp; Display Order</label>
-                  <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-                    <div style={{ flex: 1 }}>
-                      <CustomSelect
-                        value={selectedCardToAdd}
-                        onChange={(val) => setSelectedCardToAdd(val)}
-                        options={allCards.map(c => ({ value: c.id, label: `${c.id} (${c.layout})` }))}
-                        placeholder="-- Choose card to add --"
-                        ariaLabel="Choose card to add"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (selectedCardToAdd && !selectedCardIds.includes(selectedCardToAdd)) {
-                          setSelectedCardIds([...selectedCardIds, selectedCardToAdd])
-                          setSelectedCardToAdd('')
-                          markDirty()
-                        }
-                      }}
-                      style={{ padding: '8px 14px', background: '#0284c7', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
-                    >
-                      + Add Card
-                    </button>
-                  </div>
-
-                  {selectedCardIds.length === 0 ? (
-                    <p style={{ fontSize: '0.8rem', color: '#94a3b8', fontStyle: 'italic' }}>No cards allocated to this section.</p>
-                  ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      {selectedCardIds.map((cid, idx) => (
-                        <div key={cid} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '6px 10px', fontSize: '0.85rem' }}>
-                          <span><strong>{idx + 1}.</strong> <code>{cid}</code></span>
-                          <div style={{ display: 'flex', gap: '4px' }}>
-                            <button type="button" title="Move Up" onClick={() => moveCard(selectedCardIds, setSelectedCardIds, idx, -1)} disabled={idx === 0} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === 0 ? 'not-allowed' : 'pointer' }}>▲</button>
-                            <button type="button" title="Move Down" onClick={() => moveCard(selectedCardIds, setSelectedCardIds, idx, 1)} disabled={idx === selectedCardIds.length - 1} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === selectedCardIds.length - 1 ? 'not-allowed' : 'pointer' }}>▼</button>
-                            <button type="button" title="Remove Card" onClick={() => removeCardFromList(selectedCardIds, setSelectedCardIds, idx)} style={{ padding: '2px 6px', fontSize: '0.75rem', color: '#dc2626', cursor: 'pointer', fontWeight: 'bold' }}>- Remove</button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* DT-625 Sprint 8 - Preston Ball: FAQ_SECTION with removal and reordering */}
-              {layout === 'FAQ_SECTION' && (
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <label style={{ fontWeight: '600', fontSize: '13px' }}>FAQ Items ({faqItems.length})</label>
-                    <button
-                      type="button"
-                      onClick={() => { setFaqItems([...faqItems, { question: '', answer: '' }]); markDirty() }}
-                      style={{ padding: '4px 10px', fontSize: '12px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                    >
-                      + Add Question
-                    </button>
-                  </div>
-                  {faqItems.map((item, idx) => (
-                    <div key={idx} style={{ background: '#fff', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '8px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>Item #{idx + 1}</span>
-                        <div style={{ display: 'flex', gap: '4px' }}>
-                          <button type="button" title="Move Up" disabled={idx === 0} onClick={() => moveFaqItem(faqItems, setFaqItems, idx, -1)} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === 0 ? 'not-allowed' : 'pointer' }}>▲</button>
-                          <button type="button" title="Move Down" disabled={idx === faqItems.length - 1} onClick={() => moveFaqItem(faqItems, setFaqItems, idx, 1)} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === faqItems.length - 1 ? 'not-allowed' : 'pointer' }}>▼</button>
-                          <button type="button" title="Remove FAQ" onClick={() => removeFaqItem(faqItems, setFaqItems, idx)} style={{ padding: '2px 6px', fontSize: '0.75rem', color: '#dc2626', cursor: 'pointer', fontWeight: 'bold' }}>- Remove</button>
-                        </div>
-                      </div>
-                      <input
-                        type="text"
-                        value={item.question}
-                        onChange={(e) => {
-                          const next = [...faqItems]
-                          next[idx].question = e.target.value
-                          setFaqItems(next)
-                          markDirty()
-                        }}
-                        placeholder="Question"
-                        style={{ width: '100%', marginBottom: '6px', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                      />
-                      <textarea
-                        rows={2}
-                        value={item.answer}
-                        onChange={(e) => {
-                          const next = [...faqItems]
-                          next[idx].answer = e.target.value
-                          setFaqItems(next)
-                          markDirty()
-                        }}
-                        placeholder="Answer"
-                        style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {layout === 'ACCOUNT_BENEFITS' && (
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <label style={{ fontWeight: '600', fontSize: '13px' }}>Benefit Items ({benefitItems.length})</label>
-                    <button
-                      type="button"
-                      onClick={() => { setBenefitItems([...benefitItems, { heading: '', description: '' }]); markDirty() }}
-                      style={{ padding: '4px 10px', fontSize: '12px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                    >
-                      + Add Benefit
-                    </button>
-                  </div>
-                  {benefitItems.map((item, idx) => (
-                    <div key={idx} style={{ background: '#fff', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '8px' }}>
-                      <input
-                        type="text"
-                        value={item.heading}
-                        onChange={(e) => {
-                          const next = [...benefitItems]
-                          next[idx].heading = e.target.value
-                          setBenefitItems(next)
-                          markDirty()
-                        }}
-                        placeholder="Benefit heading"
-                        style={{ width: '100%', marginBottom: '6px', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                      />
-                      <textarea
-                        rows={2}
-                        value={item.description}
-                        onChange={(e) => {
-                          const next = [...benefitItems]
-                          next[idx].description = e.target.value
-                          setBenefitItems(next)
-                          markDirty()
-                        }}
-                        placeholder="Benefit description"
-                        style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {layout === 'CONTACT_FORM' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  <input type="text" value={phone} onChange={(e) => { setPhone(e.target.value); markDirty() }} placeholder="Phone" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                  <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); markDirty() }} placeholder="Email" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                  <input type="text" value={fax} onChange={(e) => { setFax(e.target.value); markDirty() }} placeholder="Fax" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                  <input type="text" value={addressLine1} onChange={(e) => { setAddressLine1(e.target.value); markDirty() }} placeholder="Address line 1" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                </div>
-              )}
-            </div>
-          )}
-
+          {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor storing light/dark colors directly in section */}
           {activeTab === 'colors' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Background Color</label>
-                <CustomSelect value={bgColor} onChange={(val) => { setBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Background Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                <CustomSelect value={headerColor} onChange={(val) => { setHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Header Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                <CustomSelect value={textColor} onChange={(val) => { setTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Text Color" />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Accent Color</label>
-                <CustomSelect value={accentColor} onChange={(val) => { setAccentColor(val); markDirty() }} options={colorOptions} ariaLabel="Select Accent Color" />
-              </div>
-            </div>
+            <ColorEditor
+              fields={[
+                {
+                  key: 'backgroundColor',
+                  label: 'Background Color',
+                  value: bgColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.backgroundColor,
+                  onChange: (val) => { setBgColor(val); markDirty() }
+                },
+                {
+                  key: 'headerColor',
+                  label: 'Header Color',
+                  value: headerColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.headerColor,
+                  onChange: (val) => { setHeaderColor(val); markDirty() }
+                },
+                {
+                  key: 'textColor',
+                  label: 'Text Color',
+                  value: textColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.textColor,
+                  onChange: (val) => { setTextColor(val); markDirty() }
+                },
+                {
+                  key: 'accentColor',
+                  label: 'Accent Color',
+                  value: accentColor,
+                  defaultPair: DEFAULT_SECTION_COLORS.accentColor,
+                  onChange: (val) => { setAccentColor(val); markDirty() }
+                }
+              ]}
+            />
           )}
 
           <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -1029,363 +1214,115 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
                 />
               </div>
 
-              {activeTab === 'content' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Title / Header</label>
-                    <input
-                      type="text"
-                      value={editHeader}
-                      onChange={(e) => { setEditHeader(e.target.value); markDirty() }}
-                      placeholder="Primary section header"
-                      style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    />
-                    <TypographyControls
-                      label="Header Typography & Alignment"
-                      value={editHeaderTypography}
-                      onChange={(val) => { setEditHeaderTypography(val); markDirty() }}
-                    />
-                  </div>
+              {/* DT-875 DT-923 Sprint 9 - PBall: Render separated section layout component in manage mode */}
+              {activeTab === 'content' && renderSectionLayoutFields({
+                currentLayout: editLayout,
+                currentLabel: editLabel,
+                onLabelChange: (val) => { setEditLabel(val); markDirty() },
+                currentHeader: editHeader,
+                onHeaderChange: (val) => { setEditHeader(val); markDirty() },
+                currentHeaderTypography: editHeaderTypography,
+                onHeaderTypographyChange: (val) => { setEditHeaderTypography(val); markDirty() },
+                currentText: editText,
+                onTextChange: (val) => { setEditText(val); markDirty() },
+                currentTextTypography: editTextTypography,
+                onTextTypographyChange: (val) => { setEditTextTypography(val); markDirty() },
+                currentImagePosition: editImagePosition,
+                onImagePositionChange: (val) => { setEditImagePosition(val); markDirty() },
+                currentImageUrl: editImageUrl,
+                onImageUrlChange: (val) => { setEditImageUrl(val); markDirty() },
+                currentImageAlt: editImageAlt,
+                onImageAltChange: (val) => { setEditImageAlt(val); markDirty() },
+                currentButtonText: editButtonText,
+                onButtonTextChange: (val) => { setEditButtonText(val); markDirty() },
+                currentSecondaryButtonText: editSecondaryButtonText,
+                onSecondaryButtonTextChange: (val) => { setEditSecondaryButtonText(val); markDirty() },
+                currentButtonLink: editButtonLink,
+                onButtonLinkChange: (val) => { setEditButtonLink(val); markDirty() },
+                currentIcon: editIcon,
+                onIconChange: (val) => { setEditIcon(val); markDirty() },
+                currentFormatBody: editFormatBody,
+                onFormatBodyChange: (val) => { setEditFormatBody(val); markDirty() },
+                currentHeroVariant: editHeroVariant,
+                onHeroVariantChange: (val) => { setEditHeroVariant(val); markDirty() },
+                currentHeroTone: editHeroTone,
+                onHeroToneChange: (val) => { setEditHeroTone(val); markDirty() },
+                currentShowOverlay: editShowOverlay,
+                onShowOverlayChange: (val) => { setEditShowOverlay(val); markDirty() },
+                currentShowLanguageSelector: editShowLanguageSelector,
+                onShowLanguageSelectorChange: (val) => { setEditShowLanguageSelector(val); markDirty() },
+                currentSurface: editSurface,
+                onSurfaceChange: (val) => { setEditSurface(val); markDirty() },
+                currentMapAddress: editMapAddress,
+                onMapAddressChange: (val) => { setEditMapAddress(val); markDirty() },
+                currentEmbedUrl: editEmbedUrl,
+                onEmbedUrlChange: (val) => { setEditEmbedUrl(val); markDirty() },
+                currentDirectionsUrl: editDirectionsUrl,
+                onDirectionsUrlChange: (val) => { setEditDirectionsUrl(val); markDirty() },
+                currentDirectionsText: editDirectionsText,
+                onDirectionsTextChange: (val) => { setEditDirectionsText(val); markDirty() },
+                currentHideHeading: editHideHeading,
+                onHideHeadingChange: (val) => { setEditHideHeading(val); markDirty() },
+                currentGridCols: editGridCols,
+                onGridColsChange: (val) => { setEditGridCols(val); markDirty() },
+                currentSelectedCardIds: editSelectedCardIds,
+                onSelectedCardIdsChange: (val) => { setEditSelectedCardIds(val); markDirty() },
+                currentCardToAdd: editCardToAdd,
+                onCardToAddChange: (val) => setEditCardToAdd(val),
+                onMoveCard: (idx, dir) => moveCard(editSelectedCardIds, setEditSelectedCardIds, idx, dir),
+                onRemoveCard: (idx) => removeCardFromList(editSelectedCardIds, setEditSelectedCardIds, idx),
+                currentFaqItems: editFaqItems,
+                onFaqItemsChange: (val) => { setEditFaqItems(val); markDirty() },
+                onMoveFaqItem: (idx, dir) => moveFaqItem(editFaqItems, setEditFaqItems, idx, dir),
+                onRemoveFaqItem: (idx) => removeFaqItem(editFaqItems, setEditFaqItems, idx),
+                currentBenefitItems: editBenefitItems,
+                onBenefitItemsChange: (val) => { setEditBenefitItems(val); markDirty() },
+                currentPhone: editPhone,
+                onPhoneChange: (val) => { setEditPhone(val); markDirty() },
+                currentEmail: editEmail,
+                onEmailChange: (val) => { setEditEmail(val); markDirty() },
+                currentFax: editFax,
+                onFaxChange: (val) => { setEditFax(val); markDirty() },
+                currentAddressLine1: editAddressLine1,
+                onAddressLine1Change: (val) => { setEditAddressLine1(val); markDirty() },
+                currentAddressLine2: editAddressLine2,
+                onAddressLine2Change: (val) => { setEditAddressLine2(val); markDirty() }
+              })}
 
-                  {['HEADER_TEXT', 'IMAGE_HEADER_TEXT', 'FULLSCREEN_IMAGE_HEADER'].includes(editLayout) && (
-                    <div>
-                      <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Body Text / Description</label>
-                      <textarea
-                        rows={4}
-                        value={editText}
-                        onChange={(e) => { setEditText(e.target.value); markDirty() }}
-                        placeholder="Enter section description..."
-                        style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                      />
-                      <TypographyControls
-                        label="Body Text Typography & Alignment"
-                        value={editTextTypography}
-                        onChange={(val) => { setEditTextTypography(val); markDirty() }}
-                      />
-                    </div>
-                  )}
-
-                  {/* DT-625 Sprint 8 - Preston Ball: Image Left/Right Toggle */}
-                  {editLayout === 'IMAGE_HEADER_TEXT' && (
-                    <div style={{ marginTop: '6px', marginBottom: '10px' }}>
-                      <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '6px' }}>
-                        Image Layout Position (Switch Left or Right)
-                      </label>
-                      <div style={{ display: 'flex', gap: '12px' }}>
-                        <button
-                          type="button"
-                          onClick={() => { setEditImagePosition('left'); markDirty() }}
-                          style={{
-                            flex: 1,
-                            padding: '12px',
-                            borderRadius: '8px',
-                            border: editImagePosition === 'left' ? '2px solid #0f172a' : '1px solid #cbd5e1',
-                            background: editImagePosition === 'left' ? '#f1f5f9' : '#ffffff',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '8px'
-                          }}
-                        >
-                          <img src={layoutImageLeft} alt="Image on Left" style={{ width: '100%', maxWidth: '140px', height: 'auto', borderRadius: '4px' }} />
-                          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: editImagePosition === 'left' ? '#0f172a' : '#64748b' }}>
-                            Image on Left
-                          </span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => { setEditImagePosition('right'); markDirty() }}
-                          style={{
-                            flex: 1,
-                            padding: '12px',
-                            borderRadius: '8px',
-                            border: editImagePosition === 'right' ? '2px solid #0f172a' : '1px solid #cbd5e1',
-                            background: editImagePosition === 'right' ? '#f1f5f9' : '#ffffff',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '8px'
-                          }}
-                        >
-                          <img src={layoutImageRight} alt="Image on Right" style={{ width: '100%', maxWidth: '140px', height: 'auto', borderRadius: '4px' }} />
-                          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: editImagePosition === 'right' ? '#0f172a' : '#64748b' }}>
-                            Image on Right
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {['IMAGE_HEADER_TEXT', 'FULLSCREEN_IMAGE_HEADER'].includes(editLayout) && (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image URL</label>
-                        <input
-                          type="text"
-                          value={editImageUrl}
-                          onChange={(e) => { setEditImageUrl(e.target.value); markDirty() }}
-                          placeholder="/assets/images/CareImage1.jpeg"
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Image Alt Text</label>
-                        <input
-                          type="text"
-                          value={editImageAlt}
-                          onChange={(e) => { setEditImageAlt(e.target.value); markDirty() }}
-                          placeholder="Descriptive image text"
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Button Text</label>
-                        <input
-                          type="text"
-                          value={editButtonText}
-                          onChange={(e) => { setEditButtonText(e.target.value); markDirty() }}
-                          placeholder="e.g. Schedule Consultation"
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Button Link</label>
-                        <input
-                          type="text"
-                          value={editButtonLink}
-                          onChange={(e) => { setEditButtonLink(e.target.value); markDirty() }}
-                          placeholder="/schedule"
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {editLayout === 'MAP_SECTION' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Office Address Text</label>
-                        <input
-                          type="text"
-                          value={editMapAddress}
-                          onChange={(e) => { setEditMapAddress(e.target.value); markDirty() }}
-                          placeholder="1501 N Broadway, Ste 350A/B, Walnut Creek, CA"
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Google Maps Embed URL</label>
-                        <input
-                          type="text"
-                          value={editEmbedUrl}
-                          onChange={(e) => { setEditEmbedUrl(e.target.value); markDirty() }}
-                          placeholder="https://www.google.com/maps/embed?..."
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Directions URL</label>
-                        <input
-                          type="text"
-                          value={editDirectionsUrl}
-                          onChange={(e) => { setEditDirectionsUrl(e.target.value); markDirty() }}
-                          placeholder="https://www.google.com/maps/dir/?..."
-                          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* DT-625 Sprint 8 - Preston Ball: CARD_GRID with +/- and reorder buttons */}
-                  {editLayout === 'CARD_GRID' && (
-                    <div>
-                      <div style={{ marginBottom: '12px' }}>
-                        <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Grid Columns (1-4)</label>
-                        <CustomSelect
-                          value={String(editGridCols)}
-                          onChange={(val) => { setEditGridCols(Number(val)); markDirty() }}
-                          options={[
-                            { value: '1', label: '1 Column' },
-                            { value: '2', label: '2 Columns' },
-                            { value: '3', label: '3 Columns' },
-                            { value: '4', label: '4 Columns' }
-                          ]}
-                          style={{ width: '140px' }}
-                          ariaLabel="Select column count"
-                        />
-                      </div>
-                      <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '6px' }}>Section Cards &amp; Display Order</label>
-                      <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-                        <div style={{ flex: 1 }}>
-                          <CustomSelect
-                            value={editCardToAdd}
-                            onChange={(val) => setEditCardToAdd(val)}
-                            options={allCards.map(c => ({ value: c.id, label: `${c.id} (${c.layout})` }))}
-                            placeholder="-- Choose card to add --"
-                            ariaLabel="Choose card to add"
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (editCardToAdd && !editSelectedCardIds.includes(editCardToAdd)) {
-                              setEditSelectedCardIds([...editSelectedCardIds, editCardToAdd])
-                              setEditCardToAdd('')
-                              markDirty()
-                            }
-                          }}
-                          style={{ padding: '8px 14px', background: '#0284c7', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
-                        >
-                          + Add Card
-                        </button>
-                      </div>
-
-                      {editSelectedCardIds.length === 0 ? (
-                        <p style={{ fontSize: '0.8rem', color: '#94a3b8', fontStyle: 'italic' }}>No cards allocated to this section.</p>
-                      ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          {editSelectedCardIds.map((cid, idx) => (
-                            <div key={cid} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '6px 10px', fontSize: '0.85rem' }}>
-                              <span><strong>{idx + 1}.</strong> <code>{cid}</code></span>
-                              <div style={{ display: 'flex', gap: '4px' }}>
-                                <button type="button" title="Move Up" onClick={() => moveCard(editSelectedCardIds, setEditSelectedCardIds, idx, -1)} disabled={idx === 0} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === 0 ? 'not-allowed' : 'pointer' }}>▲</button>
-                                <button type="button" title="Move Down" onClick={() => moveCard(editSelectedCardIds, setEditSelectedCardIds, idx, 1)} disabled={idx === editSelectedCardIds.length - 1} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === editSelectedCardIds.length - 1 ? 'not-allowed' : 'pointer' }}>▼</button>
-                                <button type="button" title="Remove Card" onClick={() => removeCardFromList(editSelectedCardIds, setEditSelectedCardIds, idx)} style={{ padding: '2px 6px', fontSize: '0.75rem', color: '#dc2626', cursor: 'pointer', fontWeight: 'bold' }}>- Remove</button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* DT-625 Sprint 8 - Preston Ball: FAQ_SECTION with removal and reordering */}
-                  {editLayout === 'FAQ_SECTION' && (
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                        <label style={{ fontWeight: '600', fontSize: '13px' }}>FAQ Items ({editFaqItems.length})</label>
-                        <button
-                          type="button"
-                          onClick={() => { setEditFaqItems([...editFaqItems, { question: '', answer: '' }]); markDirty() }}
-                          style={{ padding: '4px 10px', fontSize: '12px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                        >
-                          + Add Question
-                        </button>
-                      </div>
-                      {editFaqItems.map((item, idx) => (
-                        <div key={idx} style={{ background: '#fff', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '8px' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b' }}>Item #{idx + 1}</span>
-                            <div style={{ display: 'flex', gap: '4px' }}>
-                              <button type="button" title="Move Up" disabled={idx === 0} onClick={() => moveFaqItem(editFaqItems, setEditFaqItems, idx, -1)} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === 0 ? 'not-allowed' : 'pointer' }}>▲</button>
-                              <button type="button" title="Move Down" disabled={idx === editFaqItems.length - 1} onClick={() => moveFaqItem(editFaqItems, setEditFaqItems, idx, 1)} style={{ padding: '2px 6px', fontSize: '0.75rem', cursor: idx === editFaqItems.length - 1 ? 'not-allowed' : 'pointer' }}>▼</button>
-                              <button type="button" title="Remove FAQ" onClick={() => removeFaqItem(editFaqItems, setEditFaqItems, idx)} style={{ padding: '2px 6px', fontSize: '0.75rem', color: '#dc2626', cursor: 'pointer', fontWeight: 'bold' }}>- Remove</button>
-                            </div>
-                          </div>
-                          <input
-                            type="text"
-                            value={item.question}
-                            onChange={(e) => {
-                              const next = [...editFaqItems]
-                              next[idx].question = e.target.value
-                              setEditFaqItems(next)
-                              markDirty()
-                            }}
-                            placeholder="Question"
-                            style={{ width: '100%', marginBottom: '6px', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                          />
-                          <textarea
-                            rows={2}
-                            value={item.answer}
-                            onChange={(e) => {
-                              const next = [...editFaqItems]
-                              next[idx].answer = e.target.value
-                              setEditFaqItems(next)
-                              markDirty()
-                            }}
-                            placeholder="Answer"
-                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {editLayout === 'ACCOUNT_BENEFITS' && (
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                        <label style={{ fontWeight: '600', fontSize: '13px' }}>Benefit Items ({editBenefitItems.length})</label>
-                        <button
-                          type="button"
-                          onClick={() => { setEditBenefitItems([...editBenefitItems, { heading: '', description: '' }]); markDirty() }}
-                          style={{ padding: '4px 10px', fontSize: '12px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                        >
-                          + Add Benefit
-                        </button>
-                      </div>
-                      {editBenefitItems.map((item, idx) => (
-                        <div key={idx} style={{ background: '#fff', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '8px' }}>
-                          <input
-                            type="text"
-                            value={item.heading}
-                            onChange={(e) => {
-                              const next = [...editBenefitItems]
-                              next[idx].heading = e.target.value
-                              setEditBenefitItems(next)
-                              markDirty()
-                            }}
-                            placeholder="Benefit heading"
-                            style={{ width: '100%', marginBottom: '6px', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                          />
-                          <textarea
-                            rows={2}
-                            value={item.description}
-                            onChange={(e) => {
-                              const next = [...editBenefitItems]
-                              next[idx].description = e.target.value
-                              setEditBenefitItems(next)
-                              markDirty()
-                            }}
-                            placeholder="Benefit description"
-                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {editLayout === 'CONTACT_FORM' && (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      <input type="text" value={editPhone} onChange={(e) => { setEditPhone(e.target.value); markDirty() }} placeholder="Phone" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                      <input type="email" value={editEmail} onChange={(e) => { setEditEmail(e.target.value); markDirty() }} placeholder="Email" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                      <input type="text" value={editFax} onChange={(e) => { setEditFax(e.target.value); markDirty() }} placeholder="Fax" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                      <input type="text" value={editAddressLine1} onChange={(e) => { setEditAddressLine1(e.target.value); markDirty() }} placeholder="Address line 1" style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                    </div>
-                  )}
-                </div>
-              )}
-
+              {/* DT-920 DT-922 Sprint 9 - PBall: Inline color editor in section manage mode */}
               {activeTab === 'colors' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', background: '#fff', padding: '16px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Background Color</label>
-                    <CustomSelect value={editBgColor} onChange={(val) => { setEditBgColor(val); markDirty() }} options={colorOptions} ariaLabel="Background Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Header Color</label>
-                    <CustomSelect value={editHeaderColor} onChange={(val) => { setEditHeaderColor(val); markDirty() }} options={colorOptions} ariaLabel="Header Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Text Color</label>
-                    <CustomSelect value={editTextColor} onChange={(val) => { setEditTextColor(val); markDirty() }} options={colorOptions} ariaLabel="Text Color" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Accent Color</label>
-                    <CustomSelect value={editAccentColor} onChange={(val) => { setEditAccentColor(val); markDirty() }} options={colorOptions} ariaLabel="Accent Color" />
-                  </div>
-                </div>
+                <ColorEditor
+                  fields={[
+                    {
+                      key: 'backgroundColor',
+                      label: 'Background Color',
+                      value: editBgColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.backgroundColor,
+                      onChange: (val) => { setEditBgColor(val); markDirty() }
+                    },
+                    {
+                      key: 'headerColor',
+                      label: 'Header Color',
+                      value: editHeaderColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.headerColor,
+                      onChange: (val) => { setEditHeaderColor(val); markDirty() }
+                    },
+                    {
+                      key: 'textColor',
+                      label: 'Text Color',
+                      value: editTextColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.textColor,
+                      onChange: (val) => { setEditTextColor(val); markDirty() }
+                    },
+                    {
+                      key: 'accentColor',
+                      label: 'Accent Color',
+                      value: editAccentColor,
+                      defaultPair: DEFAULT_SECTION_COLORS.accentColor,
+                      onChange: (val) => { setEditAccentColor(val); markDirty() }
+                    }
+                  ]}
+                />
               )}
 
               <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -1413,7 +1350,7 @@ export default function SectionManager ({ onNotification, setIsDirty, registerSa
             {themeMode === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
           </button>
         </div>
-        <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '10px', background: '#f8fafc' }}>
+        <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '10px', background: themeMode === 'dark' ? '#0f172a' : '#f8fafc', overflowX: 'hidden' }}>
           <DynamicSectionRenderer config={draftSection} theme={themeMode} />
         </div>
       </div>

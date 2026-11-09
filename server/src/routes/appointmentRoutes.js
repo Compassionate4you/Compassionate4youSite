@@ -13,11 +13,13 @@ const {
     getAllAppointments,
     // DT-278 (722): reschedule route for the Customer Portal
     rescheduleAppointment,
+    // DT-837: tag an appointment in history
+    updateHistoryTag,
 } = require('../controllers/appointmentController');
 
 const { 
-    requireAuth, 
     requireAdmin,
+    requireCustomer,
 } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -29,18 +31,20 @@ router.get('/', requireAdmin, getAllAppointments);
 router.post('/admin', requireAdmin, createAdminAppointment);
 // Admin-only appointment update
 router.patch('/:id', requireAdmin, updateAdminAppointment);
-// Admin-only permanent deletion
+// Admin-only delete. DT-837: archives the appointment so history is kept.
 router.delete('/:id', requireAdmin, deleteAdminAppointment);
+// DT-837 / DT-927: admin-only tag for an appointment in history
+router.patch('/:id/history-tag', requireAdmin, updateHistoryTag);
 
 router.post('/', createAppointment);
 
 // DT-564: a signed-in user's own appointments.
-router.get('/mine', requireAuth, getMyAppointments);
+router.get('/mine', requireCustomer, getMyAppointments);
 
 // DT-278: cancel one of the signed in user's appointments
-router.patch('/:id/cancel', requireAuth, cancelAppointment);
+router.patch('/:id/cancel', requireCustomer, cancelAppointment);
 
 // DT-278 (722): move one of the signed in user appointments to a new date/time
-router.patch('/:id/reschedule', requireAuth, rescheduleAppointment);
+router.patch('/:id/reschedule', requireCustomer, rescheduleAppointment);
 
 module.exports = router;

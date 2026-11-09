@@ -11,16 +11,25 @@
 //   word for word from the page text in each language, so they work in every
 //   language the page is shown in. chatbotHighlights.test.js checks that
 //   every phrase really appears in that language's page text.
+// - `phraseKeys`: translation keys whose translated text is highlighted in
+//   full (a key can hold a list). DT-808 Sprint 9: used where the page builds
+//   its cards from these keys, so it keeps working if the markup changes.
+
+// DT-808 Sprint 9: the eight service names on the Home Health page.
+const SERVICE_NAME_KEYS = ['doctors', 'pt', 'ot', 'nurses', 'st', 'chha', 'msw', 'multilingual']
+  .map((key) => `homeHealth.services.${key}`)
 
 export const highlights = {
   // "What home health services do you offer?" - the service names and the
   // specialty list.
   homeHealthServices: {
-    selectors: ['.services-section .card h3', '.specialty-text']
+    selectors: [],
+    phraseKeys: [...SERVICE_NAME_KEYS, 'homeHealthPage.specialties']
   },
   // "Who will be providing the care?" - the service names are the staff roles.
   homeHealthStaff: {
-    selectors: ['.services-section .card h3']
+    selectors: [],
+    phraseKeys: SERVICE_NAME_KEYS
   },
   // "Do you provide care at home?"
   homeHealthAtHome: {
@@ -40,11 +49,14 @@ export const highlights = {
   },
   // "What areas do you serve?"
   officeLocation: {
-    selectors: ['.map-section__title', '.map-section__directions']
+    selectors: [
+      '.map-section__title', '.map-section__directions',
+      '.modular-map-section__title', '.modular-map-section__directions'
+    ]
   },
   // "How do I contact you?" - the phone, email, fax and address values.
   contactInfo: {
-    selectors: ['.contact-info .contact-item p']
+    selectors: ['.modular-contact-info .modular-contact-item p']
   },
   // "What are your hours?" - the footer is on every page.
   officeHours: {

@@ -48,7 +48,7 @@ function ChatWindow ({ onClose, messages, isSending, sendMessage }) {
             <p className='chat-empty-state'>{t('chatbot.emptyState')}</p>
             )
           : (
-            <MessageList messages={messages} />
+            <MessageList messages={messages} onOpenFaq={() => setShowFaq(true)} />
             )}
         {showFaq && (
           <FaqPanel onAsk={askFromFaq} isSending={isSending} />

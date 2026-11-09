@@ -30,7 +30,11 @@ vi.mock('../hooks/useAccessibilityBridge', () => ({
 // Phrases the hook reads from the locale files. Other keys come back as-is,
 // like the shared test translator.
 const TEST_PHRASES = {
-  'chatbot.highlightPhrases.hospiceOverview': ['rather than curing the illness', '24 hours a day']
+  'chatbot.highlightPhrases.hospiceOverview': ['rather than curing the illness', '24 hours a day'],
+  // DT-808 Sprint 9: Home Health highlights come from these translation keys.
+  'homeHealth.services.nurses': 'Skilled Nurses',
+  'homeHealth.services.st': 'Speech Therapists',
+  'homeHealthPage.specialties': ['Wound Care']
 }
 vi.mock('react-i18next', () => {
   const t = (key) => TEST_PHRASES[key] ?? key

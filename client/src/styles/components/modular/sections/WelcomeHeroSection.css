@@ -1,0 +1,13 @@
+/* DT-902: Welcome shares split hero geometry; keep its language control spacing local. */
+.c4-welcome-hero .c4-hero__language {
+  margin-top: auto;
+  margin-bottom: clamp(20px, 4.2vw, 60px);
+  padding-top: clamp(32px, 5vw, 72px);
+}
+.c4-welcome-hero .c4-hero__language label { margin-bottom: 12px; }
+.c4-welcome-hero .c4-hero__language select { width: 200px; }
+
+/* DT-902: Keep language controls compact when the shared hero stacks on mobile. */
+@media (max-width: 767px) {
+  .c4-welcome-hero .c4-hero__language { margin-bottom: 0; padding-top: 40px; }
+}

@@ -1,3 +1,5 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
+/* DT-902: Inherit the public page theme while honoring explicit CMS color overrides. */
 /*
 DT-622 Sprint 8
 Preston Ball
@@ -5,8 +7,8 @@ Modular FAQ accordion section stylesheet
 */
 
 .faq-section {
-  background: var(--section-bg, #ffffff);
-  color: var(--section-text, #1e293b);
+  background: var(--section-bg, var(--color-white));
+  color: var(--section-text, var(--color-white-text));
   padding: 5rem 1.5rem;
   font-family: inherit;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -21,13 +23,13 @@ Modular FAQ accordion section stylesheet
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   text-align: center;
-  color: var(--section-header, #0f172a);
+  color: var(--section-header, var(--color-white-text));
   margin-bottom: 2.5rem;
   letter-spacing: -0.02em;
 }
 
 .faq-item {
-  border-bottom: 1px solid var(--color-divider, #e5e7eb);
+  border-bottom: 1px solid var(--color-divider);
 }
 
 .faq-item__question {
@@ -39,27 +41,27 @@ Modular FAQ accordion section stylesheet
   padding: 1.25rem 0.25rem;
   background: transparent;
   border: none;
-  text-align: left;
+  text-align: start;
   font-family: inherit;
   font-size: 1.15rem;
   font-weight: 600;
-  color: var(--section-header, #0f172a);
+  color: var(--section-header, var(--color-white-text));
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .faq-item__question:hover {
-  color: var(--section-accent, #366454);
+  color: var(--section-accent, var(--color-primary));
 }
 
 .faq-item__question:focus-visible {
-  outline: 2px solid var(--section-accent, #366454);
+  outline: 2px solid var(--section-accent, var(--color-primary));
   outline-offset: 2px;
 }
 
 .faq-item__icon {
   flex-shrink: 0;
-  color: var(--section-accent, #366454);
+  color: var(--section-accent, var(--color-primary));
   transition: transform 0.2s ease;
 }
 
@@ -83,7 +85,7 @@ Modular FAQ accordion section stylesheet
 
 .faq-item__answer {
   margin: 0 0.25rem 1.5rem;
-  color: var(--section-text, #4b5563);
+  color: var(--section-text, var(--color-white-text));
   font-size: 1.05rem;
   line-height: 1.7;
 }

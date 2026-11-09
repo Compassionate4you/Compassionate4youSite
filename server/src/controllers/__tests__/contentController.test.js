@@ -31,13 +31,6 @@ jest.mock('../../config/db', () => ({
     update: jest.fn(),
     delete: jest.fn()
   },
-  color: {
-    findMany: jest.fn(),
-    findUnique: jest.fn(),
-    upsert: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn()
-  },
   textEntry: {
     findMany: jest.fn(),
     findUnique: jest.fn(),
@@ -159,25 +152,41 @@ describe('Content & Audit History API Endpoints', () => {
     })
   })
 
-  // DT-622: Colors
-  describe('Colors API (DT-622)', () => {
-    test('GET /api/admin/content/colors returns colors', async () => {
-      prisma.color.findMany.mockResolvedValue([
-        { id: 'color-sage', lightModeColor: '#9DA191', darkModeColor: '#1e293b' }
-      ])
+  // DT-922: Direct Element Color Storage on Sections & Cards
+  describe('Direct Element Color Storage (DT-922)', () => {
+    test('POST /api/admin/content/sections stores direct light/dark color pairs inside section content', async () => {
+      const directColors = {
+        backgroundColor: { light: '#ffffff', dark: '#0f172a' },
+        headerColor: { light: '#0f172a', dark: '#f8fafc' },
+        textColor: { light: '#334155', dark: '#cbd5e1' },
+        accentColor: { light: '#366454', dark: '#4ade80' }
+      }
+      prisma.userCreatedSection.upsert.mockImplementation(({ create }) => Promise.resolve(create))
 
-      const res = await request(app).get('/api/admin/content/colors')
-      expect(res.status).toBe(200)
-      expect(res.body[0].id).toBe('color-sage')
+      const res = await request(app)
+        .post('/api/admin/content/sections')
+        .send({ id: 'sec-colored', layout: 'HEADER_TEXT', colors: directColors, content: { header: 'Styled' } })
+
+      expect(res.status).toBe(201)
+      expect(res.body.colors).toEqual(directColors)
+      expect(res.body.content.colors).toEqual(directColors)
     })
 
-    test('POST /api/admin/content/colors creates color', async () => {
-      const colorData = { id: 'color-blue', lightModeColor: '#00f', darkModeColor: '#008' }
-      prisma.color.upsert.mockResolvedValue(colorData)
+    test('POST /api/admin/content/cards stores direct light/dark color pairs inside card content', async () => {
+      const directCardColors = {
+        backgroundColor: { light: '#f8fafc', dark: '#1e293b' },
+        headerColor: { light: '#0f172a', dark: '#ffffff' },
+        textColor: { light: '#475569', dark: '#cbd5e1' }
+      }
+      prisma.userCreatedCard.upsert.mockImplementation(({ create }) => Promise.resolve(create))
 
-      const res = await request(app).post('/api/admin/content/colors').send(colorData)
+      const res = await request(app)
+        .post('/api/admin/content/cards')
+        .send({ id: 'card-colored', layout: 'HEADER_PARAGRAPH', colors: directCardColors, content: { header: 'Card' } })
+
       expect(res.status).toBe(201)
-      expect(res.body.id).toBe('color-blue')
+      expect(res.body.colors).toEqual(directCardColors)
+      expect(res.body.content.colors).toEqual(directCardColors)
     })
   })
 

@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
-import AccountBenefits from '../components/AccountBenefits'
+import AccountBenefits from '../components/modular/sections/AccountBenefitsSection'
 import '../styles/portal.css' // used for the navbar and content styling
 import '../styles/login.css' // used for the login form styling
 function LoginPage () {

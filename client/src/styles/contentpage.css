@@ -1,7 +1,8 @@
+/* DT-902: Resolve component colours from the global light/dark palette. */
 /*
-DT-622 Sprint 8
-Preston Ball
-Styles for the dynamic content page container and header
+DT-894 DT-917 DT-918 Sprint 9
+PBall
+Styles for the dynamic content page container, section overflow containment, and dark/light theme support
 */
 
 .content-page {
@@ -9,6 +10,12 @@ Styles for the dynamic content page container and header
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-white-text, #0f172a);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .content-page-hero {
@@ -16,19 +23,33 @@ Styles for the dynamic content page container and header
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
 }
 
+/* DT-918 Sprint 9 - PBall: Use theme-aware text variable for content page heading */
 .content-page-hero h1 {
   font-size: 2.2rem;
   font-weight: 700;
-  color: var(--color1, #262626);
+  color: var(--color-white-text);
   margin-bottom: 8px;
 }
 
+/* DT-917 Sprint 9 - PBall: Prevent horizontal overflow across stacked modular sections */
 .content-page-sections {
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.content-page-sections > * {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .content-page-empty {
@@ -36,18 +57,23 @@ Styles for the dynamic content page container and header
   margin: 60px auto;
   padding: 40px 24px;
   text-align: center;
-  background: #f8fafc;
+  background: var(--color-white);
   border-radius: 12px;
-  border: 1px dashed #cbd5e1;
+  border: 1px dashed var(--color-input-border);
 }
 
 .content-page-empty h2 {
   font-size: 1.5rem;
-  color: #334155;
+  color: var(--color-white-text);
   margin-bottom: 12px;
 }
 
 .content-page-empty p {
-  color: #64748b;
+  color: var(--color-muted-text);
   font-size: 1rem;
 }
+
+/* DT-902: Public page surfaces and links share the global palette. */
+.content-page--standard { background: var(--color-white); color: var(--color-white-text); }
+.content-page--standard .c4-page-cta a { color: var(--color-link); }
+.content-page--standard .c4-page-cta a:hover { color: var(--color-link-hover); }

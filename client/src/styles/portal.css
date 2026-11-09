@@ -515,3 +515,58 @@ table td:last-child {
     font-size: 14px;
     font-weight: 600;
 }
+
+/* Portal cards */
+.portals-section .cards-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.portals-section .card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.portals-section .portal-contact-card {
+  appearance: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+}
+
+.portals-section .card-icon-blue { background-color: #dbeafe; color: #2563eb; }
+.portals-section .card-icon-green { background-color: #dcfce7; color: #16a34a; }
+.portals-section .card-icon-purple { background-color: #f3e8ff; color: #9333ea; }
+.portals-section .card-icon-contact { background-color: #fef3c7; color: #b45309; }
+
+.portal-contact-form-card {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.portal-contact-form-card textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.portal-contact-form-card .field input,
+.portal-contact-form-card .field select,
+.portal-contact-form-card .field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #111827;
+  box-sizing: border-box;
+}

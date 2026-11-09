@@ -1,14 +1,9 @@
 /* ── DT-160: User can view the location of the company in the footer ── */
 
+/* DT-718: Use white text throughout the simplified public footer. */
 :root {
-  --footer-bg: #366454;
-  --footer-dark: #111827;
   --footer-text: #ffffff;
-  --footer-muted: #9ca3af;
-  --footer-border: #1f2937;
-  --footer-hover: #ffffff;
   --footer-accent: #4ade80;
-  --footer-radius: 0.25rem;
 }
 
 .footer {
@@ -23,17 +18,28 @@
   padding: 3rem 1rem;
 }
 
+/* DT-718: Give both sections equal space across the available footer width. */
 .footer__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 auto;
   gap: 2rem;
 }
 
-.footer__heading {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--footer-text);
+/* DT-718: Use each column's full width for horizontal detail rows. */
+.footer__grid > div {
+  width: 100%;
+  min-width: 0;
+  justify-self: center;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+/* DT-718: Stack matching columns on small screens. */
+@media (max-width: 639px) {
+  .footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .footer__subheading {
@@ -43,25 +49,27 @@
   color: var(--footer-text);
 }
 
-.footer__about-text {
-  color: var(--footer-muted);
-  font-size: 0.9rem;
-  line-height: 1.6;
+/* DT-718: Arrange contact details and day groups horizontally, wrapping as needed. */
+.footer__contact-list,
+.footer__hours-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem 1.5rem;
 }
 
-.footer__links { display: flex; flex-direction: column; gap: 0.5rem; }
-
-.footer__link {
-  color: var(--footer-muted);
-  font-size: 0.9rem;
-  transition: color 0.2s;
-  border-radius: var(--footer-radius);
+/* DT-718: Let individual details fit narrow columns without overflowing. */
+.footer__contact-list > li,
+.footer__hours-list > li {
+  min-width: 0;
+  max-width: 100%;
 }
 
-.footer__link:hover,
-.footer__link:focus { color: var(--footer-hover); outline: 2px solid #3b82f6; }
-
-.footer__contact-list { display: flex; flex-direction: column; gap: 0.75rem; }
+/* DT-718: Allow text to shrink and wrap beside its fixed-width icon. */
+.footer__contact-item > :last-child,
+.footer__hours-item > :last-child {
+  min-width: 0;
+}
 
 .footer__contact-item {
   display: flex;
@@ -77,8 +85,9 @@
   color: var(--footer-text);
 }
 
+/* DT-718: Keep footer details white for readability. */
 .footer__contact-text {
-  color: var(--footer-muted);
+  color: var(--footer-text);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -92,8 +101,9 @@
 }
 
 /* DT-160: Location address highlighted for discoverability */
+/* DT-718: Keep footer details white for readability. */
 .footer__location-address {
-  color: var(--footer-muted);
+  color: var(--footer-text);
   font-size: 0.9rem;
   line-height: 1.5;
   border-left: 2px solid var(--footer-accent);
@@ -109,8 +119,6 @@
   text-decoration: underline;
 }
 
-.footer__hours-list { display: flex; flex-direction: column; gap: 0.5rem; }
-
 .footer__hours-item {
   display: flex;
   align-items: flex-start;
@@ -125,21 +133,19 @@
   color: var(--footer-text);
 }
 
+/* DT-718: Keep footer details white for readability. */
 .footer__hours-text {
-  color: var(--footer-muted);
+  color: var(--footer-text);
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
-.footer__hours-indent {
-  margin-left: 2rem;
-}
-
+/* DT-718: Restore centered white copyright beneath both columns. */
 .footer__bottom {
-  border-top: 1px solid var(--footer-border);
+  border-top: 1px solid var(--footer-text);
   margin-top: 2rem;
   padding-top: 2rem;
   text-align: center;
-  color: var(--footer-muted);
+  color: var(--footer-text);
   font-size: 0.85rem;
 }

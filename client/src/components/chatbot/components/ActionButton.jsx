@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAccessibilityBridge } from '../hooks/useAccessibilityBridge'
 
-function ActionButton ({ labelKey, label, actionId, to, highlight }) {
+function ActionButton ({ labelKey, label, actionId, to, highlight, onOpenFaq }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
@@ -13,6 +13,11 @@ function ActionButton ({ labelKey, label, actionId, to, highlight }) {
   const text = labelKey ? t(labelKey) : label
 
   const handleClick = () => {
+    // A reply's "Common questions" button opens the list in the chat window.
+    if (actionId === 'openFaq') {
+      onOpenFaq?.()
+      return
+    }
     if (actionId === 'navigate' && (to || highlight)) {
       // DT-808: the highlight id rides along in the router state and
       // usePageHighlight picks it up on the new page. With no `to`, the

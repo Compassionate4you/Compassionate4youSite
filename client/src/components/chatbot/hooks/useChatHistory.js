@@ -51,12 +51,16 @@ export function useChatHistory () {
     loadHistory(sessionIdRef.current)
       .then((messages) => {
         if (cancelled) return
+        // DT-906: keep the key, FAQ id and buttons so restored messages are
+        // not blank and still follow the language setting (DT-904).
         setRestored(
           messages.map((m, i) => ({
             id: `restored_${i}_${m.id || i}`,
             sender: m.sender,
             text: m.body || '',
-            actionButtons: []
+            textKey: m.textKey || undefined,
+            faqId: m.faqId || undefined,
+            actionButtons: Array.isArray(m.actionButtons) ? m.actionButtons : []
           }))
         )
       })

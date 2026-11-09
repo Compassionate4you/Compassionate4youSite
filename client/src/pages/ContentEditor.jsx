@@ -1,12 +1,10 @@
-// DT-622 DT-618 DT-625 Sprint 8
-// Preston Ball
-// Content Editor page incorporating tool switchers for Pages, Colors, Text, Sections, Cards, and Audit History with dirty-state save/leave confirmation prompts
+// DT-903 DT-919 DT-622 DT-618 DT-625 Sprint 9
+// PBall
+// Content Editor page incorporating tool switchers for Pages, Sections, Cards, and Audit History with dirty-state save/leave confirmation prompts
 
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PageManager from '../components/admin/content/PageManager'
-import ColorConfigTool from '../components/admin/content/ColorConfigTool'
-import TextConfigTool from '../components/admin/content/TextConfigTool'
 import SectionManager from '../components/admin/content/SectionManager'
 import CardManager from '../components/admin/content/CardManager'
 import AuditHistoryTool from '../components/admin/content/AuditHistoryTool'
@@ -100,10 +98,9 @@ export default function ContentEditor ({ embedded = false }) {
     setPendingNavigation(null)
   }
 
+  // DT-919 Sprint 9 - PBall: Removed standalone Text Config and Color Config tools from toolbar
   const toolLabels = {
     pages: 'Page Manager',
-    text: 'Text Config Tool',
-    colors: 'Color Config Tool',
     sections: 'Section Manager',
     cards: 'Card Manager',
     history: 'Audit History'
@@ -128,7 +125,7 @@ export default function ContentEditor ({ embedded = false }) {
 
       <h1 className="content-editor-title">Content Editor Suite</h1>
       <p className="content-editor-subtitle">
-        Manage site pages, theme colors, cascading text hierarchy, section blocks, card elements, and applied audit history.
+        Manage site pages, section blocks, card elements, inline typography and theme colors, and applied audit history.
       </p>
 
       {isDirty && (
@@ -143,12 +140,10 @@ export default function ContentEditor ({ embedded = false }) {
         </div>
       )}
 
-      {/* Tool Switcher Tabs */}
+      {/* DT-919 Sprint 9 - PBall: Tool Switcher Tabs without standalone Text and Color tools */}
       <div className="content-editor-tabs" style={{ display: 'flex', gap: '8px', marginTop: '24px', flexWrap: 'wrap' }}>
         {[
           { id: 'pages', label: '📄 Page Manager' },
-          { id: 'text', label: '📝 Text Config' },
-          { id: 'colors', label: '🎨 Color Config' },
           { id: 'sections', label: '📐 Section Manager' },
           { id: 'cards', label: '🃏 Card Manager' },
           { id: 'history', label: '📜 Audit History' }
@@ -179,20 +174,6 @@ export default function ContentEditor ({ embedded = false }) {
       <div className="content-editor-workspace" style={{ marginTop: '24px' }}>
         {activeTool === 'pages' && (
           <PageManager
-            onNotification={handleNotify}
-            setIsDirty={setIsDirty}
-            registerSaveHandler={registerSaveHandler}
-          />
-        )}
-        {activeTool === 'text' && (
-          <TextConfigTool
-            onNotification={handleNotify}
-            setIsDirty={setIsDirty}
-            registerSaveHandler={registerSaveHandler}
-          />
-        )}
-        {activeTool === 'colors' && (
-          <ColorConfigTool
             onNotification={handleNotify}
             setIsDirty={setIsDirty}
             registerSaveHandler={registerSaveHandler}

@@ -1,6 +1,6 @@
 {
   "nav": {
-    "welcome": "Bienvenido",
+    "welcome": "Bienvenida",
     "homeHealth": "Salud en Casa",
     "hospice": "Hospicio",
     "locations": "Ubicaciones",
@@ -10,7 +10,11 @@
     "admin": "Administrador",
     "logout": "Cerrar Sesión",
     "dashboard": "Panel De Usuario",
-    "home": "Inicio"
+    "home": "Bienvenida",
+    "menu": "Menú",
+    "close": "Cerrar",
+    "morePages": "Más páginas",
+    "mainNavigation": "Navegación principal"
   },
   "landing": {
     "heroTitle": "Cuidado compasivo para sus seres queridos",
@@ -130,7 +134,9 @@
             "list2": " - asistir con asuntos prácticos, tales como encontrar ayuda adicional en el hogar"
           }
         }
-      }
+      },
+      "label": "Apoyo compasivo",
+      "subtitle": "Conozca al equipo de atención y descubra el apoyo disponible para pacientes y sus familias."
     },
     "comprehensiveServices": {
       "title": "Servicios de apoyo integral",
@@ -159,7 +165,9 @@
           "title": "¿Qué pasa si surge una situación difícil?",
           "description": "Comprendemos que los cuidadores pueden enfrentar situaciones difíciles. Una línea telefónica disponible las 24 horas pone al cuidador en contacto con un enfermero especializado en cuidados paliativos, quien puede ofrecer asesoramiento telefónico o realizar una visita domiciliaria si es necesario."
         }
-      }
+      },
+      "label": "Apoyo para cada día",
+      "subtitle": "Apoyo práctico, emocional y espiritual para pacientes y las personas que los cuidan."
     },
     "aboveAndBeyond": {
       "title": "Atención excepcional",
@@ -208,7 +216,7 @@
       "title": "Estamos aquí para ayudar",
       "description": "Nuestro compasivo equipo de cuidados paliativos está disponible las 24 horas del día, los 7 días de la semana, para responder a sus preguntas y brindarle apoyo.",
       "contactButton": "Contacta con nosotros hoy",
-      "homeButton": "Volver al inicio"
+      "homeButton": "Volver a Bienvenida"
     }
   },
   "homeHealth": {
@@ -246,8 +254,8 @@
   },
   "portal": {
     "title": "Portal del Cliente",
-    "welcome": "Bienvenido, John Doe",
-    "welcomeBanner": "¡Bienvenido de nuevo, John Doe!",
+    "welcome": "Bienvenido, {{name}}",
+    "welcomeBanner": "¡Bienvenido de nuevo, {{name}}!",
     "welcomeSubtitle": "Administre sus citas e información de atención médica",
     "scheduleCard": "Programar Cita",
     "scheduleCardDesc": "Reserve una nueva cita de salud en casa o de hospicio",
@@ -437,7 +445,8 @@
       "toggleLightMode": "Haga clic abajo para volver al modo claro.",
       "toggleHighContrast": "Haga clic abajo para alternar el alto contraste.",
       "error": "No se pudo conectar con el servidor. Inténtelo de nuevo en un momento.",
-      "placeholder": "Recibimos su mensaje. Las respuestas completas del chat estarán disponibles pronto."
+      "greeting": "¡Hola! ¿En qué puedo ayudarle hoy? Puede preguntar sobre nuestros servicios, ubicaciones, horarios o citas, o tocar Preguntas frecuentes.",
+      "noMatch": "Lo siento, no entendí eso. Intente preguntarlo de otra forma o toque Preguntas frecuentes para ver en qué puedo ayudarle."
     },
     "faqButton": "Preguntas frecuentes",
     "faqIntro": "Estas son algunas preguntas que nos hacen con frecuencia:",
@@ -655,7 +664,19 @@
     "ctaTitle": "Comience hoy su atención de salud en casa",
     "ctaDescription": "Permítanos ayudarle a usted o a su ser querido a recibir la atención de calidad que merece en la comodidad de su hogar.",
     "ctaSchedule": "Programar una cita",
-    "ctaBack": "Volver al inicio"
+    "ctaBack": "Volver a Bienvenida",
+    "servicesIntro": {
+      "label": "Atención en casa",
+      "subtitle": "Conozca a los profesionales que apoyan su salud, independencia y cuidado diario en casa."
+    },
+    "advantagesIntro": {
+      "label": "Mejor atención en casa",
+      "subtitle": "Atención compasiva que mejora la vida, en casa y en la comunidad."
+    },
+    "specialtiesIntro": {
+      "label": "Atención para sus necesidades",
+      "subtitle": "Explore servicios especializados que apoyan su tratamiento, recuperación y bienestar diario."
+    }
   },
   "faq": {
     "title": "Preguntas frecuentes",

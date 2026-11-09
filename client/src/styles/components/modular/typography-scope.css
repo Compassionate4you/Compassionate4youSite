@@ -1,0 +1,36 @@
+/* DT-893 Sprint 9 - Gandhar Tare: content editor formatting for section
+   titles and descriptions. Each rule only applies when the admin chose that
+   setting (the data attribute is present); otherwise the section keeps its
+   own styling. The wrapper adds no box of its own. */
+
+.c4-typography-scope {
+  display: contents;
+}
+
+/* Section titles */
+.c4-typography-scope[data-heading-align] :is(.c4-section__title, .c4-hero__title, .c4-welcome-banner__title, .modular-contact-section__title, .faq-section__title, .modular-map-section__title, .modular-fullscreen-header-section__title, .account-benefits-section__title) {
+  text-align: var(--c4-heading-align);
+}
+.c4-typography-scope[data-heading-font] :is(.c4-section__title, .c4-hero__title, .c4-welcome-banner__title, .modular-contact-section__title, .faq-section__title, .modular-map-section__title, .modular-fullscreen-header-section__title, .account-benefits-section__title) {
+  font-family: var(--c4-heading-font);
+}
+.c4-typography-scope[data-heading-weight] :is(.c4-section__title, .c4-hero__title, .c4-welcome-banner__title, .modular-contact-section__title, .faq-section__title, .modular-map-section__title, .modular-fullscreen-header-section__title, .account-benefits-section__title) {
+  font-weight: var(--c4-heading-weight);
+}
+.c4-typography-scope[data-heading-style] :is(.c4-section__title, .c4-hero__title, .c4-welcome-banner__title, .modular-contact-section__title, .faq-section__title, .modular-map-section__title, .modular-fullscreen-header-section__title, .account-benefits-section__title) {
+  font-style: var(--c4-heading-style);
+}
+
+/* Section descriptions (not the text inside individual cards) */
+.c4-typography-scope[data-text-align] :is(.c4-section__subtitle, .c4-hero__description, .c4-welcome-banner__description, .modular-map-section__address, .modular-fullscreen-header-section__text, .faq-item__answer) {
+  text-align: var(--c4-text-align);
+}
+.c4-typography-scope[data-text-font] :is(.c4-section__subtitle, .c4-hero__description, .c4-welcome-banner__description, .modular-map-section__address, .modular-fullscreen-header-section__text, .faq-item__answer) {
+  font-family: var(--c4-text-font);
+}
+.c4-typography-scope[data-text-weight] :is(.c4-section__subtitle, .c4-hero__description, .c4-welcome-banner__description, .modular-map-section__address, .modular-fullscreen-header-section__text, .faq-item__answer) {
+  font-weight: var(--c4-text-weight);
+}
+.c4-typography-scope[data-text-style] :is(.c4-section__subtitle, .c4-hero__description, .c4-welcome-banner__description, .modular-map-section__address, .modular-fullscreen-header-section__text, .faq-item__answer) {
+  font-style: var(--c4-text-style);
+}

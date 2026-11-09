@@ -5,7 +5,6 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import "../styles/admindashboard.css";
 import AdminHeader from "../components/admin/AdminHeader";
 import AdminTabs from "../components/admin/AdminTabs";
 import AdminFooter from "../components/admin/AdminFooter";
@@ -18,12 +17,22 @@ import useAppointments from "../hooks/admin/useAppointments";
 import useAccounts from "../hooks/admin/useAccounts";
 import useLocations from "../hooks/admin/useLocations";
 import { useAuth } from "../context/AuthContext";
+/* Import styling */
+import "../styles/admin/admin-dashboard.css";
+import "../styles/admin/admin-header.css";
+import "../styles/admin/admin-tables.css";
+import "../styles/admin/appointments-tab.css";
+import "../styles/admin/accounts-tab.css";
+import "../styles/admin/locations-tab.css";
+import "../styles/admin/admin-footer.css";
+import "../styles/admin/admin-modals.css";
+import "../styles/admin/admin-dark-mode.css";
 
 const AdminDashboard = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
     
     // General Dashboard state
     const [tab, setTab] = useState(searchParams.get("tab") || "appointments");
@@ -51,20 +60,32 @@ const AdminDashboard = () => {
         handleCancelDeleteAppointment,
         handleConfirmDeleteAppointment,
         handleCancelAppointment,
+        // DT-837: appointment history
+        appointmentView,
+        setAppointmentView,
+        currentAppointments,
+        historyAppointments,
+        historySearch,
+        setHistorySearch,
+        handleChangeHistoryTag,
+        tagSavingId,
+        tagError,
     } = useAppointments();
     
-    //For Add Account
+    //For Updating Accounts
     const {
         showAccountForm,
         editingAccountId,
         accountPendingDelete,
+        showPromoteConfirm,
+        handleCancelPromote,
+        handleConfirmPromote,
         accounts,
         accountForm,
-        handleOpenAddAccount,
+        handleUpdateAccount,
         handleCancelAccount,
         handleAccountInputChange,
         formatAccountBirthdate,
-        handleAddAccount,
         handleEditAccount,
         handleDeleteAccount,
         handleCancelDeleteAccount,
@@ -86,6 +107,10 @@ const AdminDashboard = () => {
         handleOpenAddLocation,
         handleCancelAddLocation,
         handleAddLocation,
+        handleDeleteLocation,
+        locationPendingDelete,
+        handleCancelDeleteLocation,
+        handleConfirmDeleteLocation,
     } = useLocations();
         // DT-755: really sign out (user, test login and server session), then leave the dashboard.
     const handleConfirmLogout = () => {
@@ -97,6 +122,7 @@ const AdminDashboard = () => {
     return (
         <div className="admin-dashboard-page">
             <AdminHeader
+                adminName={user?.displayName}
                 onLogout={() => setShowLogoutConfirm(true)}
             />
             <AdminTabs
@@ -124,6 +150,16 @@ const AdminDashboard = () => {
                         onEditAppointment={handleEditAppointment}
                         onDeleteAppointment={handleDeleteAppointment}
                         formatAppointmentDate={formatAppointmentDate}
+                        // DT-837: appointment history
+                        appointmentView={appointmentView}
+                        onChangeView={setAppointmentView}
+                        currentAppointments={currentAppointments}
+                        historyAppointments={historyAppointments}
+                        historySearch={historySearch}
+                        onHistorySearchChange={setHistorySearch}
+                        onChangeHistoryTag={handleChangeHistoryTag}
+                        tagSavingId={tagSavingId}
+                        tagError={tagError}
                     />
                 )}
 
@@ -131,12 +167,10 @@ const AdminDashboard = () => {
                 {tab === "accounts" && (
                     <AccountsTab
                         showAccountForm={showAccountForm}
-                        editingAccountId={editingAccountId}
                         accountForm={accountForm}
                         accounts={accounts}
-                        onOpenAddAccount={handleOpenAddAccount}
                         onAccountInputChange={handleAccountInputChange}
-                        onSubmitAccount={handleAddAccount}
+                        onSubmitAccount={handleUpdateAccount}
                         onCancelAccount={handleCancelAccount}
                         onEditAccount={handleEditAccount}
                         onDeleteAccount={handleDeleteAccount}
@@ -165,6 +199,7 @@ const AdminDashboard = () => {
                         onEditFormChange={handleEditFormChange}
                         onSaveLocation={handleSaveLocation}
                         onCancelEdit={handleCancelEdit}
+                        onDeleteLocation={handleDeleteLocation}
                     />
                 )}
             </main>
@@ -183,14 +218,15 @@ const AdminDashboard = () => {
             {/* Appointment Deletion Confirmation */}
             <ConfirmModal
                 isOpen={appointmentPendingDelete !== null}
-                title="Delete Appointment"
+                title="Archive Appointment"
                 message={
                     <>
-                        Are you sure you want to permanently delete the appointment for{" "}
+                        {/* DT-837: archiving hides the appointment but keeps it on record */}
+                        Archive the appointment for{" "}
                         <strong>
                             {appointmentPendingDelete?.name}
                         </strong>
-                        ?
+                        ? It will be hidden from the dashboard but kept in the records.
 
                         {appointmentDeleteError && (
                             <span className="admin-modal-error" role="alert">
@@ -200,12 +236,23 @@ const AdminDashboard = () => {
                     </>
                 }
                 confirmText={
-                    appointmentDeleting ? "Deleting..." : "Delete"
+                    appointmentDeleting ? "Archiving..." : "Archive"
                 }
                 cancelText="Cancel"
                 isConfirming={appointmentDeleting}
                 onCancel={handleCancelDeleteAppointment}
                 onConfirm={handleConfirmDeleteAppointment}
+            />
+
+            {/* DT-825: Confirm before promoting a customer to Admin */}
+            <ConfirmModal
+                isOpen={showPromoteConfirm}
+                title="Change Role to Admin"
+                message="Are you sure you want to change this user's role to Admin?"
+                confirmText="Confirm"
+                cancelText="Cancel"
+                onCancel={handleCancelPromote}
+                onConfirm={handleConfirmPromote}
             />
 
             {/* Account Deletion Confirmation */}
@@ -221,6 +268,24 @@ const AdminDashboard = () => {
                 onCancel={handleCancelDeleteAccount}
                 onConfirm={handleConfirmDeleteAccount}
             />
+
+
+
+            {/* Location Deletion Confirmation */}
+            <ConfirmModal
+                isOpen={locationPendingDelete !== null}
+                title="Delete Location"
+                message={
+                    <>
+                        Are you sure you want to delete the location{" "}
+                        <strong>{locationPendingDelete?.name}</strong>?
+                    </>
+                }
+                onCancel={handleCancelDeleteLocation}
+                onConfirm={handleConfirmDeleteLocation}
+            />
+
+
         </div>
     );
 };

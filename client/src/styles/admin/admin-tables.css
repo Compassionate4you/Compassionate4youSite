@@ -1,0 +1,88 @@
+/* Shared table rules */
+.admin-table-card {
+  margin-bottom: 24px;
+  overflow-x: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+
+.admin-table-card h2 {
+  margin: 0 0 4px;
+  font-size: 125%;
+}
+
+.admin-table-description,
+.admin-table-card > div p {
+  margin: 0 0 18px;
+  color: #6b7280;
+  font-size: 80%;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  padding: 8px 10px 12px;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  color: #6b7280;
+  font-size: 80%;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 12px 10px;
+  border: 0;
+  border-bottom: 1px solid #eee;
+  font-size: 80%;
+  white-space: nowrap;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- Status Badges --------- */
+
+.admin-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 75%;
+  font-weight: 700;
+}
+
+.admin-status-confirmed,
+.admin-status-active {
+  background-color: #e6f9ee;
+  color: #1a7a3c;
+}
+
+.admin-status-pending {
+  background-color: #fff8e1;
+  color: #b45309;
+}
+
+.admin-status-inactive {
+  background-color: #f1f3f5;
+  color: #6b7280;
+}
+
+/* ---------- Shared "Add xxx" button ---------- */
+
+.admin-add-button {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border: 1px solid #020617;
+  border-radius: 10px;
+  background-color: #020617;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}

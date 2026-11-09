@@ -41,7 +41,9 @@ export function useChatbot () {
       const text = String(rawText || '').trim()
       if (!text || inFlightRef.current) return
 
-      appendMessage({ sender: 'user', text })
+      // DT-904: a question picked from the FAQ list keeps its id, so it can be
+      // shown in another language when the language changes.
+      appendMessage({ sender: 'user', text, ...(faqId ? { faqId } : {}) })
 
       // A question picked from the FAQ list resolves by id; anything typed
       // goes through keyword matching.

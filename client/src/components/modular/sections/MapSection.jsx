@@ -6,6 +6,7 @@ import React from 'react'
 import { MapPin } from 'lucide-react'
 import '../../../styles/components/modular/sections/MapSection.css'
 
+// DT-902: Allow the Welcome reference map to omit its heading and localize directions text.
 export default function MapSection ({
   config,
   content = {},
@@ -20,7 +21,7 @@ export default function MapSection ({
   return (
     <section className="modular-map-section" style={style}>
       <div className="modular-map-section__inner">
-        {header && (
+        {!data.hideHeading && header && (
           <h2 className="modular-map-section__title">
             {header}
           </h2>
@@ -48,7 +49,7 @@ export default function MapSection ({
             className="modular-map-section__directions"
           >
             <MapPin size={18} aria-hidden="true" />
-            Get Directions
+            {data.directionsText || 'Get Directions'}
           </a>
         )}
       </div>
