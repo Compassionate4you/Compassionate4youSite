@@ -68,6 +68,9 @@ const AdminDashboard = () => {
         showAccountForm,
         editingAccountId,
         accountPendingDelete,
+        showPromoteConfirm,
+        handleCancelPromote,
+        handleConfirmPromote,
         accounts,
         accountForm,
         handleOpenAddAccount,
@@ -232,6 +235,17 @@ const AdminDashboard = () => {
                 isConfirming={appointmentDeleting}
                 onCancel={handleCancelDeleteAppointment}
                 onConfirm={handleConfirmDeleteAppointment}
+            />
+
+            {/* DT-825: Confirm before promoting a customer to Admin */}
+            <ConfirmModal
+                isOpen={showPromoteConfirm}
+                title="Change Role to Admin"
+                message="Are you sure you want to change this user's role to Admin?"
+                confirmText="Confirm"
+                cancelText="Cancel"
+                onCancel={handleCancelPromote}
+                onConfirm={handleConfirmPromote}
             />
 
             {/* Account Deletion Confirmation */}
