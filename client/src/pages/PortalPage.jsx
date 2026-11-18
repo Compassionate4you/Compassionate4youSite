@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Plus, Calendar, Settings, Pencil, Trash2, MessageCircle } from 'lucide-react'
 
 // DT-278: loads, cancels, and reschedules the signed in user's appointments through the backend
-import { apiGetMyAppointments, apiCancelAppointment, apiRescheduleAppointment, apiGetAvailability, apiGetProfile, apiUpdateProfile } from '../services/api'
+import { apiGetMyAppointments, apiCancelAppointment, apiRescheduleAppointment, apiGetAvailability, apiGetProfile, apiUpdateProfile, apiChangePassword } from '../services/api'
 import '../styles/portal.css'
 
 // DT-809 (810): get the signed in user's name for welcome messages
@@ -291,7 +291,7 @@ function PortalPage () {
     setShowProfile(false)
   }
 
-  function handleChangePassword () {
+    async function handleChangePassword () {
     setPasswordError('')
     setPasswordSuccess('')
 
@@ -315,10 +315,16 @@ function PortalPage () {
       return
     }
 
-    setCurrentPassword('')
-    setNewPassword('')
-    setConfirmPassword('')
-    setPasswordSuccess('Password updated successfully.')
+    try {
+      await apiChangePassword(currentPassword, newPassword)
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setPasswordSuccess('Password updated successfully.')
+    } catch (err) {
+      // Shows the server's reason, for example "Current password is incorrect."
+      setPasswordError(err.message || 'We could not update your password. Please try again.')
+    }
   }
 
   function handleOpenContactForm () {

@@ -263,6 +263,51 @@ async function resetPassword(req, res, next) {
         return next(err);
     }
 }
+
+// Change the password of the signed-in user (Customer Portal > Security).
+// Requires the current password, so a stolen session alone cannot take over
+// the account.
+async function changePassword(req, res, next) {
+    try {
+        const { currentPassword, newPassword } = req.body || {};
+
+        if (!currentPassword || typeof currentPassword !== 'string') {
+            return sendValidationError(res, 'Current password is required.', 'currentPassword');
+        }
+
+        if (!isValidPassword(newPassword)) {
+            return sendValidationError(res, getPasswordRequirements(), 'newPassword');
+        }
+
+        if (newPassword === currentPassword) {
+            return sendValidationError(res, 'New password must be different from your current password.', 'newPassword');
+        }
+
+        const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+        if (!user) {
+            return sendValidationError(res, 'Account not found.', null);
+        }
+
+        const matches = await bcrypt.compare(currentPassword, user.password);
+        if (!matches) {
+            return sendValidationError(res, 'Current password is incorrect.', 'currentPassword');
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { password: hashedPassword },
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: 'Your password has been updated successfully.',
+        });
+    } catch (err) {
+        return next(err);
+    }
+}
+
 function logout(req, res) {
     clearSessionCookie(res);
     return res.status(200).json({ success: true });
@@ -285,4 +330,4 @@ function me(req, res, next) {
         .catch(next);
 }
 
-module.exports = { signup, login, forgotPassword, verifyResetToken, resetPassword, logout, me, phoneDigits };
+module.exports = { signup, login, forgotPassword, verifyResetToken, resetPassword, changePassword, logout, me, phoneDigits };

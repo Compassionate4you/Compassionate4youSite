@@ -87,7 +87,10 @@ export function apiVerifyResetToken (token) {
 export function apiResetPassword (token, newPassword) {
   return request('/auth/reset-password', { method: 'POST', body: { token, newPassword } })
 }
-
+// Change the signed-in user's password.
+export function apiChangePassword (currentPassword, newPassword) {
+  return request('/auth/change-password', { method: 'POST', body: { currentPassword, newPassword } })
+}
 // DT-563 / DT-564: appointments.
 export function apiGetAvailability (date) {
   return request(`/appointments/availability?date=${encodeURIComponent(date)}`)
@@ -220,6 +223,7 @@ export default {
   apiForgotPassword,
   apiVerifyResetToken,
   apiResetPassword,
+  apiChangePassword,
   apiGetAvailability,
   apiCreateAppointment,
   apiGetMyAppointments,
