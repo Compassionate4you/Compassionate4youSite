@@ -36,8 +36,7 @@ function useAccounts() {
 
                 birthdate: account.birthdate ? account.birthdate.slice(0, 10) : "", // Load birthdate from supabase
 
-                // These fields are not currently stored in the User table
-                lastLogin: "",
+
             }));
 
             // Display the database accounts instead of hardcoded accounts

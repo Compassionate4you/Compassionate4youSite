@@ -60,6 +60,7 @@ export default function LocationMaps ({ fallback, directionsText, mapTitle }) {
           hideHeading: true,
           header: location.name || mapTitle,
           mapAddress: address,
+          phone: location.phone,
           directionsText,
           ...mapLinksFor(address)
         }}

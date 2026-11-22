@@ -29,8 +29,17 @@ Modular Google Maps section stylesheet
 .modular-map-section__address {
   font-size: 1.15rem;
   color: var(--section-text, var(--color-white-text));
-  margin: 0 0 2rem;
+  margin: 0 0 0.15rem;
 }
+
+.modular-map-section__phone {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--section-text, var(--color-white-text));
+  opacity: 0.8;
+  margin: 0 0 0.5rem;
+}
+
 
 .modular-map-section__embed {
   position: relative;
