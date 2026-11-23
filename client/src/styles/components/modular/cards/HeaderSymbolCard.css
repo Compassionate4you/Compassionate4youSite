@@ -8,6 +8,7 @@ Modular header symbol card layout stylesheet with icon badges and responsive ali
 .card--symbol {
   background: var(--card-bg, var(--color-white));
   color: var(--card-text, var(--color-white-text));
+  border: 1px solid color-mix(in srgb, var(--card-text, var(--color-white-text)) 12%, transparent);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-black) 8%, transparent);
@@ -38,6 +39,15 @@ Modular header symbol card layout stylesheet with icon badges and responsive ali
   color: var(--card-header, inherit);
   font-size: 1.15rem;
   font-weight: 600;
+}
+
+.card--symbol p {
+  margin: 0 0 0.5rem;
+  line-height: 1.6;
+}
+
+.card--symbol p:last-child {
+  margin-bottom: 0;
 }
 
 .card--symbol.card--align-left {

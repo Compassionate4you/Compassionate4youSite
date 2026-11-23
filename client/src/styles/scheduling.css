@@ -9,7 +9,7 @@ body {
 
 /* CONTENT */
 .content {
-  max-width: 960px;
+  max-width: 75%;
   margin: 0 auto;
   padding: 28px 20px;
 }

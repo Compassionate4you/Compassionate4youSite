@@ -1,3 +1,8 @@
+export { default as BannerSection } from './BannerSection'
 export { default as HeaderCardsSection } from './HeaderCardsSection'
 export { default as HeaderStackSection } from './HeaderStackSection'
+export { default as HeroSection } from './HeroSection'
+export { default as LocationMaps } from './LocationMaps'
+export { default as PageCallToAction } from './PageCallToAction'
 export { default as TimelineSection } from './TimelineSection'
+export { default as WelcomeHeroSection } from './WelcomeHeroSection'

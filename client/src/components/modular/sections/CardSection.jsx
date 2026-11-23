@@ -56,12 +56,29 @@ export default function CardSection ({
     return null
   }
 
+  const allPhotoTextCards = resolvedCards.every(card => ['PHOTO_TEXT_CARD', 'PHOTO_TEXT'].includes(card.layout || card.layoutType))
   const hasParagraphCards = resolvedCards.some(card => ['HEADER_PARAGRAPH', 'HEADER_TEXT_BOX'].includes(card.layout || card.layoutType || 'HEADER_PARAGRAPH'))
   const BannerIcon = hasParagraphCards ? getWelcomeBannerIcon(slug, sectionId, activeConfig.slug, activeConfig.id) : undefined
   const columns = Number(data.gridCols || data.columns || 3)
   const sectionClassName = ['card-section', BannerIcon ? 'card-section--banners' : '', className].filter(Boolean).join(' ')
   const headerTypo = data.typography?.header || {}
   const headerStyle = typographyStyle(headerTypo)
+
+  if (allPhotoTextCards) {
+    return (
+      <section className={className ? `c4-photo-cards ${className}` : 'c4-photo-cards'} style={style} aria-label={title || undefined}>
+        {title && <h2 className='card-section__title' style={headerStyle}>{title}</h2>}
+        {resolvedCards.map((card, index) => (
+          <ModularCard
+            key={card.id || `card-${index}`}
+            card={card}
+            theme={theme}
+            colorSource={colorSource}
+          />
+        ))}
+      </section>
+    )
+  }
 
   return (
     <section className={sectionClassName} style={style} aria-label={title || undefined}>

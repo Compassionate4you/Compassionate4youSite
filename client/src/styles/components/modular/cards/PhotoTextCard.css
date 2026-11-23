@@ -5,6 +5,8 @@
   gap: clamp(32px, 4.3vw, 72px);
   width: 100%;
   padding: clamp(24px, 4.3vw, 72px);
+  background-color: var(--section-bg, transparent);
+  color: var(--section-text, inherit);
 }
 
 .c4-photo-card,
@@ -16,11 +18,11 @@
   align-items: center;
   gap: clamp(28px, 4vw, 64px);
   padding: clamp(24px, 3.5vw, 64px);
-  border: 3px solid var(--color-white-text);
+  border: 3px solid var(--card-header, var(--color-white-text));
   border-radius: clamp(24px, 3vw, 48px);
-  /* DT-718: Fill photo/text card interiors with theme-aware light grey. */
-  background: var(--color-light-gray);
-  color: var(--color-light-gray-text);
+  /* DT-718: Fill photo/text card interiors with theme-aware light grey unless overridden by card colors. */
+  background: var(--card-bg, var(--color-light-gray));
+  color: var(--card-text, var(--color-light-gray-text));
   /* Physical photo placement stays consistent while the copy detects its own language direction. */
   direction: ltr;
 }
@@ -51,7 +53,7 @@
 
 .c4-photo-card__title {
   margin: 0 0 clamp(24px, 2.8vw, 48px);
-  color: inherit;
+  color: var(--card-header, inherit);
   font-family: var(--font-heading, 'Crimson Text', Georgia, serif);
   font-size: clamp(1.6rem, 2.6vw, 2.75rem);
   font-weight: 600;

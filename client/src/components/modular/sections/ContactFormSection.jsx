@@ -4,6 +4,7 @@
 
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { pickText } from '../cards/CardBase'
 import { apiSubmitContactForm } from '../../../services/api'
 import '../../../styles/components/modular/sections/ContactFormSection.css'
 
@@ -16,15 +17,16 @@ export default function ContactFormSection ({
   content = {},
   style = {}
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language || 'en'
   const data = content || config?.content || {}
 
-  const title = data.title || data.header || config?.title || t('landing.contactTitle')
-  const phone = data.phone || t('landing.contactPhone')
-  const email = data.email || t('landing.contactEmail')
-  const fax = data.fax || t('landing.contactFax')
-  const addressLine1 = data.addressLine1 || t('landing.contactAddressLine1')
-  const addressLine2 = data.addressLine2 || t('landing.contactAddressLine2')
+  const title = pickText(data.title || data.header || config?.title || '', lang) || t('landing.contactTitle')
+  const phone = pickText(data.phone || '', lang) || t('landing.contactPhone')
+  const email = pickText(data.email || '', lang) || t('landing.contactEmail')
+  const fax = pickText(data.fax || '', lang) || t('landing.contactFax')
+  const addressLine1 = pickText(data.addressLine1 || '', lang) || t('landing.contactAddressLine1')
+  const addressLine2 = pickText(data.addressLine2 || '', lang) || t('landing.contactAddressLine2')
 
   const [form, setForm] = useState(EMPTY_FORM)
   const [errors, setErrors] = useState({})

@@ -19,7 +19,6 @@ import TypographyScope from '../TypographyScope'
 import TypographyControls from '../../admin/content/TypographyControls'
 import HeaderParagraphCard from '../cards/HeaderParagraphCard'
 import DynamicSectionRenderer from '../DynamicSectionRenderer'
-import HomeHealthSections from '../HomeHealthSections'
 import { SectionStorageService } from '../../../services/sectionStorageService'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
@@ -142,19 +141,19 @@ describe('sections that used to ignore the formatting bar now get it', () => {
   })
 })
 
-describe('the Welcome, Home Health and Hospice pages now apply saved formatting', () => {
-  it('a Home Health section with a centered title gets the formatting', () => {
+describe('DynamicSectionRenderer applies saved formatting to modular section layouts', () => {
+  it('a HEADER_CARDS section with a centered title gets the formatting', () => {
     const { container } = render(
-      <HomeHealthSections sections={[{ id: 'sec-hh-services', layout: 'CARD_GRID', content: { typography: { header: { align: 'center' } } } }]} />
+      <DynamicSectionRenderer config={{ id: 'sec-hh-services', layout: 'HEADER_CARDS', content: { header: 'Services', typography: { header: { align: 'center' } } } }} />
     )
     const scope = container.querySelector('.c4-typography-scope')
     expect(scope).not.toBeNull()
     expect(scope.querySelector('.c4-section__title')).not.toBeNull()
   })
 
-  it('a section saved with the old untouched default renders exactly as before', () => {
+  it('a section saved with the old untouched default renders without an extra typography scope', () => {
     const { container } = render(
-      <HomeHealthSections sections={[{ id: 'sec-hh-services', layout: 'CARD_GRID', content: { typography: { header: OLD_UNTOUCHED } } }]} />
+      <DynamicSectionRenderer config={{ id: 'sec-hh-services', layout: 'HEADER_CARDS', content: { header: 'Services', typography: { header: OLD_UNTOUCHED } } }} />
     )
     expect(container.querySelector('.c4-typography-scope')).toBeNull()
   })

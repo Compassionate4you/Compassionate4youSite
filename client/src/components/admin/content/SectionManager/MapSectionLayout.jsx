@@ -6,6 +6,9 @@ import React from 'react'
 import TypographyControls from '../TypographyControls'
 
 export default function MapSectionLayout ({
+  isDynamicOnly = false,
+  useDynamicLocations = false,
+  onUseDynamicLocationsChange,
   header,
   onHeaderChange,
   headerTypography,
@@ -21,12 +24,30 @@ export default function MapSectionLayout ({
   directionsText = '',
   onDirectionsTextChange
 }) {
+  const dynamicEnabled = isDynamicOnly || Boolean(useDynamicLocations)
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      {isDynamicOnly ? (
+        <div style={{ padding: '10px 12px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '6px', fontSize: '13px', color: '#1e3a8a' }}>
+          Renders one map per location managed in the Locations database. The fields below configure the directions label, heading visibility, and fallback map shown while loading or if locations cannot be reached.
+        </div>
+      ) : onUseDynamicLocationsChange && (
+        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={Boolean(useDynamicLocations)}
+            onChange={(e) => onUseDynamicLocationsChange(e.target.checked)}
+            style={{ width: '16px', height: '16px', accentColor: '#0f172a', cursor: 'pointer' }}
+          />
+          Load all office maps dynamically from the Locations database (uses fields below as fallback)
+        </label>
+      )}
+
       {/* DT-923 Sprint 9 - PBall: Section title and typography controls */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-          <label style={{ fontWeight: '600', fontSize: '13px' }}>Title / Header</label>
+          <label style={{ fontWeight: '600', fontSize: '13px' }}>{dynamicEnabled ? 'Fallback / Default Map Title' : 'Title / Header'}</label>
           {onHideHeadingChange && (
             <label style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '600', color: '#475569', cursor: 'pointer' }}>
               <input

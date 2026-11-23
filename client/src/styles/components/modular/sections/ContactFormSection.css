@@ -8,7 +8,7 @@ Modular contact form and contact information section stylesheet
 
 .modular-contact-section {
   padding: 4rem 1.5rem;
-  background-color: var(--color-sage);
+  background-color: var(--section-bg, var(--color-sage));
   color: var(--section-text, var(--color-white-text));
   transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -50,7 +50,8 @@ Modular contact form and contact information section stylesheet
   height: 52px;
   border-radius: 50%;
   background-color: var(--color-white);
-  color: var(--color-primary-text);
+  color: var(--color-white-text);
+  border: 2px solid var(--section-accent, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,6 +80,7 @@ Modular contact form and contact information section stylesheet
 
 .contact-form-card {
   background: var(--card-bg, var(--color-white));
+  color: var(--color-white-text);
   border-radius: 18px;
   padding: 28px;
   box-shadow: 0 4px 18px color-mix(in srgb, var(--color-black) 8%, transparent);
@@ -100,7 +102,7 @@ Modular contact form and contact information section stylesheet
   font-weight: 600;
   margin-bottom: 6px;
   margin-top: 12px;
-  color: var(--section-header, var(--color-white-text));
+  color: var(--color-white-text);
 }
 
 .contact-form__required {
@@ -146,8 +148,8 @@ Modular contact form and contact information section stylesheet
   padding: 14px 20px;
   border: none;
   border-radius: 10px;
-  background-color: var(--color-green);
-  color: var(--color-primary-text);
+  background-color: var(--section-accent, var(--color-green));
+  color: var(--section-accent-text, var(--color-primary-text));
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -189,10 +191,10 @@ Modular contact form and contact information section stylesheet
   }
 }
 
-/* DT-902: Pair contact details with the global sage surface. */
+/* DT-902: Pair contact details with the global sage surface while respecting explicit CMS overrides. */
 .content-page--standard .modular-contact-section__title,
-.content-page--standard .modular-contact-item h3,
-.content-page--standard .modular-contact-item p { color: var(--color-sage-text); }
+.content-page--standard .modular-contact-item h3 { color: var(--section-header, var(--color-sage-text)); }
+.content-page--standard .modular-contact-item p { color: var(--section-text, var(--color-sage-text)); }
 
 /* DT-902: Form labels and placeholders use the global input surface palette. */
 .content-page--standard .contact-form label { color: var(--color-white-text); }

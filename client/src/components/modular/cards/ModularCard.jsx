@@ -9,7 +9,7 @@ import ImageCard from './ImageCard'
 import PhotoTextCard from './PhotoTextCard'
 import HeaderParagraphCard from './HeaderParagraphCard'
 import HeaderSymbolCard from './HeaderSymbolCard'
-import { resolveElementColor } from '../../admin/content/ColorEditor'
+import { resolveElementColor, ensureReadableTextColor } from '../../admin/content/ColorEditor'
 
 // DT-902: Welcome paragraph cards can render the shared banner without changing other layouts.
 export default function ModularCard ({ card, theme = 'light', colorSource = 'cms', BannerIcon }) {
@@ -22,17 +22,29 @@ export default function ModularCard ({ card, theme = 'light', colorSource = 'cms
 
   // DT-902: Global mode ignores stored card colours without changing CMS defaults.
   // DT-922 Sprint 9 - PBall: Resolve colors stored directly within the card element when colorSource is 'cms'
-  const customStyles = colorSource === 'global'
-    ? {
-        '--card-bg': 'var(--color-white)',
-        '--card-header': 'var(--color-white-text)',
-        '--card-text': 'var(--color-white-text)'
-      }
-    : {
-        '--card-bg': resolveElementColor(colors.backgroundColor, theme, theme === 'dark' ? '#1e293b' : '#ffffff'),
-        '--card-header': resolveElementColor(colors.headerColor, theme, theme === 'dark' ? '#f8fafc' : '#0f172a'),
-        '--card-text': resolveElementColor(colors.textColor, theme, theme === 'dark' ? '#cbd5e1' : '#334155')
-      }
+  let customStyles
+  if (colorSource === 'global') {
+    customStyles = {
+      '--card-bg': 'var(--color-white)',
+      '--card-header': 'var(--color-white-text)',
+      '--card-text': 'var(--color-white-text)'
+    }
+  } else {
+    const resolvedCardBg = resolveElementColor(colors.backgroundColor, theme, theme === 'dark' ? '#1e293b' : '#ffffff')
+    const resolvedCardHeader = ensureReadableTextColor(
+      resolveElementColor(colors.headerColor, theme, theme === 'dark' ? '#f8fafc' : '#0f172a'),
+      resolvedCardBg
+    )
+    const resolvedCardText = ensureReadableTextColor(
+      resolveElementColor(colors.textColor, theme, theme === 'dark' ? '#cbd5e1' : '#334155'),
+      resolvedCardBg
+    )
+    customStyles = {
+      '--card-bg': resolvedCardBg,
+      '--card-header': resolvedCardHeader,
+      '--card-text': resolvedCardText
+    }
+  }
 
   const commonProps = {
     header: pickText(content.header ?? card.header, lang),
@@ -72,6 +84,8 @@ export default function ModularCard ({ card, theme = 'light', colorSource = 'cms
           imageUrl={commonProps.imageUrl}
           imageAlt={commonProps.imageAlt}
           imagePosition={content.imagePosition || commonProps.alignment}
+          typography={commonProps.typography}
+          style={commonProps.style}
         />
       )
     case 'IMAGE_FULL_WIDTH':

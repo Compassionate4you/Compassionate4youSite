@@ -4,7 +4,7 @@
 
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { resolveElementColor } from '../admin/content/ColorEditor'
+import { resolveElementColor, getContrastTextColor, ensureReadableTextColor } from '../admin/content/ColorEditor'
 import { SectionStorageService } from '../../services/sectionStorageService'
 import { CardStorageService } from '../../services/cardStorageService'
 import { pickText } from './cards/CardBase'
@@ -12,6 +12,7 @@ import ImageHeaderTextSection from './sections/ImageHeaderTextSection'
 import FullscreenImageHeaderSection from './sections/FullscreenImageHeaderSection'
 import HeaderTextSection from './sections/HeaderTextSection'
 import MapSection from './sections/MapSection'
+import LocationMaps from './sections/LocationMaps'
 import CardSection from './sections/CardSection'
 import AccountBenefitsSection from './sections/AccountBenefitsSection'
 import ContactFormSection from './sections/ContactFormSection'
@@ -39,8 +40,12 @@ const LAYOUT_COMPONENTS = {
   FAQ: FAQSection
 }
 
+function computeAccentTextColor (accentValue) {
+  return getContrastTextColor(accentValue)
+}
+
 // DT-875 Sprint 9 - PBall: Resolve card references and inline items for HeaderCards, HeaderStack, and Timeline layouts
-function resolveSectionItems (content = {}, lang = 'en', stripStepNumbers = false) {
+function resolveSectionItems (content = {}, lang = 'en', stripStepNumbers = false, theme = 'light', colorSource = 'cms') {
   const cardIds = Array.isArray(content.cardIds) ? content.cardIds : []
   const resolvedFromCards = cardIds
     .map((id) => CardStorageService.getCardById(id))
@@ -53,12 +58,23 @@ function resolveSectionItems (content = {}, lang = 'en', stripStepNumbers = fals
       const lines = String(rawBody).split('\n').map(l => l.trim()).filter(Boolean)
       const bulletLines = lines.filter(l => l.startsWith('- ')).map(l => l.slice(2).trim())
       const textLines = lines.filter(l => !l.startsWith('- '))
+      const cardColors = c.colors || card.colors
+      let style
+      if (colorSource === 'cms' && cardColors && (cardColors.backgroundColor || cardColors.headerColor || cardColors.textColor)) {
+        const cardBg = resolveElementColor(cardColors.backgroundColor, theme, theme === 'dark' ? '#1e293b' : '#ffffff')
+        style = {
+          ...(cardColors.backgroundColor ? { '--card-bg': cardBg } : {}),
+          ...(cardColors.headerColor ? { '--card-header': ensureReadableTextColor(resolveElementColor(cardColors.headerColor, theme, theme === 'dark' ? '#f8fafc' : '#0f172a'), cardBg) } : {}),
+          ...(cardColors.textColor ? { '--card-text': ensureReadableTextColor(resolveElementColor(cardColors.textColor, theme, theme === 'dark' ? '#cbd5e1' : '#334155'), cardBg) } : {})
+        }
+      }
       return {
         id: card.id || `card-item-${index}`,
         title,
         description: textLines.join('\n') || undefined,
         listItems: bulletLines.length > 0 ? bulletLines : undefined,
-        iconName: c.symbol || c.iconName || card.symbol || 'Heart'
+        iconName: c.symbol || c.iconName || card.symbol || 'Heart',
+        style
       }
     })
 
@@ -67,12 +83,17 @@ function resolveSectionItems (content = {}, lang = 'en', stripStepNumbers = fals
       .filter(item => item && (item.heading || item.title || item.description))
       .map((item, idx) => {
         const rawTitle = pickText(item.title || item.heading || '', lang)
+        const rawDesc = pickText(item.description || '', lang)
+        const lines = String(rawDesc).split('\n').map(l => l.trim()).filter(Boolean)
+        const bulletLines = lines.filter(l => l.startsWith('- ')).map(l => l.slice(2).trim())
+        const textLines = lines.filter(l => !l.startsWith('- '))
+        const explicitList = Array.isArray(item.listItems) ? item.listItems : undefined
         return {
           id: item.id || `inline-item-${idx}`,
           title: stripStepNumbers ? rawTitle.replace(/^\s*\d+\.\s*/, '') : rawTitle,
-          description: pickText(item.description || '', lang) || undefined,
-          listItems: Array.isArray(item.listItems) ? item.listItems : undefined,
-          iconName: item.iconName || 'Heart'
+          description: (explicitList ? rawDesc : textLines.join('\n')) || undefined,
+          listItems: explicitList || (bulletLines.length > 0 ? bulletLines : undefined),
+          iconName: item.iconName || item.symbol || 'Heart'
         }
       })
     : []
@@ -104,18 +125,39 @@ function SectionBody ({ config, sectionId, theme = 'light', colorSource = 'cms' 
 
   // DT-902: CSS variables remain live when the root theme or global palette changes.
   // DT-918 DT-922 Sprint 9 - PBall: Resolve light/dark colors stored directly on the section element when colorSource is 'cms'
+  const resolvedBg = colorSource === 'global'
+    ? 'var(--color-white)'
+    : resolveElementColor(colors.backgroundColor, theme, theme === 'dark' ? '#0f172a' : '#ffffff')
+  const resolvedHeader = colorSource === 'global'
+    ? 'var(--color-white-text)'
+    : ensureReadableTextColor(
+      resolveElementColor(colors.headerColor, theme, theme === 'dark' ? '#f8fafc' : '#0f172a'),
+      resolvedBg
+    )
+  const resolvedText = colorSource === 'global'
+    ? 'var(--color-white-text)'
+    : ensureReadableTextColor(
+      resolveElementColor(colors.textColor, theme, theme === 'dark' ? '#cbd5e1' : '#334155'),
+      resolvedBg
+    )
+  const resolvedAccent = colorSource === 'global'
+    ? 'var(--color-primary)'
+    : resolveElementColor(colors.accentColor, theme, theme === 'dark' ? '#4ade80' : '#366454')
+
   const customStyles = colorSource === 'global'
     ? {
-        '--section-bg': 'var(--color-white)',
-        '--section-header': 'var(--color-white-text)',
-        '--section-text': 'var(--color-white-text)',
-        '--section-accent': 'var(--color-primary)'
+        '--section-bg': resolvedBg,
+        '--section-header': resolvedHeader,
+        '--section-text': resolvedText,
+        '--section-accent': resolvedAccent,
+        '--section-accent-text': 'var(--color-primary-text)'
       }
     : {
-        '--section-bg': resolveElementColor(colors.backgroundColor, theme, theme === 'dark' ? '#0f172a' : '#ffffff'),
-        '--section-header': resolveElementColor(colors.headerColor, theme, theme === 'dark' ? '#f8fafc' : '#0f172a'),
-        '--section-text': resolveElementColor(colors.textColor, theme, theme === 'dark' ? '#cbd5e1' : '#334155'),
-        '--section-accent': resolveElementColor(colors.accentColor, theme, theme === 'dark' ? '#4ade80' : '#366454')
+        '--section-bg': resolvedBg,
+        '--section-header': resolvedHeader,
+        '--section-text': resolvedText,
+        '--section-accent': resolvedAccent,
+        '--section-accent-text': computeAccentTextColor(resolvedAccent)
       }
 
   // DT-875 Sprint 9 - PBall: Dispatch newly added modular section layouts
@@ -126,25 +168,60 @@ function SectionBody ({ config, sectionId, theme = 'light', colorSource = 'cms' 
         description={pickText(content.text || content.description || content.subtitle || '', lang)}
         imageUrl={content.imageUrl}
         imageAlt={pickText(content.imageAlt || '', lang)}
+        style={customStyles}
       />
     )
   }
 
   if (section.layout === 'HERO_SECTION') {
+    const variant = content.heroVariant || content.variant || 'split'
+    const tone = content.heroTone || content.tone || 'teal'
+    const heroClassName = content.className || (
+      variant === 'split'
+        ? (tone === 'teal' ? 'c4-home-health-hero' : (tone === 'forest' ? 'c4-hospice-hero' : ''))
+        : ''
+    )
     return (
       <HeroSection
         title={pickText(content.header || content.title || section.title || '', lang)}
         description={pickText(content.text || content.description || content.subtitle || '', lang)}
         imageUrl={content.imageUrl}
         imageAlt={pickText(content.imageAlt || '', lang)}
-        variant={content.heroVariant || content.variant || 'split'}
+        variant={variant}
         contentPosition={content.contentPosition || content.imagePosition || 'left'}
-        tone={content.heroTone || content.tone || 'teal'}
+        tone={tone}
         iconName={content.icon || content.iconName || undefined}
         buttonText={pickText(content.buttonText || '', lang)}
         buttonLink={content.buttonLink || '/schedule'}
         showOverlay={content.showOverlay !== undefined ? Boolean(content.showOverlay) : false}
         showLanguageSelector={Boolean(content.showLanguageSelector)}
+        className={heroClassName}
+        style={customStyles}
+      />
+    )
+  }
+
+  if (section.layout === 'LOCATION_MAPS' || (section.layout === 'MAP_SECTION' && content.useDynamicLocations)) {
+    const mapTitle = pickText(content.header || content.title || section.title || '', lang)
+    const directionsText = pickText(content.directionsText || '', lang) || undefined
+    const hideHeading = content.hideHeading !== undefined ? Boolean(content.hideHeading) : true
+    const fallback = (
+      <MapSection
+        config={section}
+        content={{ ...content, hideHeading }}
+        colors={colors}
+        theme={theme}
+        colorSource={colorSource}
+        style={customStyles}
+      />
+    )
+    return (
+      <LocationMaps
+        fallback={fallback}
+        mapTitle={mapTitle}
+        directionsText={directionsText}
+        hideHeading={hideHeading}
+        style={customStyles}
       />
     )
   }
@@ -155,10 +232,11 @@ function SectionBody ({ config, sectionId, theme = 'light', colorSource = 'cms' 
         title={pickText(content.header || content.title || section.title || '', lang)}
         subtitle={pickText(content.text || content.subtitle || '', lang)}
         label={pickText(content.label || '', lang)}
-        items={resolveSectionItems(content, lang, false)}
+        items={resolveSectionItems(content, lang, false, theme, colorSource)}
         backgroundImageUrl={content.imageUrl || content.backgroundImageUrl || undefined}
         headerPosition={content.headerPosition || content.imagePosition || 'left'}
         surface={content.surface || undefined}
+        style={customStyles}
       />
     )
   }
@@ -169,8 +247,9 @@ function SectionBody ({ config, sectionId, theme = 'light', colorSource = 'cms' 
         title={pickText(content.header || content.title || section.title || '', lang)}
         subtitle={pickText(content.text || content.subtitle || '', lang)}
         label={pickText(content.label || '', lang)}
-        items={resolveSectionItems(content, lang, false)}
+        items={resolveSectionItems(content, lang, false, theme, colorSource)}
         columns={Number(content.gridCols || content.columns || 1)}
+        style={customStyles}
       />
     )
   }
@@ -181,18 +260,24 @@ function SectionBody ({ config, sectionId, theme = 'light', colorSource = 'cms' 
         title={pickText(content.header || content.title || section.title || '', lang)}
         subtitle={pickText(content.text || content.subtitle || '', lang)}
         label={pickText(content.label || '', lang)}
-        items={resolveSectionItems(content, lang, true)}
+        items={resolveSectionItems(content, lang, true, theme, colorSource)}
+        style={customStyles}
       />
     )
   }
 
   if (section.layout === 'PAGE_CTA') {
+    const hasPrimary = content.buttonText !== undefined || content.primaryLabel !== undefined
+    const hasHome = content.secondaryButtonText !== undefined || content.homeLabel !== undefined
     return (
       <PageCallToAction
         title={pickText(content.header || content.title || section.title || '', lang)}
         description={pickText(content.text || content.description || content.subtitle || '', lang)}
-        primaryLabel={pickText(content.buttonText || content.primaryLabel || 'Schedule a Consultation', lang)}
-        homeLabel={pickText(content.secondaryButtonText || content.homeLabel || 'Back to Welcome', lang)}
+        primaryLabel={hasPrimary ? pickText(content.buttonText ?? content.primaryLabel ?? '', lang) : 'Schedule a Consultation'}
+        primaryLink={content.buttonLink || content.primaryLink || '/schedule'}
+        homeLabel={hasHome ? pickText(content.secondaryButtonText ?? content.homeLabel ?? '', lang) : 'Back to Welcome'}
+        homeLink={content.secondaryButtonLink || content.homeLink || '/welcome'}
+        style={customStyles}
       />
     )
   }

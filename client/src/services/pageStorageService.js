@@ -8,37 +8,13 @@ import { API_BASE_URL } from './api'
 
 const STORAGE_KEY = 'cms_user_pages_store'
 
-const INITIAL_PAGES = [
-  {
-    id: 'landing',
-    content: {
-      title: 'Landing & Company Information',
-      sectionIds: ['sec-hero', 'sec-cards']
-    }
-  },
-  {
-    id: 'homeHealth',
-    content: {
-      title: 'Home Health Services',
-      sectionIds: []
-    }
-  },
-  {
-    id: 'hospice',
-    content: {
-      title: 'Hospice Care',
-      sectionIds: []
-    }
-  }
-]
-
 export const PageStorageService = {
   data: (() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
-      return saved ? JSON.parse(saved) : INITIAL_PAGES
+      return saved ? JSON.parse(saved) : []
     } catch {
-      return INITIAL_PAGES
+      return []
     }
   })(),
 
@@ -61,7 +37,7 @@ export const PageStorageService = {
       const res = await fetch(`${API_BASE_URL}/admin/content/pages`)
       if (res.ok) {
         const remotePages = await res.json()
-        if (Array.isArray(remotePages) && remotePages.length > 0) {
+        if (Array.isArray(remotePages)) {
           this.data = remotePages
           this._persist()
           this._notify()

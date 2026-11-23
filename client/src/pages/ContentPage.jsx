@@ -8,18 +8,14 @@ import { PageStorageService } from '../services/pageStorageService'
 import { SectionStorageService } from '../services/sectionStorageService'
 import { CardStorageService } from '../services/cardStorageService'
 import DynamicSectionRenderer from '../components/modular/DynamicSectionRenderer'
-import HospiceSections from '../components/modular/HospiceSections'
-import HomeHealthSections from '../components/modular/HomeHealthSections'
-import WelcomeSections from '../components/modular/WelcomeSections'
 import NotFoundPage from './NotFoundPage'
 import '../styles/contentpage.css'
 import { useTranslation } from 'react-i18next'
 import { useAccessibility } from '../context/AccessibilityContext'
 import { getContentPageLabel } from '../services/contentPageLabels'
 
-// DT-732: Route Hospice sections through the new stack/cards presentation adapter.
-// DT-731: Route Home Health sections through translated screenshot layouts.
-// DT-902: Use the reference-content adapters without duplicate page/hero headings.
+const HERO_LAYOUTS = new Set(['WELCOME_HERO', 'HERO_SECTION', 'FULLSCREEN_IMAGE_HEADER'])
+
 export default function ContentPage ({ defaultPageId }) {
   // DT-902: Share the active theme and translated page title with all section renderers.
   const { theme } = useAccessibility()
@@ -83,7 +79,7 @@ export default function ContentPage ({ defaultPageId }) {
   // DT-902: Loading text follows the global palette.
   if (loading) {
     return (
-      <main id="main-content" className="content-page" data-theme={theme} style={{ padding: '60px 20px', textAlign: 'center' }}>
+      <main id="main-content" className="content-page" theme={theme} data-theme={theme} style={{ padding: '60px 20px', textAlign: 'center' }}>
         <p style={{ color: 'var(--color-muted-text)', fontSize: '1.1rem' }}>Loading content...</p>
       </main>
     )
@@ -98,24 +94,21 @@ export default function ContentPage ({ defaultPageId }) {
     .map((secId) => SectionStorageService.getSectionById(secId))
     .filter(Boolean)
 
-  // DT-731: Reuse normalized page IDs so /home-health selects the Home Health adapter.
-  const PageSections = normalizedPageId === 'homeHealth'
-    ? HomeHealthSections
-    : (normalizedPageId === 'hospice' ? HospiceSections : (normalizedPageId === 'landing' ? WelcomeSections : null))
+  const hasHeroSection = resolvedSections.some(sec => HERO_LAYOUTS.has(sec.layout))
 
   return (
-    <main id="main-content" className={`content-page${PageSections ? ' content-page--standard' : ''}`} data-theme={theme}>
-      {/* DT-622 Sprint 8 - Preston Ball: Render page header if not landing */}
-      {!PageSections && normalizedPageId !== 'landing' && (
+    <main id="main-content" className="content-page content-page--standard" theme={theme} data-theme={theme}>
+      {/* DT-622 Sprint 8 - Preston Ball: Render page header if not landing and no hero section provides the page heading */}
+      {normalizedPageId !== 'landing' && !hasHeroSection && (
         <div className="content-page-hero">
           <h1>{currentPage.content?.title || currentPage.id}</h1>
         </div>
       )}
 
-      {/* DT-918 Sprint 9 - PBall: Render configured modular sections with active accessibility theme */}
+      {/* DT-918 Sprint 9 - PBall: Render all configured modular sections directly through DynamicSectionRenderer */}
       <div className="content-page-sections">
         {resolvedSections.length > 0 ? (
-          PageSections ? <PageSections sections={resolvedSections} theme={theme} /> : resolvedSections.map((sec) => (
+          resolvedSections.map((sec) => (
             <DynamicSectionRenderer
               key={sec.id}
               config={sec}

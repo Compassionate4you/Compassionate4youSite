@@ -4,7 +4,8 @@
   display: grid;
   gap: clamp(20px, 3vw, 40px);
   padding: clamp(16px, 2vw, 32px);
-
+  background: var(--section-bg, transparent);
+  color: var(--section-text, var(--color-white-text));
 }
 
 .c4-welcome-banner,
@@ -16,9 +17,9 @@
   min-width: 0;
   padding: 30px clamp(20px, 5vw, 100px) clamp(28px, 2.5vw, 48px);
   border-radius: clamp(20px, 2vw, 32px);
-  /* DT-902: Show the surrounding section surface instead of a separate banner panel. */
-  background: transparent;
-  color: var(--color-white-text);
+  /* DT-902: Show the surrounding section surface instead of a separate banner panel unless overridden. */
+  background: var(--card-bg, var(--section-bg, transparent));
+  color: var(--card-text, var(--section-text, var(--color-white-text)));
   font-family: var(--font-body);
   text-align: center;
 }
@@ -39,7 +40,7 @@
   flex: 1;
   min-width: 0;
   height: 2px;
-  background: var(--color-sage);
+  background: var(--section-accent, var(--color-sage));
   opacity: 0.7;
 }
 
@@ -50,8 +51,9 @@
   width: clamp(72px, 6vw, 116px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--color-light-green);
-  color: var(--color-light-green-text);
+  background: var(--section-accent, var(--color-light-green));
+  color: var(--section-accent-text, var(--color-light-green-text));
+  border: 1px solid color-mix(in srgb, var(--section-accent-text, currentColor) 22%, transparent);
 }
 
 .c4-welcome-banner__badge svg {
@@ -62,6 +64,7 @@
 .c4-welcome-banner .c4-welcome-banner__title {
   margin: 4px 0 20px;
   padding: 0;
+  color: var(--card-header, var(--section-header, inherit));
   font-family: var(--font-heading);
   font-size: clamp(2rem, 3.6vw, 4.5rem);
   font-weight: 700;
@@ -73,6 +76,7 @@
 .c4-welcome-banner__description {
   max-width: 80ch;
   margin: 0 auto;
+  color: var(--card-text, var(--section-text, inherit));
   font-size: clamp(1rem, 1.65vw, 2rem);
   line-height: 1.5;
   white-space: pre-line;

@@ -31,7 +31,7 @@ export default function HeaderTextSection ({
   const resolvedIcon = customIcon || getWelcomeBannerIcon(config?.slug, config?.id)
 
   return (
-    <div className='c4-welcome-banners'>
+    <div className='c4-welcome-banners' style={style}>
       <BannerSection
         title={header}
         description={text}

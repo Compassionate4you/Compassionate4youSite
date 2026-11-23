@@ -4,6 +4,7 @@
 
 import '../../../styles/components/modular/cards/ImageCard.css'
 import CardBody from './CardBase'
+import resolveImageUrl from '../resolveImageUrl'
 // DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
 import { typographyStyle } from '../typographyStyle'
 
@@ -22,13 +23,14 @@ export default function ImageCard ({
 
   const headerStyle = typographyStyle(headerTypo)
   const textStyle = typographyStyle(textTypo)
+  const resolvedUrl = resolveImageUrl(imageUrl)
 
   return (
     <article className={`card--image ${alignClass}`} style={style}>
-      {imageUrl && (
+      {resolvedUrl && (
         <img
           className="card__image"
-          src={imageUrl}
+          src={resolvedUrl}
           alt={imageAlt || header || ''}
           loading="lazy"
         />

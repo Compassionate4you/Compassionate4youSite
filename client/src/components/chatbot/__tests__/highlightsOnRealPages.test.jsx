@@ -13,8 +13,7 @@ import { act, cleanup, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
-import HomeHealthSections from '../../modular/HomeHealthSections'
-import HospiceSections from '../../modular/HospiceSections'
+import DynamicSectionRenderer from '../../modular/DynamicSectionRenderer'
 import { highlights } from '../data/highlights'
 import { phrasesFor } from '../hooks/usePageHighlight'
 import { findPhraseRanges } from '../engine/pageHighlighter'
@@ -25,12 +24,7 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 const localesDir = path.resolve(here, '../../../locales')
 const load = (lng) => JSON.parse(fs.readFileSync(path.join(localesDir, lng, 'translation.json'), 'utf8'))
 
-// The section ids the database seeds for these pages.
-const HOME_HEALTH = ['sec-hh-hero', 'sec-hh-services', 'sec-hh-advantages', 'sec-hh-specialties', 'sec-hh-cta']
-const HOSPICE = [
-  'sec-hospice-hero', 'sec-hospice-understanding', 'sec-hospice-benefits',
-  'sec-hospice-comprehensive', 'sec-hospice-above-beyond', 'sec-hospice-process', 'sec-hospice-contact'
-]
+const SERVICE_KEYS = ['doctors', 'pt', 'ot', 'nurses', 'st', 'chha', 'msw', 'multilingual']
 
 const PAGE_FOR = {
   homeHealthServices: 'homeHealth',
@@ -53,13 +47,52 @@ beforeAll(async () => {
   })
 })
 
+function buildReferenceItems (t, base, count) {
+  return Array.from({ length: count }, (_, index) => {
+    const key = `card${index + 1}`
+    const description = t(`${base}.cards.${key}.description`, { returnObjects: true })
+    const clean = text => text.replace(/^\s*-\s*/, '')
+    return {
+      id: key,
+      title: t(`${base}.cards.${key}.title`),
+      description: typeof description === 'string' ? description : clean(description.top),
+      listItems: typeof description === 'object'
+        ? Object.entries(description).filter(([name]) => name.startsWith('list')).map(([, text]) => clean(text))
+        : undefined
+    }
+  })
+}
+
+function buildSections (page, t) {
+  if (page === 'homeHealth') {
+    return [
+      { id: 'sec-hh-hero', layout: 'HERO_SECTION', content: { header: t('homeHealth.title'), text: t('homeHealth.subtitle'), heroVariant: 'split', heroTone: 'teal' } },
+      { id: 'sec-hh-services', layout: 'HEADER_CARDS', content: { header: t('homeHealth.servicesHeading'), items: SERVICE_KEYS.map(key => ({ id: key, title: t(`homeHealth.services.${key}`) })) } },
+      { id: 'sec-hh-advantages', layout: 'HEADER_CARDS', content: { header: t('homeHealthPage.advantagesTitle'), items: t('homeHealthPage.advantages', { returnObjects: true }).map((description, idx) => ({ id: `adv-${idx}`, description })) } },
+      { id: 'sec-hh-specialties', layout: 'HEADER_CARDS', content: { header: t('homeHealthPage.specialtyTitle'), items: t('homeHealthPage.specialties', { returnObjects: true }).map((title, idx) => ({ id: `spec-${idx}`, title })) } },
+      { id: 'sec-hh-cta', layout: 'PAGE_CTA', content: { header: t('homeHealthPage.ctaTitle'), text: t('homeHealthPage.ctaDescription') } }
+    ]
+  }
+  return [
+    { id: 'sec-hospice-hero', layout: 'HERO_SECTION', content: { header: t('hospice.blurb.title'), text: t('hospice.blurb.description'), heroVariant: 'split', heroTone: 'forest' } },
+    { id: 'sec-hospice-understanding', layout: 'HEADER_STACK', content: { header: t('hospice.understanding.title'), items: buildReferenceItems(t, 'hospice.understanding', 5) } },
+    { id: 'sec-hospice-benefits', layout: 'HEADER_CARDS', content: { header: t('hospice.careAndBenefits.title'), items: buildReferenceItems(t, 'hospice.careAndBenefits', 6) } },
+    { id: 'sec-hospice-comprehensive', layout: 'HEADER_CARDS', content: { header: t('hospice.comprehensiveServices.title'), items: buildReferenceItems(t, 'hospice.comprehensiveServices', 6) } },
+    { id: 'sec-hospice-above-beyond', layout: 'HEADER_STACK', content: { header: t('hospice.aboveAndBeyond.title'), text: t('hospice.aboveAndBeyond.description'), items: Array.from({ length: 7 }, (_, idx) => ({ id: `ab-${idx}`, title: t(`hospice.aboveAndBeyond.cards.card${idx + 1}`) })) } },
+    { id: 'sec-hospice-process', layout: 'TIMELINE_SECTION', content: { header: t('hospice.hospiceProcess.title'), items: buildReferenceItems(t, 'hospice.hospiceProcess', 5) } },
+    { id: 'sec-hospice-contact', layout: 'PAGE_CTA', content: { header: t('hospice.hospiceContact.title'), text: t('hospice.hospiceContact.description') } }
+  ]
+}
+
 function renderPage (page) {
-  const Sections = page === 'homeHealth' ? HomeHealthSections : HospiceSections
-  const ids = page === 'homeHealth' ? HOME_HEALTH : HOSPICE
+  const t = i18n.getFixedT(i18n.language)
+  const sections = buildSections(page, t)
   return render(
     <I18nextProvider i18n={i18n}>
       <MemoryRouter>
-        <Sections sections={ids.map((id) => ({ id, layout: 'X', content: {} }))} />
+        {sections.map((section) => (
+          <DynamicSectionRenderer key={section.id} config={section} />
+        ))}
       </MemoryRouter>
     </I18nextProvider>
   )

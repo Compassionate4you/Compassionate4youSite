@@ -4,14 +4,19 @@
 
 import React from 'react'
 import CustomSelect from '../CustomSelect'
+import TypographyControls from '../TypographyControls'
 
 export default function TimelineSectionLayout ({
   label = '',
   onLabelChange,
   header,
   onHeaderChange,
+  headerTypography,
+  onHeaderTypographyChange,
   text,
   onTextChange,
+  textTypography,
+  onTextTypographyChange,
   selectedCardIds = [],
   onSelectedCardIdsChange,
   cardToAdd = '',
@@ -80,6 +85,13 @@ export default function TimelineSectionLayout ({
             placeholder="e.g. Our 5-Step Hospice Care Process"
             style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
           />
+          {onHeaderTypographyChange && (
+            <TypographyControls
+              label="Header Typography & Alignment"
+              value={headerTypography}
+              onChange={onHeaderTypographyChange}
+            />
+          )}
         </div>
       </div>
 
@@ -92,6 +104,13 @@ export default function TimelineSectionLayout ({
           placeholder="Optional introductory text below the heading..."
           style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
         />
+        {onTextTypographyChange && (
+          <TypographyControls
+            label="Subtitle Typography & Alignment"
+            value={textTypography}
+            onChange={onTextTypographyChange}
+          />
+        )}
       </div>
 
       {/* DT-875 Sprint 9 - PBall: Assign cards as timeline steps or edit inline steps */}

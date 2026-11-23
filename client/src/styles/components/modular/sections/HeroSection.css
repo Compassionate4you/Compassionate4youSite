@@ -16,8 +16,8 @@
   align-items: center;
   min-height: 520px;
   padding: 64px clamp(24px, 4vw, 64px);
-  background: var(--color-teal);
-  color: var(--color-teal-text);
+  background: var(--section-bg, var(--color-teal));
+  color: var(--section-text, var(--color-primary-text));
 }
 
 .c4-hero__image {
@@ -40,7 +40,7 @@
   inset: 0;
   z-index: -1;
   content: '';
-  background: color-mix(in srgb, var(--color-teal) 90%, transparent);
+  background: color-mix(in srgb, var(--section-bg, var(--color-teal)) 85%, transparent);
 }
 
 .c4-hero__content { min-width: 0; width: min(100%, 700px); }
@@ -52,7 +52,7 @@
   font-size: clamp(2.25rem, 5vw, 4.5rem);
   font-weight: 400;
   line-height: 1.1;
-  color: inherit;
+  color: var(--section-header, inherit);
   overflow-wrap: anywhere;
 }
 
@@ -60,7 +60,7 @@
   margin: 24px 0 0;
   font-size: clamp(1rem, 1.7vw, 1.5rem);
   line-height: 1.7;
-  color: inherit;
+  color: var(--section-text, inherit);
   white-space: pre-line;
 }
 
@@ -72,25 +72,26 @@
   width: 70px;
   height: 70px;
   border-radius: 16px;
-  background: var(--color-white);
-  color: var(--color-white-text);
+  background: var(--section-accent, var(--color-white));
+  color: var(--section-accent-text, var(--color-white-text));
 }
 .c4-hero__icon svg { width: 40px; height: 40px; }
-.c4-hero__icon--heart { background: var(--color-gray); color: var(--color-light-green-text); }
-.c4-hero__icon--heart svg { fill: currentColor; stroke: var(--color-light-green-text); stroke-width: 1; }
+.c4-hero__icon--heart { background: var(--section-accent, var(--color-gray)); color: var(--section-accent-text, var(--color-light-green-text)); }
+.c4-hero__icon--heart svg { fill: currentColor; stroke: currentColor; stroke-width: 1; }
 
 .c4-hero__cta {
   display: inline-block;
   margin-top: 12px;
   padding: 16px 36px;
   border-radius: 12px;
-  background: var(--color-white);
-  color: var(--color-white-text);
+  background: var(--section-accent, var(--color-white));
+  color: var(--section-accent-text, var(--color-white-text));
   text-decoration: none;
+  font-weight: 600;
   line-height: 1.5;
   box-shadow: 0 4px 10px color-mix(in srgb, var(--color-black) 10%, transparent);
 }
-.c4-hero__cta:hover { background: var(--color-light-gray); }
+.c4-hero__cta:hover { opacity: 0.9; }
 .c4-hero :is(a, select):focus-visible { outline: 3px solid currentColor; outline-offset: 5px; }
 
 /* DT-902: Keep forest background geometry from constraining mirrored split heroes. */
@@ -98,10 +99,10 @@
   min-height: 600px;
   padding: 50px 10%;
   align-items: flex-start;
-  background: var(--color-green);
-  color: var(--color-green-text);
+  background: var(--section-bg, var(--color-green));
+  color: var(--section-text, var(--color-primary-text));
 }
-.c4-hero--background.c4-hero--forest.c4-hero--image::before { background: color-mix(in srgb, var(--color-green) 90%, transparent); }
+.c4-hero--background.c4-hero--forest.c4-hero--image::before { background: color-mix(in srgb, var(--section-bg, var(--color-green)) 85%, transparent); }
 .c4-hero--background.c4-hero--forest .c4-hero__content { width: min(45%, 600px); }
 .c4-hero--background.c4-hero--forest .c4-hero__heading { justify-content: flex-end; }
 .c4-hero--background.c4-hero--forest .c4-hero__title { font-size: clamp(2.25rem, 4vw, 3.5rem); }
@@ -114,8 +115,8 @@
   display: grid;
   grid-template-columns: minmax(0, 54fr) minmax(0, 46fr);
   min-height: 42.1053vw;
-  background: var(--color-light-green);
-  color: var(--color-light-green-text);
+  background: var(--section-bg, var(--color-light-green));
+  color: var(--section-text, var(--color-light-green-text));
 }
 .c4-hero--split .c4-hero__content {
   display: flex;
@@ -132,19 +133,18 @@
 .c4-hero--split.c4-hero--right .c4-hero__content { grid-column: 2; }
 .c4-hero--split.c4-hero--right .c4-hero__image { left: 0; right: auto; border-radius: 0 35% 10% 0; }
 /* DT-902: Service heroes share Welcome's split geometry using the global page palettes. */
-.c4-home-health-hero.c4-hero--split { background: var(--color-gray); color: var(--color-gray-text); }
-.c4-hospice-hero.c4-hero--split { background: var(--color-sage); color: var(--color-sage-text); }
+.c4-home-health-hero.c4-hero--split { background: var(--section-bg, var(--color-gray)); color: var(--section-text, #ffffff); }
+.c4-hospice-hero.c4-hero--split { background: var(--section-bg, var(--color-sage)); color: var(--section-text, #ffffff); }
 /* DT-902: Match both service references with white copy/icons and a sage house badge. */
-.c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) { color: #ffffff; }
-.c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__icon { color: #ffffff; }
-.c4-home-health-hero.c4-hero--split .c4-hero__icon { background: var(--color-sage); }
+.c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__icon { color: var(--section-accent-text, #ffffff); }
+.c4-home-health-hero.c4-hero--split .c4-hero__icon { background: var(--section-accent, var(--color-sage)); }
 .c4-hospice-hero.c4-hero--split .c4-hero__icon--heart svg { stroke: currentColor; }
 /* DT-902: Separate copy from the heading and leave a minimum gap before the bottom CTA. */
 .c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__description { padding-top: 20px; padding-bottom: 24px; }
 .c4-hero--split:is(.c4-home-health-hero, .c4-hospice-hero) .c4-hero__cta { margin-top: auto; }
 .c4-hero--split .c4-hero__cta { align-self: flex-start; }
 .c4-hero__language { margin-top: auto; margin-bottom: 60px; padding-top: 60px; }
-.c4-hero__language label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.c4-hero__language label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--section-text, inherit); }
 .c4-hero__language svg { width: 18px; height: 18px; }
 .c4-hero__language select { max-width: 100%; width: 210px; padding: 12px 16px; border: 1px solid var(--color-input-border); border-radius: 8px; background: var(--color-white); color: var(--color-white-text); font: inherit; }
 

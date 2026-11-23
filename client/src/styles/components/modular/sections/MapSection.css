@@ -55,7 +55,7 @@ Modular Google Maps section stylesheet
   gap: 0.6rem;
   padding: 0.85rem 1.75rem;
   background-color: var(--section-accent, var(--color-primary));
-  color: var(--color-primary-text);
+  color: var(--section-accent-text, var(--color-primary-text));
   font-weight: 600;
   font-size: 1rem;
   border-radius: 10px;

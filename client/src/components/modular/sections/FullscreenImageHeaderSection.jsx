@@ -4,6 +4,9 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { pickText } from '../cards/CardBase'
+import resolveImageUrl from '../resolveImageUrl'
 import '../../../styles/components/modular/sections/FullscreenImageHeaderSection.css'
 
 export default function FullscreenImageHeaderSection ({
@@ -11,17 +14,19 @@ export default function FullscreenImageHeaderSection ({
   content = {},
   style = {}
 }) {
+  const { i18n } = useTranslation()
+  const lang = i18n.language || 'en'
   const data = content || config?.content || {}
-  const header = data.header || data.title || config?.title || ''
-  const text = data.text || data.subtitle || data.description || ''
-  const imageUrl = data.imageUrl || '/assets/images/CareImage1.jpeg'
-  const buttonText = data.buttonText || ''
+  const header = pickText(data.header || data.title || config?.title || '', lang)
+  const text = pickText(data.text || data.subtitle || data.description || '', lang)
+  const imageUrl = resolveImageUrl(data.imageUrl || '/assets/images/CareImage1.jpeg')
+  const buttonText = pickText(data.buttonText || '', lang)
   const buttonLink = data.buttonLink || '/schedule'
   const icon = data.icon || ''
 
   const backgroundStyle = {
     ...style,
-    backgroundImage: `url(${imageUrl})`
+    ...(imageUrl ? { backgroundImage: `url(${imageUrl})` } : {})
   }
 
   return (

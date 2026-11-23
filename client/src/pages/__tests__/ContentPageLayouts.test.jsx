@@ -17,29 +17,24 @@ vi.mock('../../services/sectionStorageService', () => ({
   SectionStorageService: { getSectionById: id => ({ id }), loadFromDatabase: async () => [] }
 }))
 vi.mock('../../services/cardStorageService', () => ({ CardStorageService: { loadFromDatabase: async () => [] } }))
-vi.mock('../../services/colorConfigService', () => ({ ColorConfigService: { loadFromDatabase: async () => [] } }))
-vi.mock('../../components/modular/HomeHealthSections', () => ({ default: ({ theme }) => <div data-theme={theme}>Home Health adapter</div> }))
-vi.mock('../../components/modular/HospiceSections', () => ({ default: ({ theme }) => <div data-theme={theme}>Hospice adapter</div> }))
-// DT-902: Welcome now has its own reference-content adapter.
-vi.mock('../../components/modular/WelcomeSections', () => ({ default: ({ theme }) => <div data-theme={theme}>Welcome adapter</div> }))
-vi.mock('../../components/modular/DynamicSectionRenderer', () => ({ default: ({ theme }) => <div data-theme={theme}>Default renderer</div> }))
+vi.mock('../../components/modular/DynamicSectionRenderer', () => ({ default: ({ theme }) => <div data-theme={theme}>Dynamic renderer</div> }))
 
-// DT-731: Confirm page routing selects Home Health for both aliases and preserves other dispatch.
-describe('ContentPage layout adapters', () => {
+// Confirm all page routes dispatch sections directly through DynamicSectionRenderer with active theme.
+describe('ContentPage dynamic section routing', () => {
   it.each([
-    ['home-health', 'Home Health adapter'],
-    ['homeHealth', 'Home Health adapter'],
-    ['hospice', 'Hospice adapter'],
-    ['landing', 'Welcome adapter'],
-    ['welcome', 'Welcome adapter'],
-    ['home', 'Welcome adapter'],
-    ['custom', 'Default renderer']
-  ])('routes %s to %s', async (pageId, expected) => {
+    'home-health',
+    'homeHealth',
+    'hospice',
+    'landing',
+    'welcome',
+    'home',
+    'custom'
+  ])('routes %s through DynamicSectionRenderer', async (pageId) => {
     render(
       <MemoryRouter initialEntries={[`/${pageId}`]}>
         <Routes><Route path='/:pageId' element={<ContentPage />} /></Routes>
       </MemoryRouter>
     )
-    expect(await screen.findByText(expected)).toHaveAttribute('data-theme', 'dark')
+    expect(await screen.findByText('Dynamic renderer')).toHaveAttribute('data-theme', 'dark')
   })
 })

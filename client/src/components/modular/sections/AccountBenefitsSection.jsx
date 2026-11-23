@@ -5,6 +5,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check } from 'lucide-react'
+import { pickText } from '../cards/CardBase'
 import '../../../styles/components/modular/sections/AccountBenefitsSection.css'
 
 export default function AccountBenefitsSection ({
@@ -12,14 +13,20 @@ export default function AccountBenefitsSection ({
   content = {},
   style = {}
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language || 'en'
   const data = content || config?.content || {}
 
-  const title = data.title || data.header || config?.title || t('accountBenefits.title')
+  const title = pickText(data.title || data.header || config?.title || '', lang) || t('accountBenefits.title')
   const rawItems = Array.isArray(data.items) && data.items.length > 0
     ? data.items
     : t('accountBenefits.items', { returnObjects: true })
-  const benefits = Array.isArray(rawItems) ? rawItems : []
+  const benefits = Array.isArray(rawItems)
+    ? rawItems.map((item) => ({
+      heading: pickText(item?.heading || item?.title || '', lang),
+      description: pickText(item?.description || '', lang)
+    }))
+    : []
 
   return (
     <section className="account-benefits-section" id="account-benefits" style={style}>
