@@ -12,79 +12,13 @@ const DEFAULT_CARD_COLORS = {
   textColor: { light: '#334155', dark: '#cbd5e1' }
 }
 
-const INITIAL_CARDS = [
-  {
-    id: 'card-nurse',
-    layout: 'HEADER_TEXT_BOX',
-    colors: {
-      backgroundColor: { light: '#262626', dark: '#ffffff' },
-      headerColor: { light: '#DBE4C3', dark: '#2d3748' },
-      textColor: { light: '#595959', dark: '#f1f5f9' }
-    },
-    content: {
-      header: 'Skilled Nursing Care',
-      text: 'Professional registered nurses providing comprehensive in-home medical care.',
-      imageUrl: '',
-      facing: 'left',
-      iconName: 'Heart',
-      colors: {
-        backgroundColor: { light: '#262626', dark: '#ffffff' },
-        headerColor: { light: '#DBE4C3', dark: '#2d3748' },
-        textColor: { light: '#595959', dark: '#f1f5f9' }
-      }
-    }
-  },
-  {
-    id: 'card-specialty',
-    layout: 'FULL_WIDTH_SPLIT',
-    colors: {
-      backgroundColor: { light: '#9DA191', dark: '#1e293b' },
-      headerColor: { light: '#262626', dark: '#ffffff' },
-      textColor: { light: '#262626', dark: '#ffffff' }
-    },
-    content: {
-      header: 'Specialized Recovery',
-      text: 'Tailored recovery programs designed for post-operative comfort and rehabilitation.',
-      imageUrl: '/assets/images/CareImage1.jpeg',
-      facing: 'right',
-      iconName: 'Activity',
-      colors: {
-        backgroundColor: { light: '#9DA191', dark: '#1e293b' },
-        headerColor: { light: '#262626', dark: '#ffffff' },
-        textColor: { light: '#262626', dark: '#ffffff' }
-      }
-    }
-  },
-  {
-    id: 'card-badge',
-    layout: 'HEADER_VECTOR_GRAPHIC',
-    colors: {
-      backgroundColor: { light: '#DBE4C3', dark: '#2d3748' },
-      headerColor: { light: '#0f3460', dark: '#60a5fa' },
-      textColor: { light: '#262626', dark: '#ffffff' }
-    },
-    content: {
-      header: 'Trusted Experience',
-      text: 'Serving our community with dedication and professional excellence since 2021.',
-      imageUrl: '',
-      facing: 'left',
-      iconName: 'ShieldCheck',
-      colors: {
-        backgroundColor: { light: '#DBE4C3', dark: '#2d3748' },
-        headerColor: { light: '#0f3460', dark: '#60a5fa' },
-        textColor: { light: '#262626', dark: '#ffffff' }
-      }
-    }
-  }
-]
-
 export const CardStorageService = {
   data: (() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
-      return saved ? JSON.parse(saved) : INITIAL_CARDS
+      return saved ? JSON.parse(saved) : []
     } catch {
-      return INITIAL_CARDS
+      return []
     }
   })(),
 
@@ -98,7 +32,7 @@ export const CardStorageService = {
       const res = await fetch(`${API_BASE_URL}/admin/content/cards`)
       if (res.ok) {
         const remoteCards = await res.json()
-        if (Array.isArray(remoteCards) && remoteCards.length > 0) {
+        if (Array.isArray(remoteCards)) {
           this.data = remoteCards
           this._persist()
         }

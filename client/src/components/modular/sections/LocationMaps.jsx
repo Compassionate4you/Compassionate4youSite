@@ -29,7 +29,7 @@ export function mapLinksFor (address) {
 // fallback: the map block exactly as the page showed it before DT-909. It is
 // shown while the locations load and if they cannot be loaded, so the
 // section is never blank and the page does not jump.
-export default function LocationMaps ({ fallback, directionsText, mapTitle }) {
+export default function LocationMaps ({ fallback, directionsText, mapTitle, hideHeading = true, style }) {
   // 'loading' | 'ready' | 'failed'
   const [status, setStatus] = useState('loading')
   const [locations, setLocations] = useState([])
@@ -56,8 +56,9 @@ export default function LocationMaps ({ fallback, directionsText, mapTitle }) {
     return (
       <MapSection
         key={location.id}
+        style={style}
         content={{
-          hideHeading: true,
+          hideHeading,
           header: location.name || mapTitle,
           mapAddress: address,
           phone: location.phone,

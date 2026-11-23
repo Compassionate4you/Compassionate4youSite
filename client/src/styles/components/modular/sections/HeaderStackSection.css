@@ -1,7 +1,8 @@
 /* DT-902: Extracted modular HeaderStackSection styles. */
 /* Header / Stack: all content is visible, with no disclosure interaction. */
 .c4-header-stack {
-  background: var(--color-white);
+  background: var(--section-bg, var(--color-white));
+  color: var(--section-text, var(--color-white-text));
 }
 
 .c4-header-stack__grid {
@@ -16,15 +17,18 @@
 
 .c4-header-stack__card {
   min-width: 0;
-  border: 1px solid var(--color-sage);
+  border: 1px solid var(--section-accent, var(--color-sage));
   border-radius: var(--radius-lg);
+  background: var(--card-bg, color-mix(in srgb, var(--section-bg, var(--color-white)) 96%, var(--section-header, var(--color-black))));
+  color: var(--card-text, var(--section-text, var(--color-white-text)));
   overflow: hidden;
 }
 
 .c4-header-stack__card-title {
   margin: 0;
   padding: 20px 28px;
-  background: color-mix(in srgb, var(--color-light-green) 40%, var(--color-white));
+  background: color-mix(in srgb, var(--section-accent, var(--color-light-green)) 20%, var(--card-bg, var(--section-bg, var(--color-white))));
+  color: var(--card-header, var(--section-header, inherit));
   font-family: var(--font-heading);
   font-size: clamp(1.5rem, 2.2vw, 2rem);
   font-weight: 600;

@@ -9,8 +9,8 @@ Modular card grid section stylesheet supporting full-width section background, d
   max-width: none;
   margin: 0;
   padding: 4rem 1.5rem;
-  background-color: var(--section-bg, #ffffff);
-  color: var(--section-text, #1e293b);
+  background-color: var(--section-bg, var(--color-white));
+  color: var(--section-text, var(--color-white-text));
   box-sizing: border-box;
   overflow-x: hidden;
   transition: background-color 0.2s ease, color 0.2s ease;

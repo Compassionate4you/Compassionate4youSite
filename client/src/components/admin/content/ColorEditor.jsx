@@ -118,6 +118,38 @@ function toSafeHex (val, fallback = '#ffffff') {
   return fallback
 }
 
+function hexLuminance (colorValue) {
+  if (!colorValue || typeof colorValue !== 'string') return null
+  const trimmed = colorValue.trim()
+  if (!trimmed.startsWith('#')) return null
+  const safeHex = toSafeHex(trimmed, '')
+  if (!safeHex) return null
+  const r = parseInt(safeHex.slice(1, 3), 16) / 255
+  const g = parseInt(safeHex.slice(3, 5), 16) / 255
+  const b = parseInt(safeHex.slice(5, 7), 16) / 255
+  const toLinear = (c) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4))
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b)
+}
+
+export function getContrastTextColor (colorValue) {
+  const luminance = hexLuminance(colorValue)
+  if (luminance === null) return 'var(--color-primary-text)'
+  return luminance > 0.35 ? '#0f172a' : '#ffffff'
+}
+
+export function ensureReadableTextColor (fgColor, bgColor) {
+  const fgLum = hexLuminance(fgColor)
+  const bgLum = hexLuminance(bgColor)
+  if (fgLum === null || bgLum === null) return fgColor
+  const lighter = Math.max(fgLum, bgLum)
+  const darker = Math.min(fgLum, bgLum)
+  const ratio = (lighter + 0.05) / (darker + 0.05)
+  if (ratio < 1.8) {
+    return bgLum > 0.35 ? '#0f172a' : '#f8fafc'
+  }
+  return fgColor
+}
+
 // DT-920 Sprint 9 - PBall: Individual dual-mode (Light/Dark) color picker field
 export function ColorPickerField ({
   label,
@@ -208,6 +240,7 @@ export function ColorPickerField ({
                 borderRadius: '6px',
                 border: '1px solid #cbd5e1',
                 background: '#ffffff',
+                color: '#0f172a',
                 fontSize: '13px',
                 fontFamily: 'monospace'
               }}
@@ -248,6 +281,7 @@ export function ColorPickerField ({
                 borderRadius: '6px',
                 border: '1px solid #cbd5e1',
                 background: '#ffffff',
+                color: '#0f172a',
                 fontSize: '13px',
                 fontFamily: 'monospace'
               }}

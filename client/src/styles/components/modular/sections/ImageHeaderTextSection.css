@@ -27,6 +27,7 @@ Modular image header text section stylesheet supporting left/right image positio
 
 .modular-image-header-text-section__image-col {
   flex: 1;
+  min-width: 0;
 }
 
 .modular-image-header-text-section__img {
@@ -39,6 +40,7 @@ Modular image header text section stylesheet supporting left/right image positio
 
 .modular-image-header-text-section__content-col {
   flex: 1.2;
+  min-width: 0;
 }
 
 .modular-image-header-text-section__title {
@@ -63,7 +65,7 @@ Modular image header text section stylesheet supporting left/right image positio
   gap: 0.5rem;
   padding: 0.85rem 1.75rem;
   background-color: var(--section-accent, var(--color-primary));
-  color: var(--color-primary-text);
+  color: var(--section-accent-text, var(--color-primary-text));
   font-weight: 600;
   font-size: 1rem;
   border-radius: 10px;

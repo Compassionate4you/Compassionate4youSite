@@ -16,7 +16,8 @@ const LANGUAGES = [
 export default function HeroSection ({
   title, description, imageUrl, imageAlt = '', variant = 'background',
   contentPosition = 'left', tone = 'teal', iconName,
-  buttonText, buttonLink = '/schedule', showOverlay = true, showLanguageSelector = false, className = ''
+  buttonText, buttonLink = '/schedule', showOverlay = true, showLanguageSelector = false, className = '',
+  style = {}
 }) {
   const { t, i18n } = useTranslation()
   const titleId = useId()
@@ -32,6 +33,7 @@ export default function HeroSection ({
     <section
       className={`c4-hero c4-hero--${split ? 'split' : 'background'} c4-hero--${contentPosition === 'right' ? 'right' : 'left'} c4-hero--${tone === 'forest' ? 'forest' : 'teal'}${hasImage ? ' c4-hero--image' : ''}${!showOverlay ? ' c4-hero--no-overlay' : ''}${className ? ` ${className}` : ''}`}
       aria-labelledby={title ? titleId : undefined}
+      style={style}
     >
       {hasImage && (
         <img className='c4-hero__image' src={resolvedImage} alt={split ? imageAlt : ''} fetchPriority='high' onError={() => setFailedImage(resolvedImage)} />

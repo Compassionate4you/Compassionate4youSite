@@ -602,7 +602,11 @@ export default function PageManager ({ onNotification, setIsDirty, registerSaveH
               <p style={{ fontSize: '0.85rem' }}>Add modular sections using the form on the left to see live content rendering.</p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', overflowX: 'hidden' }}>
+            <div
+              theme={previewTheme}
+              data-theme={previewTheme}
+              style={{ display: 'flex', flexDirection: 'column', width: '100%', overflowX: 'hidden' }}
+            >
               {activePreviewSectionIds.map((secId) => {
                 const sec = SectionStorageService.getSectionById(secId)
                 if (!sec) {

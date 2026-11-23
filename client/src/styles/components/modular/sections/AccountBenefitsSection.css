@@ -43,7 +43,7 @@ Modular Account Benefits section layout stylesheet
   align-items: flex-start;
   gap: 1.25rem;
   padding: 1.25rem 1.5rem;
-  background: var(--card-bg, var(--color-white));
+  background: var(--card-bg, color-mix(in srgb, var(--section-bg, var(--color-white)) 94%, var(--section-header, var(--color-black))));
   color: var(--section-text, var(--color-white-text));
   border: 1px solid var(--color-divider);
   border-radius: 12px;
@@ -59,7 +59,7 @@ Modular Account Benefits section layout stylesheet
   justify-content: center;
   border-radius: 50%;
   background: var(--section-accent, var(--color-primary));
-  color: var(--color-primary-text);
+  color: var(--section-accent-text, var(--color-primary-text));
 }
 
 .account-benefits-section__text {

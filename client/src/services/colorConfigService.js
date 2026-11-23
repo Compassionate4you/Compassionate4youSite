@@ -6,14 +6,6 @@ import { API_BASE_URL } from './api'
 
 const STORAGE_KEY = 'cms_color_config_store'
 
-const INITIAL_COLORS = [
-  { id: 'color-charcoal', lightModeColor: '#262626', darkModeColor: '#ffffff' },
-  { id: 'color-sage', lightModeColor: '#9DA191', darkModeColor: '#1e293b' },
-  { id: 'color-light-green', lightModeColor: '#DBE4C3', darkModeColor: '#2d3748' },
-  { id: 'color-navy', lightModeColor: '#0f3460', darkModeColor: '#60a5fa' },
-  { id: 'color-slate', lightModeColor: '#595959', darkModeColor: '#f1f5f9' }
-]
-
 // DT-510 Sprint 7 - PBall: Utility to calculate relative luminance of a hex color (0 to 1)
 export function getLuminance (hex) {
   if (!hex || typeof hex !== 'string') return 0
@@ -76,9 +68,9 @@ export const ColorConfigService = {
   data: (() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
-      return saved ? JSON.parse(saved) : INITIAL_COLORS
+      return saved ? JSON.parse(saved) : []
     } catch {
-      return INITIAL_COLORS
+      return []
     }
   })(),
 
@@ -92,7 +84,7 @@ export const ColorConfigService = {
       const res = await fetch(`${API_BASE_URL}/admin/content/colors`)
       if (res.ok) {
         const remoteColors = await res.json()
-        if (Array.isArray(remoteColors) && remoteColors.length > 0) {
+        if (Array.isArray(remoteColors)) {
           this.data = remoteColors
           this._persist()
         }

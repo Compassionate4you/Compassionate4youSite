@@ -4,6 +4,9 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { pickText } from '../cards/CardBase'
+import resolveImageUrl from '../resolveImageUrl'
 import '../../../styles/components/modular/sections/ImageHeaderTextSection.css'
 // DT-893: shared formatting rules (untouched defaults ignored, bold can be turned off)
 import { typographyStyle } from '../typographyStyle'
@@ -13,12 +16,14 @@ export default function ImageHeaderTextSection ({
   content = {},
   style = {}
 }) {
+  const { i18n } = useTranslation()
+  const lang = i18n.language || 'en'
   const data = content || config?.content || {}
-  const header = data.header || data.title || config?.title || ''
-  const text = data.text || data.paragraph || ''
-  const imageUrl = data.imageUrl || ''
-  const imageAlt = data.imageAlt || header || 'Section image'
-  const buttonText = data.buttonText || ''
+  const header = pickText(data.header || data.title || config?.title || '', lang)
+  const text = pickText(data.text || data.paragraph || '', lang)
+  const imageUrl = resolveImageUrl(data.imageUrl || '')
+  const imageAlt = pickText(data.imageAlt || '', lang) || header || 'Section image'
+  const buttonText = pickText(data.buttonText || '', lang)
   const buttonLink = data.buttonLink || ''
   // DT-625 Sprint 8 - Preston Ball: Support image on left or right
   const imagePosition = data.imagePosition || 'left'

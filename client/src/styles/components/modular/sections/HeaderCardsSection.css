@@ -1,8 +1,8 @@
 /* DT-902: Extracted modular HeaderCardsSection styles. */
 /* Header / Cards */
 .c4-header-cards {
-  background: var(--color-light-green);
-  color: var(--color-light-green-text);
+  background: var(--section-bg, var(--color-light-green));
+  color: var(--section-text, var(--color-light-green-text));
 }
 
 .c4-header-cards__background {
@@ -20,12 +20,12 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(to right, var(--color-white), color-mix(in srgb, var(--color-white) 90%, transparent) 32%, transparent 75%);
+  background: linear-gradient(to right, var(--section-bg, var(--color-white)), color-mix(in srgb, var(--section-bg, var(--color-white)) 90%, transparent) 32%, transparent 75%);
   pointer-events: none;
 }
 
 .c4-header-cards--image.c4-header-cards--right::before {
-  background: linear-gradient(to left, var(--color-white), color-mix(in srgb, var(--color-white) 90%, transparent) 32%, transparent 75%);
+  background: linear-gradient(to left, var(--section-bg, var(--color-white)), color-mix(in srgb, var(--section-bg, var(--color-white)) 90%, transparent) 32%, transparent 75%);
 }
 
 .c4-header-cards__inner {
@@ -56,7 +56,7 @@
   height: 4px;
   margin-top: 24px;
   border-radius: var(--radius-lg);
-  background: var(--color-sage);
+  background: var(--section-accent, var(--color-sage));
 }
 
 .c4-header-cards__grid {
@@ -76,10 +76,10 @@
   min-width: 0;
   padding: clamp(20px, 2vw, 30px);
   /* DT-902: Outline every header/card item using the global theme's text colour. */
-  border: 1px solid var(--color-white-text);
+  border: 1px solid color-mix(in srgb, var(--card-text, var(--color-white-text)) 22%, transparent);
   border-radius: var(--radius-lg);
-  background: var(--color-white);
-  color: var(--color-white-text);
+  background: var(--card-bg, var(--color-white));
+  color: var(--card-text, var(--color-white-text));
 }
 
 .c4-header-cards__icon {
@@ -89,13 +89,13 @@
   height: 80px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: var(--color-light-green);
-  color: var(--color-charcoal);
+  background: color-mix(in srgb, var(--section-accent, var(--color-sage)) 20%, var(--card-bg, var(--color-white)));
+  color: var(--section-accent, var(--color-charcoal));
 }
 
 .c4-header-cards__card:nth-child(even) .c4-header-cards__icon {
-  background: var(--color-light-gray);
-  color: var(--color-white-text);
+  background: color-mix(in srgb, var(--section-accent, var(--color-sage)) 12%, var(--color-light-gray));
+  color: var(--section-accent, var(--color-white-text));
 }
 
 .c4-header-cards__icon svg {
@@ -105,6 +105,7 @@
 
 .c4-header-cards__card-title {
   margin: 0;
+  color: var(--card-header, inherit);
   font-family: var(--font-heading);
   font-size: 1.5rem;
   line-height: 1.2;
@@ -117,8 +118,8 @@
   height: 28px;
   margin-top: auto;
   border-radius: 50%;
-  background: var(--color-light-green);
-  color: var(--color-charcoal);
+  background: var(--section-accent, var(--color-light-green));
+  color: var(--section-accent-text, var(--color-charcoal));
   font-size: 0.875rem;
   font-weight: 700;
 }
@@ -146,7 +147,7 @@
 
   .c4-header-cards--image::before,
   .c4-header-cards--image.c4-header-cards--right::before {
-    background: linear-gradient(to bottom, var(--color-white), color-mix(in srgb, var(--color-white) 90%, transparent) 40%, transparent);
+    background: linear-gradient(to bottom, var(--section-bg, var(--color-white)), color-mix(in srgb, var(--section-bg, var(--color-white)) 90%, transparent) 40%, transparent);
   }
 }
 
@@ -158,13 +159,13 @@
 
 /* DT-902: Selected Home Health sections follow the global white surface in either theme. */
 .c4-header-cards--white {
-  background: var(--color-white);
-  color: var(--color-white-text);
+  background: var(--section-bg, var(--color-white));
+  color: var(--section-text, var(--color-white-text));
 }
 
 /* DT-902: Comprehensive Support Services uses the global gray surface and matching text. */
 /* DT-902: Keep section copy white on gray in both themes; cards retain their own text colors. */
 .c4-header-cards--gray {
-  background: var(--color-gray);
-  color: #ffffff;
+  background: var(--section-bg, var(--color-gray));
+  color: var(--section-text, #ffffff);
 }

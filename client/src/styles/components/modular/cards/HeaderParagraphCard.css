@@ -8,6 +8,7 @@ Modular header paragraph card layout stylesheet with configurable alignment and 
 .card--text {
   background: var(--card-bg, var(--color-white));
   color: var(--card-text, var(--color-white-text));
+  border: 1px solid color-mix(in srgb, var(--card-text, var(--color-white-text)) 12%, transparent);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-black) 8%, transparent);

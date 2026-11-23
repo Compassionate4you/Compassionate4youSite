@@ -4,6 +4,7 @@
 
 import React from 'react'
 import CustomSelect from '../CustomSelect'
+import TypographyControls from '../TypographyControls'
 
 const HERO_VARIANT_OPTIONS = [
   { value: 'split', label: 'Split (Text Panel + Photo)' },
@@ -18,7 +19,8 @@ const CONTENT_POSITION_OPTIONS = [
 
 const TONE_OPTIONS = [
   { value: 'teal', label: 'Teal / Gray Surface (Home Health)' },
-  { value: 'forest', label: 'Forest / Sage Surface (Hospice)' }
+  { value: 'forest', label: 'Forest / Sage Surface (Hospice)' },
+  { value: 'light-green', label: 'Light Green Surface (Default Split)' }
 ]
 
 const HERO_ICON_OPTIONS = [
@@ -28,10 +30,15 @@ const HERO_ICON_OPTIONS = [
 ]
 
 export default function HeroSectionLayout ({
+  isWelcomeHero = false,
   header,
   onHeaderChange,
+  headerTypography,
+  onHeaderTypographyChange,
   text,
   onTextChange,
+  textTypography,
+  onTextTypographyChange,
   heroVariant = 'split',
   onHeroVariantChange,
   contentPosition = 'left',
@@ -53,6 +60,8 @@ export default function HeroSectionLayout ({
   showLanguageSelector = false,
   onShowLanguageSelectorChange
 }) {
+  const welcomeMode = isWelcomeHero || heroVariant === 'welcome'
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {/* DT-875 Sprint 9 - PBall: Hero title and description fields */}
@@ -65,6 +74,13 @@ export default function HeroSectionLayout ({
           placeholder="e.g. Home Health Care Services"
           style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
         />
+        {onHeaderTypographyChange && (
+          <TypographyControls
+            label="Header Typography & Alignment"
+            value={headerTypography}
+            onChange={onHeaderTypographyChange}
+          />
+        )}
       </div>
 
       <div>
@@ -76,47 +92,60 @@ export default function HeroSectionLayout ({
           placeholder="Enter hero subtitle or introductory text..."
           style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
         />
+        {onTextTypographyChange && (
+          <TypographyControls
+            label="Description Typography & Alignment"
+            value={textTypography}
+            onChange={onTextTypographyChange}
+          />
+        )}
       </div>
 
       {/* DT-875 Sprint 9 - PBall: Hero layout variant, content position, tone, and heading badge icon */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Hero Variant</label>
-          <CustomSelect
-            value={heroVariant}
-            onChange={onHeroVariantChange}
-            options={HERO_VARIANT_OPTIONS}
-            ariaLabel="Select Hero Variant"
-          />
+      {!isWelcomeHero && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div>
+            <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Hero Variant</label>
+            <CustomSelect
+              value={heroVariant}
+              onChange={onHeroVariantChange}
+              options={HERO_VARIANT_OPTIONS}
+              ariaLabel="Select Hero Variant"
+            />
+          </div>
+          {!welcomeMode && (
+            <>
+              <div>
+                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Content Position</label>
+                <CustomSelect
+                  value={contentPosition}
+                  onChange={onContentPositionChange}
+                  options={CONTENT_POSITION_OPTIONS}
+                  ariaLabel="Select Hero Content Position"
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Surface Tone</label>
+                <CustomSelect
+                  value={heroTone}
+                  onChange={onHeroToneChange}
+                  options={TONE_OPTIONS}
+                  ariaLabel="Select Hero Surface Tone"
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Heading Badge Icon</label>
+                <CustomSelect
+                  value={icon}
+                  onChange={onIconChange}
+                  options={HERO_ICON_OPTIONS}
+                  ariaLabel="Select Hero Badge Icon"
+                />
+              </div>
+            </>
+          )}
         </div>
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Content Position</label>
-          <CustomSelect
-            value={contentPosition}
-            onChange={onContentPositionChange}
-            options={CONTENT_POSITION_OPTIONS}
-            ariaLabel="Select Hero Content Position"
-          />
-        </div>
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Surface Tone</label>
-          <CustomSelect
-            value={heroTone}
-            onChange={onHeroToneChange}
-            options={TONE_OPTIONS}
-            ariaLabel="Select Hero Surface Tone"
-          />
-        </div>
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Heading Badge Icon</label>
-          <CustomSelect
-            value={icon}
-            onChange={onIconChange}
-            options={HERO_ICON_OPTIONS}
-            ariaLabel="Select Hero Badge Icon"
-          />
-        </div>
-      </div>
+      )}
 
       {/* DT-875 Sprint 9 - PBall: Hero image and CTA button fields */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
@@ -140,49 +169,55 @@ export default function HeroSectionLayout ({
             style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
           />
         </div>
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>CTA Button Text (Optional)</label>
-          <input
-            type="text"
-            value={buttonText}
-            onChange={(e) => onButtonTextChange(e.target.value)}
-            placeholder="e.g. Schedule Consultation"
-            style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-          />
-        </div>
-        <div>
-          <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>CTA Button Link</label>
-          <input
-            type="text"
-            value={buttonLink}
-            onChange={(e) => onButtonLinkChange(e.target.value)}
-            placeholder="/schedule"
-            style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-          />
-        </div>
+        {!welcomeMode && (
+          <>
+            <div>
+              <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>CTA Button Text (Optional)</label>
+              <input
+                type="text"
+                value={buttonText}
+                onChange={(e) => onButtonTextChange(e.target.value)}
+                placeholder="e.g. Schedule Consultation"
+                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>CTA Button Link</label>
+              <input
+                type="text"
+                value={buttonLink}
+                onChange={(e) => onButtonLinkChange(e.target.value)}
+                placeholder="/schedule"
+                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+              />
+            </div>
+          </>
+        )}
       </div>
 
       {/* DT-875 Sprint 9 - PBall: Overlay and language selector toggles */}
-      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', paddingTop: '4px' }}>
-        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={Boolean(showOverlay)}
-            onChange={(e) => onShowOverlayChange(e.target.checked)}
-            style={{ width: '16px', height: '16px', accentColor: '#0f172a', cursor: 'pointer' }}
-          />
-          Show Image Overlay Tint
-        </label>
-        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={Boolean(showLanguageSelector)}
-            onChange={(e) => onShowLanguageSelectorChange(e.target.checked)}
-            style={{ width: '16px', height: '16px', accentColor: '#0f172a', cursor: 'pointer' }}
-          />
-          Show Language Selector Dropdown
-        </label>
-      </div>
+      {!welcomeMode && (
+        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', paddingTop: '4px' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={Boolean(showOverlay)}
+              onChange={(e) => onShowOverlayChange(e.target.checked)}
+              style={{ width: '16px', height: '16px', accentColor: '#0f172a', cursor: 'pointer' }}
+            />
+            Show Image Overlay Tint
+          </label>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={Boolean(showLanguageSelector)}
+              onChange={(e) => onShowLanguageSelectorChange(e.target.checked)}
+              style={{ width: '16px', height: '16px', accentColor: '#0f172a', cursor: 'pointer' }}
+            />
+            Show Language Selector Dropdown
+          </label>
+        </div>
+      )}
     </div>
   )
 }

@@ -39,7 +39,23 @@ const ALIGNMENT_OPTIONS = [
 
 export default function CardManager ({ onNotification, setIsDirty, registerSaveHandler }) {
   const [cards, setCards] = useState(CardStorageService.getCards())
-  const sections = SectionStorageService.getSections()
+  const [sections, setSections] = useState(SectionStorageService.getSections())
+
+  useEffect(() => {
+    let isMounted = true
+    async function syncData () {
+      const [dbCards, dbSections] = await Promise.all([
+        CardStorageService.loadFromDatabase(),
+        SectionStorageService.loadFromDatabase()
+      ])
+      if (isMounted) {
+        setCards(dbCards)
+        setSections(dbSections)
+      }
+    }
+    syncData()
+    return () => { isMounted = false }
+  }, [])
 
   const [mode, setMode] = useState('create')
   const [activeTab, setActiveTab] = useState('content') // 'content' | 'colors'
@@ -780,7 +796,11 @@ export default function CardManager ({ onNotification, setIsDirty, registerSaveH
             {themeMode === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
           </button>
         </div>
-        <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '24px', background: themeMode === 'dark' ? '#0f172a' : '#f8fafc', maxWidth: '500px' }}>
+        <div
+          theme={themeMode}
+          data-theme={themeMode}
+          style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '24px', background: themeMode === 'dark' ? '#0f172a' : '#f8fafc', maxWidth: '500px' }}
+        >
           <ModularCard card={draftCard} theme={themeMode} />
         </div>
       </div>

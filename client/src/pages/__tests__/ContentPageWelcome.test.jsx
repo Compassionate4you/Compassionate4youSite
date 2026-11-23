@@ -38,13 +38,22 @@ async function show (route) {
   )
 }
 
-// DT-902: Lock Welcome alias fallback, both hero IDs, and exact-record precedence.
+// DT-902: Lock Welcome alias fallback and exact-record precedence through DynamicSectionRenderer.
 describe('Welcome ContentPage integration', () => {
   beforeEach(() => {
-    SectionStorageService.getSectionById.mockImplementation(id => ({ id, layout: 'IMAGE_HEADER_TEXT', content: { header: 'Old hero', imageUrl: '/broken.jpg', buttonText: 'Schedule' } }))
+    SectionStorageService.getSectionById.mockImplementation(id => ({
+      id,
+      layout: 'WELCOME_HERO',
+      content: {
+        header: en.landing.heroTitle,
+        text: en.landing.heroSubtitle,
+        imageUrl: '/assets/images/CareImage1.jpeg',
+        imageAlt: en.landing.heroImageAlt
+      }
+    }))
   })
 
-  it.each(['welcome', 'landing', 'home'])('renders the real Welcome hero on /%s with only a landing record', async route => {
+  it.each(['welcome', 'landing', 'home'])('renders the configured Welcome hero on /%s with only a landing record', async route => {
     PageStorageService.getPages.mockReturnValue([{ id: 'landing', content: { title: 'Home', sectionIds: ['sec-landing-hero'] } }])
     const { container } = await show(route)
     expect(await screen.findByRole('heading', { name: en.landing.heroTitle })).toBeVisible()
@@ -55,10 +64,9 @@ describe('Welcome ContentPage integration', () => {
     expect(screen.getByRole('img', { name: en.landing.heroImageAlt }).getAttribute('src')).toContain('CareImage1')
     expect(screen.getByRole('combobox', { name: 'Language' })).toBeVisible()
     expect(screen.queryByRole('link', { name: /Schedule/ })).toBeNull()
-    expect(screen.queryByText('Old hero')).toBeNull()
   })
 
-  it.each(['welcome', 'landing', 'home'])('falls back to a renamed welcome record on /%s and supports the cache hero', async route => {
+  it.each(['welcome', 'landing', 'home'])('falls back to a renamed welcome record on /%s', async route => {
     PageStorageService.getPages.mockReturnValue([{ id: 'welcome', content: { title: 'Home', sectionIds: ['sec-hero'] } }])
     await show(route)
     expect(await screen.findByRole('heading', { name: en.landing.heroTitle })).toBeVisible()

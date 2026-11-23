@@ -13,94 +13,13 @@ const DEFAULT_SECTION_COLORS = {
   accentColor: { light: '#366454', dark: '#4ade80' }
 }
 
-const INITIAL_SECTIONS = [
-  {
-    id: 'sec-hero',
-    layout: 'IMAGE_HEADER_TEXT',
-    colors: {
-      backgroundColor: { light: '#262626', dark: '#ffffff' },
-      headerColor: { light: '#DBE4C3', dark: '#2d3748' },
-      textColor: { light: '#595959', dark: '#f1f5f9' },
-      accentColor: { light: '#0f3460', dark: '#60a5fa' }
-    },
-    content: {
-      header: 'Compassionate Care for Your Loved Ones',
-      text: 'Professional home health and hospice services dedicated to providing quality care with dignity and respect.',
-      imageUrl: '/assets/images/older_couple_smiling.jpeg',
-      gridCols: 3,
-      cardIds: ['card-nurse'],
-      faqItems: [],
-      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596',
-      colors: {
-        backgroundColor: { light: '#262626', dark: '#ffffff' },
-        headerColor: { light: '#DBE4C3', dark: '#2d3748' },
-        textColor: { light: '#595959', dark: '#f1f5f9' },
-        accentColor: { light: '#0f3460', dark: '#60a5fa' }
-      }
-    }
-  },
-  {
-    id: 'sec-cards',
-    layout: 'CARD_GRID',
-    colors: {
-      backgroundColor: { light: '#9DA191', dark: '#1e293b' },
-      headerColor: { light: '#262626', dark: '#ffffff' },
-      textColor: { light: '#262626', dark: '#ffffff' },
-      accentColor: { light: '#DBE4C3', dark: '#2d3748' }
-    },
-    content: {
-      header: 'Our Core Services',
-      text: 'Explore our comprehensive range of specialized medical and personal support services.',
-      imageUrl: '',
-      gridCols: 2,
-      cardIds: ['card-nurse', 'card-specialty'],
-      faqItems: [],
-      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596',
-      colors: {
-        backgroundColor: { light: '#9DA191', dark: '#1e293b' },
-        headerColor: { light: '#262626', dark: '#ffffff' },
-        textColor: { light: '#262626', dark: '#ffffff' },
-        accentColor: { light: '#DBE4C3', dark: '#2d3748' }
-      }
-    }
-  },
-  {
-    id: 'sec-faq-demo',
-    layout: 'FAQ_SECTION',
-    colors: {
-      backgroundColor: { light: '#DBE4C3', dark: '#2d3748' },
-      headerColor: { light: '#0f3460', dark: '#60a5fa' },
-      textColor: { light: '#262626', dark: '#ffffff' },
-      accentColor: { light: '#0f3460', dark: '#60a5fa' }
-    },
-    content: {
-      header: 'Frequently Asked Questions',
-      text: 'Find answers to common questions about our home health and hospice care services.',
-      imageUrl: '',
-      gridCols: 3,
-      cardIds: [],
-      faqItems: [
-        { q: 'What services do you offer?', a: 'We provide home health care and hospice care.' },
-        { q: 'What areas do you serve?', a: 'We serve the Walnut Creek and greater Bay Area.' }
-      ],
-      mapAddress: '1501 N Broadway, Ste 350A/B, Walnut Creek, CA 94596',
-      colors: {
-        backgroundColor: { light: '#DBE4C3', dark: '#2d3748' },
-        headerColor: { light: '#0f3460', dark: '#60a5fa' },
-        textColor: { light: '#262626', dark: '#ffffff' },
-        accentColor: { light: '#0f3460', dark: '#60a5fa' }
-      }
-    }
-  }
-]
-
 export const SectionStorageService = {
   data: (() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
-      return saved ? JSON.parse(saved) : INITIAL_SECTIONS
+      return saved ? JSON.parse(saved) : []
     } catch {
-      return INITIAL_SECTIONS
+      return []
     }
   })(),
 
@@ -114,7 +33,7 @@ export const SectionStorageService = {
       const res = await fetch(`${API_BASE_URL}/admin/content/sections`)
       if (res.ok) {
         const remoteSections = await res.json()
-        if (Array.isArray(remoteSections) && remoteSections.length > 0) {
+        if (Array.isArray(remoteSections)) {
           this.data = remoteSections
           this._persist()
         }

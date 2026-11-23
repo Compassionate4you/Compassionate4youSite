@@ -75,5 +75,5 @@ Styles for the dynamic content page container, section overflow containment, and
 
 /* DT-902: Public page surfaces and links share the global palette. */
 .content-page--standard { background: var(--color-white); color: var(--color-white-text); }
-.content-page--standard .c4-page-cta a { color: var(--color-link); }
-.content-page--standard .c4-page-cta a:hover { color: var(--color-link-hover); }
+.content-page--standard .c4-page-cta a { color: var(--section-accent, var(--color-link)); }
+.content-page--standard .c4-page-cta a:hover { color: var(--section-accent, var(--color-link-hover)); opacity: 0.85; }

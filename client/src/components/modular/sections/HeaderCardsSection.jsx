@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import SectionHeading, { useSectionTitleId } from './SectionHeading'
 import SectionIcon from './SectionIcon'
+import resolveImageUrl from '../resolveImageUrl'
 // DT-902: Load the shared foundation and this layout's styles.
 import '../../../styles/components/modular/sections/SectionShared.css'
 import '../../../styles/components/modular/sections/HeaderCardsSection.css'
@@ -14,30 +15,32 @@ import '../../../styles/components/modular/sections/HeaderCardsSection.css'
 // DT-902: Preserve reference benefit lists as semantic lists beneath introductory copy.
 // DT-902: Support a gray surface alongside white, retaining the default for other values.
 export default function HeaderCardsSection ({
-  title, subtitle, label, items = [], backgroundImageUrl, headerPosition = 'left', surface
+  title, subtitle, label, items = [], backgroundImageUrl, headerPosition = 'left', surface, style = {}
 }) {
   const titleId = useSectionTitleId(title)
   const [failedImage, setFailedImage] = useState(null)
-  const hasBackground = Boolean(backgroundImageUrl && backgroundImageUrl !== failedImage)
+  const resolvedBackground = resolveImageUrl(backgroundImageUrl)
+  const hasBackground = Boolean(resolvedBackground && resolvedBackground !== failedImage)
 
   return (
     <section
       className={`c4-section c4-header-cards${surface === 'white' || surface === 'gray' ? ` c4-header-cards--${surface}` : ''}${headerPosition === 'right' ? ' c4-header-cards--right' : ''}${hasBackground ? ' c4-header-cards--image' : ''}`}
       aria-labelledby={titleId}
+      style={style}
     >
       {hasBackground && (
         <img
           className='c4-header-cards__background'
-          src={backgroundImageUrl}
+          src={resolvedBackground}
           alt=''
-          onError={() => setFailedImage(backgroundImageUrl)}
+          onError={() => setFailedImage(resolvedBackground)}
         />
       )}
       <div className='c4-section__inner c4-header-cards__inner'>
         <SectionHeading id={titleId} title={title} subtitle={subtitle} label={label} />
         <ol className='c4-header-cards__grid'>
           {items.map((item, index) => (
-            <li className='c4-header-cards__card' key={item.id}>
+            <li className='c4-header-cards__card' key={item.id} style={item.style}>
               <span className='c4-header-cards__icon'><SectionIcon name={item.iconName} /></span>
               {item.title && <h3 className='c4-header-cards__card-title'>{item.title}</h3>}
               {item.description && <p className='c4-section__description'>{item.description}</p>}

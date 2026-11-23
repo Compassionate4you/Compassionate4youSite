@@ -4,6 +4,7 @@
 
 import React from 'react'
 import CustomSelect from '../CustomSelect'
+import TypographyControls from '../TypographyControls'
 
 const STACK_COLUMN_OPTIONS = [
   { value: '1', label: '1 Column (Full-Width Stack)' },
@@ -15,8 +16,12 @@ export default function HeaderStackLayout ({
   onLabelChange,
   header,
   onHeaderChange,
+  headerTypography,
+  onHeaderTypographyChange,
   text,
   onTextChange,
+  textTypography,
+  onTextTypographyChange,
   gridCols = 1,
   onGridColsChange,
   selectedCardIds = [],
@@ -87,6 +92,13 @@ export default function HeaderStackLayout ({
             placeholder="e.g. Understanding Hospice Care"
             style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
           />
+          {onHeaderTypographyChange && (
+            <TypographyControls
+              label="Header Typography & Alignment"
+              value={headerTypography}
+              onChange={onHeaderTypographyChange}
+            />
+          )}
         </div>
         <div>
           <label style={{ display: 'block', fontWeight: '600', fontSize: '13px', marginBottom: '4px' }}>Stack Columns (1-2)</label>
@@ -108,6 +120,13 @@ export default function HeaderStackLayout ({
           placeholder="Optional introductory text below the heading..."
           style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
         />
+        {onTextTypographyChange && (
+          <TypographyControls
+            label="Subtitle Typography & Alignment"
+            value={textTypography}
+            onChange={onTextTypographyChange}
+          />
+        )}
       </div>
 
       {/* DT-875 Sprint 9 - PBall: Assign existing cards or define inline stack items */}

@@ -8,7 +8,10 @@ import { typographyStyle } from '../typographyStyle'
 const welcomeIcons = {
   'welcome-philosophy': Heart,
   'welcome-caring-since': HeartHandshake,
-  'welcome-about': Users
+  'welcome-about': Users,
+  'sec-landing-philosophy': Heart,
+  'sec-landing-caring': HeartHandshake,
+  'sec-landing-about': Users
 }
 
 // DT-902: Share icon selection between section and card renderers without matching translated copy.

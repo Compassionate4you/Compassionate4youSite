@@ -5,6 +5,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown } from 'lucide-react'
+import { pickText } from '../cards/CardBase'
 import '../../../styles/components/modular/sections/FAQSection.css'
 
 function FAQItem ({ question, answer, isOpen, onClick }) {
@@ -41,11 +42,12 @@ export default function FAQSection ({
   content = {},
   style = {}
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language || 'en'
   const [openIndex, setOpenIndex] = useState(null)
 
   const data = content || config?.content || {}
-  const title = data.title || data.header || config?.title || t('faq.title')
+  const title = pickText(data.title || data.header || config?.title || '', lang) || t('faq.title')
 
   let rawItems = data.faqItems || data.items
   if (!Array.isArray(rawItems) || rawItems.length === 0) {
@@ -54,8 +56,8 @@ export default function FAQSection ({
 
   const items = Array.isArray(rawItems)
     ? rawItems.map((item) => ({
-      question: item.question || item.q || '',
-      answer: item.answer || item.a || ''
+      question: pickText(item.question || item.q || '', lang),
+      answer: pickText(item.answer || item.a || '', lang)
     }))
     : []
 

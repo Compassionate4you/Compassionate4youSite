@@ -4,11 +4,11 @@ import '../../../styles/components/modular/sections/SectionShared.css'
 import '../../../styles/components/modular/sections/TimelineSection.css'
 
 /** Items: { id, title, description }[]. Numbering always follows array order. */
-export default function TimelineSection ({ title, subtitle, label, items = [] }) {
+export default function TimelineSection ({ title, subtitle, label, items = [], style = {} }) {
   const titleId = useSectionTitleId(title)
 
   return (
-    <section className='c4-section c4-timeline' aria-labelledby={titleId}>
+    <section className='c4-section c4-timeline' aria-labelledby={titleId} style={style}>
       <div className='c4-section__inner'>
         <SectionHeading id={titleId} title={title} subtitle={subtitle} label={label} />
         <ol
