@@ -31,6 +31,15 @@ export default function MapSection ({
             {mapAddress}
           </p>
         )}
+
+        {data.phone && (
+        <p className="modular-map-section__phone">
+            {data.phone}
+        </p>
+        )}
+
+
+
         <div className="modular-map-section__embed">
           <iframe
             title={header || 'Office Location Map'}

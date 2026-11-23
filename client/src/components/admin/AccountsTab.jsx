@@ -174,7 +174,6 @@ function AccountsTab({
                             <th>Role</th>
                             <th>Created</th>
                             <th>Status</th>
-                            <th>Last Login</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -199,8 +198,6 @@ function AccountsTab({
                                         {account.status}
                                     </span>
                                 </td>
-
-                                <td>{account.lastLogin}</td>
 
                                 <td>
                                     <div className="account-row-actions">
